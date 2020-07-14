@@ -7,6 +7,11 @@ import org.bukkit.inventory.Inventory;
 
 import xyz.zeeraa.ezcore.module.gui.GUIAction;
 
+/**
+ * Called when a GUI is clicked
+ * 
+ * @author Zeeraa
+ */
 public interface GUIClickCallback {
 	/**
 	 * Called when someone clicks a GUI. The return value is used to either allow or
@@ -22,5 +27,6 @@ public interface GUIClickCallback {
 	 *         outcome and deny the interaction. use the other values to either
 	 *         allow or deny the interaction
 	 */
-	public GUIAction onClick(Inventory clickedInventory, Inventory inventory, HumanEntity entity, int clickedSlot, SlotType slotType, InventoryAction clickType);
+	public GUIAction onClick(Inventory clickedInventory, Inventory inventory, HumanEntity entity, int clickedSlot,
+			SlotType slotType, InventoryAction clickType);
 }

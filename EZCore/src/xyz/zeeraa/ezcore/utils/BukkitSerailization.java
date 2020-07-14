@@ -12,12 +12,16 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 /**
- * 
+ * Functions to serialize a {@link ItemStack} or the content of a
+ * {@link Inventory}
+ * <br><br>
  * Special thanks to Comphenix in the Bukkit forums or also known as aadnk on
  * GitHub.
  * 
  * <a href="https://gist.github.com/aadnk/8138186">Original Source</a>
  * 
+ * 
+ * @author aadnk
  */
 public class BukkitSerailization {
 	/**

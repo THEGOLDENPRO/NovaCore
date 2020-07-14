@@ -2,6 +2,8 @@ package xyz.zeeraa.ezcore.module.gui;
 
 /**
  * This is used to either allow or deny something in a GUI
+ * 
+ * @author Zeeraa
  */
 public enum GUIAction {
 	/**

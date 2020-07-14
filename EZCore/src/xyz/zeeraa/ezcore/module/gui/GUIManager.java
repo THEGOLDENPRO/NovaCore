@@ -14,6 +14,8 @@ import xyz.zeeraa.ezcore.module.gui.holders.GUIReadOnlyHolder;
 
 /**
  * This module is used to make inventory GUI menus
+ * 
+ * @author Zeeraa
  */
 public class GUIManager extends EZModule implements Listener {
 	@Override

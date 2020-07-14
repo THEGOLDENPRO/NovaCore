@@ -12,6 +12,8 @@ import xyz.zeeraa.ezcore.module.gui.callbacks.GUICloseCallback;
 /**
  * Add this holder to and {@link Inventory} to listen for click and close
  * events. This only works if the module {@link GUIManager} is enabled
+ * 
+ * @author Zeeraa
  */
 public class GUIHolder implements InventoryHolder {
 	private ArrayList<GUICloseCallback> closeCallbacks = new ArrayList<>();

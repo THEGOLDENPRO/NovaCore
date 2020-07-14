@@ -9,6 +9,8 @@ import xyz.zeeraa.ezcore.EZCore;
 
 /**
  * This class contains some useful utilities for bungecord communication
+ * 
+ * @author Zeeraa
  */
 public class BungeecordUtils {
 	/**

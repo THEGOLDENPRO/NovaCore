@@ -6,6 +6,14 @@ import org.bukkit.event.Listener;
 
 import xyz.zeeraa.ezcore.EZCore;
 
+/**
+ * Represents a module that can be loaded, enabled and disabled.<br>
+ * Modules need to be loaded with {@link ModuleManager#loadModule(Class)}<br>
+ * <br>
+ * All modules will be disabled in {@link EZCore#onDisable()}
+ * 
+ * @author Zeeraa
+ */
 public abstract class EZModule {
 	private boolean enabled = false;
 	private ModuleEnableFailureReason enableFailureReason = null;
@@ -76,14 +84,14 @@ public abstract class EZModule {
 
 		if (dependencies != null) {
 			for (Class<? extends EZModule> clazz : dependencies) {
-				if(!ModuleManager.moduleExists(clazz)) {
+				if (!ModuleManager.moduleExists(clazz)) {
 					this.enableFailureReason = ModuleEnableFailureReason.MISSING_DEPENDENCY;
 					return false;
 				}
-				
-				if(!ModuleManager.isEnabled(clazz)) {
-					if(!ModuleManager.enable(clazz)) {
-						//TODO: log dependency failure reason
+
+				if (!ModuleManager.isEnabled(clazz)) {
+					if (!ModuleManager.enable(clazz)) {
+						// TODO: log dependency failure reason
 						this.enableFailureReason = ModuleEnableFailureReason.DEPENDENCY_ENABLE_FAILED;
 						return false;
 					}
