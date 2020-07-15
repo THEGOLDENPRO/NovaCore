@@ -18,6 +18,21 @@ import xyz.zeeraa.ezcore.module.gui.holders.GUIReadOnlyHolder;
  * @author Zeeraa
  */
 public class GUIManager extends EZModule implements Listener {
+	private static GUIManager instance;
+	
+	/**
+	 * Get instance of {@link GUIManager}
+	 * @return Instance
+	 */
+	public static GUIManager getInstance() {
+		return instance;
+	}
+	
+	@Override
+		public void onLoad() {
+			instance = this;
+		}
+	
 	@Override
 	public String getName() {
 		return "GUI Manager";

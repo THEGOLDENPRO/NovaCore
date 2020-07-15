@@ -43,10 +43,20 @@ public class BasicTimer {
 		this.tickCallbacks = new ArrayList<TickCallback>();
 	}
 
+	/**
+	 * Add a {@link Callback} to be called when the timer is finished
+	 * 
+	 * @param callback {@link Callback} to be added
+	 */
 	public void addFinishCallback(Callback callback) {
 		finishCallbacks.add(callback);
 	}
 
+	/**
+	 * Add a {@link TickCallback} to be called every timer tick
+	 * 
+	 * @param tickCallback {@link TickCallback} to add
+	 */
 	public void addTickCallback(TickCallback tickCallback) {
 		tickCallbacks.add(tickCallback);
 	}
