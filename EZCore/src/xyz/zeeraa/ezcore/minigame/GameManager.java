@@ -78,7 +78,21 @@ public class GameManager extends EZModule implements Listener {
 		if (hasGame()) {
 			Player p = e.getPlayer();
 			
-			
+			switch (activeGame.getPlayerQuitEliminationAction()) {
+			case NONE:
+				break;
+				
+			case INSTANT:
+				activeGame.eliminatePlayer(p, null, PlayerEliminationReason.QUIT);
+				break;
+				
+			case DELAYED:
+				//TODO: Delayed elimination
+				break;
+
+			default:
+				break;
+			}
 		}
 
 	}
