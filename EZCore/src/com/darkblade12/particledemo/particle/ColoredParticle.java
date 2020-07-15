@@ -5,8 +5,6 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.darkblade12.particledemo.particle.ParticleEffect;
-
 public enum ColoredParticle {
 
 	SPELL_MOB("SPELL_MOB"), SPELL_MOB_AMBIENT("SPELL_MOB_AMBIENT"), REDSTONE("REDSTONE");
