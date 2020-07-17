@@ -6,9 +6,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import xyz.zeeraa.ezcore.minigame.GameManager;
 import xyz.zeeraa.ezcore.module.ModuleManager;
 import xyz.zeeraa.ezcore.module.gui.GUIManager;
+import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
 
 public class EZCore extends JavaPlugin implements Listener {
 	private static EZCore instance;
@@ -34,7 +34,7 @@ public class EZCore extends JavaPlugin implements Listener {
 
 		// Load modules
 		ModuleManager.loadModule(GUIManager.class);
-		ModuleManager.loadModule(GameManager.class);
+		ModuleManager.loadModule(MultiverseManager.class);
 	}
 
 	@Override
