@@ -7,6 +7,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import xyz.zeeraa.ezcore.module.ModuleManager;
+import xyz.zeeraa.ezcore.module.compass.CompassTracker;
 import xyz.zeeraa.ezcore.module.game.GameManager;
 import xyz.zeeraa.ezcore.module.gui.GUIManager;
 import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
@@ -38,6 +39,7 @@ public class EZCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(GUIManager.class);
 		ModuleManager.loadModule(MultiverseManager.class);
 		ModuleManager.loadModule(EZSimpleScoreboard.class);
+		ModuleManager.loadModule(CompassTracker.class);
 		ModuleManager.loadModule(GameManager.class);
 	}
 
