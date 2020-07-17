@@ -5,15 +5,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
 
-public abstract class EZCommandBase implements CommandExecutor, TabCompleter{
+public abstract class EZCommandBase {
 	private EZCommandBase parentCommand;
 	private List<EZSubCommand> subCommands;
 
@@ -21,13 +19,9 @@ public abstract class EZCommandBase implements CommandExecutor, TabCompleter{
 	private List<String> aliases;
 
 	public EZCommandBase(String name) {
-		this(name, null);
-	}
-
-	public EZCommandBase(String name, EZCommandBase parentCommand) {
 		this.name = name;
 		this.subCommands = new ArrayList<EZSubCommand>();
-		this.parentCommand = parentCommand;
+		this.parentCommand = null;
 
 		this.aliases = new ArrayList<String>();
 	}
@@ -92,10 +86,25 @@ public abstract class EZCommandBase implements CommandExecutor, TabCompleter{
 
 	public void addSubCommand(EZSubCommand subCommand) {
 		subCommands.add(subCommand);
+		subCommand.setParentCommand(this);
 	}
 
 	public boolean hasParentCommand() {
 		return parentCommand != null;
+	}
+
+	/**
+	 * Set the parent command. After the parent command has been set all other calls
+	 * to this function will be ignored
+	 * 
+	 * @param parentCommand {@link EZCommandBase} instance of the parent command
+	 */
+	public void setParentCommand(EZCommandBase parentCommand) {
+		if (parentCommand != null) {
+			return;
+		}
+
+		this.parentCommand = parentCommand;
 	}
 
 	public EZCommandBase getParentCommand() {
