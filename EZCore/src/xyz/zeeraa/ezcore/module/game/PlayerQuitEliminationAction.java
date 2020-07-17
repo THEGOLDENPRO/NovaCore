@@ -1,4 +1,4 @@
-package xyz.zeeraa.ezcore.minigame;
+package xyz.zeeraa.ezcore.module.game;
 
 /**
  * Represents the action to use when a a player quits

@@ -7,8 +7,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import xyz.zeeraa.ezcore.module.ModuleManager;
+import xyz.zeeraa.ezcore.module.game.GameManager;
 import xyz.zeeraa.ezcore.module.gui.GUIManager;
 import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
+import xyz.zeeraa.ezcore.module.scoreboard.EZSimpleScoreboard;
 
 public class EZCore extends JavaPlugin implements Listener {
 	private static EZCore instance;
@@ -35,6 +37,8 @@ public class EZCore extends JavaPlugin implements Listener {
 		// Load modules
 		ModuleManager.loadModule(GUIManager.class);
 		ModuleManager.loadModule(MultiverseManager.class);
+		ModuleManager.loadModule(EZSimpleScoreboard.class);
+		ModuleManager.loadModule(GameManager.class);
 	}
 
 	@Override

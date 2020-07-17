@@ -1,4 +1,4 @@
-package xyz.zeeraa.ezcore.minigame;
+package xyz.zeeraa.ezcore.module.game;
 
 /**
  * Represents the reason why a player was removed from the game

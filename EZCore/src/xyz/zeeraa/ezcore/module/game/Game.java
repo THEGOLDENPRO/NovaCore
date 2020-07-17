@@ -1,4 +1,4 @@
-package xyz.zeeraa.ezcore.minigame;
+package xyz.zeeraa.ezcore.module.game;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -8,7 +8,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import xyz.zeeraa.ezcore.minigame.events.PlayerEliminatedEvent;
+import xyz.zeeraa.ezcore.module.game.events.PlayerEliminatedEvent;
 
 /**
  * This class represents a game that {@link GameManager} can use

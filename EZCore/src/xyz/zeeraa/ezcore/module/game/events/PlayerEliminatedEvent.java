@@ -1,4 +1,4 @@
-package xyz.zeeraa.ezcore.minigame.events;
+package xyz.zeeraa.ezcore.module.game.events;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
@@ -6,7 +6,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import xyz.zeeraa.ezcore.minigame.PlayerEliminationReason;
+import xyz.zeeraa.ezcore.module.game.PlayerEliminationReason;
 
 public class PlayerEliminatedEvent extends Event implements Cancellable {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
