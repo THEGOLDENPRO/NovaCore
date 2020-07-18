@@ -1,0 +1,4 @@
+name: EZCore
+main: xyz.zeeraa.ezcore.EZCore
+description: A core plugin
+version: 1.0

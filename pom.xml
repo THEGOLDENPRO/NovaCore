@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>xyz.zeeraa</groupId>
+	<artifactId>ezcore-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>PARENT</version>
+	<name>EZCore Parent</name>
+	
+	<url>http://zeeraa.xyz</url>
+	
+	<build>
+        <!--<pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9</version>
+                    <configuration>
+                        <outputDirectory>${project.basedir}/javadocs</outputDirectory>
+                        <reportOutputDirectory>${project.basedir}/javadocs</reportOutputDirectory>
+                        <destDir>${project.basedir}/javadocs</destDir>
+                        <failOnError>false</failOnError>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <outputDirectory>${project.basedir}/javadocs</outputDirectory>
+                    <reportOutputDirectory>${project.basedir}/javadocs</reportOutputDirectory>
+                    <destDir>${project.basedir}/javadocs</destDir>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
+        </plugins>-->
+    </build>
+	
+	<modules>
+		<module>EZCore</module>
+		<module>EZCoreAbstraction</module>
+		<module>EZCore_1.8.8-R3</module>
+	</modules>
+
+	<repositories>
+	</repositories>
+
+	<dependencies>
+	</dependencies>
+</project>

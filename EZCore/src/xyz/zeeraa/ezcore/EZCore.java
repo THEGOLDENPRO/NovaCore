@@ -1,6 +1,7 @@
 package xyz.zeeraa.ezcore;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -28,6 +29,11 @@ public class EZCore extends JavaPlugin implements Listener {
 	@Override
 	public void onEnable() {
 		instance = this;
+
+		String packageName = this.getServer().getClass().getPackage().getName();
+		String version = packageName.substring(packageName.lastIndexOf('.') + 1);
+		
+		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Server version: " + version);
 
 		// Register plugin channels
 		Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
