@@ -14,12 +14,15 @@ import com.google.common.collect.ImmutableList;
 public abstract class EZCommandBase {
 	private EZCommandBase parentCommand;
 	private List<EZSubCommand> subCommands;
+	
+	private String description;
 
 	private String name;
 	private List<String> aliases;
 
 	public EZCommandBase(String name) {
 		this.name = name;
+		this.description = "";
 		this.subCommands = new ArrayList<EZSubCommand>();
 		this.parentCommand = null;
 
@@ -36,6 +39,13 @@ public abstract class EZCommandBase {
 
 	public void setAliases(List<String> aliases) {
 		this.aliases = aliases;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**
@@ -100,10 +110,10 @@ public abstract class EZCommandBase {
 	 * @param parentCommand {@link EZCommandBase} instance of the parent command
 	 */
 	public void setParentCommand(EZCommandBase parentCommand) {
-		if (parentCommand != null) {
+		if (this.parentCommand != null) {
 			return;
 		}
-
+		
 		this.parentCommand = parentCommand;
 	}
 
@@ -113,5 +123,15 @@ public abstract class EZCommandBase {
 
 	public String getName() {
 		return name;
+	}
+	
+	public static List<String> generateAliasList(String... aliases) {
+		List<String> result = new ArrayList<>();
+		
+		for(String alias : aliases) {
+			result.add(alias);
+		}
+		
+		return result;
 	}
 }

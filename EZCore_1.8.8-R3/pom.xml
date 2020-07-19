@@ -24,10 +24,10 @@
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
-		
+
 		<repository>
-			<id>zeeraa-repo</id>
-			<url>http://maven.zeeraa.xyz/artifactory/libs-snapshot/</url>
+			<id>zeeraas-repo</id>
+			<url>http://maven.zeeraa.xyz/artifactory/spigot</url>
 		</repository>
 	</repositories>
 
@@ -42,7 +42,8 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot</artifactId>
-			<version>1.8.8-R0.1-SNAPSHOT</version>
+			<version>1.8.8-R0.1-20200719.171523-1</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
