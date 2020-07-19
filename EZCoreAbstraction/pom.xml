@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ezcore-abstraction</artifactId>
 	<version>ABSTRACTION</version>
-	<packaging>jar</packaging>
 	<name>EZCore Abstraction</name>
+	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>xyz.zeeraa</groupId>
@@ -13,6 +13,10 @@
 		<version>PARENT</version>
 		<relativePath>..</relativePath>
 	</parent>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+	</build>
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>

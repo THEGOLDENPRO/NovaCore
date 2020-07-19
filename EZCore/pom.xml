@@ -12,7 +12,7 @@
 	</properties>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
 
 		<resources>
 			<resource>
@@ -92,7 +92,6 @@
 			<version>ABSTRACTION</version>
 			<type>jar</type>
 			<scope>compile</scope>
-			<optional>true</optional>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.json/json -->

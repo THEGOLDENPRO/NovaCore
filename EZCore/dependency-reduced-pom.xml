@@ -10,7 +10,7 @@
   <name>EZCore</name>
   <version>1.0.0-SNAPSHOT</version>
   <build>
-    <sourceDirectory>src</sourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
       <resource>
         <targetPath>.</targetPath>
