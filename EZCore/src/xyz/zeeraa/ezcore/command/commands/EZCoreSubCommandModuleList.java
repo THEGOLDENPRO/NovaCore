@@ -12,7 +12,7 @@ public class EZCoreSubCommandModuleList extends EZSubCommand {
 	public EZCoreSubCommandModuleList() {
 		super("list");
 
-		setDescription("list modules");
+		this.setDescription("list modules");
 	}
 
 	@Override

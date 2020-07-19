@@ -37,17 +37,25 @@ public abstract class EZCommandBase {
 		return aliases;
 	}
 
-	public void setAliases(List<String> aliases) {
+	protected void setAliases(List<String> aliases) {
 		this.aliases = aliases;
 	}
 	
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	
+	protected void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * Adds the help sub command to this command
+	 */
+	protected void addHelpSubCommand() {
+		addSubCommand(new HelpSubCommand());
+	}
+	
 	/**
 	 * Executes the command, returning its success
 	 *
@@ -94,7 +102,7 @@ public abstract class EZCommandBase {
 		return matchedPlayers;
 	}
 
-	public void addSubCommand(EZSubCommand subCommand) {
+	protected void addSubCommand(EZSubCommand subCommand) {
 		subCommands.add(subCommand);
 		subCommand.setParentCommand(this);
 	}
@@ -109,7 +117,7 @@ public abstract class EZCommandBase {
 	 * 
 	 * @param parentCommand {@link EZCommandBase} instance of the parent command
 	 */
-	public void setParentCommand(EZCommandBase parentCommand) {
+	protected void setParentCommand(EZCommandBase parentCommand) {
 		if (this.parentCommand != null) {
 			return;
 		}

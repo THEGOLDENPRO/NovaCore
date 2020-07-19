@@ -4,19 +4,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import xyz.zeeraa.ezcore.command.EZSubCommand;
-import xyz.zeeraa.ezcore.command.HelpSubCommand;
 import xyz.zeeraa.ezcore.module.ModuleManager;
 
 public class EZCoreSubCommandModules extends EZSubCommand {
 	public EZCoreSubCommandModules() {
 		super("modules");
 
-		setDescription("Manage modules");
+		this.setDescription("Manage modules");
 
-		setAliases(generateAliasList("module"));
+		this.setAliases(generateAliasList("module"));
 
-		addSubCommand(new HelpSubCommand());
-		addSubCommand(new EZCoreSubCommandModuleList());
+		this.addHelpSubCommand();
+		this.addSubCommand(new EZCoreSubCommandModuleList());
 	}
 
 	@Override
