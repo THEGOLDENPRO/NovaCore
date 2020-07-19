@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 
 /**
  * This class is used to turn {@link EZCommand} into a normal bukkit
@@ -75,6 +76,27 @@ public class EZCommandProxy extends Command {
 			}
 			// No sub command exists. Execute the current command
 		}
+
+		if (!(sender instanceof ConsoleCommandSender)) {
+			if (command.getPermissionMode() == CommandPermissionMode.DEFAULT) {
+				if (command.hasPermission()) {
+					if (!sender.hasPermission(command.getPermission())) {
+						sender.sendMessage(command.getNoPermissionMessage());
+						return true;
+					}
+				}
+			} else if (command.getPermissionMode() == CommandPermissionMode.INHERIT) {
+				if (command.hasParentCommand()) {
+					if (command.getParentCommand().hasPermission()) {
+						if (!sender.hasPermission(command.getParentCommand().getPermission())) {
+							sender.sendMessage(command.getNoPermissionMessage());
+							return true;
+						}
+					}
+				}
+			}
+		}
+
 		return command.execute(sender, commandLabel, args);
 	}
 
@@ -120,6 +142,24 @@ public class EZCommandProxy extends Command {
 						}
 
 						return recursiceCommandTabCheck(subCommand, sender, newAlias, newArgs);
+					}
+				}
+			}
+
+			if (!(sender instanceof ConsoleCommandSender)) {
+				if (command.getPermissionMode() == CommandPermissionMode.DEFAULT) {
+					if (command.hasPermission()) {
+						if (!sender.hasPermission(command.getPermission())) {
+							return new ArrayList<>();
+						}
+					}
+				} else if (command.getPermissionMode() == CommandPermissionMode.INHERIT) {
+					if (command.hasParentCommand()) {
+						if (command.getParentCommand().hasPermission()) {
+							if (!sender.hasPermission(command.getParentCommand().getPermission())) {
+								return new ArrayList<>();
+							}
+						}
 					}
 				}
 			}

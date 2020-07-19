@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
@@ -14,6 +16,12 @@ import com.google.common.collect.ImmutableList;
 public abstract class EZCommandBase {
 	private EZCommandBase parentCommand;
 	private List<EZSubCommand> subCommands;
+	
+	private String permission;
+	private String permissionDescription;
+	private PermissionDefault permissionDefaultValue;
+	
+	private CommandPermissionMode permissionMode;
 	
 	private String description;
 
@@ -23,6 +31,10 @@ public abstract class EZCommandBase {
 	public EZCommandBase(String name) {
 		this.name = name;
 		this.description = "";
+		this.permission = null;
+		this.permissionMode = CommandPermissionMode.DEFAULT;
+		this.permissionDescription = "";
+		this.permissionDefaultValue = PermissionDefault.FALSE;
 		this.subCommands = new ArrayList<EZSubCommand>();
 		this.parentCommand = null;
 
@@ -48,12 +60,66 @@ public abstract class EZCommandBase {
 	protected void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public String getPermission() {
+		return permission;
+	}
+	
+	protected void setPermission(String permission) {
+		this.permission = permission;
+	}
 
+	public boolean hasPermission() {
+		return permission != null;
+	}
+	
+	public String getPermissionDescription() {
+		return permissionDescription;
+	}
+	
+	protected void setPermissionDescription(String permissionDescription) {
+		this.permissionDescription = permissionDescription;
+	}
+	
+	public PermissionDefault getPermissionDefaultValue() {
+		return permissionDefaultValue;
+	}
+	
+	protected void setPermissionDefaultValue(PermissionDefault permissionDefaultValue) {
+		this.permissionDefaultValue = permissionDefaultValue;
+	}
+	
+	public CommandPermissionMode getPermissionMode() {
+		return permissionMode;
+	}
+	
+	protected void setPermissionMode(CommandPermissionMode permissionMode) {
+		this.permissionMode = permissionMode;
+	}
+	
 	/**
-	 * Adds the help sub command to this command
+	 * Add the help sub command to this command
 	 */
 	protected void addHelpSubCommand() {
 		addSubCommand(new HelpSubCommand());
+	}
+	
+	protected void addHelpSubCommand(String permission) {
+		this.addHelpSubCommand(permission, PermissionDefault.FALSE);
+	}
+	
+	
+	protected void addHelpSubCommand(String permission, PermissionDefault permissionDefaultValue) {
+		this.addHelpSubCommand(permission, "Show help", permissionDefaultValue);
+	}
+	
+	
+	protected void addHelpSubCommand(String permission, String permissionDescription) {
+		this.addHelpSubCommand(permission, permissionDescription, PermissionDefault.FALSE);
+	}
+	
+	protected void addHelpSubCommand(String permission, String permissionDescription, PermissionDefault permissionDefaultValue) {
+		addSubCommand(new HelpSubCommand(permission, permissionDescription, permissionDefaultValue));
 	}
 	
 	/**
@@ -141,5 +207,9 @@ public abstract class EZCommandBase {
 		}
 		
 		return result;
+	}
+	
+	public String getNoPermissionMessage() {
+		return ChatColor.RED + "You dont have permission to use this command";
 	}
 }

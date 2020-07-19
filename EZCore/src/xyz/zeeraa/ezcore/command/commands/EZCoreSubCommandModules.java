@@ -14,6 +14,7 @@ public class EZCoreSubCommandModules extends EZSubCommand {
 
 		this.setAliases(generateAliasList("module"));
 
+		this.setPermission("ezcore.ezcore.modules");
 		this.addHelpSubCommand();
 		this.addSubCommand(new EZCoreSubCommandModuleList());
 	}

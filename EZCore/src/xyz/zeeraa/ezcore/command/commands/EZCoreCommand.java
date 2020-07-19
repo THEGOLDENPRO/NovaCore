@@ -14,6 +14,7 @@ public class EZCoreCommand extends EZCommand {
 
 		this.setDescription("comamnd for EZCore");
 
+		this.setPermission("ezcore.ezcore");
 		this.addHelpSubCommand();
 		this.addSubCommand(new EZCoreSubCommandModules());
 	}

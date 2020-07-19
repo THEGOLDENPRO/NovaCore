@@ -12,6 +12,7 @@ public class EZCoreSubCommandModuleList extends EZSubCommand {
 	public EZCoreSubCommandModuleList() {
 		super("list");
 
+		this.setPermission("ezcore.ezcore.modules.list");
 		this.setDescription("list modules");
 	}
 

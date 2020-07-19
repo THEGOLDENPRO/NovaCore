@@ -1,5 +1,8 @@
 package xyz.zeeraa.ezcore.command;
 
+import org.bukkit.Bukkit;
+import org.bukkit.permissions.Permission;
+
 import xyz.zeeraa.ezcore.EZCore;
 
 /**
@@ -14,7 +17,20 @@ public class CommandRegistry {
 	 * @param command {@link EZCommand} to be registered
 	 */
 	public static void registerCommand(EZCommand command) {
+		registerCommandPermissions(command);
 		EZCommandProxy commandProxy = new EZCommandProxy(command);
 		EZCore.getInstance().getCommandRegistrator().registerCommand(commandProxy);
+	}
+
+	private static void registerCommandPermissions(EZCommandBase command) {
+		if (command.hasPermission()) {
+			if (Bukkit.getServer().getPluginManager().getPermission(command.getPermission()) == null) {
+				Bukkit.getServer().getPluginManager().addPermission(new Permission(command.getPermission(), command.getPermissionDescription(), command.getPermissionDefaultValue()));
+			}
+		}
+
+		for (EZCommandBase subCommand : command.getSubCommands()) {
+			registerCommandPermissions(subCommand);
+		}
 	}
 }

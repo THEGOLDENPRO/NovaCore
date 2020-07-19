@@ -5,12 +5,21 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.permissions.PermissionDefault;
 
 public class HelpSubCommand extends EZSubCommand {
 
 	public HelpSubCommand() {
 		super("help");
-		setDescription("show help");
+		setDescription("Show help");
+	}
+
+	public HelpSubCommand(String permission, String permissionDescription, PermissionDefault permissionDefaultValue) {
+		super("help");
+		setDescription("Show help");
+		setPermission(permission);
+		setPermissionDescription(permissionDescription);
+		setPermissionDefaultValue(permissionDefaultValue);
 	}
 
 	@Override
