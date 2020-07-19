@@ -21,26 +21,17 @@
 
 	<repositories>
 		<repository>
-			<id>zeeraas-repo</id>
-			<url>http://maven.zeeraa.xyz/artifactory/snapshots/</url>
-		</repository>
-
-		<repository>
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+		
+		<repository>
+			<id>zeeraa-repo</id>
+			<url>http://maven.zeeraa.xyz/artifactory/libs-snapshot/</url>
 		</repository>
 	</repositories>
 
 	<dependencies>
-		<!--Spigot API -->
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>1.8.8-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-
-
 		<dependency>
 			<groupId>xyz.zeeraa</groupId>
 			<artifactId>ezcore-abstraction</artifactId>
@@ -49,10 +40,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>1.8.8-R0.1-20200718.104305-1</version>
-			<scope>provided</scope>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot</artifactId>
+			<version>1.8.8-R0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
