@@ -34,7 +34,7 @@ public class GameManager extends EZModule implements Listener {
 
 	@Override
 	public String getName() {
-		return "Game Manager";
+		return "GameManager";
 	}
 
 	/**

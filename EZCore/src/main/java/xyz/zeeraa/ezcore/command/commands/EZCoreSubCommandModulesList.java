@@ -1,18 +1,24 @@
 package xyz.zeeraa.ezcore.command.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.permissions.PermissionDefault;
 
 import xyz.zeeraa.ezcore.command.EZSubCommand;
 import xyz.zeeraa.ezcore.module.EZModule;
 import xyz.zeeraa.ezcore.module.ModuleManager;
 
-public class EZCoreSubCommandModuleList extends EZSubCommand {
+public class EZCoreSubCommandModulesList extends EZSubCommand {
 
-	public EZCoreSubCommandModuleList() {
+	public EZCoreSubCommandModulesList() {
 		super("list");
 
 		this.setPermission("ezcore.ezcore.modules.list");
+		this.setPermissionDefaultValue(PermissionDefault.OP);
+		
 		this.setDescription("list modules");
 	}
 
@@ -33,7 +39,7 @@ public class EZCoreSubCommandModuleList extends EZSubCommand {
 				disabled++;
 			}
 
-			moduleList += ChatColor.AQUA + module.getName() + ChatColor.GOLD + " : " + (module.isEnabled() ? ChatColor.GREEN + "Enabled" : ChatColor.RED + "Disabled") + ChatColor.RESET + "\n";
+			moduleList += ChatColor.AQUA + module.getName()+ ChatColor.GOLD + " : " + (module.isEnabled() ? ChatColor.GREEN + "Enabled" : ChatColor.RED + "Disabled") + ChatColor.RESET + "\n";
 		}
 
 		message += ChatColor.AQUA + "" + enabled + ChatColor.GOLD + " Enabled, " + ChatColor.AQUA + disabled + ChatColor.GOLD + " Disabled\n";
@@ -43,5 +49,10 @@ public class EZCoreSubCommandModuleList extends EZSubCommand {
 		sender.sendMessage(message);
 
 		return false;
+	}
+	
+	@Override
+	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+		return new ArrayList<String>();
 	}
 }

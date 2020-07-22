@@ -78,23 +78,15 @@ public class EZCommandProxy extends Command {
 		}
 
 		if (!(sender instanceof ConsoleCommandSender)) {
-			if (command.getPermissionMode() == CommandPermissionMode.DEFAULT) {
-				if (command.hasPermission()) {
-					if (!sender.hasPermission(command.getPermission())) {
-						sender.sendMessage(command.getNoPermissionMessage());
-						return true;
-					}
-				}
-			} else if (command.getPermissionMode() == CommandPermissionMode.INHERIT) {
-				if (command.hasParentCommand()) {
-					if (command.getParentCommand().hasPermission()) {
-						if (!sender.hasPermission(command.getParentCommand().getPermission())) {
-							sender.sendMessage(command.getNoPermissionMessage());
-							return true;
-						}
-					}
-				}
+			if (!command.hasSenderPermission(sender)) {
+				sender.sendMessage(command.getNoPermissionMessage());
+				return false;
 			}
+		}
+
+		if (!command.getAllowedSenders().isAllowed(sender)) {
+			sender.sendMessage(command.getAllowedSenders().getErrorMessage());
+			return false;
 		}
 
 		return command.execute(sender, commandLabel, args);
@@ -107,6 +99,10 @@ public class EZCommandProxy extends Command {
 
 	private List<String> recursiceCommandTabCheck(EZCommandBase command, CommandSender sender, String alias, String[] args) {
 		if (args.length == 1) {
+			if (!command.hasSenderPermission(sender)) {
+				return new ArrayList<String>();
+			}
+
 			List<String> result = new ArrayList<>();
 			result.addAll(command.tabComplete(sender, alias, args));
 			for (EZSubCommand subCommand : command.getSubCommands()) {
@@ -120,12 +116,12 @@ public class EZCommandProxy extends Command {
 					boolean isMatching = false;
 					String newAlias = "";
 
-					if (subCommand.getName().equalsIgnoreCase(args[1])) {
+					if (subCommand.getName().equalsIgnoreCase(args[0])) {
 						isMatching = true;
 						newAlias = subCommand.getName();
 					} else {
 						for (String subCommandAlias : subCommand.getAliases()) {
-							if (subCommandAlias.equalsIgnoreCase(args[1])) {
+							if (subCommandAlias.equalsIgnoreCase(args[0])) {
 								isMatching = true;
 								newAlias = subCommandAlias;
 								break;
@@ -140,28 +136,14 @@ public class EZCommandProxy extends Command {
 						for (int i = 1; i < args.length; i++) {
 							newArgs[i - 1] = args[i];
 						}
-
+						
 						return recursiceCommandTabCheck(subCommand, sender, newAlias, newArgs);
 					}
 				}
 			}
 
-			if (!(sender instanceof ConsoleCommandSender)) {
-				if (command.getPermissionMode() == CommandPermissionMode.DEFAULT) {
-					if (command.hasPermission()) {
-						if (!sender.hasPermission(command.getPermission())) {
-							return new ArrayList<>();
-						}
-					}
-				} else if (command.getPermissionMode() == CommandPermissionMode.INHERIT) {
-					if (command.hasParentCommand()) {
-						if (command.getParentCommand().hasPermission()) {
-							if (!sender.hasPermission(command.getParentCommand().getPermission())) {
-								return new ArrayList<>();
-							}
-						}
-					}
-				}
+			if (!command.hasSenderPermission(sender)) {
+				return new ArrayList<String>();
 			}
 
 			// no matching sub commands found

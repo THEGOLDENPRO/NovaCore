@@ -1,7 +1,11 @@
 package xyz.zeeraa.ezcore.command.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.permissions.PermissionDefault;
 
 import xyz.zeeraa.ezcore.command.EZCommand;
 
@@ -15,8 +19,11 @@ public class EZCoreCommand extends EZCommand {
 		this.setDescription("comamnd for EZCore");
 
 		this.setPermission("ezcore.ezcore");
+		this.setPermissionDefaultValue(PermissionDefault.OP);
+		
 		this.addHelpSubCommand();
 		this.addSubCommand(new EZCoreSubCommandModules());
+		this.addSubCommand(new EZCoreSubCommandLootTableList());
 	}
 
 	@Override
@@ -25,4 +32,8 @@ public class EZCoreCommand extends EZCommand {
 		return false;
 	}
 
+	@Override
+	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+		return new ArrayList<String>();
+	}
 }

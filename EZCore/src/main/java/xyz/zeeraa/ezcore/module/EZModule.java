@@ -19,7 +19,7 @@ public abstract class EZModule {
 	private ModuleEnableFailureReason enableFailureReason = null;
 
 	/**
-	 * Get the module display name
+	 * Get the module display name. Module names can't contain spaces
 	 * 
 	 * @return name
 	 */

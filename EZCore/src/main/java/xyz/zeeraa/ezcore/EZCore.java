@@ -1,7 +1,10 @@
 package xyz.zeeraa.ezcore;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InvalidClassException;
 
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
@@ -13,6 +16,7 @@ import xyz.zeeraa.ezcore.abstraction.CommandRegistrator;
 import xyz.zeeraa.ezcore.abstraction.NMSHandler;
 import xyz.zeeraa.ezcore.command.CommandRegistry;
 import xyz.zeeraa.ezcore.command.commands.EZCoreCommand;
+import xyz.zeeraa.ezcore.loottable.LootTableManager;
 import xyz.zeeraa.ezcore.module.ModuleManager;
 import xyz.zeeraa.ezcore.module.compass.CompassTracker;
 import xyz.zeeraa.ezcore.module.game.GameManager;
@@ -24,6 +28,8 @@ public class EZCore extends JavaPlugin implements Listener {
 	private static EZCore instance;
 
 	private CommandRegistrator bukkitCommandRegistrator;
+	
+	private LootTableManager lootTableManager;
 
 	/**
 	 * Get instance of the {@link EZCore} plugin
@@ -37,10 +43,26 @@ public class EZCore extends JavaPlugin implements Listener {
 	public CommandRegistrator getCommandRegistrator() {
 		return bukkitCommandRegistrator;
 	}
+	
+	public LootTableManager getLootTableManager() {
+		return lootTableManager;
+	}
 
 	@Override
 	public void onEnable() {
 		instance = this;
+		
+		File lootTableFolder = new File(this.getDataFolder().getPath() + File.pathSeparator + "LootTables");
+		
+		try {
+			FileUtils.forceMkdir(this.getDataFolder());
+			FileUtils.forceMkdir(lootTableFolder);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			getLogger().severe("Failed to setup data directory");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 
 		String packageName = this.getServer().getClass().getPackage().getName();
 		String version = packageName.substring(packageName.lastIndexOf('.') + 1);
@@ -66,6 +88,10 @@ public class EZCore extends JavaPlugin implements Listener {
 			setEnabled(false);
 			return;
 		}
+		
+		lootTableManager = new LootTableManager();
+		
+		lootTableManager.loadAll(lootTableFolder);
 
 		// Register plugin channels
 		Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");

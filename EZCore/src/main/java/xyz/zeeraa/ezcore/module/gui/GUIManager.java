@@ -35,7 +35,7 @@ public class GUIManager extends EZModule implements Listener {
 	
 	@Override
 	public String getName() {
-		return "GUI Manager";
+		return "GUIManager";
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)

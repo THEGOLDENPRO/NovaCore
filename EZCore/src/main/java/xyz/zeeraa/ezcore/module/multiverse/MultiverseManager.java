@@ -38,7 +38,7 @@ public class MultiverseManager extends EZModule implements Listener {
 
 	@Override
 	public String getName() {
-		return "Multiverse Manager";
+		return "MultiverseManager";
 	}
 
 	public HashMap<String, MultiverseWorld> getWorlds() {

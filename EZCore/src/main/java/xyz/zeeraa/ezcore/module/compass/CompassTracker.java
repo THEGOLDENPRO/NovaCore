@@ -64,7 +64,7 @@ public class CompassTracker extends EZModule {
 
 	@Override
 	public String getName() {
-		return "Compass Tracker";
+		return "CompassTracker";
 	}
 
 	/**

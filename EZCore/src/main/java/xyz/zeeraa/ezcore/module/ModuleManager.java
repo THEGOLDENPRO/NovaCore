@@ -41,8 +41,10 @@ public class ModuleManager {
 	}
 
 	/**
+	 * Check if a module is enabled
+	 * 
 	 * @param clazz The class of the module
-	 * @return
+	 * @return <code>true</code> if the module is disabled
 	 */
 	public static boolean isEnabled(Class<? extends EZModule> clazz) {
 		return isEnabled(clazz.getName());
@@ -52,7 +54,7 @@ public class ModuleManager {
 	 * Check if a module is enabled
 	 * 
 	 * @param className The class name of the module
-	 * @return <code>true</code> if the module is loaded
+	 * @return <code>true</code> if the module is enabled
 	 */
 	public static boolean isEnabled(String className) {
 		EZModule module = getModule(className);
@@ -60,6 +62,26 @@ public class ModuleManager {
 			return module.isEnabled();
 		}
 		return false;
+	}
+
+	/**
+	 * Check if a module is disabled
+	 * 
+	 * @param clazz The class of the module
+	 * @return <code>true</code> if the module is disabled
+	 */
+	public static boolean isDisabled(Class<? extends EZModule> clazz) {
+		return !isEnabled(clazz);
+	}
+
+	/**
+	 * Check if a module is disabled
+	 * 
+	 * @param className The class name of the module
+	 * @return <code>true</code> if the module is disabled
+	 */
+	public static boolean isDisabled(String className) {
+		return !isEnabled(className);
 	}
 
 	/**
@@ -165,6 +187,8 @@ public class ModuleManager {
 	 * 
 	 * @param clazz The class of the module
 	 * @return <code>true</code> on success
+	 * 
+	 * @throws InvalidModuleNameException if the module name contains spaces
 	 */
 	public static boolean loadModule(Class<? extends EZModule> clazz) {
 		if (moduleExists(clazz)) {
@@ -176,6 +200,10 @@ public class ModuleManager {
 			Object module = clazz.getConstructor().newInstance(new Object[] {});
 
 			if (module instanceof EZModule) {
+				if(((EZModule) module).getName().contains(" ")) {
+					throw new InvalidModuleNameException("The module name can't contain spaces. Module class: " + module.getClass().getName());
+				}
+				
 				((EZModule) module).onLoad();
 				modules.put(((EZModule) module).getClassName(), (EZModule) module);
 				return true;
