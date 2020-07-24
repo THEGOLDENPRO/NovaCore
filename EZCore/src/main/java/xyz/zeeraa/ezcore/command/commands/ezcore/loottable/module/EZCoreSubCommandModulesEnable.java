@@ -1,4 +1,4 @@
-package xyz.zeeraa.ezcore.command.commands;
+package xyz.zeeraa.ezcore.command.commands.ezcore.loottable.module;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +9,16 @@ import org.bukkit.permissions.PermissionDefault;
 import net.md_5.bungee.api.ChatColor;
 import xyz.zeeraa.ezcore.command.EZSubCommand;
 import xyz.zeeraa.ezcore.module.EZModule;
+import xyz.zeeraa.ezcore.module.ModuleEnableFailureReason;
 import xyz.zeeraa.ezcore.module.ModuleManager;
 
-public class EZCoreSubCommandModulesDisable extends EZSubCommand {
-	public EZCoreSubCommandModulesDisable() {
-		super("disable");
-		setPermission("ezcore.ezcore.modules.disable");
+public class EZCoreSubCommandModulesEnable extends EZSubCommand {
+	public EZCoreSubCommandModulesEnable() {
+		super("enable");
+		setPermission("ezcore.ezcore.modules.enable");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 
-		setDescription("Disable a module");
+		setDescription("Enable a module");
 	}
 
 	@Override
@@ -42,16 +43,18 @@ public class EZCoreSubCommandModulesDisable extends EZSubCommand {
 			return false;
 		}
 
-		if (!module.isEnabled()) {
-			sender.sendMessage(ChatColor.RED + "That module is already disabled");
+		if (module.isEnabled()) {
+			sender.sendMessage(ChatColor.RED + "That module is already enabled");
 			return false;
 		}
 
-		if (module.disable()) {
-			sender.sendMessage(ChatColor.GREEN + "Module " + module.getName() + " was disabled successfully");
+		if (module.enable()) {
+			sender.sendMessage(ChatColor.GREEN + "Module " + module.getName() + " was enabled successfully");
 			return true;
 		} else {
-			sender.sendMessage(ChatColor.RED + "The module " + module.getName() + " was disabled but an error occured.\nMore info might be avaliable in the console");
+			ModuleEnableFailureReason reason = module.getEnableFailureReason();
+
+			sender.sendMessage(ChatColor.RED + "An error occured while trying to enable module " + module.getName() + ".\nMore info might be avaliable in the console." + ChatColor.RED + reason.name());
 			return false;
 		}
 	}
@@ -62,7 +65,7 @@ public class EZCoreSubCommandModulesDisable extends EZSubCommand {
 
 		if (args.length == 1) {
 			for (String key : ModuleManager.getModules().keySet()) {
-				if (ModuleManager.isEnabled(key)) {
+				if (ModuleManager.isDisabled(key)) {
 					modules.add(ModuleManager.getModule(key).getName());
 				}
 			}

@@ -1,4 +1,4 @@
-package xyz.zeeraa.ezcore.command.commands;
+package xyz.zeeraa.ezcore.command.commands.ezcore.loottable.module;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

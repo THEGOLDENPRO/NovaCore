@@ -7,6 +7,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
+import xyz.zeeraa.ezcore.log.EZLogger;
+
 /**
  * This class is used to turn {@link EZCommand} into a normal bukkit
  * {@link Command}
@@ -18,10 +20,13 @@ public class EZCommandProxy extends Command {
 
 	protected EZCommandProxy(EZCommand ezCommand) {
 		super(ezCommand.getName());
+		
+		EZLogger.debug("Creating command proxy for mommand " + ezCommand.getName());
 
 		this.ezCommand = ezCommand;
 
 		this.setAliases(ezCommand.getAliases());
+		this.setDescription(ezCommand.getDescription());
 	}
 
 	/**
@@ -71,6 +76,8 @@ public class EZCommandProxy extends Command {
 						newArgs[i - 1] = args[i];
 					}
 
+					EZLogger.trace("recursive check on sub command " + subCommand.getName() + " origin command: " + ezCommand.getName());
+					
 					return recursiceCommandExecutionCheck(subCommand, sender, commandLabel, newArgs);
 				}
 			}
@@ -79,16 +86,19 @@ public class EZCommandProxy extends Command {
 
 		if (!(sender instanceof ConsoleCommandSender)) {
 			if (!command.hasSenderPermission(sender)) {
+				EZLogger.trace("Sender " + sender.getName() + " did not have permission to execute command" + command.getName() + " origin command: " + ezCommand.getName());
 				sender.sendMessage(command.getNoPermissionMessage());
 				return false;
 			}
 		}
 
 		if (!command.getAllowedSenders().isAllowed(sender)) {
+			EZLogger.trace("Sender type " + sender.getName() + " was not in the allowed senders list to execute command" + command.getName() + " origin command: " + ezCommand.getName());
 			sender.sendMessage(command.getAllowedSenders().getErrorMessage());
 			return false;
 		}
 
+		EZLogger.trace("running execute on command " + command.getName() + " origin command: " + ezCommand.getName());
 		return command.execute(sender, commandLabel, args);
 	}
 

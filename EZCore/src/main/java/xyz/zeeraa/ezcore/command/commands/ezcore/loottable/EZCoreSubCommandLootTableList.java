@@ -1,4 +1,4 @@
-package xyz.zeeraa.ezcore.command.commands;
+package xyz.zeeraa.ezcore.command.commands.ezcore.loottable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,21 +10,20 @@ import org.bukkit.permissions.PermissionDefault;
 import xyz.zeeraa.ezcore.EZCore;
 import xyz.zeeraa.ezcore.command.EZSubCommand;
 import xyz.zeeraa.ezcore.loottable.LootTable;
-import xyz.zeeraa.ezcore.module.ModuleManager;
 
-public class EZCoreSubCommandLootTableTest extends EZSubCommand {
-	public EZCoreSubCommandLootTableTest() {
-		super("test");
+public class EZCoreSubCommandLootTableList extends EZSubCommand {
+	public EZCoreSubCommandLootTableList() {
+		super("list");
 
-		this.setDescription("Test the loot of a loot table");
+		this.setDescription("List loot tables");
 
-		this.setPermission("ezcore.ezcore.loottable.test");
+		this.setPermission("ezcore.ezcore.loottable.list");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 	}
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		String message = ChatColor.AQUA + "" + ModuleManager.getModules().size() + ChatColor.GOLD + " Loot tables loaded\n";
+		String message = ChatColor.AQUA + "" + EZCore.getInstance().getLootTableManager().getLootTables().size() + ChatColor.GOLD + " Loot tables loaded\n";
 
 		String lootTableList = "";
 		for (String key : EZCore.getInstance().getLootTableManager().getLootTables().keySet()) {

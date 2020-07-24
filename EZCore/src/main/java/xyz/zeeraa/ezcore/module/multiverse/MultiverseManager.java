@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+import xyz.zeeraa.ezcore.log.EZLogger;
 import xyz.zeeraa.ezcore.module.EZModule;
 
 public class MultiverseManager extends EZModule implements Listener {
@@ -76,12 +77,12 @@ public class MultiverseManager extends EZModule implements Listener {
 
 		File targetFile = Paths.get(worldContainer.getAbsolutePath() + "/" + worldName).toFile();
 		if (targetFile.exists()) {
-			System.out.println("Replacing old world " + worldName); // TODO: Change log system
+			EZLogger.info("Replacing old world " + worldName);
 			targetFile.delete();
 			FileUtils.deleteDirectory(targetFile);
 		}
 
-		System.out.println("Adding " + worldName + " to " + worldContainer.getAbsolutePath()); // TODO: Change log system
+		EZLogger.info("Adding " + worldName + " to " + worldContainer.getAbsolutePath());
 		FileUtils.copyDirectory(worldFile, targetFile);
 
 		World world = Bukkit.getServer().createWorld(new WorldCreator(worldName));
@@ -132,9 +133,21 @@ public class MultiverseManager extends EZModule implements Listener {
 	}
 
 	public boolean unload(MultiverseWorld multiverseWorld) {
+		String worldName = multiverseWorld.getWorld().getName();
+		EZLogger.info("Unloading world " + worldName);
+
 		Bukkit.getServer().unloadWorld(multiverseWorld.getWorld(), multiverseWorld.isSaveOnUnload());
-		// TODO: check WorldUnloadOption
 		worlds.remove(multiverseWorld.getName());
+
+		if (multiverseWorld.getUnloadOption() == WorldUnloadOption.DELETE) {
+			EZLogger.info("Deleting unloaded world " + worldName);
+			try {
+				FileUtils.deleteDirectory(new File(Bukkit.getServer().getWorldContainer().getPath(), worldName));
+			} catch (IOException e) {
+				EZLogger.error("IOException while trying to delete world " + worldName);
+				e.printStackTrace();
+			}
+		}
 		return true;
 	}
 
@@ -148,6 +161,7 @@ public class MultiverseManager extends EZModule implements Listener {
 	public void onWatherChage(WeatherChangeEvent e) {
 		if (hasWorld(e.getWorld())) {
 			if (getWorld(e.getWorld()).isLockWeather()) {
+				EZLogger.debug("Prevented weather change in world " + e.getWorld().getName());
 				e.setCancelled(true);
 			}
 		}

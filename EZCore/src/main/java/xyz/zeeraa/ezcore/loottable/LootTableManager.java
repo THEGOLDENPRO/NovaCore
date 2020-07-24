@@ -7,6 +7,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONObject;
 
+import xyz.zeeraa.ezcore.log.EZLogger;
+
 /**
  * This class is used to load {@link LootTable}s
  * 
@@ -138,6 +140,8 @@ public class LootTableManager {
 	 */
 	public LootTable loadLootTable(File file) {
 		try {
+			EZLogger.info("Reading loot table from file " + file.getName());
+			
 			String data = FileUtils.readFileToString(file, "UTF-8");
 
 			LootTable lootTable = loadLootTable(new JSONObject(data));
@@ -177,10 +181,10 @@ public class LootTableManager {
 
 				return lootTable;
 			} else {
-				// TODO: throw exception for missing loader
+				EZLogger.warn("No loot table loader named " + loader + " was found");
 			}
 		} else {
-			// TODO: throw exception for missing loader name
+			EZLogger.warn("Loot table json does not contain a loader");
 		}
 		return null;
 	}

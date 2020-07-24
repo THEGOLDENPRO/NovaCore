@@ -1,4 +1,4 @@
-package xyz.zeeraa.ezcore.command.commands;
+package xyz.zeeraa.ezcore.command.commands.ezcore.loottable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,23 +14,18 @@ import xyz.zeeraa.ezcore.command.AllowedSenders;
 import xyz.zeeraa.ezcore.command.EZSubCommand;
 import xyz.zeeraa.ezcore.loottable.LootTable;
 
-public class EZCoreSubCommandLootTable extends EZSubCommand {
-	public EZCoreSubCommandLootTable() {
-		super("loottable");
+public class EZCoreSubCommandLootTableTest extends EZSubCommand {
+	public EZCoreSubCommandLootTableTest() {
+		super("test");
 
-		this.setAliases(generateAliasList("loottables"));
+		this.setDescription("Test the loot of a loot table");
 
-		this.setDescription("Manage loot tables");
-
-		this.setPermission("ezcore.ezcore.loottable");
+		this.setPermission("ezcore.ezcore.loottable.test");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
-
+		
+		this.setAllowedSenders(AllowedSenders.PLAYERS);
+		
 		this.addHelpSubCommand();
-
-		setAllowedSenders(AllowedSenders.PLAYERS);
-
-		this.addSubCommand(new EZCoreSubCommandLootTableList());
-		this.addSubCommand(new EZCoreSubCommandLootTableTest());
 	}
 
 	@Override
@@ -58,7 +53,7 @@ public class EZCoreSubCommandLootTable extends EZSubCommand {
 		}
 
 		player.sendMessage(ChatColor.GOLD + "Added loot from the loot table " + ChatColor.AQUA + lootTable.getDisplayName() + ChatColor.GOLD + " to your inventory");
-		
+
 		return true;
 	}
 

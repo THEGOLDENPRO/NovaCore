@@ -6,17 +6,20 @@ import java.io.InvalidClassException;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import xyz.zeeraa.ezcore.abstraction.CommandRegistrator;
 import xyz.zeeraa.ezcore.abstraction.NMSHandler;
 import xyz.zeeraa.ezcore.command.CommandRegistry;
-import xyz.zeeraa.ezcore.command.commands.EZCoreCommand;
+import xyz.zeeraa.ezcore.command.commands.ezcore.EZCoreCommand;
+import xyz.zeeraa.ezcore.log.EZLogger;
+import xyz.zeeraa.ezcore.log.LogLevel;
 import xyz.zeeraa.ezcore.loottable.LootTableManager;
+import xyz.zeeraa.ezcore.loottable.loottables.V1.LootTableLoaderV1;
 import xyz.zeeraa.ezcore.module.ModuleManager;
 import xyz.zeeraa.ezcore.module.compass.CompassTracker;
 import xyz.zeeraa.ezcore.module.game.GameManager;
@@ -28,8 +31,11 @@ public class EZCore extends JavaPlugin implements Listener {
 	private static EZCore instance;
 
 	private CommandRegistrator bukkitCommandRegistrator;
-	
+
 	private LootTableManager lootTableManager;
+
+	private File logSeverityConfigFile;
+	private FileConfiguration logSeverityConfig;
 
 	/**
 	 * Get instance of the {@link EZCore} plugin
@@ -43,23 +49,59 @@ public class EZCore extends JavaPlugin implements Listener {
 	public CommandRegistrator getCommandRegistrator() {
 		return bukkitCommandRegistrator;
 	}
-	
+
 	public LootTableManager getLootTableManager() {
 		return lootTableManager;
+	}
+
+	public void setLogLevel(LogLevel logLevel) {
+		try {
+			EZLogger.info("Setting console log level to " + logLevel.name());
+			EZLogger.setConsoleLogLevel(logLevel);
+			logSeverityConfig.set("severity", logLevel.name());
+			logSeverityConfig.save(logSeverityConfigFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void onEnable() {
 		instance = this;
-		
-		File lootTableFolder = new File(this.getDataFolder().getPath() + File.pathSeparator + "LootTables");
-		
+		EZLogger.setConsoleLogLevel(LogLevel.INFO);
+
+		File lootTableFolder = new File(this.getDataFolder().getPath() + File.separator + "LootTables");
+		logSeverityConfigFile = new File(this.getDataFolder(), "log_severity.yml");
+
 		try {
 			FileUtils.forceMkdir(this.getDataFolder());
 			FileUtils.forceMkdir(lootTableFolder);
+
+			if (!logSeverityConfigFile.exists()) {
+				EZLogger.info("Creating log_severity.yml");
+				FileUtils.touch(logSeverityConfigFile);
+			}
+			logSeverityConfig = YamlConfiguration.loadConfiguration(logSeverityConfigFile);
+
+			if (!logSeverityConfig.contains("severity")) {
+				logSeverityConfig.set("severity", LogLevel.INFO.name());
+				logSeverityConfig.save(logSeverityConfigFile);
+			}
+
+			String logLevelName = logSeverityConfig.getString("severity");
+
+			try {
+				LogLevel logLevel = LogLevel.valueOf(logLevelName);
+				EZLogger.info("Setting console log level to " + logLevel.name());
+				EZLogger.setConsoleLogLevel(logLevel);
+			} catch (Exception e) {
+				EZLogger.warn("The value " + logLevelName + " is not a valid LogLevel. Resetting it to " + LogLevel.INFO.name());
+				logSeverityConfig.set("severity", LogLevel.INFO.name());
+				logSeverityConfig.save(logSeverityConfigFile);
+			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			getLogger().severe("Failed to setup data directory");
+			EZLogger.fatal("Failed to setup data directory");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
@@ -67,7 +109,7 @@ public class EZCore extends JavaPlugin implements Listener {
 		String packageName = this.getServer().getClass().getPackage().getName();
 		String version = packageName.substring(packageName.lastIndexOf('.') + 1);
 
-		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Server version: " + version);
+		EZLogger.info("Server version: " + version);
 
 		try {
 			Class<?> clazz = Class.forName("xyz.zeeraa.ezcore.version." + version + ".NMSHandler");
@@ -76,21 +118,23 @@ public class EZCore extends JavaPlugin implements Listener {
 
 				bukkitCommandRegistrator = nmsHandler.getCommandRegistrator();
 				if (bukkitCommandRegistrator == null) {
-					getLogger().warning("CammandRegistrator is not supported for this version");
+					EZLogger.warn("CammandRegistrator is not supported for this version");
 				}
 			} else {
 				throw new InvalidClassException("xyz.zeeraa.ezcore.version." + version + ".NMSHandler is not assignable from " + NMSHandler.class.getName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			getLogger().severe("Could not find support for this CraftBukkit version.");
-			getLogger().info("Check for updates at URL HERE");
-			setEnabled(false);
+			EZLogger.fatal("Could not find support for this CraftBukkit version.");
+			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
-		
+
 		lootTableManager = new LootTableManager();
-		
+
+		lootTableManager.addLoader(new LootTableLoaderV1());
+
+		EZLogger.info("Loading loot tables from: " + lootTableFolder.getPath());
 		lootTableManager.loadAll(lootTableFolder);
 
 		// Register plugin channels
@@ -105,7 +149,7 @@ public class EZCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(EZSimpleScoreboard.class);
 		ModuleManager.loadModule(CompassTracker.class);
 		ModuleManager.loadModule(GameManager.class);
-		
+
 		CommandRegistry.registerCommand(new EZCoreCommand());
 	}
 

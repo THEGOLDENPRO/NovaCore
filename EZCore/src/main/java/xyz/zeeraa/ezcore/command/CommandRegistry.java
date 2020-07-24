@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 
 import xyz.zeeraa.ezcore.EZCore;
+import xyz.zeeraa.ezcore.log.EZLogger;
 
 /**
  * This class is used to register {@link EZCommand}s
@@ -17,6 +18,7 @@ public class CommandRegistry {
 	 * @param command {@link EZCommand} to be registered
 	 */
 	public static void registerCommand(EZCommand command) {
+		EZLogger.info("Registering command " + command.getName());
 		registerCommandPermissions(command);
 		EZCommandProxy commandProxy = new EZCommandProxy(command);
 		EZCore.getInstance().getCommandRegistrator().registerCommand(commandProxy);

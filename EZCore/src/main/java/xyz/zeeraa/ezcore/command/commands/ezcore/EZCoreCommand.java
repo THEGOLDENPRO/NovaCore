@@ -1,4 +1,4 @@
-package xyz.zeeraa.ezcore.command.commands;
+package xyz.zeeraa.ezcore.command.commands.ezcore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
 import xyz.zeeraa.ezcore.command.EZCommand;
+import xyz.zeeraa.ezcore.command.commands.ezcore.logger.EZCoreSubCommandLogger;
+import xyz.zeeraa.ezcore.command.commands.ezcore.loottable.EZCoreSubCommandLootTable;
+import xyz.zeeraa.ezcore.command.commands.ezcore.loottable.module.EZCoreSubCommandModules;
 
 public class EZCoreCommand extends EZCommand {
 
@@ -23,7 +26,8 @@ public class EZCoreCommand extends EZCommand {
 		
 		this.addHelpSubCommand();
 		this.addSubCommand(new EZCoreSubCommandModules());
-		this.addSubCommand(new EZCoreSubCommandLootTableList());
+		this.addSubCommand(new EZCoreSubCommandLootTable());
+		this.addSubCommand(new EZCoreSubCommandLogger());
 	}
 
 	@Override

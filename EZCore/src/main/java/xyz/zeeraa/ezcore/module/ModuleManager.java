@@ -2,6 +2,8 @@ package xyz.zeeraa.ezcore.module;
 
 import java.util.HashMap;
 
+import xyz.zeeraa.ezcore.log.EZLogger;
+
 /**
  * This class is used to register, enable and disable {@link EZModule}s
  * 
@@ -192,15 +194,16 @@ public class ModuleManager {
 	 */
 	public static boolean loadModule(Class<? extends EZModule> clazz) {
 		if (moduleExists(clazz)) {
-			// TODO: Log error
+			EZLogger.warn("Module " + clazz.getName() + " was already loaded");
 			return false;
 		}
-		// TODO: Log load
+		EZLogger.info("Loading module " + clazz.getName());
 		try {
 			Object module = clazz.getConstructor().newInstance(new Object[] {});
 
 			if (module instanceof EZModule) {
 				if(((EZModule) module).getName().contains(" ")) {
+					EZLogger.error("The module name can't contain spaces. Module class: " + module.getClass().getName());
 					throw new InvalidModuleNameException("The module name can't contain spaces. Module class: " + module.getClass().getName());
 				}
 				
@@ -208,11 +211,11 @@ public class ModuleManager {
 				modules.put(((EZModule) module).getClassName(), (EZModule) module);
 				return true;
 			} else {
-				// TODO: Log error
+				EZLogger.error("Module " + clazz.getName() + " does not extend EZModule");
 				return false;
 			}
 		} catch (Exception e) {
-			// TODO: Log error
+			EZLogger.error("An exception occured while loading " + clazz.getName());
 			e.printStackTrace();
 		}
 
@@ -223,6 +226,7 @@ public class ModuleManager {
 	 * Try to disable all modules
 	 */
 	public static void disableAll() {
+		EZLogger.info("Disabling all modules");
 		for (String module : modules.keySet()) {
 			if (isEnabled(module)) {
 				disable(module);

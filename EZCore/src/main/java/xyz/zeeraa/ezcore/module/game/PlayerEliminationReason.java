@@ -20,6 +20,10 @@ public enum PlayerEliminationReason {
 	 */
 	QUIT,
 	/**
+	 * The player quit and did not reconnect in time
+	 */
+	DID_NOT_RECONNECT,
+	/**
 	 * This can be used for custom elimination reasons
 	 */
 	OTHER;

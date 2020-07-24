@@ -1,10 +1,13 @@
 package xyz.zeeraa.ezcore.module;
 
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import xyz.zeeraa.ezcore.EZCore;
+import xyz.zeeraa.ezcore.log.EZLogger;
 
 /**
  * Represents a module that can be loaded, enabled and disabled.<br>
@@ -18,6 +21,8 @@ public abstract class EZModule {
 	private boolean enabled = false;
 	private ModuleEnableFailureReason enableFailureReason = null;
 
+	private ArrayList<Class<? extends EZModule>> dependencies = new ArrayList<Class<? extends EZModule>>();
+
 	/**
 	 * Get the module display name. Module names can't contain spaces
 	 * 
@@ -26,15 +31,13 @@ public abstract class EZModule {
 	public abstract String getName();
 
 	/**
-	 * Get module dependencies. This will return the class of all modules this
-	 * module depends on. All the dependencies will be enabled before this module is
-	 * enabled. The dependencies can in no way have this module as a dependency or
-	 * the enable function will cause a {@link StackOverflowError}
-	 * 
-	 * @return Array with all dependencies
+	 * Add a module to use as a dependency. All the dependencies will be enabled
+	 * before this module is enabled. The dependencies can in no way have this
+	 * module as a dependency or the enable function will cause a
+	 * {@link StackOverflowError}
 	 */
-	public Class<? extends EZModule>[] getDependencies() {
-		return null;
+	protected void addDependency(Class<? extends EZModule> dependency) {
+		dependencies.add(dependency);
 	}
 
 	/**
@@ -79,19 +82,20 @@ public abstract class EZModule {
 			this.enableFailureReason = ModuleEnableFailureReason.ALREADY_ENABLED;
 			return false;
 		}
-
-		Class<? extends EZModule>[] dependencies = this.getDependencies();
+		
+		EZLogger.info("Enabling module " + this.getName());
 
 		if (dependencies != null) {
 			for (Class<? extends EZModule> clazz : dependencies) {
 				if (!ModuleManager.moduleExists(clazz)) {
+					EZLogger.error("Failed to load module " + this.getName() + ". Missing dependency" + clazz.getName());
 					this.enableFailureReason = ModuleEnableFailureReason.MISSING_DEPENDENCY;
 					return false;
 				}
 
 				if (!ModuleManager.isEnabled(clazz)) {
 					if (!ModuleManager.enable(clazz)) {
-						// TODO: log dependency failure reason
+						EZLogger.error("Failed to load module " + this.getName() + ". Failed to enable dependency" + clazz.getName());
 						this.enableFailureReason = ModuleEnableFailureReason.DEPENDENCY_ENABLE_FAILED;
 						return false;
 					}
@@ -102,6 +106,7 @@ public abstract class EZModule {
 		try {
 			this.onEnable();
 			if (this instanceof Listener) {
+				EZLogger.info("Registering listeners for module " + this.getName());
 				Bukkit.getPluginManager().registerEvents((Listener) this, EZCore.getInstance());
 			}
 			this.enableFailureReason = null;
@@ -124,10 +129,13 @@ public abstract class EZModule {
 		if (!this.enabled) {
 			return false;
 		}
+		
+		EZLogger.info("Disabling module " + this.getName());
 
 		this.enableFailureReason = null;
 		boolean returnValue;
 		if (this instanceof Listener) {
+			EZLogger.info("Unregistering listeners for module " + this.getName());
 			HandlerList.unregisterAll((Listener) this);
 		}
 		try {

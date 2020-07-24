@@ -2,8 +2,6 @@ package xyz.zeeraa.ezcore.loottable.loottables.V1;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -14,6 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import xyz.zeeraa.ezcore.log.EZLogger;
 import xyz.zeeraa.ezcore.loottable.LootTable;
 import xyz.zeeraa.ezcore.loottable.LootTableLoader;
 
@@ -33,7 +32,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 
 		JSONArray items = json.getJSONArray("items");
 
-		Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "LootTableLoaderV2: reading loot table named " + json.getString("name"));
+		EZLogger.info("LootTableLoaderV2: reading loot table named " + json.getString("name"));
 
 		for (int i = 0; i < items.length(); i++) {
 			JSONObject jsonItem = items.getJSONObject(i);
@@ -45,7 +44,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 				lootTable.addItem(entry);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Failed to load loot table named " + json.getString("name") + " error occured while adding item " + json.getString("material"));
+				EZLogger.error("Failed to load loot table named " + json.getString("name") + " error occured while adding item " + json.getString("material"));
 
 				return null;
 			}
