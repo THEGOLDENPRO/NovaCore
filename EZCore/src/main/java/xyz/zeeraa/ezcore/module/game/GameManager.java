@@ -35,6 +35,10 @@ public class GameManager extends EZModule implements Listener {
 
 	private MapSelector mapSelector;
 	private MapReader mapReader;
+	
+	private boolean useTeams;
+	private int maxTeamSize;
+	private int teamCount;
 
 	/**
 	 * Get instance of {@link GameManager}
@@ -50,11 +54,39 @@ public class GameManager extends EZModule implements Listener {
 
 		this.mapSelector = new RandomMapSelector();
 		this.mapReader = new DefaultMapReader();
+		
+		this.useTeams = false;
+		this.maxTeamSize = 2;
+		this.teamCount = 2;
 
 		this.addDependency(MultiverseManager.class);
 
 		this.activeGame = null;
 		this.eliminationTasks = new HashMap<UUID, EliminationTask>();
+	}
+	
+	public void setUseTeams(boolean useTeams) {
+		this.useTeams = useTeams;
+	}
+	
+	public boolean isUseTeams() {
+		return useTeams;
+	}
+	
+	public int getMaxTeamSize() {
+		return maxTeamSize;
+	}
+	
+	public void setMaxTeamSize(int maxTeamSize) {
+		this.maxTeamSize = maxTeamSize;
+	}
+	
+	public int getTeamCount() {
+		return teamCount;
+	}
+	
+	public void setTeamCount(int teamCount) {
+		this.teamCount = teamCount;
 	}
 
 	/**
