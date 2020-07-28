@@ -30,7 +30,12 @@ public class GameMapData {
 
 	private File worldFile;
 
-	public GameMapData(ArrayList<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile) {
+	private boolean enabled;
+
+	private String chestLoot;
+	private String enderChestLoot;
+
+	public GameMapData(ArrayList<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled, String chestLoot, String enderChestLoot) {
 		this.starterLocations = starterLocations;
 		this.spectatorLocation = spectatorLocation;
 
@@ -39,6 +44,11 @@ public class GameMapData {
 		this.description = description;
 
 		this.worldFile = worldFile;
+
+		this.enabled = enabled;
+
+		this.chestLoot = chestLoot;
+		this.enderChestLoot = enderChestLoot;
 	}
 
 	/**
@@ -95,6 +105,26 @@ public class GameMapData {
 		return worldFile;
 	}
 
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
+	public String getEnderChestLootTable() {
+		return enderChestLoot;
+	}
+	
+	public boolean hasEnderChestLootTable() {
+		return enderChestLoot != null;
+	}
+	
+	public String getChestLootTable() {
+		return chestLoot;
+	}
+	
+	public boolean hasChestLootTable() {
+		return chestLoot != null;
+	}
+
 	/**
 	 * Load the map as a {@link GameMap} and load the world into the multiverse
 	 * system
@@ -105,11 +135,11 @@ public class GameMapData {
 	public GameMap load() throws IOException {
 		EZLogger.info("Loading map " + getMapName() + " display name: " + getDisplayName());
 		MultiverseWorld multiverseWorld = MultiverseManager.getInstance().createFromFile(worldFile, WorldUnloadOption.DELETE);
-		
-		World world = multiverseWorld.getWorld();
-		
-		EZLogger.info("World " + world.getName() + " has been loaded");
 
+		World world = multiverseWorld.getWorld();
+
+		EZLogger.info("World " + world.getName() + " has been loaded");
+		
 		return new GameMap(world, this, LocationData.toLocations(starterLocations, world), spectatorLocation.toLocation(world));
 	}
 }

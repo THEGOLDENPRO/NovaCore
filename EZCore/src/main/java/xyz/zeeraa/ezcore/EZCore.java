@@ -21,11 +21,14 @@ import xyz.zeeraa.ezcore.log.LogLevel;
 import xyz.zeeraa.ezcore.loottable.LootTableManager;
 import xyz.zeeraa.ezcore.loottable.loottables.V1.LootTableLoaderV1;
 import xyz.zeeraa.ezcore.module.ModuleManager;
+import xyz.zeeraa.ezcore.module.chestloot.ChestLootManager;
 import xyz.zeeraa.ezcore.module.compass.CompassTracker;
 import xyz.zeeraa.ezcore.module.game.GameManager;
+import xyz.zeeraa.ezcore.module.gamelobby.GameLobby;
 import xyz.zeeraa.ezcore.module.gui.GUIManager;
 import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
 import xyz.zeeraa.ezcore.module.scoreboard.EZSimpleScoreboard;
+import xyz.zeeraa.ezcore.teams.TeamManager;
 
 public class EZCore extends JavaPlugin implements Listener {
 	private static EZCore instance;
@@ -37,6 +40,8 @@ public class EZCore extends JavaPlugin implements Listener {
 	private File logSeverityConfigFile;
 	private FileConfiguration logSeverityConfig;
 
+	private TeamManager teamManager;
+	
 	/**
 	 * Get instance of the {@link EZCore} plugin
 	 * 
@@ -53,6 +58,17 @@ public class EZCore extends JavaPlugin implements Listener {
 	public LootTableManager getLootTableManager() {
 		return lootTableManager;
 	}
+	
+	public TeamManager getTeamManager() {
+		return teamManager;
+	}
+	
+	public void setTeamManager(TeamManager teamManager) {
+		this.teamManager = teamManager;
+	}
+	public boolean hasTeamManager() {
+		return teamManager != null;
+	}
 
 	public void setLogLevel(LogLevel logLevel) {
 		try {
@@ -68,8 +84,10 @@ public class EZCore extends JavaPlugin implements Listener {
 	@Override
 	public void onEnable() {
 		instance = this;
+		this.teamManager = null;
+		
 		EZLogger.setConsoleLogLevel(LogLevel.INFO);
-
+		
 		File lootTableFolder = new File(this.getDataFolder().getPath() + File.separator + "LootTables");
 		logSeverityConfigFile = new File(this.getDataFolder(), "log_severity.yml");
 
@@ -145,10 +163,12 @@ public class EZCore extends JavaPlugin implements Listener {
 
 		// Load modules
 		ModuleManager.loadModule(GUIManager.class);
+		ModuleManager.loadModule(ChestLootManager.class);
 		ModuleManager.loadModule(MultiverseManager.class);
 		ModuleManager.loadModule(EZSimpleScoreboard.class);
 		ModuleManager.loadModule(CompassTracker.class);
 		ModuleManager.loadModule(GameManager.class);
+		ModuleManager.loadModule(GameLobby.class);
 
 		CommandRegistry.registerCommand(new EZCoreCommand());
 	}

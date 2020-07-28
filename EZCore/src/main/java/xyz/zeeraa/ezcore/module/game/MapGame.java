@@ -1,6 +1,10 @@
 package xyz.zeeraa.ezcore.module.game;
 
 import java.io.IOException;
+
+import xyz.zeeraa.ezcore.log.EZLogger;
+import xyz.zeeraa.ezcore.module.ModuleManager;
+import xyz.zeeraa.ezcore.module.chestloot.ChestLootManager;
 import xyz.zeeraa.ezcore.module.game.map.GameMap;
 import xyz.zeeraa.ezcore.module.game.map.GameMapData;
 
@@ -55,6 +59,16 @@ public abstract class MapGame extends Game {
 
 		this.activeMap = map;
 		this.world = map.getWorld();
+
+		if (mapData.hasChestLootTable() || mapData.hasEnderChestLootTable()) {
+			if (ModuleManager.isDisabled(ChestLootManager.class)) {
+				EZLogger.info("Loading ChestLootManager because the game map has a chest or ender chest loot table");
+				ModuleManager.enable(ChestLootManager.class);
+			}
+
+			ChestLootManager.getInstance().setChestLootTable(mapData.getChestLootTable());
+			ChestLootManager.getInstance().setEnderChestLootTable(mapData.getEnderChestLootTable());
+		}
 
 		return true;
 	}

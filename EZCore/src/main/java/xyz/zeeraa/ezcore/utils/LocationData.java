@@ -23,11 +23,11 @@ public class LocationData {
 		}
 
 		if (jsonObject.has("y")) {
-			this.x = jsonObject.getDouble("y");
+			this.y = jsonObject.getDouble("y");
 		}
 
 		if (jsonObject.has("z")) {
-			this.x = jsonObject.getDouble("z");
+			this.z = jsonObject.getDouble("z");
 		}
 
 		if (jsonObject.has("yaw")) {
@@ -95,6 +95,11 @@ public class LocationData {
 	public float getPitch() {
 		return pitch;
 	}
+	
+	public void center() {
+		this.x = blockCenterLocation((int)x);
+		this.z = blockCenterLocation((int)z);
+	}
 
 	/**
 	 * Convert the {@link LocationData} to a bukkit {@link Location}
@@ -132,5 +137,15 @@ public class LocationData {
 		}
 
 		return result;
+	}
+	
+	public static double blockCenterLocation(int block) {
+		if (block >= 0) {
+			return ((double) block) + 0.5;
+		}
+		if (block < 0) {
+			return ((double) block) - 0.5;
+		}
+		return block;
 	}
 }

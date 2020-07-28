@@ -27,6 +27,22 @@ public abstract class MapSelector {
 	}
 
 	/**
+	 * Get a map by name
+	 * 
+	 * @param name The name of the map
+	 * @return The {@link GameMapData} or <code>null</code> if the map was not found
+	 */
+	public GameMapData getMap(String name) {
+		for(GameMapData map : maps) {
+			if(map.getMapName().equalsIgnoreCase(name)) {
+				return map;
+			}
+		}
+		
+		return null;
+	}
+
+	/**
 	 * Add a map to the possible maps
 	 * 
 	 * @param map The {@link GameMapData} to be added

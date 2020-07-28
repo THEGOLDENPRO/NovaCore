@@ -61,8 +61,8 @@ public enum LogLevel {
 		return LogLevel.getColor(this);
 	}
 
-	public String getMessage(String message) {
-		return LogLevel.getMessage(this, message);
+	public String getMessagePrefix() {
+		return LogLevel.getMessagePrefix(this);
 	}
 
 	public static ChatColor getColor(LogLevel severity) {
@@ -90,8 +90,8 @@ public enum LogLevel {
 		return ChatColor.WHITE;
 	}
 
-	public static String getMessage(LogLevel severity, String message) {
-		String result = ChatColor.BOLD + "[" + getColor(severity) + ChatColor.BOLD;
+	public static String getMessagePrefix(LogLevel severity) {
+		String result = "" + getColor(severity) + ChatColor.BOLD;
 
 		switch (severity) {
 		case FATAL:
@@ -121,7 +121,6 @@ public enum LogLevel {
 			result += "UNKNOWN_LOG_LEVEL";
 			break;
 		}
-		result += ChatColor.RESET + "" + ChatColor.BOLD + "]: " + ChatColor.RESET + message;
 
 		return result;
 	}

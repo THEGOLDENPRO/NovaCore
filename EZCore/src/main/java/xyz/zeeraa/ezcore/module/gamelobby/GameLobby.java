@@ -23,9 +23,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+import xyz.zeeraa.ezcore.EZCore;
 import xyz.zeeraa.ezcore.log.EZLogger;
 import xyz.zeeraa.ezcore.module.EZModule;
 import xyz.zeeraa.ezcore.module.game.GameManager;
+import xyz.zeeraa.ezcore.module.gamelobby.events.PlayerJoinGameLobbyEvent;
 import xyz.zeeraa.ezcore.module.gamelobby.map.GameLobbyMap;
 import xyz.zeeraa.ezcore.module.gamelobby.map.GameLobbyMapData;
 import xyz.zeeraa.ezcore.module.gamelobby.map.GameLobbyReader;
@@ -49,6 +51,8 @@ public class GameLobby extends EZModule implements Listener {
 	private GameLobbyReader mapReader;
 	private LobbyMapSelector mapSelector;
 
+	private int taskId;
+
 	private List<UUID> waitingPlayers;
 
 	public static GameLobby getInstance() {
@@ -65,6 +69,8 @@ public class GameLobby extends EZModule implements Listener {
 		this.mapSelector = new RandomLobbyMapSelector();
 
 		this.waitingPlayers = new ArrayList<UUID>();
+
+		this.taskId = -1;
 	}
 
 	public GameLobby() {
@@ -96,6 +102,28 @@ public class GameLobby extends EZModule implements Listener {
 			EZLogger.fatal("Failed to load the map to use for game lobby");
 			this.disable();
 			return;
+		}
+
+		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(EZCore.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				if (hasActiveMap()) {
+					for (Player player : getActiveMap().getWorld().getPlayers()) {
+						if (player.getLocation().getY() < 0) {
+							player.setFallDistance(0);
+							player.teleport(activeMap.getSpawnLocation());
+						}
+					}
+				}
+			}
+		}, 5L, 5L);
+	}
+
+	@Override
+	public void onDisable() {
+		if (taskId != -1) {
+			Bukkit.getScheduler().cancelTask(taskId);
+			taskId = -1;
 		}
 	}
 
@@ -134,8 +162,7 @@ public class GameLobby extends EZModule implements Listener {
 
 				if (player != null) {
 					if (player.isOnline()) {
-						EZLogger.debug("Teleporting " + player.getName() + " to the game");
-						GameManager.getInstance().getActiveGame().teleportPlayer(player);
+						GameManager.getInstance().getActiveGame().addPlayer(player);
 					}
 				}
 			}
@@ -146,15 +173,6 @@ public class GameLobby extends EZModule implements Listener {
 		} catch (Exception e) {
 			EZLogger.fatal("An exception occured while trying to start the game");
 			Bukkit.getServer().broadcastMessage(ChatColor.RED + "An uncorrectable error occurred while trying to start the game");
-			for (UUID uuid : waitingPlayers) {
-				Player player = Bukkit.getServer().getPlayer(uuid);
-
-				if (player != null) {
-					if (player.isOnline()) {
-
-					}
-				}
-			}
 			e.printStackTrace();
 		}
 
@@ -170,16 +188,17 @@ public class GameLobby extends EZModule implements Listener {
 			if (GameManager.getInstance().hasGame()) {
 				if (!GameManager.getInstance().getActiveGame().hasStarted()) {
 					if (!waitingPlayers.contains(e.getPlayer().getUniqueId())) {
-						EZLogger.debug("Adding player " + e.getPlayer().getName() + " to the waiting players list");
-
 						waitingPlayers.add(e.getPlayer().getUniqueId());
-
 						e.getPlayer().teleport(activeMap.getSpawnLocation());
+
+						e.getPlayer().getInventory().clear();
 
 						e.getPlayer().setGameMode(GameMode.ADVENTURE);
 						e.getPlayer().setMaxHealth(20);
 						e.getPlayer().setHealth(20);
 						e.getPlayer().setFoodLevel(20);
+
+						Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinGameLobbyEvent(e.getPlayer()));
 					}
 				}
 			}

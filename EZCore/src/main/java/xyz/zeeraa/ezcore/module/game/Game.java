@@ -10,6 +10,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import xyz.zeeraa.ezcore.EZCore;
+import xyz.zeeraa.ezcore.log.EZLogger;
 import xyz.zeeraa.ezcore.module.game.events.PlayerEliminatedEvent;
 
 /**
@@ -34,6 +36,12 @@ public abstract class Game {
 		this.players = new ArrayList<UUID>();
 		this.world = null;
 	}
+
+	/**
+	 * Get the name of the game used by plugins
+	 * @return Name of the game
+	 */
+	public abstract String getName();
 
 	/**
 	 * Get the {@link World} that the game takes place in. This can be null before
@@ -113,13 +121,22 @@ public abstract class Game {
 	 * @return <code>true</code> if players can hit each other
 	 */
 	public abstract boolean isPVPEnabled();
-	
+
 	/**
 	 * Check if the game has started
 	 * 
 	 * @return <code>true</code> if the game has started
 	 */
 	public abstract boolean hasStarted();
+
+	/**
+	 * Check friendly fire is enabled. This wont do anything unless
+	 * {@link GameManager#setUseTeams(boolean)} is enabled and
+	 * {@link EZCore#setTeamManager()} is set
+	 * 
+	 * @return <code>true</code> if friendly fire is enabled
+	 */
+	public abstract boolean isFriendlyFireAllowed();
 
 	/**
 	 * Check if 2 entities can hurt each other
@@ -142,14 +159,6 @@ public abstract class Game {
 	 * server
 	 */
 	public abstract void endGame();
-
-	/**
-	 * Teleport a player to the start location when they join. This should also set
-	 * the players health, game mode and prepare the player for the game
-	 * 
-	 * @param player The player to teleport
-	 */
-	public abstract void teleportPlayer(Player player);
 
 	/**
 	 * Eliminate a player from the game
@@ -192,10 +201,10 @@ public abstract class Game {
 		if (players.contains(player.getUniqueId())) {
 			return false;
 		}
+		
+		EZLogger.debug("Adding player " + player.getName() + " the the game");
 
 		players.add(player.getUniqueId());
-
-		teleportPlayer(player);
 
 		return true;
 	}

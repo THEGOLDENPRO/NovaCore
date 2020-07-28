@@ -6,15 +6,24 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import xyz.zeeraa.ezcore.EZCore;
 import xyz.zeeraa.ezcore.callbacks.Callback;
+import xyz.zeeraa.ezcore.command.CommandRegistry;
+import xyz.zeeraa.ezcore.command.commands.game.EZCoreCommandGame;
+import xyz.zeeraa.ezcore.log.EZLogger;
 import xyz.zeeraa.ezcore.module.EZModule;
+import xyz.zeeraa.ezcore.module.game.countdown.DefaultGameCountdown;
+import xyz.zeeraa.ezcore.module.game.countdown.GameCountdown;
 import xyz.zeeraa.ezcore.module.game.map.GameMapData;
 import xyz.zeeraa.ezcore.module.game.map.MapReader;
 import xyz.zeeraa.ezcore.module.game.map.readers.DefaultMapReader;
@@ -30,16 +39,18 @@ import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
 public class GameManager extends EZModule implements Listener {
 	private static GameManager instance;
 	private Game activeGame;
-
+	
 	private HashMap<UUID, EliminationTask> eliminationTasks;
 
 	private MapSelector mapSelector;
 	private MapReader mapReader;
-	
-	private boolean useTeams;
-	private int maxTeamSize;
-	private int teamCount;
 
+	private boolean useTeams;
+
+	private GameCountdown countdown;
+	
+	private boolean commandAdded;
+	
 	/**
 	 * Get instance of {@link GameManager}
 	 * 
@@ -50,43 +61,39 @@ public class GameManager extends EZModule implements Listener {
 	}
 
 	public GameManager() {
-		instance = this;
+		GameManager.instance = this;
+
+		this.useTeams = false;
 
 		this.mapSelector = new RandomMapSelector();
 		this.mapReader = new DefaultMapReader();
-		
-		this.useTeams = false;
-		this.maxTeamSize = 2;
-		this.teamCount = 2;
 
 		this.addDependency(MultiverseManager.class);
 
 		this.activeGame = null;
 		this.eliminationTasks = new HashMap<UUID, EliminationTask>();
+		
+		this.countdown = new DefaultGameCountdown();
+		
+		this.commandAdded = false;
 	}
-	
-	public void setUseTeams(boolean useTeams) {
-		this.useTeams = useTeams;
-	}
-	
+
+	/**
+	 * Check if the {@link GameManager} should use teams
+	 * 
+	 * @return <code>true</code> if teams should be used
+	 */
 	public boolean isUseTeams() {
 		return useTeams;
 	}
-	
-	public int getMaxTeamSize() {
-		return maxTeamSize;
-	}
-	
-	public void setMaxTeamSize(int maxTeamSize) {
-		this.maxTeamSize = maxTeamSize;
-	}
-	
-	public int getTeamCount() {
-		return teamCount;
-	}
-	
-	public void setTeamCount(int teamCount) {
-		this.teamCount = teamCount;
+
+	/**
+	 * Set if the {@link GameManager} should use teams
+	 * 
+	 * @param useTeams <code>true</code> to use teams
+	 */
+	public void setUseTeams(boolean useTeams) {
+		this.useTeams = useTeams;
 	}
 
 	/**
@@ -177,14 +184,27 @@ public class GameManager extends EZModule implements Listener {
 			return false;
 		}
 
+		EZLogger.info("Loding game " + game.getName());
+
 		game.onLoad();
 		if (game instanceof Listener) {
 			Bukkit.getPluginManager().registerEvents((Listener) game, EZCore.getInstance());
 		}
+		
+		this.activeGame = game;
 
 		return true;
 	}
 
+	@Override
+	public void onEnable() {
+		if(!commandAdded) {
+			EZLogger.info("Adding the game command");
+			CommandRegistry.registerCommand(new EZCoreCommandGame());
+			commandAdded = true;
+		}
+	}
+	
 	@Override
 	public void onDisable() {
 		for (UUID uuid : eliminationTasks.keySet()) {
@@ -213,17 +233,74 @@ public class GameManager extends EZModule implements Listener {
 	 * 
 	 */
 	public void start() throws IOException {
+		EZLogger.debug("GameManager is trying to start a game");
 		if (activeGame instanceof MapGame) {
 			if (mapSelector.getMaps().size() == 0) {
+				EZLogger.fatal("No maps has been loaded");
 				throw new NoMapsAddedException("No maps has been loaded");
 			}
 
 			GameMapData map = mapSelector.getMapToUse();
-
+			EZLogger.debug("Selected map: " + map.getDisplayName());
+			
+			EZLogger.info("Loading game map");
 			((MapGame) activeGame).loadMap(map);
 		}
 
+		EZLogger.debug("Calling start on " + activeGame.getClass().getName());
 		activeGame.startGame();
+	}
+	
+	public void setCountdown(GameCountdown countdown) {
+		this.countdown = countdown;
+	}
+	
+	public GameCountdown getCountdown() {
+		return countdown;
+	}
+	
+	public boolean hasCountdown() {
+		return countdown != null;
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+		if (hasGame()) {
+			if (e.getEntity() instanceof Player) {
+				Player damager = null;
+
+				if (e.getDamager() instanceof Player) {
+					damager = (Player) e.getDamager();
+				} else {
+					if (e.getDamager() instanceof Projectile) {
+						Projectile projectile = (Projectile) e.getDamager();
+						if (projectile.getShooter() != null) {
+							if (projectile.getShooter() instanceof Player) {
+								damager = (Player) e.getDamager();
+							}
+						}
+					}
+				}
+
+				if (damager != null) {
+					if (!activeGame.isPVPEnabled()) {
+						e.setCancelled(true);
+						return;
+					}
+
+					if (useTeams) {
+						if (EZCore.getInstance().hasTeamManager()) {
+							if (EZCore.getInstance().getTeamManager().isInSameTeam((OfflinePlayer) e.getEntity(), damager)) {
+								if (!getActiveGame().isFriendlyFireAllowed()) {
+									e.setCancelled(true);
+									return;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	@EventHandler

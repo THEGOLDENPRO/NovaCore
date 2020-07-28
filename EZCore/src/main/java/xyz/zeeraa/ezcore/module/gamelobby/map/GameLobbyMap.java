@@ -10,8 +10,10 @@ public class GameLobbyMap {
 	
 	private Location spawnLocation;
 
-	public GameLobbyMap(World world, GameLobbyMapData gameLobbyMapData, Location location) {
-		
+	public GameLobbyMap(World world, GameLobbyMapData mapData, Location spawnLocation) {
+		this.world = world;
+		this.mapData = mapData;
+		this.spawnLocation = spawnLocation;
 	}
 
 	/**

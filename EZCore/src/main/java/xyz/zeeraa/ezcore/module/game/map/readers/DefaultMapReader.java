@@ -19,26 +19,48 @@ public class DefaultMapReader extends MapReader {
 		String worldFileName = json.getString("world_file");
 		String description = "";
 		
+		String chestLoot = "";
+		String enderChestLoot = "";
+
+		boolean enabled = true;
+
 		File worldFile = new File(worldDirectory.getPath() + File.separator + worldFileName);
-		
-		if(json.has("description")) {
+
+		if (json.has("description")) {
 			description = json.getString("description");
 		}
 		
+		if (json.has("chest_loot")) {
+			chestLoot = json.getString("chest_loot");
+		}
+		
+		if (json.has("ender_chest_loot")) {
+			enderChestLoot = json.getString("ender_chest_loot");
+		}
+
+		if (json.has("enabled")) {
+			enabled = json.getBoolean("enabled");
+		}
+
 		LocationData spectatorLocation = null;
-		if(json.has("spectator_location")) {
+		if (json.has("spectator_location")) {
 			spectatorLocation = new LocationData(json.getJSONObject("spectator_location"));
 		}
-		
+
 		ArrayList<LocationData> starterLocations = new ArrayList<LocationData>();
-		if(json.has("starter_locations")) {
+		if (json.has("starter_locations")) {
 			JSONArray starterLocationsJSON = json.getJSONArray("starter_locations");
-			for(int i = 0; i < starterLocationsJSON.length(); i++) {
+			for (int i = 0; i < starterLocationsJSON.length(); i++) {
 				JSONObject starterLocationJSON = starterLocationsJSON.getJSONObject(i);
-				starterLocations.add(new LocationData(starterLocationJSON));
+				
+				LocationData location = new LocationData(starterLocationJSON);
+				
+				location.center();
+				
+				starterLocations.add(location);
 			}
 		}
-		
-		return new GameMapData(starterLocations, spectatorLocation, mapName, displayName, description, worldFile);
-	}	
+
+		return new GameMapData(starterLocations, spectatorLocation, mapName, displayName, description, worldFile, enabled, chestLoot, enderChestLoot);
+	}
 }

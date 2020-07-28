@@ -11,6 +11,7 @@ import xyz.zeeraa.ezcore.command.EZCommand;
 import xyz.zeeraa.ezcore.command.commands.ezcore.logger.EZCoreSubCommandLogger;
 import xyz.zeeraa.ezcore.command.commands.ezcore.loottable.EZCoreSubCommandLootTable;
 import xyz.zeeraa.ezcore.command.commands.ezcore.loottable.module.EZCoreSubCommandModules;
+import xyz.zeeraa.ezcore.command.commands.ezcore.whereami.EZCoreSubCommandWhereAmI;
 
 public class EZCoreCommand extends EZCommand {
 
@@ -28,6 +29,7 @@ public class EZCoreCommand extends EZCommand {
 		this.addSubCommand(new EZCoreSubCommandModules());
 		this.addSubCommand(new EZCoreSubCommandLootTable());
 		this.addSubCommand(new EZCoreSubCommandLogger());
+		this.addSubCommand(new EZCoreSubCommandWhereAmI());
 	}
 
 	@Override

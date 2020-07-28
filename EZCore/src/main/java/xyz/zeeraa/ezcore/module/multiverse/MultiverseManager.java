@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -77,12 +78,12 @@ public class MultiverseManager extends EZModule implements Listener {
 
 		File targetFile = Paths.get(worldContainer.getAbsolutePath() + "/" + worldName).toFile();
 		if (targetFile.exists()) {
-			EZLogger.info("Replacing old world " + worldName);
+			EZLogger.info("Multiverse", "Replacing old world " + worldName);
 			targetFile.delete();
 			FileUtils.deleteDirectory(targetFile);
 		}
 
-		EZLogger.info("Adding " + worldName + " to " + worldContainer.getAbsolutePath());
+		EZLogger.info("Multiverse", "Adding " + worldName + " to " + worldContainer.getAbsolutePath());
 		FileUtils.copyDirectory(worldFile, targetFile);
 
 		World world = Bukkit.getServer().createWorld(new WorldCreator(worldName));
@@ -134,17 +135,21 @@ public class MultiverseManager extends EZModule implements Listener {
 
 	public boolean unload(MultiverseWorld multiverseWorld) {
 		String worldName = multiverseWorld.getWorld().getName();
-		EZLogger.info("Unloading world " + worldName);
+		EZLogger.info("Multiverse", "Unloading world " + worldName);
 
+		for(Player player : multiverseWorld.getWorld().getPlayers()) {
+			player.kickPlayer("Unloading world"); //TODO: move player to other world instead of kicking them
+		}
+		
 		Bukkit.getServer().unloadWorld(multiverseWorld.getWorld(), multiverseWorld.isSaveOnUnload());
 		worlds.remove(multiverseWorld.getName());
-
+		
 		if (multiverseWorld.getUnloadOption() == WorldUnloadOption.DELETE) {
-			EZLogger.info("Deleting unloaded world " + worldName);
+			EZLogger.info("Multiverse", "Deleting unloaded world " + worldName);
 			try {
 				FileUtils.deleteDirectory(new File(Bukkit.getServer().getWorldContainer().getPath(), worldName));
 			} catch (IOException e) {
-				EZLogger.error("IOException while trying to delete world " + worldName);
+				EZLogger.error("Multiverse", "IOException while trying to delete world " + worldName);
 				e.printStackTrace();
 			}
 		}
@@ -152,8 +157,9 @@ public class MultiverseManager extends EZModule implements Listener {
 	}
 
 	public void unloadAll() {
-		for (String worldName : worlds.keySet()) {
-			unload(worldName);
+		while(worlds.size() > 0) {
+			String key = worlds.keySet().iterator().next();
+			unload(worlds.get(key));
 		}
 	}
 
@@ -161,7 +167,7 @@ public class MultiverseManager extends EZModule implements Listener {
 	public void onWatherChage(WeatherChangeEvent e) {
 		if (hasWorld(e.getWorld())) {
 			if (getWorld(e.getWorld()).isLockWeather()) {
-				EZLogger.debug("Prevented weather change in world " + e.getWorld().getName());
+				EZLogger.debug("Multiverse", "Prevented weather change in world " + e.getWorld().getName());
 				e.setCancelled(true);
 			}
 		}
