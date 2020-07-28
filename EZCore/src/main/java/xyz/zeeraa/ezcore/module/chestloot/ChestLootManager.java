@@ -22,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import xyz.zeeraa.ezcore.EZCore;
+import xyz.zeeraa.ezcore.log.EZLogger;
 import xyz.zeeraa.ezcore.loottable.LootTable;
 import xyz.zeeraa.ezcore.module.EZModule;
 import xyz.zeeraa.ezcore.module.chestloot.events.ChestFillEvent;
@@ -91,12 +92,15 @@ public class ChestLootManager extends EZModule implements Listener {
 					Player p = e.getPlayer();
 
 					if (e.getClickedBlock() != null) {
+						EZLogger.trace("Filling ender chest at location " + e.getClickedBlock().getLocation().toString());
+						
 						if (!enderChests.containsKey(e.getClickedBlock().getLocation())) {
 							Inventory inventory = Bukkit.createInventory(new EnderChestHolder(), 27, "Ender chest");
 
 							LootTable lootTable = EZCore.getInstance().getLootTableManager().getLootTable(enderChestLootTable);
 
 							if (lootTable == null) {
+								EZLogger.warn("Missing loot table " + enderChestLootTable);
 								return;
 							}
 
@@ -147,9 +151,12 @@ public class ChestLootManager extends EZModule implements Listener {
 		if (block.getState() instanceof Chest) {
 			if (chestLootTable != null) {
 				if (!chests.contains(block.getLocation())) {
+					EZLogger.trace("Filling chest at location " + block.getLocation().toString());
+					
 					LootTable lootTable = EZCore.getInstance().getLootTableManager().getLootTable(chestLootTable);
 
 					if (lootTable == null) {
+						EZLogger.warn("Missing loot table " + chestLootTable);
 						return;
 					}
 
@@ -197,6 +204,7 @@ public class ChestLootManager extends EZModule implements Listener {
 
 						if (nextBlock.getType() == Material.CHEST || nextBlock.getType() == Material.TRAPPED_CHEST) {
 							if (!chests.contains(nextBlock.getLocation())) {
+								EZLogger.trace("Executing recursive fill to chest at location " + nextBlock.getLocation().toString());
 								fillChest(nextBlock);
 							}
 						}

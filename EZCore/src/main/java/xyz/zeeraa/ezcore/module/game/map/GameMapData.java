@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.World;
 
 import xyz.zeeraa.ezcore.log.EZLogger;
+import xyz.zeeraa.ezcore.module.game.map.mapmodule.MapModule;
 import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
 import xyz.zeeraa.ezcore.module.multiverse.MultiverseWorld;
 import xyz.zeeraa.ezcore.module.multiverse.WorldUnloadOption;
@@ -30,12 +31,13 @@ public class GameMapData {
 
 	private File worldFile;
 
+	private List<MapModule> mapModules;
+	
 	private boolean enabled;
 
-	private String chestLoot;
-	private String enderChestLoot;
-
-	public GameMapData(ArrayList<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled, String chestLoot, String enderChestLoot) {
+	public GameMapData(List<MapModule> mapModules, ArrayList<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled) {
+		this.mapModules = mapModules;
+		
 		this.starterLocations = starterLocations;
 		this.spectatorLocation = spectatorLocation;
 
@@ -46,9 +48,6 @@ public class GameMapData {
 		this.worldFile = worldFile;
 
 		this.enabled = enabled;
-
-		this.chestLoot = chestLoot;
-		this.enderChestLoot = enderChestLoot;
 	}
 
 	/**
@@ -109,20 +108,8 @@ public class GameMapData {
 		return enabled;
 	}
 	
-	public String getEnderChestLootTable() {
-		return enderChestLoot;
-	}
-	
-	public boolean hasEnderChestLootTable() {
-		return enderChestLoot != null;
-	}
-	
-	public String getChestLootTable() {
-		return chestLoot;
-	}
-	
-	public boolean hasChestLootTable() {
-		return chestLoot != null;
+	public List<MapModule> getMapModules() {
+		return mapModules;
 	}
 
 	/**

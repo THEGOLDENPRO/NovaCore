@@ -24,6 +24,8 @@ import xyz.zeeraa.ezcore.module.ModuleManager;
 import xyz.zeeraa.ezcore.module.chestloot.ChestLootManager;
 import xyz.zeeraa.ezcore.module.compass.CompassTracker;
 import xyz.zeeraa.ezcore.module.game.GameManager;
+import xyz.zeeraa.ezcore.module.game.map.mapmodule.MapModuleManager;
+import xyz.zeeraa.ezcore.module.game.map.mapmodules.ChestLoot;
 import xyz.zeeraa.ezcore.module.gamelobby.GameLobby;
 import xyz.zeeraa.ezcore.module.gui.GUIManager;
 import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
@@ -169,6 +171,8 @@ public class EZCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(CompassTracker.class);
 		ModuleManager.loadModule(GameManager.class);
 		ModuleManager.loadModule(GameLobby.class);
+		
+		MapModuleManager.addMapModule("ezcore.chestloot", ChestLoot.class);
 
 		CommandRegistry.registerCommand(new EZCoreCommand());
 	}
