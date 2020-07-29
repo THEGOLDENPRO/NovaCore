@@ -18,7 +18,6 @@ import xyz.zeeraa.ezcore.module.game.events.GameEndEvent;
 import xyz.zeeraa.ezcore.module.game.events.GameStartEvent;
 import xyz.zeeraa.ezcore.module.game.events.PlayerEliminatedEvent;
 import xyz.zeeraa.ezcore.teams.Team;
-import xyz.zeeraa.ezcore.teams.TeamManager;
 
 /**
  * This class represents a game that {@link GameManager} can use
