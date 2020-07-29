@@ -12,8 +12,11 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import xyz.zeeraa.ezcore.abstraction.ActionBar;
 import xyz.zeeraa.ezcore.abstraction.CommandRegistrator;
 import xyz.zeeraa.ezcore.abstraction.NMSHandler;
+import xyz.zeeraa.ezcore.abstraction.VersionIndependentUtils;
 import xyz.zeeraa.ezcore.command.CommandRegistry;
 import xyz.zeeraa.ezcore.command.commands.ezcore.EZCoreCommand;
 import xyz.zeeraa.ezcore.log.EZLogger;
@@ -25,9 +28,12 @@ import xyz.zeeraa.ezcore.module.chestloot.ChestLootManager;
 import xyz.zeeraa.ezcore.module.compass.CompassTracker;
 import xyz.zeeraa.ezcore.module.game.GameManager;
 import xyz.zeeraa.ezcore.module.game.map.mapmodule.MapModuleManager;
-import xyz.zeeraa.ezcore.module.game.map.mapmodules.ChestLoot;
+import xyz.zeeraa.ezcore.module.game.map.mapmodules.chestloot.ChestLoot;
+import xyz.zeeraa.ezcore.module.game.map.mapmodules.lootdrop.LootDropMapModule;
+import xyz.zeeraa.ezcore.module.game.map.mapmodules.mapprotection.MapProtection;
 import xyz.zeeraa.ezcore.module.gamelobby.GameLobby;
 import xyz.zeeraa.ezcore.module.gui.GUIManager;
+import xyz.zeeraa.ezcore.module.lootdrop.LootDropManager;
 import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
 import xyz.zeeraa.ezcore.module.scoreboard.EZSimpleScoreboard;
 import xyz.zeeraa.ezcore.teams.TeamManager;
@@ -37,13 +43,17 @@ public class EZCore extends JavaPlugin implements Listener {
 
 	private CommandRegistrator bukkitCommandRegistrator;
 
+	private ActionBar actionBar;
+
 	private LootTableManager lootTableManager;
 
 	private File logSeverityConfigFile;
 	private FileConfiguration logSeverityConfig;
 
 	private TeamManager teamManager;
-	
+
+	private VersionIndependentUtils versionIndependentUtils;
+
 	/**
 	 * Get instance of the {@link EZCore} plugin
 	 * 
@@ -57,21 +67,30 @@ public class EZCore extends JavaPlugin implements Listener {
 		return bukkitCommandRegistrator;
 	}
 
+	public ActionBar getActionBar() {
+		return actionBar;
+	}
+
 	public LootTableManager getLootTableManager() {
 		return lootTableManager;
 	}
-	
+
 	public TeamManager getTeamManager() {
 		return teamManager;
 	}
-	
+
 	public void setTeamManager(TeamManager teamManager) {
 		this.teamManager = teamManager;
 	}
+
 	public boolean hasTeamManager() {
 		return teamManager != null;
 	}
 
+	public VersionIndependentUtils getVersionIndependentUtils() {
+		return versionIndependentUtils;
+	}
+	
 	public void setLogLevel(LogLevel logLevel) {
 		try {
 			EZLogger.info("Setting console log level to " + logLevel.name());
@@ -87,9 +106,9 @@ public class EZCore extends JavaPlugin implements Listener {
 	public void onEnable() {
 		instance = this;
 		this.teamManager = null;
-		
+
 		EZLogger.setConsoleLogLevel(LogLevel.INFO);
-		
+
 		File lootTableFolder = new File(this.getDataFolder().getPath() + File.separator + "LootTables");
 		logSeverityConfigFile = new File(this.getDataFolder(), "log_severity.yml");
 
@@ -138,7 +157,17 @@ public class EZCore extends JavaPlugin implements Listener {
 
 				bukkitCommandRegistrator = nmsHandler.getCommandRegistrator();
 				if (bukkitCommandRegistrator == null) {
-					EZLogger.warn("CammandRegistrator is not supported for this version");
+					EZLogger.warn("CommandRegistrator is not supported for this version");
+				}
+
+				actionBar = nmsHandler.getActionBar();
+				if (actionBar == null) {
+					EZLogger.warn("ActionBar is not supported for this version");
+				}
+				
+				versionIndependentUtils = nmsHandler.getVersionIndependentUtils();
+				if (versionIndependentUtils == null) {
+					EZLogger.warn("VersionIndependentUtils is not supported for this version");
 				}
 			} else {
 				throw new InvalidClassException("xyz.zeeraa.ezcore.version." + version + ".NMSHandler is not assignable from " + NMSHandler.class.getName());
@@ -165,14 +194,17 @@ public class EZCore extends JavaPlugin implements Listener {
 
 		// Load modules
 		ModuleManager.loadModule(GUIManager.class);
+		ModuleManager.loadModule(LootDropManager.class);
 		ModuleManager.loadModule(ChestLootManager.class);
 		ModuleManager.loadModule(MultiverseManager.class);
 		ModuleManager.loadModule(EZSimpleScoreboard.class);
 		ModuleManager.loadModule(CompassTracker.class);
 		ModuleManager.loadModule(GameManager.class);
 		ModuleManager.loadModule(GameLobby.class);
-		
+
 		MapModuleManager.addMapModule("ezcore.chestloot", ChestLoot.class);
+		MapModuleManager.addMapModule("ezcore.lootdrop", LootDropMapModule.class);
+		MapModuleManager.addMapModule("ezcore.mapprotection", MapProtection.class);
 
 		CommandRegistry.registerCommand(new EZCoreCommand());
 	}

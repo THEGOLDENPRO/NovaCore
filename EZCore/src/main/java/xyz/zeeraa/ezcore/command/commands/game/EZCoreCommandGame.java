@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
 import xyz.zeeraa.ezcore.command.EZCommand;
+import xyz.zeeraa.ezcore.command.commands.game.lootdrop.EZCoreSubCommandGameLootdrop;
+import xyz.zeeraa.ezcore.command.commands.game.refill.EZCoreSubCommandGameRefill;
 import xyz.zeeraa.ezcore.command.commands.game.start.EZCoreSubCommandForceStartGame;
 import xyz.zeeraa.ezcore.command.commands.game.start.EZCoreSubCommandStartGame;
 
@@ -24,6 +26,8 @@ public class EZCoreCommandGame extends EZCommand {
 		this.addHelpSubCommand();
 		this.addSubCommand(new EZCoreSubCommandStartGame());
 		this.addSubCommand(new EZCoreSubCommandForceStartGame());
+		this.addSubCommand(new EZCoreSubCommandGameRefill());
+		this.addSubCommand(new EZCoreSubCommandGameLootdrop());
 	}
 
 	@Override

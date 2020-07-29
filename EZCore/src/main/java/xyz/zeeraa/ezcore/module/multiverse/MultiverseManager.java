@@ -17,6 +17,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 
 import xyz.zeeraa.ezcore.log.EZLogger;
 import xyz.zeeraa.ezcore.module.EZModule;
+import xyz.zeeraa.ezcore.module.lootdrop.LootDropManager;
 
 public class MultiverseManager extends EZModule implements Listener {
 	private HashMap<String, MultiverseWorld> worlds;
@@ -136,6 +137,10 @@ public class MultiverseManager extends EZModule implements Listener {
 	public boolean unload(MultiverseWorld multiverseWorld) {
 		String worldName = multiverseWorld.getWorld().getName();
 		EZLogger.info("Multiverse", "Unloading world " + worldName);
+		
+		if(LootDropManager.getInstance().isEnabled()) {
+			LootDropManager.getInstance().removeFromWorld(multiverseWorld.getWorld());
+		}
 
 		for(Player player : multiverseWorld.getWorld().getPlayers()) {
 			player.kickPlayer("Unloading world"); //TODO: move player to other world instead of kicking them

@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 
 import xyz.zeeraa.ezcore.EZCore;
 import xyz.zeeraa.ezcore.log.EZLogger;
+import xyz.zeeraa.ezcore.module.game.events.GameEndEvent;
+import xyz.zeeraa.ezcore.module.game.events.GameStartEvent;
 import xyz.zeeraa.ezcore.module.game.events.PlayerEliminatedEvent;
 
 /**
@@ -150,15 +152,31 @@ public abstract class Game {
 	public abstract boolean canAttack(LivingEntity attacker, LivingEntity target);
 
 	/**
-	 * Start he game
+	 * Start the game
 	 */
-	public abstract void startGame();
+	public void startGame() {
+		Bukkit.getServer().getPluginManager().callEvent(new GameStartEvent(this));
+		this.onStart();
+	}
+	
+	/**
+	 * Called when the game starts
+	 */
+	public abstract void onStart();
 
 	/**
 	 * End the game. This should also send all players to the lobby and reset the
 	 * server
 	 */
-	public abstract void endGame();
+	public void endGame() {
+		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this));
+		this.onEnd();
+	}
+	
+	/**
+	 * Called when the game ends
+	 */
+	public abstract void onEnd();
 
 	/**
 	 * Eliminate a player from the game

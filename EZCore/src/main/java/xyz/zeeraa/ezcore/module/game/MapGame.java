@@ -2,6 +2,10 @@ package xyz.zeeraa.ezcore.module.game;
 
 import java.io.IOException;
 
+import org.bukkit.Bukkit;
+
+import xyz.zeeraa.ezcore.module.game.events.GameEndEvent;
+import xyz.zeeraa.ezcore.module.game.events.GameStartEvent;
 import xyz.zeeraa.ezcore.module.game.map.GameMap;
 import xyz.zeeraa.ezcore.module.game.map.GameMapData;
 import xyz.zeeraa.ezcore.module.game.map.mapmodule.MapModule;
@@ -63,5 +67,32 @@ public abstract class MapGame extends Game {
 		}
 
 		return true;
+	}
+	
+	/**
+	 * Start the game
+	 */
+	public void startGame() {
+		Bukkit.getServer().getPluginManager().callEvent(new GameStartEvent(this));
+		
+		for(MapModule module : activeMap.getMapData().getMapModules()) {
+			module.onGameStart(this);
+		}
+		
+		this.onStart();
+	}
+	
+	/**
+	 * End the game. This should also send all players to the lobby and reset the
+	 * server
+	 */
+	public void endGame() {
+		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this));
+		
+		for(MapModule module : activeMap.getMapData().getMapModules()) {
+			module.onGameEnd(this);
+		}
+		
+		this.onEnd();
 	}
 }
