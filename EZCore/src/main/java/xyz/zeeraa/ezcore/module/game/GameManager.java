@@ -24,6 +24,7 @@ import xyz.zeeraa.ezcore.log.EZLogger;
 import xyz.zeeraa.ezcore.module.EZModule;
 import xyz.zeeraa.ezcore.module.game.countdown.DefaultGameCountdown;
 import xyz.zeeraa.ezcore.module.game.countdown.GameCountdown;
+import xyz.zeeraa.ezcore.module.game.events.GameLoadedEvent;
 import xyz.zeeraa.ezcore.module.game.map.GameMapData;
 import xyz.zeeraa.ezcore.module.game.map.MapReader;
 import xyz.zeeraa.ezcore.module.game.map.readers.DefaultMapReader;
@@ -39,7 +40,7 @@ import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
 public class GameManager extends EZModule implements Listener {
 	private static GameManager instance;
 	private Game activeGame;
-	
+
 	private HashMap<UUID, EliminationTask> eliminationTasks;
 
 	private MapSelector mapSelector;
@@ -48,9 +49,9 @@ public class GameManager extends EZModule implements Listener {
 	private boolean useTeams;
 
 	private GameCountdown countdown;
-	
+
 	private boolean commandAdded;
-	
+
 	/**
 	 * Get instance of {@link GameManager}
 	 * 
@@ -72,9 +73,9 @@ public class GameManager extends EZModule implements Listener {
 
 		this.activeGame = null;
 		this.eliminationTasks = new HashMap<UUID, EliminationTask>();
-		
+
 		this.countdown = new DefaultGameCountdown();
-		
+
 		this.commandAdded = false;
 	}
 
@@ -190,21 +191,23 @@ public class GameManager extends EZModule implements Listener {
 		if (game instanceof Listener) {
 			Bukkit.getPluginManager().registerEvents((Listener) game, EZCore.getInstance());
 		}
-		
+
 		this.activeGame = game;
+
+		Bukkit.getServer().getPluginManager().callEvent(new GameLoadedEvent(activeGame));
 
 		return true;
 	}
 
 	@Override
 	public void onEnable() {
-		if(!commandAdded) {
+		if (!commandAdded) {
 			EZLogger.info("Adding the game command");
 			CommandRegistry.registerCommand(new EZCoreCommandGame());
 			commandAdded = true;
 		}
 	}
-	
+
 	@Override
 	public void onDisable() {
 		for (UUID uuid : eliminationTasks.keySet()) {
@@ -242,7 +245,7 @@ public class GameManager extends EZModule implements Listener {
 
 			GameMapData map = mapSelector.getMapToUse();
 			EZLogger.debug("Selected map: " + map.getDisplayName());
-			
+
 			EZLogger.info("Loading game map");
 			((MapGame) activeGame).loadMap(map);
 		}
@@ -250,15 +253,15 @@ public class GameManager extends EZModule implements Listener {
 		EZLogger.debug("Calling start on " + activeGame.getClass().getName());
 		activeGame.startGame();
 	}
-	
+
 	public void setCountdown(GameCountdown countdown) {
 		this.countdown = countdown;
 	}
-	
+
 	public GameCountdown getCountdown() {
 		return countdown;
 	}
-	
+
 	public boolean hasCountdown() {
 		return countdown != null;
 	}
@@ -266,34 +269,36 @@ public class GameManager extends EZModule implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
 		if (hasGame()) {
-			if (e.getEntity() instanceof Player) {
-				Player damager = null;
+			if (activeGame.hasStarted()) {
+				if (e.getEntity() instanceof Player) {
+					Player damager = null;
 
-				if (e.getDamager() instanceof Player) {
-					damager = (Player) e.getDamager();
-				} else {
-					if (e.getDamager() instanceof Projectile) {
-						Projectile projectile = (Projectile) e.getDamager();
-						if (projectile.getShooter() != null) {
-							if (projectile.getShooter() instanceof Player) {
-								damager = (Player) e.getDamager();
+					if (e.getDamager() instanceof Player) {
+						damager = (Player) e.getDamager();
+					} else {
+						if (e.getDamager() instanceof Projectile) {
+							Projectile projectile = (Projectile) e.getDamager();
+							if (projectile.getShooter() != null) {
+								if (projectile.getShooter() instanceof Player) {
+									damager = (Player) e.getDamager();
+								}
 							}
 						}
 					}
-				}
 
-				if (damager != null) {
-					if (!activeGame.isPVPEnabled()) {
-						e.setCancelled(true);
-						return;
-					}
+					if (damager != null) {
+						if (!activeGame.isPVPEnabled()) {
+							e.setCancelled(true);
+							return;
+						}
 
-					if (useTeams) {
-						if (EZCore.getInstance().hasTeamManager()) {
-							if (EZCore.getInstance().getTeamManager().isInSameTeam((OfflinePlayer) e.getEntity(), damager)) {
-								if (!getActiveGame().isFriendlyFireAllowed()) {
-									e.setCancelled(true);
-									return;
+						if (useTeams) {
+							if (EZCore.getInstance().hasTeamManager()) {
+								if (EZCore.getInstance().getTeamManager().isInSameTeam((OfflinePlayer) e.getEntity(), damager)) {
+									if (!getActiveGame().isFriendlyFireAllowed()) {
+										e.setCancelled(true);
+										return;
+									}
 								}
 							}
 						}
@@ -306,28 +311,30 @@ public class GameManager extends EZModule implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		if (hasGame()) {
-			Player p = e.getPlayer();
+			if (activeGame.hasStarted()) {
+				Player p = e.getPlayer();
 
-			switch (activeGame.getPlayerQuitEliminationAction()) {
-			case NONE:
-				break;
+				switch (activeGame.getPlayerQuitEliminationAction()) {
+				case NONE:
+					break;
 
-			case INSTANT:
-				activeGame.eliminatePlayer(p, null, PlayerEliminationReason.QUIT);
-				break;
+				case INSTANT:
+					activeGame.eliminatePlayer(p, null, PlayerEliminationReason.QUIT);
+					break;
 
-			case DELAYED:
-				EliminationTask eliminationTask = new EliminationTask(p.getUniqueId(), p.getName(), activeGame.getPlayerEliminationDelay(), new Callback() {
-					@Override
-					public void execute() {
-						getActiveGame().eliminatePlayer(p, null, PlayerEliminationReason.DID_NOT_RECONNECT);
-					}
-				});
-				eliminationTasks.put(e.getPlayer().getUniqueId(), eliminationTask);
-				break;
+				case DELAYED:
+					EliminationTask eliminationTask = new EliminationTask(p.getUniqueId(), p.getName(), activeGame.getPlayerEliminationDelay(), new Callback() {
+						@Override
+						public void execute() {
+							getActiveGame().eliminatePlayer(p, null, PlayerEliminationReason.DID_NOT_RECONNECT);
+						}
+					});
+					eliminationTasks.put(e.getPlayer().getUniqueId(), eliminationTask);
+					break;
 
-			default:
-				break;
+				default:
+					break;
+				}
 			}
 		}
 	}

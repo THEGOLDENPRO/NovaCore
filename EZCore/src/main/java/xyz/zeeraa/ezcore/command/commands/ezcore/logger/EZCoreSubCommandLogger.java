@@ -10,7 +10,6 @@ import org.bukkit.permissions.PermissionDefault;
 import net.md_5.bungee.api.ChatColor;
 import xyz.zeeraa.ezcore.command.EZSubCommand;
 import xyz.zeeraa.ezcore.log.EZLogger;
-import xyz.zeeraa.ezcore.module.ModuleManager;
 
 public class EZCoreSubCommandLogger extends EZSubCommand {
 	public EZCoreSubCommandLogger() {
@@ -45,16 +44,6 @@ public class EZCoreSubCommandLogger extends EZSubCommand {
 
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		ArrayList<String> modules = new ArrayList<String>();
-
-		if (args.length == 1) {
-			for (String key : ModuleManager.getModules().keySet()) {
-				if (ModuleManager.isDisabled(key)) {
-					modules.add(ModuleManager.getModule(key).getName());
-				}
-			}
-		}
-
-		return modules;
+		return new ArrayList<String>();
 	}
 }

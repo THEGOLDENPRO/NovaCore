@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
 import xyz.zeeraa.ezcore.command.EZCommand;
+import xyz.zeeraa.ezcore.command.commands.ezcore.gotoworld.EZCoreSubCommandGoToWorld;
 import xyz.zeeraa.ezcore.command.commands.ezcore.logger.EZCoreSubCommandLogger;
 import xyz.zeeraa.ezcore.command.commands.ezcore.loottable.EZCoreSubCommandLootTable;
 import xyz.zeeraa.ezcore.command.commands.ezcore.loottable.module.EZCoreSubCommandModules;
@@ -30,6 +31,7 @@ public class EZCoreCommand extends EZCommand {
 		this.addSubCommand(new EZCoreSubCommandLootTable());
 		this.addSubCommand(new EZCoreSubCommandLogger());
 		this.addSubCommand(new EZCoreSubCommandWhereAmI());
+		this.addSubCommand(new EZCoreSubCommandGoToWorld());
 	}
 
 	@Override

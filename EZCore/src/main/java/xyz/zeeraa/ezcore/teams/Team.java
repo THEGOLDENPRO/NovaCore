@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 public abstract class Team {
@@ -39,4 +40,6 @@ public abstract class Team {
 
 		return false;
 	}
+	
+	public abstract ChatColor getTeamColor();
 }

@@ -33,11 +33,12 @@ import xyz.zeeraa.ezcore.module.game.map.mapmodules.handcraftingtable.HandCrafti
 import xyz.zeeraa.ezcore.module.game.map.mapmodules.lootdrop.LootDropMapModule;
 import xyz.zeeraa.ezcore.module.game.map.mapmodules.mapprotection.MapProtection;
 import xyz.zeeraa.ezcore.module.game.map.mapmodules.settime.SetTime;
+import xyz.zeeraa.ezcore.module.game.map.mapmodules.worldborder.WorldborderMapModule;
 import xyz.zeeraa.ezcore.module.gamelobby.GameLobby;
 import xyz.zeeraa.ezcore.module.gui.GUIManager;
 import xyz.zeeraa.ezcore.module.lootdrop.LootDropManager;
 import xyz.zeeraa.ezcore.module.multiverse.MultiverseManager;
-import xyz.zeeraa.ezcore.module.scoreboard.EZSimpleScoreboard;
+import xyz.zeeraa.ezcore.module.scoreboard.EZScoreboard;
 import xyz.zeeraa.ezcore.teams.TeamManager;
 
 public class EZCore extends JavaPlugin implements Listener {
@@ -199,8 +200,8 @@ public class EZCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(LootDropManager.class);
 		ModuleManager.loadModule(ChestLootManager.class);
 		ModuleManager.loadModule(MultiverseManager.class);
-		ModuleManager.loadModule(EZSimpleScoreboard.class);
 		ModuleManager.loadModule(CompassTracker.class);
+		ModuleManager.loadModule(EZScoreboard.class);
 		ModuleManager.loadModule(GameManager.class);
 		ModuleManager.loadModule(GameLobby.class);
 
@@ -208,6 +209,7 @@ public class EZCore extends JavaPlugin implements Listener {
 		MapModuleManager.addMapModule("ezcore.lootdrop", LootDropMapModule.class);
 		MapModuleManager.addMapModule("ezcore.mapprotection", MapProtection.class);
 		MapModuleManager.addMapModule("ezcore.handcraftingtable", HandCraftingTable.class);
+		MapModuleManager.addMapModule("ezcore.worldborder", WorldborderMapModule.class);
 		MapModuleManager.addMapModule("ezcore.settime", SetTime.class);
 
 		CommandRegistry.registerCommand(new EZCoreCommand());

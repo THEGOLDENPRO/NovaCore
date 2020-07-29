@@ -1,6 +1,7 @@
 package xyz.zeeraa.ezcore.command.commands.ezcore.logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -8,6 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.util.StringUtil;
+
+import com.google.common.collect.ImmutableList;
 
 import xyz.zeeraa.ezcore.EZCore;
 import xyz.zeeraa.ezcore.command.EZSubCommand;
@@ -57,14 +61,21 @@ public class EZCoreSubCommandLoggerSet extends EZSubCommand {
 
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		ArrayList<String> levels = new ArrayList<String>();
+		if (args.length == 0) {
+			return ImmutableList.of();
+		}
 
-		if (args.length == 1) {
-			for (LogLevel level : LogLevel.values()) {
-				levels.add(level.name());
+		String lastWord = args[args.length - 1];
+
+		ArrayList<String> matchedLevels = new ArrayList<String>();
+		for (LogLevel level : LogLevel.values()) {
+			String name = level.name();
+			if (StringUtil.startsWithIgnoreCase(name, lastWord)) {
+				matchedLevels.add(name);
 			}
 		}
 
-		return levels;
+		Collections.sort(matchedLevels, String.CASE_INSENSITIVE_ORDER);
+		return matchedLevels;
 	}
 }

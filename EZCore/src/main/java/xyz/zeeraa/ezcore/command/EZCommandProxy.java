@@ -1,11 +1,13 @@
 package xyz.zeeraa.ezcore.command;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.util.StringUtil;
 
 import xyz.zeeraa.ezcore.log.EZLogger;
 
@@ -115,10 +117,27 @@ public class EZCommandProxy extends Command {
 
 			List<String> result = new ArrayList<>();
 			result.addAll(command.tabComplete(sender, alias, args));
+
+			String lastWord = args[args.length - 1];
+
+			ArrayList<String> matchedSubCommands = new ArrayList<String>();
+			
 			for (EZSubCommand subCommand : command.getSubCommands()) {
-				result.add(subCommand.getName());
-				result.addAll(subCommand.getAliases());
+				if (StringUtil.startsWithIgnoreCase(subCommand.getName(), lastWord)) {
+					matchedSubCommands.add(subCommand.getName());
+				}
+				
+				for(String subCommandAlias : subCommand.getAliases()) {
+					if (StringUtil.startsWithIgnoreCase(subCommandAlias, lastWord)) {
+						matchedSubCommands.add(subCommandAlias);
+					}
+				}
 			}
+			
+			Collections.sort(matchedSubCommands, String.CASE_INSENSITIVE_ORDER);
+			
+			result.addAll(0, matchedSubCommands);
+			
 			return result;
 		} else {
 			if (args.length >= 2) {

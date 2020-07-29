@@ -3,6 +3,8 @@ main: xyz.zeeraa.ezcore.EZCore
 description: A core plugin
 version: 1.0
 
+softdepend: [Netherboard]
+
 permissions:
   ezcore.gamelobby.forcemap:
     description: Allow force selecting maps
