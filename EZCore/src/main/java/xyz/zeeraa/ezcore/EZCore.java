@@ -29,8 +29,10 @@ import xyz.zeeraa.ezcore.module.compass.CompassTracker;
 import xyz.zeeraa.ezcore.module.game.GameManager;
 import xyz.zeeraa.ezcore.module.game.map.mapmodule.MapModuleManager;
 import xyz.zeeraa.ezcore.module.game.map.mapmodules.chestloot.ChestLoot;
+import xyz.zeeraa.ezcore.module.game.map.mapmodules.handcraftingtable.HandCraftingTable;
 import xyz.zeeraa.ezcore.module.game.map.mapmodules.lootdrop.LootDropMapModule;
 import xyz.zeeraa.ezcore.module.game.map.mapmodules.mapprotection.MapProtection;
+import xyz.zeeraa.ezcore.module.game.map.mapmodules.settime.SetTime;
 import xyz.zeeraa.ezcore.module.gamelobby.GameLobby;
 import xyz.zeeraa.ezcore.module.gui.GUIManager;
 import xyz.zeeraa.ezcore.module.lootdrop.LootDropManager;
@@ -205,6 +207,8 @@ public class EZCore extends JavaPlugin implements Listener {
 		MapModuleManager.addMapModule("ezcore.chestloot", ChestLoot.class);
 		MapModuleManager.addMapModule("ezcore.lootdrop", LootDropMapModule.class);
 		MapModuleManager.addMapModule("ezcore.mapprotection", MapProtection.class);
+		MapModuleManager.addMapModule("ezcore.handcraftingtable", HandCraftingTable.class);
+		MapModuleManager.addMapModule("ezcore.settime", SetTime.class);
 
 		CommandRegistry.registerCommand(new EZCoreCommand());
 	}

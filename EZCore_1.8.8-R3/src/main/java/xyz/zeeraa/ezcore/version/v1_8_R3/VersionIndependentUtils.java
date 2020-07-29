@@ -4,6 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class VersionIndependentUtils implements xyz.zeeraa.ezcore.abstraction.VersionIndependentUtils {
 	@SuppressWarnings("deprecation")
@@ -16,5 +18,10 @@ public class VersionIndependentUtils implements xyz.zeeraa.ezcore.abstraction.Ve
 		block.getState().update(true);
 
 		block.setData((byte) 1);
+	}
+	
+	@Override
+	public ItemStack getItemInMainHand(Player player) {
+		return player.getItemInHand();
 	}
 }

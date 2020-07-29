@@ -98,7 +98,7 @@ public class LootDropManager extends EZModule implements Listener {
 
 	public void spawnDrop(Location location, String lootTable) {
 		if (canSpawnAt(location)) {
-			spawnDrop(location, lootTable, false);
+			spawnDrop(location, lootTable, true);
 		}
 	}
 

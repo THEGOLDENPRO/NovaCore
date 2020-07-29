@@ -40,11 +40,14 @@ public class MapProtection extends MapModule implements Listener {
 		this.breakWhitelist = new ArrayList<Material>();
 		this.breakBlacklist = new ArrayList<Material>();
 		
+		this.placeWhitelist = new ArrayList<Material>();
+		this.placeBlacklist = new ArrayList<Material>();
+		
 		this.bypassedGamemodes = new ArrayList<GameMode>();
 
 		try {
 			this.mode = MapProtectionMode.valueOf(json.getString("mode"));
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			EZLogger.error("Invalid map protection mode " + json.getString("mode") + ". Valid modes are WHITELIST or BLACKLIST");
 			e.printStackTrace();
 			return;
@@ -56,9 +59,9 @@ public class MapProtection extends MapModule implements Listener {
 			for(int i = 0; i < whitelistJson.length(); i++) {
 				try {
 					breakWhitelist.add(Material.valueOf(whitelistJson.getString(i)));
-				} catch(Exception e) {
+				} catch(IllegalArgumentException e) {
 					e.printStackTrace();
-					EZLogger.error("Could not find material " + whitelistJson.getString(i));
+					EZLogger.error("Could not find break whitelisted material " + whitelistJson.getString(i));
 				}
 			}
 		}
@@ -69,9 +72,9 @@ public class MapProtection extends MapModule implements Listener {
 			for(int i = 0; i < blacklistJson.length(); i++) {
 				try {
 					breakBlacklist.add(Material.valueOf(blacklistJson.getString(i)));
-				} catch(Exception e) {
+				} catch(IllegalArgumentException e) {
 					e.printStackTrace();
-					EZLogger.error("Could not find material " + blacklistJson.getString(i));
+					EZLogger.error("Could not find break blacklisted material " + blacklistJson.getString(i));
 				}
 			}
 		}
@@ -82,9 +85,22 @@ public class MapProtection extends MapModule implements Listener {
 			for(int i = 0; i < whitelistJson.length(); i++) {
 				try {
 					placeWhitelist.add(Material.valueOf(whitelistJson.getString(i)));
-				} catch(Exception e) {
+				} catch(IllegalArgumentException e) {
 					e.printStackTrace();
-					EZLogger.error("Could not find material " + whitelistJson.getString(i));
+					EZLogger.error("Could not find place whitelisted material " + whitelistJson.getString(i));
+				}
+			}
+		}
+		
+		if(json.has("place_blacklist")) {
+			JSONArray blacklistJson = json.getJSONArray("place_blacklist");
+			
+			for(int i = 0; i < blacklistJson.length(); i++) {
+				try {
+					placeBlacklist.add(Material.valueOf(blacklistJson.getString(i)));
+				} catch(IllegalArgumentException e) {
+					e.printStackTrace();
+					EZLogger.error("Could not find place blacklisted material " + blacklistJson.getString(i));
 				}
 			}
 		}
@@ -95,7 +111,7 @@ public class MapProtection extends MapModule implements Listener {
 			for(int i = 0; i < gamemodesJson.length(); i++) {
 				try {
 					bypassedGamemodes.add(GameMode.valueOf(gamemodesJson.getString(i)));
-				} catch(Exception e) {
+				} catch(IllegalArgumentException e) {
 					e.printStackTrace();
 					EZLogger.error("Could not find gamemode " + gamemodesJson.getString(i));
 				}
@@ -149,10 +165,12 @@ public class MapProtection extends MapModule implements Listener {
 				
 				if(mode == MapProtectionMode.WHITELIST) {
 					if(!placeWhitelist.contains(e.getBlock().getType())) {
+						EZLogger.trace("Preventing player from placing non whitelisted block");
 						e.setCancelled(true);
 					}
 				} else if(mode == MapProtectionMode.BLACKLIST) {
 					if(placeBlacklist.contains(e.getBlock().getType())) {
+						EZLogger.trace("Preventing player from placing blacklisted block");
 						e.setCancelled(true);
 					}
 				}
@@ -169,11 +187,15 @@ public class MapProtection extends MapModule implements Listener {
 				}
 				
 				if(mode == MapProtectionMode.WHITELIST) {
+					EZLogger.trace("whitelist mode");
 					if(!breakWhitelist.contains(e.getBlock().getType())) {
+						EZLogger.trace("Preventing player from breaking non whitelisted block");
 						e.setCancelled(true);
 					}
 				} else if(mode == MapProtectionMode.BLACKLIST) {
+					EZLogger.trace("blacklist");
 					if(breakBlacklist.contains(e.getBlock().getType())) {
+						EZLogger.trace("Preventing player from breaking blacklisted block");
 						e.setCancelled(true);
 					}
 				}
