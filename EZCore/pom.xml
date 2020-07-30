@@ -87,7 +87,6 @@
 			<scope>test</scope>
 		</dependency>
 
-
 		<dependency>
 			<groupId>xyz.zeeraa</groupId>
 			<artifactId>ezcore_v1.8.8-R3</artifactId>

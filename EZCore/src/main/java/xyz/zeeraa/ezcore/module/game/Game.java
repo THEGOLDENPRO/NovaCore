@@ -4,20 +4,16 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-
 import xyz.zeeraa.ezcore.EZCore;
 import xyz.zeeraa.ezcore.log.EZLogger;
 import xyz.zeeraa.ezcore.module.game.events.GameEndEvent;
 import xyz.zeeraa.ezcore.module.game.events.GameStartEvent;
 import xyz.zeeraa.ezcore.module.game.events.PlayerEliminatedEvent;
-import xyz.zeeraa.ezcore.teams.Team;
 
 /**
  * This class represents a game that {@link GameManager} can use
@@ -216,7 +212,7 @@ public abstract class Game {
 		players.remove(player.getUniqueId());
 
 		onPlayerEliminated(player, killer, reason);
-		showPlayerEliminatedMessage(player, killer, reason);
+		GameManager.getInstance().getPlayerEliminationMessage().showPlayerEliminatedMessage(player, killer, reason);
 
 		return true;
 	}
@@ -251,70 +247,6 @@ public abstract class Game {
 	 * @param reason The {@link PlayerEliminationReason}
 	 */
 	public void onPlayerEliminated(OfflinePlayer player, Entity killer, PlayerEliminationReason reason) {
-		
+
 	}
-	
-	/**
-	 * Show the player elimination message
-	 * 
-	 * @param player The player that was eliminated
-	 * @param killer The entity that killed the player. this will always be
-	 *               <code>null</code> unless the {@link PlayerEliminationReason} is
-	 *               {@link PlayerEliminationReason#KILLED}
-	 * @param reason The {@link PlayerEliminationReason}
-	 */
-public void showPlayerEliminatedMessage(OfflinePlayer player, Entity killer, PlayerEliminationReason reason) {
-	ChatColor playerColor = ChatColor.AQUA;
-
-	String extra = "";
-
-	if (EZCore.getInstance().getTeamManager() != null) {
-		Team playerTeam = EZCore.getInstance().getTeamManager().getPlayerTeam(player);
-		if (playerTeam != null) {
-			playerColor = playerTeam.getTeamColor();
-		}
-	}
-
-	switch (reason) {
-	case DEATH:
-		extra += "died";
-		break;
-
-	case DID_NOT_RECONNECT:
-		extra += "did not reconnect in time";
-		break;
-
-	case QUIT:
-		extra += "quit";
-		break;
-
-	case KILLED:
-		String killerName = "";
-		if (killer != null) {
-			if (killer instanceof Projectile) {
-				Entity theBoiWhoFirered = (Entity) ((Projectile) killer).getShooter();
-
-				if (theBoiWhoFirered != null) {
-					killerName = "by " + theBoiWhoFirered.getName();
-				} else {
-					killerName = "by " + killer.getName();
-				}
-			} else {
-				killerName = "by " + killer.getName();
-			}
-		}
-
-		extra += "was killed " + killerName;
-		break;
-
-	case OTHER:
-		extra += "went out to buy some milk but never returned";
-		break;
-	default:
-		extra += "went out to buy some milk but never returned";
-		break;
-	}
-
-	Bukkit.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Player Eliminated> " + playerColor + ChatColor.BOLD + player.getName() + " " + net.md_5.bungee.api.ChatColor.GOLD + ChatColor.BOLD + extra);
-}
 }

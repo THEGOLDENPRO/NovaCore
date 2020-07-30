@@ -51,6 +51,8 @@ public class GameManager extends EZModule implements Listener {
 	private GameCountdown countdown;
 
 	private boolean commandAdded;
+	
+	private PlayerEliminationMessage playerEliminationMessage;
 
 	/**
 	 * Get instance of {@link GameManager}
@@ -76,6 +78,8 @@ public class GameManager extends EZModule implements Listener {
 
 		this.countdown = new DefaultGameCountdown();
 
+		this.playerEliminationMessage = new DefaultPlayerEliminationMessage();
+		
 		this.commandAdded = false;
 	}
 
@@ -266,6 +270,14 @@ public class GameManager extends EZModule implements Listener {
 		return countdown != null;
 	}
 
+	public PlayerEliminationMessage getPlayerEliminationMessage() {
+		return playerEliminationMessage;
+	}
+	
+	public void setPlayerEliminationMessage(PlayerEliminationMessage playerEliminationMessage) {
+		this.playerEliminationMessage = playerEliminationMessage;
+	}
+	
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
 		if (hasGame()) {
