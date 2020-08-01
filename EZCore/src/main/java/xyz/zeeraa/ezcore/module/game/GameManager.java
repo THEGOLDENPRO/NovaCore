@@ -2,11 +2,14 @@ package xyz.zeeraa.ezcore.module.game;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -14,7 +17,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import xyz.zeeraa.ezcore.EZCore;
 import xyz.zeeraa.ezcore.callbacks.Callback;
@@ -51,7 +56,9 @@ public class GameManager extends EZModule implements Listener {
 	private GameCountdown countdown;
 
 	private boolean commandAdded;
-	
+
+	private List<UUID> respawnInGame;
+
 	private PlayerEliminationMessage playerEliminationMessage;
 
 	/**
@@ -79,7 +86,9 @@ public class GameManager extends EZModule implements Listener {
 		this.countdown = new DefaultGameCountdown();
 
 		this.playerEliminationMessage = new DefaultPlayerEliminationMessage();
-		
+
+		this.respawnInGame = new ArrayList<UUID>();
+
 		this.commandAdded = false;
 	}
 
@@ -228,6 +237,10 @@ public class GameManager extends EZModule implements Listener {
 
 			activeGame.onUnload();
 		}
+
+		if (respawnInGame != null) {
+			respawnInGame.clear();
+		}
 	}
 
 	/**
@@ -273,11 +286,44 @@ public class GameManager extends EZModule implements Listener {
 	public PlayerEliminationMessage getPlayerEliminationMessage() {
 		return playerEliminationMessage;
 	}
-	
+
 	public void setPlayerEliminationMessage(PlayerEliminationMessage playerEliminationMessage) {
 		this.playerEliminationMessage = playerEliminationMessage;
 	}
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerDeath(PlayerDeathEvent e) {
+		Player p = e.getEntity();
+
+		if (hasGame()) {
+			if (getActiveGame().hasStarted()) {
+				if (getActiveGame().getPlayers().contains(p.getUniqueId())) {
+					LivingEntity killer = p.getKiller();
+
+					getActiveGame().eliminatePlayer(p, killer, (killer == null ? PlayerEliminationReason.DEATH : PlayerEliminationReason.KILLED));
+
+					if (!respawnInGame.contains(p.getUniqueId())) {
+						respawnInGame.add(p.getUniqueId());
+					}
+					
+					p.spigot().respawn();
+				}
+			}
+		}
+	}
 	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerRespawn(PlayerRespawnEvent e) {
+		Player p = e.getPlayer();
+		
+		if(respawnInGame.contains(p.getUniqueId())) {
+			if(hasGame()) {
+				getActiveGame().onPlayerRespawn(p);
+				respawnInGame.remove(p.getUniqueId());
+			}
+		}
+	}
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
 		if (hasGame()) {
@@ -320,7 +366,7 @@ public class GameManager extends EZModule implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		if (hasGame()) {
 			if (activeGame.hasStarted()) {

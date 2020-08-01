@@ -249,4 +249,7 @@ public abstract class Game {
 	public void onPlayerEliminated(OfflinePlayer player, Entity killer, PlayerEliminationReason reason) {
 
 	}
+	
+	public void onPlayerRespawn(Player player) {
+	}
 }
