@@ -9,8 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
 import xyz.zeeraa.ezcore.command.EZSubCommand;
-import xyz.zeeraa.ezcore.module.game.GameManager;
-import xyz.zeeraa.ezcore.module.gamelobby.GameLobby;
+import xyz.zeeraa.ezcore.module.modules.game.GameManager;
+import xyz.zeeraa.ezcore.module.modules.gamelobby.GameLobby;
 
 public class EZCoreSubCommandStartGame extends EZSubCommand {
 

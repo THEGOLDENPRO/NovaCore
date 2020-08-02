@@ -8,11 +8,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
 import xyz.zeeraa.ezcore.command.EZSubCommand;
-import xyz.zeeraa.ezcore.module.game.GameManager;
-import xyz.zeeraa.ezcore.module.game.MapGame;
-import xyz.zeeraa.ezcore.module.game.map.GameMap;
-import xyz.zeeraa.ezcore.module.game.map.mapmodule.MapModule;
-import xyz.zeeraa.ezcore.module.game.map.mapmodules.lootdrop.LootDropMapModule;
+import xyz.zeeraa.ezcore.module.modules.game.GameManager;
+import xyz.zeeraa.ezcore.module.modules.game.MapGame;
+import xyz.zeeraa.ezcore.module.modules.game.map.GameMap;
+import xyz.zeeraa.ezcore.module.modules.game.map.mapmodule.MapModule;
+import xyz.zeeraa.ezcore.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
 
 public class EZCoreSubCommandGameLootdrop extends EZSubCommand {
 

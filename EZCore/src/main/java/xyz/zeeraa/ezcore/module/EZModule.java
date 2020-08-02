@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 
 import xyz.zeeraa.ezcore.EZCore;
 import xyz.zeeraa.ezcore.log.EZLogger;
+import xyz.zeeraa.ezcore.module.event.ModuleDisabledEvent;
+import xyz.zeeraa.ezcore.module.event.ModuleEnableEvent;
 
 /**
  * Represents a module that can be loaded, enabled and disabled.<br>
@@ -82,7 +84,7 @@ public abstract class EZModule {
 			this.enableFailureReason = ModuleEnableFailureReason.ALREADY_ENABLED;
 			return false;
 		}
-		
+
 		EZLogger.info("Enabling module " + this.getName());
 
 		if (dependencies != null) {
@@ -102,6 +104,8 @@ public abstract class EZModule {
 				}
 			}
 		}
+		
+		boolean returnValue = true;
 
 		try {
 			this.onEnable();
@@ -114,9 +118,13 @@ public abstract class EZModule {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.enableFailureReason = ModuleEnableFailureReason.EXCEPTION;
-			return false;
+			returnValue = false;
 		}
-		return true;
+		
+		ModuleEnableEvent event = new ModuleEnableEvent(this, returnValue, enableFailureReason);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		
+		return returnValue;
 	}
 
 	/**
@@ -129,7 +137,7 @@ public abstract class EZModule {
 		if (!this.enabled) {
 			return false;
 		}
-		
+
 		EZLogger.info("Disabling module " + this.getName());
 
 		this.enableFailureReason = null;
@@ -138,6 +146,7 @@ public abstract class EZModule {
 			EZLogger.info("Unregistering listeners for module " + this.getName());
 			HandlerList.unregisterAll((Listener) this);
 		}
+
 		try {
 			this.onDisable();
 			returnValue = true;
@@ -145,6 +154,11 @@ public abstract class EZModule {
 			e.printStackTrace();
 			returnValue = false;
 		}
+		this.enabled = false;
+		
+		ModuleDisabledEvent event = new ModuleDisabledEvent(this);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		
 
 		return returnValue;
 	}
