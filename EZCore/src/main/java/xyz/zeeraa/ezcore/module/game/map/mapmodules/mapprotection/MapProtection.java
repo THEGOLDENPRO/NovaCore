@@ -187,13 +187,11 @@ public class MapProtection extends MapModule implements Listener {
 				}
 				
 				if(mode == MapProtectionMode.WHITELIST) {
-					EZLogger.trace("whitelist mode");
 					if(!breakWhitelist.contains(e.getBlock().getType())) {
 						EZLogger.trace("Preventing player from breaking non whitelisted block");
 						e.setCancelled(true);
 					}
 				} else if(mode == MapProtectionMode.BLACKLIST) {
-					EZLogger.trace("blacklist");
 					if(breakBlacklist.contains(e.getBlock().getType())) {
 						EZLogger.trace("Preventing player from breaking blacklisted block");
 						e.setCancelled(true);

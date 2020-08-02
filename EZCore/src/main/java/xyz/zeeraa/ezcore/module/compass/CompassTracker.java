@@ -14,6 +14,8 @@ import xyz.zeeraa.ezcore.module.EZModule;
  * @author Zeeraa
  */
 public class CompassTracker extends EZModule {
+	private static CompassTracker instance;
+	
 	private CompassTrackerTarget compassTrackerTarget;
 	private boolean strictMode;
 
@@ -21,11 +23,16 @@ public class CompassTracker extends EZModule {
 
 	@Override
 	public void onLoad() {
+		CompassTracker.instance = this;
 		this.compassTrackerTarget = null;
 		this.strictMode = false;
 		this.taskId = -1;
 	}
 
+	public static CompassTracker getInstance() {
+		return instance;
+	}
+	
 	@Override
 	public void onEnable() {
 		if (this.taskId == -1) {
