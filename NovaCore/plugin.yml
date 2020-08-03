@@ -1,0 +1,11 @@
+name: NovaCore
+main: xyz.zeeraa.novacore.NovaCore
+description: A core plugin
+version: 1.0
+
+softdepend: [Netherboard]
+
+permissions:
+  novacore.gamelobby.forcemap:
+    description: Allow force selecting maps
+    default: op

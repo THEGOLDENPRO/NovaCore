@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xyz.zeeraa</groupId>
-	<artifactId>ezcore-parent</artifactId>
+	<artifactId>novacore-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>PARENT</version>
-	<name>EZCore Parent</name>
+	<name>NovaCore Parent</name>
 	
 	<url>http://zeeraa.xyz</url>
 	
@@ -56,9 +56,9 @@
     </build>
 	
 	<modules>
-		<module>EZCore</module>
-		<module>EZCoreAbstraction</module>
-		<module>EZCore_1.8.8-R3</module>
+		<module>NovaCore</module>
+		<module>NovaCoreAbstraction</module>
+		<module>NovaCore_1.8.8-R3</module>
 	</modules>
 
 	<repositories>

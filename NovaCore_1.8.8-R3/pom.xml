@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>novacore_v1.8.8-R3</artifactId>
+	<name>NovaCore_1.8.8-R3</name>
+	<version>v1.8.8-R3</version>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>xyz.zeeraa</groupId>
+		<artifactId>novacore-parent</artifactId>
+		<version>PARENT</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+	</build>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+
+		<repository>
+			<id>zeeraas-repo</id>
+			<url>http://maven.zeeraa.xyz/artifactory/spigot</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>xyz.zeeraa</groupId>
+			<artifactId>novacore-abstraction</artifactId>
+			<version>ABSTRACTION</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot</artifactId>
+			<version>1.8.8-R0.1-20200719.171523-1</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>

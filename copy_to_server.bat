@@ -1,12 +1,12 @@
 @echo off
 
-if not exist EZCore.jar (
-	echo EZCore.jar was not found
+if not exist NovaCore.jar (
+	echo NovaCore.jar was not found
 	echo Please run build.bat before running this file
 	goto end
 )
 
-copy %cd%\EZCore.jar %cd%\test_server\plugins\EZCore.jar /Y
+copy %cd%\NovaCore.jar %cd%\test_server\plugins\NovaCore.jar /Y
 
 :end
 pause

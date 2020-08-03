@@ -1,8 +1,8 @@
 @echo off
 call mvn package
 
-if exist %cd%\EZCore.jar del %cd%\EZCore.jar
+if exist %cd%\NovaCore.jar del %cd%\NovaCore.jar
 
-copy %cd%\EZCore\target\ezcore-1.0.0-SNAPSHOT.jar %cd%\EZCore.jar
+copy %cd%\NovaCore\target\NovaCore-1.0.0-SNAPSHOT.jar %cd%\NovaCore.jar
 
 pause
