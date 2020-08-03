@@ -19,6 +19,7 @@ import xyz.zeeraa.novacore.abstraction.VersionIndependantLoader;
 import xyz.zeeraa.novacore.abstraction.VersionIndependantUtils;
 import xyz.zeeraa.novacore.command.CommandRegistry;
 import xyz.zeeraa.novacore.command.commands.novacore.NovaCoreCommand;
+import xyz.zeeraa.novacore.customcrafting.CustomCraftingManager;
 import xyz.zeeraa.novacore.log.Log;
 import xyz.zeeraa.novacore.log.LogLevel;
 import xyz.zeeraa.novacore.loottable.LootTableManager;
@@ -57,6 +58,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	private VersionIndependantUtils versionIndependentUtils;
 
+	private CustomCraftingManager customCraftingManager;
+	
 	/**
 	 * Get instance of the {@link NovaCore} plugin
 	 * 
@@ -88,6 +91,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	public boolean hasTeamManager() {
 		return teamManager != null;
+	}
+	
+	public CustomCraftingManager getCustomCraftingManager() {
+		return customCraftingManager;
 	}
 
 	public VersionIndependantUtils getVersionIndependentUtils() {
@@ -156,22 +163,24 @@ public class NovaCore extends JavaPlugin implements Listener {
 		try {
 			Class<?> clazz = Class.forName("xyz.zeeraa.novacore.version." + version + ".VersionIndependantLoader");
 			if (VersionIndependantLoader.class.isAssignableFrom(clazz)) {
-				VersionIndependantLoader setIndependantLoader = (VersionIndependantLoader) clazz.getConstructor().newInstance();
+				VersionIndependantLoader versionIndependantLoader = (VersionIndependantLoader) clazz.getConstructor().newInstance();
 
-				bukkitCommandRegistrator = setIndependantLoader.getCommandRegistrator();
+				bukkitCommandRegistrator = versionIndependantLoader.getCommandRegistrator();
 				if (bukkitCommandRegistrator == null) {
 					Log.warn("CommandRegistrator is not supported for this version");
 				}
 
-				actionBar = setIndependantLoader.getActionBar();
+				actionBar = versionIndependantLoader.getActionBar();
 				if (actionBar == null) {
 					Log.warn("ActionBar is not supported for this version");
 				}
 				
-				versionIndependentUtils = setIndependantLoader.getVersionIndependentUtils();
+				versionIndependentUtils = versionIndependantLoader.getVersionIndependentUtils();
 				if (versionIndependentUtils == null) {
 					Log.warn("VersionIndependentUtils is not supported for this version");
 				}
+				
+				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
 			} else {
 				throw new InvalidClassException("xyz.zeeraa.novacore.version." + version + ".VersionIndependantLoader is not assignable from " + VersionIndependantLoader.class.getName());
 			}
@@ -188,12 +197,15 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		Log.info("Loading loot tables from: " + lootTableFolder.getPath());
 		lootTableManager.loadAll(lootTableFolder);
+		
+		customCraftingManager = new CustomCraftingManager();
 
 		// Register plugin channels
 		Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
 		// Register events
 		Bukkit.getPluginManager().registerEvents(this, this);
+		Bukkit.getPluginManager().registerEvents(customCraftingManager, this);
 
 		// Load modules
 		ModuleManager.loadModule(GUIManager.class);

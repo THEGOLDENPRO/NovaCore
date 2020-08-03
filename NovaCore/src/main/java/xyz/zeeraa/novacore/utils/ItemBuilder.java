@@ -103,4 +103,28 @@ public class ItemBuilder {
 		this.item.setItemMeta(meta);
 		return this.item;
 	}
+	
+	/**
+	 * Get a {@link List} containing all lines from a array of strings
+	 * @param lines The lines to add to the {@link List}
+	 * @return {@link List} containing all lines
+	 */
+	public static List<String> generateLoreList(String... lines) {
+		List<String> lore = new ArrayList<String>();
+		
+		for(String line:lines) {
+			lore.add(line);
+		}
+		
+		return lore;
+		
+	}
+	
+	/**
+	 * Get a empty {@link List}
+	 * @return An epty {@link List}
+	 */
+	public static List<String> generateLoreList() {
+		return new ArrayList<String>();	
+	}
 }

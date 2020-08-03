@@ -193,6 +193,19 @@ public class ModuleManager {
 	 * @throws InvalidModuleNameException if the module name contains spaces
 	 */
 	public static boolean loadModule(Class<? extends NovaModule> clazz) {
+		return loadModule(clazz, false);
+	}
+
+	/**
+	 * Load a module
+	 * 
+	 * @param clazz  The class of the module
+	 * @param enable set to <code>true</code> to enable the module on load
+	 * @return <code>true</code> on success
+	 * 
+	 * @throws InvalidModuleNameException if the module name contains spaces
+	 */
+	public static boolean loadModule(Class<? extends NovaModule> clazz, boolean enable) {
 		if (moduleExists(clazz)) {
 			Log.warn("Module " + clazz.getName() + " was already loaded");
 			return false;
@@ -202,13 +215,18 @@ public class ModuleManager {
 			Object module = clazz.getConstructor().newInstance(new Object[] {});
 
 			if (module instanceof NovaModule) {
-				if(((NovaModule) module).getName().contains(" ")) {
+				if (((NovaModule) module).getName().contains(" ")) {
 					Log.error("The module name can't contain spaces. Module class: " + module.getClass().getName());
 					throw new InvalidModuleNameException("The module name can't contain spaces. Module class: " + module.getClass().getName());
 				}
-				
+
 				((NovaModule) module).onLoad();
 				modules.put(((NovaModule) module).getClassName(), (NovaModule) module);
+
+				if (enable) {
+					enable(clazz);
+				}
+
 				return true;
 			} else {
 				Log.error("Module " + clazz.getName() + " does not extend EZModule");

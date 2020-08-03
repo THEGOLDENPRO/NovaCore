@@ -6,4 +6,6 @@ public interface VersionIndependantLoader {
 	public ActionBar getActionBar();
 	
 	public VersionIndependantUtils getVersionIndependentUtils();
+	
+	public Listeners getListeners();
 }

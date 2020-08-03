@@ -163,15 +163,6 @@ public class WorldborderMapModule extends MapModule {
 	public void onGameStart(Game game) {
 		this.game = game;
 
-		Log.trace("WorldBorder", "shrinkDuration: " +shrinkDuration);
-		Log.trace("WorldBorder", "stepTime: " +stepTime);
-		Log.trace("WorldBorder", "totalSteps: " +totalSteps);
-		Log.trace("WorldBorder", "startSize: " +startSize);
-		Log.trace("WorldBorder", "endSize: " +endSize);
-		Log.trace("WorldBorder", "stepShrinkValue: " +stepShrinkValue);
-		Log.trace("WorldBorder", "lastSize: " +lastSize);
-		Log.trace("WorldBorder", "activeStep: " +activeStep);
-		
 		if (game.hasWorld()) {
 			game.getWorld().getWorldBorder().setCenter(centerX, centerZ);
 			game.getWorld().getWorldBorder().setSize(startSize);

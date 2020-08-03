@@ -18,7 +18,7 @@ import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.module.NovaModule;
 
 public class NetherBoardScoreboard extends NovaModule implements Listener {
-	public static NetherBoardScoreboard instance;
+	private static NetherBoardScoreboard instance;
 
 	private int lineCount;
 
