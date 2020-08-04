@@ -83,7 +83,7 @@ public enum LogLevel {
 			return ChatColor.DARK_BLUE;
 
 		case TRACE:
-			return ChatColor.GRAY;
+			return ChatColor.LIGHT_PURPLE;
 		default:
 			break;
 		}

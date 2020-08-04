@@ -37,7 +37,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 	@Override
 	public String getName() {
-		return "EZScoreboard";
+		return "NetherBoardScoreboard";
 	}
 
 	@Override

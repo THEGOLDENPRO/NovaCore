@@ -39,4 +39,10 @@ public interface VersionIndependantUtils {
 	 * @param entity The entity to reset the max health of
 	 */
 	public void resetEntityMaxHealth(LivingEntity livingEntity);
+	
+	/**
+	 * Get the recent server TPS
+	 * @return Array with recent TPS
+	 */
+	public double[] getRecentTps();
 }

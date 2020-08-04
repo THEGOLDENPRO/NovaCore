@@ -20,8 +20,8 @@ import xyz.zeeraa.novacore.module.event.ModuleEnableEvent;
  * @author Zeeraa
  */
 public abstract class NovaModule {
-	private boolean enabled = false;
-	private ModuleEnableFailureReason enableFailureReason = null;
+	protected boolean enabled = false;
+	protected ModuleEnableFailureReason enableFailureReason = null;
 
 	private ArrayList<Class<? extends NovaModule>> dependencies = new ArrayList<Class<? extends NovaModule>>();
 
@@ -50,14 +50,18 @@ public abstract class NovaModule {
 
 	/**
 	 * Called when the module is enabling. this is called before registering events
+	 * 
+	 * @throws Exception Thrown if something goes wrong while loading the module
 	 */
-	public void onEnable() {
+	public void onEnable() throws Exception{
 	}
 
 	/**
 	 * Called when the module is disabling. this is called after disabling events
+	 * 
+	 * @throws Exception Thrown if something goes wrong while loading the module
 	 */
-	public void onDisable() {
+	public void onDisable() throws Exception {
 	}
 
 	/**
@@ -88,6 +92,7 @@ public abstract class NovaModule {
 		Log.info("Enabling module " + this.getName());
 
 		if (dependencies != null) {
+			Log.debug(this.getName() + " has " + dependencies.size() + " dependencies");
 			for (Class<? extends NovaModule> clazz : dependencies) {
 				if (!ModuleManager.moduleExists(clazz)) {
 					Log.error("Failed to load module " + this.getName() + ". Missing dependency" + clazz.getName());

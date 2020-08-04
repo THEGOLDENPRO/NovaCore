@@ -60,6 +60,8 @@ public class LootTableManager {
 			return false;
 		}
 
+		Log.info("Adding loot table loader " + loader.getLoaderName());
+
 		loaders.put(loader.getLoaderName().toLowerCase(), loader);
 
 		return true;
@@ -141,7 +143,7 @@ public class LootTableManager {
 	public LootTable loadLootTable(File file) {
 		try {
 			Log.info("Reading loot table from file " + file.getName());
-			
+
 			String data = FileUtils.readFileToString(file, "UTF-8");
 
 			LootTable lootTable = loadLootTable(new JSONObject(data));

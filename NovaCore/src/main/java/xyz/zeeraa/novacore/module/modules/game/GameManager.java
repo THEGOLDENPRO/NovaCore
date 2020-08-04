@@ -461,6 +461,9 @@ public class GameManager extends NovaModule implements Listener {
 		}
 
 		if (hasGame()) {
+			if(activeGame.hasEnded()) {
+				return;
+			}
 			if (activeGame.hasStarted()) {
 				Player p = e.getPlayer();
 

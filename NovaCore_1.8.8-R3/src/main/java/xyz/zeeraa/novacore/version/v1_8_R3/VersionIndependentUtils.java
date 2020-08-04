@@ -8,6 +8,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import net.minecraft.server.v1_8_R3.MinecraftServer;
+
 public class VersionIndependentUtils implements xyz.zeeraa.novacore.abstraction.VersionIndependantUtils {
 	@SuppressWarnings("deprecation")
 	@Override
@@ -20,7 +22,7 @@ public class VersionIndependentUtils implements xyz.zeeraa.novacore.abstraction.
 
 		block.setData((byte) 1);
 	}
-	
+
 	@Override
 	public ItemStack getItemInMainHand(Player player) {
 		return player.getItemInHand();
@@ -44,5 +46,10 @@ public class VersionIndependentUtils implements xyz.zeeraa.novacore.abstraction.
 	@Override
 	public void resetEntityMaxHealth(LivingEntity livingEntity) {
 		livingEntity.resetMaxHealth();
+	}
+
+	@Override
+	public double[] getRecentTps() {
+		return MinecraftServer.getServer().recentTps;
 	}
 }

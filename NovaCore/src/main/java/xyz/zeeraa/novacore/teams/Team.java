@@ -42,7 +42,6 @@ public abstract class Team {
 	 */
 	public int sendMessage(String message) {
 		int count = 0;
-
 		for (UUID uuid : members) {
 			Player player = Bukkit.getServer().getPlayer(uuid);
 			if (player != null) {

@@ -450,6 +450,7 @@ public abstract class Game {
 				Team team = NovaCore.getInstance().getTeamManager().getTeamByTeamUUID(teamsLeft.get(0));
 				if (team != null) {
 					onTeamWin(team);
+					Bukkit.getServer().getPluginManager().callEvent(new TeamWinEvent(team));
 				}
 			}
 
@@ -463,6 +464,7 @@ public abstract class Game {
 
 				if (player != null) {
 					onPlayerWin(player);
+					Bukkit.getServer().getPluginManager().callEvent(new PlayerWinEvent(player));
 				}
 			}
 
