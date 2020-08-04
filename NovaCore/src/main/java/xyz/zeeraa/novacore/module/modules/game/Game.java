@@ -36,6 +36,23 @@ public abstract class Game {
 	 * doing
 	 */
 	protected int winCheckTaskId;
+
+	/**
+	 * This is used the prevent {@link Game#endGame()} from being called twice
+	 * <p>
+	 * This should never be changed by the game code unless you know what you are
+	 * doing
+	 */
+	protected boolean endCalled;
+
+	/**
+	 * This is used the prevent {@link Game#startGame()} from being called twice
+	 * <p>
+	 * This should never be changed by the game code unless you know what you are
+	 * doing
+	 */
+	protected boolean startCalled;
+
 	/**
 	 * This is false until a winner is found.
 	 * <p>
@@ -61,8 +78,10 @@ public abstract class Game {
 	public Game() {
 		this.players = new ArrayList<UUID>();
 		this.world = null;
-		this.autoWinnerCheckCompleted = false;
 		this.winCheckTaskId = -1;
+		this.endCalled = false;
+		this.startCalled = false;
+		this.autoWinnerCheckCompleted = false;
 	}
 
 	/**
@@ -210,7 +229,7 @@ public abstract class Game {
 	 * {@link Game#onPlayerWin(OfflinePlayer)}, {@link Game#onTeamWin(Team)} and
 	 * fire the events in your game code
 	 * 
-	 * @return
+	 * @return <code>true</code> to enable pvp
 	 */
 	public abstract boolean autoEndGame();
 
@@ -233,7 +252,7 @@ public abstract class Game {
 	 * <p>
 	 * This is disabled by default
 	 * 
-	 * @return
+	 * @return <code>true</code> to auto end the game
 	 */
 	public boolean eliminateAfterAutoWin() {
 		return false;
@@ -245,6 +264,13 @@ public abstract class Game {
 	 * @return <code>true</code> if the game has started
 	 */
 	public abstract boolean hasStarted();
+	
+	/**
+	 * Check if the game has ended
+	 * 
+	 * @return <code>true</code> if the game has ended
+	 */
+	public abstract boolean hasEnded();
 
 	/**
 	 * Check friendly fire is enabled. This wont do anything unless
@@ -268,10 +294,19 @@ public abstract class Game {
 
 	/**
 	 * Start the game
+	 * 
+	 * @return <code>false</code> if this has already been called
 	 */
-	public void startGame() {
+	public boolean startGame() {
+		if (startCalled) {
+			return false;
+		}
+		startCalled = true;
+
 		Bukkit.getServer().getPluginManager().callEvent(new GameStartEvent(this));
 		this.onStart();
+
+		return true;
 	}
 
 	/**
@@ -280,12 +315,22 @@ public abstract class Game {
 	public abstract void onStart();
 
 	/**
-	 * End the game. This should also send all players to the lobby and reset the
-	 * server
+	 * End the game.
+	 * <p>
+	 * This should also send all players to the lobby and reset the server
+	 * 
+	 * @return <code>false</code> if this has already been called
 	 */
-	public void endGame() {
+	public boolean endGame() {
+		if (endCalled) {
+			return false;
+		}
+		endCalled = true;
+
 		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this));
 		this.onEnd();
+
+		return true;
 	}
 
 	/**
@@ -409,7 +454,7 @@ public abstract class Game {
 			}
 
 			if (teamsLeft.size() <= 1) {
-				endGame();
+				getGameManager().endGame();
 			}
 			autoWinnerCheckCompleted = true;
 		} else {
@@ -422,7 +467,7 @@ public abstract class Game {
 			}
 
 			if (players.size() <= 1) {
-				endGame();
+				getGameManager().endGame();
 			}
 			autoWinnerCheckCompleted = true;
 		}

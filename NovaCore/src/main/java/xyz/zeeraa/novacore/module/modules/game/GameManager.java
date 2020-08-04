@@ -287,6 +287,19 @@ public class GameManager extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Call the {@link Game#endGame()} of the active game
+	 * 
+	 * @return <code>false</code> if {@link Game#endGame()} returns
+	 *         <code>false</code> or if not game has been loaded
+	 */
+	public boolean endGame() {
+		if (hasGame()) {
+			return activeGame.endGame();
+		}
+		return false;
+	}
+
+	/**
 	 * Set the countdown time in seconds
 	 * 
 	 * @param countdown The count down time

@@ -1,5 +1,10 @@
 package xyz.zeeraa.novacore.module.modules.game;
 
+/**
+ * This is caused by trying to start a {@link MapGame} with no map loaded
+ * 
+ * @author Zeeraa
+ */
 public class NoMapsAddedException extends RuntimeException {
 	private static final long serialVersionUID = -4221725908599688589L;
 

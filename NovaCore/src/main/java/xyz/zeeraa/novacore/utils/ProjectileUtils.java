@@ -3,6 +3,10 @@ package xyz.zeeraa.novacore.utils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 
+/**
+ * Functions used for projectiles
+ * @author Zeeraa
+ */
 public class ProjectileUtils {
 	/**
 	 * Check if a a entity is a {@link Projectile}

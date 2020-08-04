@@ -1,5 +1,9 @@
 package xyz.zeeraa.novacore.utils;
 
+/**
+ * Functions to generate text
+ * @author Zeeraa
+ */
 public class TextUtils {
 	/**
 	 * Get the ordinal name of a number<br>

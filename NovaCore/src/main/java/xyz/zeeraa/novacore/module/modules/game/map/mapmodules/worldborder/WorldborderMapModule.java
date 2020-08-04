@@ -200,6 +200,14 @@ public class WorldborderMapModule extends MapModule {
 						cancel();
 						return;
 					}
+					
+					if(game == null) {
+						return;
+					}
+					
+					if(game.getWorld() == null) {
+						return;
+					}
 
 					game.getWorld().getWorldBorder().setSize(lastSize - stepShrinkValue, (long) stepTime);
 
