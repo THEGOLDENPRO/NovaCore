@@ -4,28 +4,31 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import xyz.zeeraa.novacore.module.modules.game.Game;
+import xyz.zeeraa.novacore.teams.Team;
 
 /**
- * Called when a game is starting
+ * Called when a team wins a game.
+ * <p>
+ * This will not be called by NovaCore if {@link Game#autoEndGame()} is disabled
  * 
  * @author Zeeraa
  */
-public class GameStartEvent extends Event {
+public class TeamWinEvent extends Event {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-	private Game game;
+	private Team team;
 
-	public GameStartEvent(Game game) {
-		this.game = game;
+	public TeamWinEvent(Team team) {
+		this.team = team;
 	}
 
 	/**
-	 * Get instance of the {@link Game} that is starting
+	 * Get the {@link Team} that won the game
 	 * 
-	 * @return The {@link Game} that is starting
+	 * @return The winning {@link Team}
 	 */
-	public Game getGame() {
-		return game;
+	public Team getTeam() {
+		return team;
 	}
 
 	@Override

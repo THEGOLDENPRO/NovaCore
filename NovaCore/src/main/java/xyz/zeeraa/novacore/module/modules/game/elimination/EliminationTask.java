@@ -1,4 +1,4 @@
-package xyz.zeeraa.novacore.module.modules.game;
+package xyz.zeeraa.novacore.module.modules.game.elimination;
 
 import java.util.UUID;
 
@@ -8,11 +8,16 @@ import org.bukkit.ChatColor;
 import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.callbacks.Callback;
 
+/**
+ * This is used to give players time to reconnect before eliminating them
+ * 
+ * @author Zeeraa
+ */
 public class EliminationTask {
 	private String username;
 	private int taskId;
 	private int timeLeft;
-	
+
 	private Callback callback;
 
 	public EliminationTask(UUID uuid, String username, int time, Callback callback) {
@@ -21,12 +26,15 @@ public class EliminationTask {
 		this.callback = callback;
 
 		this.taskId = -2;
-		
+
 		startTask();
 	}
-	
+
+	/**
+	 * Start the {@link EliminationTask}
+	 */
 	private void startTask() {
-		if(taskId != -2) {
+		if (taskId != -2) {
 			return;
 		}
 		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
@@ -46,6 +54,9 @@ public class EliminationTask {
 		}, 20L, 20L);
 	}
 
+	/**
+	 * Stops the scheduler task
+	 */
 	private void stop() {
 		if (taskId != -1) {
 			Bukkit.getScheduler().cancelTask(taskId);
@@ -53,6 +64,9 @@ public class EliminationTask {
 		}
 	}
 
+	/**
+	 * Cancel the {@link EliminationTask}
+	 */
 	public void cancel() {
 		stop();
 	}

@@ -30,6 +30,16 @@ public abstract class TeamManager {
 		}
 		return null;
 	}
+	
+	public Team getTeamByTeamUUID(UUID uuid) {
+		for(Team team : teams) {
+			if(team.getTeamUuid().equals(uuid)) {
+				return team;
+			}
+		}
+		
+		return null;
+	}
 
 	public boolean isInSameTeam(OfflinePlayer player1, OfflinePlayer player2) {
 		return this.isInSameTeam(player1.getUniqueId(), player2.getUniqueId());

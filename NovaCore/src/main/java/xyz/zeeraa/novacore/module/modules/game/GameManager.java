@@ -31,6 +31,11 @@ import xyz.zeeraa.novacore.log.Log;
 import xyz.zeeraa.novacore.module.NovaModule;
 import xyz.zeeraa.novacore.module.modules.game.countdown.DefaultGameCountdown;
 import xyz.zeeraa.novacore.module.modules.game.countdown.GameCountdown;
+import xyz.zeeraa.novacore.module.modules.game.elimination.EliminationTask;
+import xyz.zeeraa.novacore.module.modules.game.elimination.PlayerEliminationReason;
+import xyz.zeeraa.novacore.module.modules.game.eliminationmessage.PlayerEliminationMessage;
+import xyz.zeeraa.novacore.module.modules.game.eliminationmessage.TeamEliminationMessage;
+import xyz.zeeraa.novacore.module.modules.game.eliminationmessage.defaultmessage.DefaultPlayerEliminationMessage;
 import xyz.zeeraa.novacore.module.modules.game.events.GameLoadedEvent;
 import xyz.zeeraa.novacore.module.modules.game.map.GameMapData;
 import xyz.zeeraa.novacore.module.modules.game.map.MapReader;
@@ -62,6 +67,7 @@ public class GameManager extends NovaModule implements Listener {
 	private List<UUID> callOnRespawn;
 
 	private PlayerEliminationMessage playerEliminationMessage;
+	private TeamEliminationMessage teamEliminationMessage;
 
 	/**
 	 * Get instance of {@link GameManager}
@@ -88,6 +94,7 @@ public class GameManager extends NovaModule implements Listener {
 		this.countdown = new DefaultGameCountdown();
 
 		this.playerEliminationMessage = new DefaultPlayerEliminationMessage();
+		this.teamEliminationMessage = null;
 
 		this.callOnRespawn = new ArrayList<UUID>();
 
@@ -114,6 +121,7 @@ public class GameManager extends NovaModule implements Listener {
 
 	/**
 	 * Get the map selector. The default map selector is {@link RandomMapSelector}.
+	 * <p>
 	 * This is only used for games based on {@link MapGame}
 	 * 
 	 * @return The {@link MapSelector} to use
@@ -123,9 +131,11 @@ public class GameManager extends NovaModule implements Listener {
 	}
 
 	/**
-	 * Set the map selector to use. The default map selector is
-	 * {@link RandomMapSelector}. This is only used for games based on
-	 * {@link MapGame}
+	 * Set the map selector to use.
+	 * <p>
+	 * The default map selector is {@link RandomMapSelector}.
+	 * <p>
+	 * This is only used for games based on {@link MapGame}
 	 * 
 	 * @param mapSelector The {@link MapSelector} to use
 	 */
@@ -134,8 +144,9 @@ public class GameManager extends NovaModule implements Listener {
 	}
 
 	/**
-	 * Get the map reader. The default map reader is {@link DefaultMapReader}. This
-	 * is only used for games based on {@link MapGame}
+	 * Get the map reader. The default map reader is {@link DefaultMapReader}.
+	 * <p>
+	 * This is only used for games based on {@link MapGame}
 	 * 
 	 * @return The {@link DefaultMapReader} to use
 	 */
@@ -246,8 +257,10 @@ public class GameManager extends NovaModule implements Listener {
 	}
 
 	/**
-	 * Start the game. If the game is a {@link MapGame} a map will also be selected
-	 * by the {@link MapSelector} and will be loaded
+	 * Start the game.
+	 * <p>
+	 * If the game is a {@link MapGame} a map will also be selected by the
+	 * {@link MapSelector} and will be loaded
 	 * 
 	 * @throws IOException          if the game is a {@link MapGame} and the map
 	 *                              load function throws an {@link IOException}
@@ -273,24 +286,71 @@ public class GameManager extends NovaModule implements Listener {
 		activeGame.startGame();
 	}
 
+	/**
+	 * Set the countdown time in seconds
+	 * 
+	 * @param countdown The count down time
+	 */
 	public void setCountdown(GameCountdown countdown) {
 		this.countdown = countdown;
 	}
 
+	/**
+	 * Get the countdown in seconds for the game
+	 * 
+	 * @return Count down time in seconds
+	 */
 	public GameCountdown getCountdown() {
 		return countdown;
 	}
 
+	/**
+	 * Check if the game has a countdown before starting
+	 * 
+	 * @return <code>true</code> if the game has a countdown
+	 */
 	public boolean hasCountdown() {
 		return countdown != null;
 	}
 
+	/**
+	 * Get the {@link PlayerEliminationMessage} to use
+	 * 
+	 * @return {@link PlayerEliminationMessage} or <code>null</code> if disabled
+	 */
 	public PlayerEliminationMessage getPlayerEliminationMessage() {
 		return playerEliminationMessage;
 	}
 
+	/**
+	 * Set the {@link PlayerEliminationMessage}.
+	 * <p>
+	 * Set to <code>null</code> to disable.
+	 * 
+	 * @param playerEliminationMessage {@link PlayerEliminationMessage} to use
+	 */
 	public void setPlayerEliminationMessage(PlayerEliminationMessage playerEliminationMessage) {
 		this.playerEliminationMessage = playerEliminationMessage;
+	}
+
+	/**
+	 * Get the {@link TeamEliminationMessage} to use
+	 * 
+	 * @return {@link TeamEliminationMessage} or <code>null</code> if disabled
+	 */
+	public TeamEliminationMessage getTeamEliminationMessage() {
+		return teamEliminationMessage;
+	}
+
+	/**
+	 * Set the {@link TeamEliminationMessage}.
+	 * <p>
+	 * Set to <code>null</code> to disable.
+	 * 
+	 * @param teamEliminationMessage {@link TeamEliminationMessage} to use
+	 */
+	public void setTeamEliminationMessage(TeamEliminationMessage teamEliminationMessage) {
+		this.teamEliminationMessage = teamEliminationMessage;
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -301,7 +361,7 @@ public class GameManager extends NovaModule implements Listener {
 			if (getActiveGame().hasStarted()) {
 				if (getActiveGame().getPlayers().contains(p.getUniqueId())) {
 					e.setDeathMessage(null);
-					
+
 					LivingEntity killer = p.getKiller();
 
 					getActiveGame().eliminatePlayer(p, killer, (killer == null ? PlayerEliminationReason.DEATH : PlayerEliminationReason.KILLED));
@@ -309,19 +369,19 @@ public class GameManager extends NovaModule implements Listener {
 					if (!callOnRespawn.contains(p.getUniqueId())) {
 						callOnRespawn.add(p.getUniqueId());
 					}
-					
+
 					p.spigot().respawn();
 				}
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerRespawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
-		
-		if(callOnRespawn.contains(p.getUniqueId())) {
-			if(hasGame()) {
+
+		if (callOnRespawn.contains(p.getUniqueId())) {
+			if (hasGame()) {
 				getActiveGame().onPlayerRespawn(p);
 				callOnRespawn.remove(p.getUniqueId());
 			}
@@ -369,24 +429,24 @@ public class GameManager extends NovaModule implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		if(eliminationTasks.containsKey(e.getPlayer().getUniqueId())) {
+		if (eliminationTasks.containsKey(e.getPlayer().getUniqueId())) {
 			eliminationTasks.get(p.getUniqueId()).cancel();
 			eliminationTasks.remove(p.getUniqueId());
-			
+
 			Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.GREEN + ChatColor.BOLD + " reconnected in time");
 		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent e) {
-		if(callOnRespawn.contains(e.getPlayer().getUniqueId())) {
+		if (callOnRespawn.contains(e.getPlayer().getUniqueId())) {
 			callOnRespawn.remove(e.getPlayer().getUniqueId());
 		}
-		
+
 		if (hasGame()) {
 			if (activeGame.hasStarted()) {
 				Player p = e.getPlayer();
@@ -409,7 +469,7 @@ public class GameManager extends NovaModule implements Listener {
 					eliminationTasks.put(e.getPlayer().getUniqueId(), eliminationTask);
 					int minutes = (activeGame.getPlayerEliminationDelay() / 60);
 					int seconds = activeGame.getPlayerEliminationDelay() % 60;
-					
+
 					Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
 					break;
 

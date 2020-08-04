@@ -6,9 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-
 import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.module.NovaModule;
 import xyz.zeeraa.novacore.module.modules.compass.event.CompassTrackingEvent;
@@ -18,7 +18,7 @@ import xyz.zeeraa.novacore.module.modules.compass.event.CompassTrackingEvent;
  * 
  * @author Zeeraa
  */
-public class CompassTracker extends NovaModule {
+public class CompassTracker extends NovaModule implements Listener {
 	private static CompassTracker instance;
 
 	private CompassTrackerTarget compassTrackerTarget;
@@ -74,7 +74,7 @@ public class CompassTracker extends NovaModule {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (NovaCore.getInstance().getVersionIndependentUtils().getItemInMainHand(e.getPlayer()).getType() == Material.COMPASS) {
@@ -89,13 +89,13 @@ public class CompassTracker extends NovaModule {
 				Bukkit.getServer().getPluginManager().callEvent(event);
 
 				if (!event.isCancelled()) {
-					String message = ChatColor.RED+"No target to track";
+					String message = ChatColor.RED + "No target to track";
 					if (target != null) {
 						if (target.getTrackingMessage() != null) {
 							message = ChatColor.GREEN + target.getTrackingMessage();
 						}
 					}
-					
+
 					e.getPlayer().sendMessage(message);
 				}
 			}

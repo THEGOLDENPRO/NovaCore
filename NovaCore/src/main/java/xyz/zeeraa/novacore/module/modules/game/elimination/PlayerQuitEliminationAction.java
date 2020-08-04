@@ -1,4 +1,4 @@
-package xyz.zeeraa.novacore.module.modules.game;
+package xyz.zeeraa.novacore.module.modules.game.elimination;
 
 /**
  * Represents the action to use when a a player quits
@@ -15,8 +15,9 @@ public enum PlayerQuitEliminationAction {
 	 */
 	INSTANT,
 	/**
-	 * Eliminate the player after a certain delay. The delay can be set by changing
-	 * {@link Game#getPlayerEliminationDelay()}
+	 * Eliminate the player after a certain delay.
+	 * <p>
+	 * The delay can be set by changing {@link Game#getPlayerEliminationDelay()}
 	 */
 	DELAYED;
 }

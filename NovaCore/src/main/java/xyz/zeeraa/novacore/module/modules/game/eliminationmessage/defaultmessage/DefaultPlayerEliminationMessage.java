@@ -1,4 +1,4 @@
-package xyz.zeeraa.novacore.module.modules.game;
+package xyz.zeeraa.novacore.module.modules.game.eliminationmessage.defaultmessage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -7,11 +7,18 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 
 import xyz.zeeraa.novacore.NovaCore;
+import xyz.zeeraa.novacore.module.modules.game.elimination.PlayerEliminationReason;
+import xyz.zeeraa.novacore.module.modules.game.eliminationmessage.PlayerEliminationMessage;
 import xyz.zeeraa.novacore.teams.Team;
 
+/**
+ * This is the default player elimination message for NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class DefaultPlayerEliminationMessage implements PlayerEliminationMessage {
 	@Override
-	public void showPlayerEliminatedMessage(OfflinePlayer player, Entity killer, PlayerEliminationReason reason) {
+	public void showPlayerEliminatedMessage(OfflinePlayer player, Entity killer, PlayerEliminationReason reason, int placement) {
 		ChatColor playerColor = ChatColor.AQUA;
 
 		String extra = "";
@@ -63,6 +70,6 @@ public class DefaultPlayerEliminationMessage implements PlayerEliminationMessage
 			break;
 		}
 
-		Bukkit.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Player Eliminated> " + playerColor + ChatColor.BOLD + player.getName() + " " + net.md_5.bungee.api.ChatColor.GOLD + ChatColor.BOLD + extra);
+		Bukkit.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Player Eliminated> " + playerColor + ChatColor.BOLD + player.getName() + " " + ChatColor.GOLD + ChatColor.BOLD + extra);
 	}
 }

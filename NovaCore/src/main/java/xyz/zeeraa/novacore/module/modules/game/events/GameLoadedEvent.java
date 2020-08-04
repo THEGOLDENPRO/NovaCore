@@ -7,9 +7,10 @@ import xyz.zeeraa.novacore.module.modules.game.Game;
 
 /**
  * Called when a game has been loaded
+ * 
  * @author Zeeraa
  */
-public class GameLoadedEvent  extends Event {
+public class GameLoadedEvent extends Event {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
 
 	private Game game;

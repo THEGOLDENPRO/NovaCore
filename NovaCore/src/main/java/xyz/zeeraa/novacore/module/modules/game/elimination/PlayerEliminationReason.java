@@ -1,4 +1,4 @@
-package xyz.zeeraa.novacore.module.modules.game;
+package xyz.zeeraa.novacore.module.modules.game.elimination;
 
 /**
  * Represents the reason why a player was removed from the game
@@ -11,8 +11,10 @@ public enum PlayerEliminationReason {
 	 */
 	KILLED,
 	/**
-	 * The player died. If the player was killed by a entity
-	 * {@link PlayerEliminationReason#KILLED} should be used instead
+	 * The player died.
+	 * <p>
+	 * If the player was killed by a entity {@link PlayerEliminationReason#KILLED}
+	 * should be used instead
 	 */
 	DEATH,
 	/**
