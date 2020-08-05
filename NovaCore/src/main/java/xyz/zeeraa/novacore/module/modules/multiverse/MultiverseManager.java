@@ -67,29 +67,33 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 		return multiverseWorld;
 	}
-
+	
 	public MultiverseWorld createFromFile(File worldFile, WorldUnloadOption unloadOption) throws IOException {
+		String worldName = worldFile.getName();
+		
+		return this.createFromFile(worldFile, worldName, unloadOption);
+	}
+
+	public MultiverseWorld createFromFile(File worldFile, String name, WorldUnloadOption unloadOption) throws IOException {
 		if (!worldFile.exists()) {
 			throw new FileNotFoundException("Could not find world file: " + worldFile.getPath());
-		}
-
-		String worldName = worldFile.getName();
+		}		
 
 		File worldContainer = Bukkit.getServer().getWorldContainer();
 
-		File targetFile = Paths.get(worldContainer.getAbsolutePath() + "/" + worldName).toFile();
+		File targetFile = Paths.get(worldContainer.getAbsolutePath() + "/" + name).toFile();
 		if (targetFile.exists()) {
-			Log.info("Multiverse", "Replacing old world " + worldName);
+			Log.info("Multiverse", "Replacing old world " + name);
 			targetFile.delete();
 			FileUtils.deleteDirectory(targetFile);
 		}
 
-		Log.info("Multiverse", "Adding " + worldName + " to " + worldContainer.getAbsolutePath());
+		Log.info("Multiverse", "Adding " + name + " to " + worldContainer.getAbsolutePath());
 		FileUtils.copyDirectory(worldFile, targetFile);
 
-		World world = Bukkit.getServer().createWorld(new WorldCreator(worldName));
+		World world = Bukkit.getServer().createWorld(new WorldCreator(name));
 
-		MultiverseWorld multiverseWorld = new MultiverseWorld(worldName, world, unloadOption, true, false);
+		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world, unloadOption, true, false);
 
 		worlds.put(multiverseWorld.getName(), multiverseWorld);
 

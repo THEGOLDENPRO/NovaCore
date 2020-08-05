@@ -1,6 +1,7 @@
 package xyz.zeeraa.novacore.module.modules.gui.holders;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -18,6 +19,7 @@ import xyz.zeeraa.novacore.module.modules.gui.callbacks.GUICloseCallback;
 public class GUIHolder implements InventoryHolder {
 	private ArrayList<GUICloseCallback> closeCallbacks = new ArrayList<>();
 	private ArrayList<GUIClickCallback> clickCallbacks = new ArrayList<>();
+	private HashMap<Integer, ArrayList<GUIClickCallback>> slotClickCallbacks = new HashMap<Integer, ArrayList<GUIClickCallback>>();
 
 	/**
 	 * Get close callback list
@@ -35,6 +37,14 @@ public class GUIHolder implements InventoryHolder {
 	 */
 	public ArrayList<GUIClickCallback> getClickCallbacks() {
 		return clickCallbacks;
+	}
+	
+	/**
+	 * Get a {@link HashMap} with slot specific {@link GUIClickCallback}
+	 * @return {@link HashMap} with slot specific {@link GUIClickCallback}
+	 */
+	public HashMap<Integer, ArrayList<GUIClickCallback>> getSlotClickCallbacks() {
+		return slotClickCallbacks;
 	}
 
 	/**
@@ -54,6 +64,20 @@ public class GUIHolder implements InventoryHolder {
 	public void addClickCallback(GUIClickCallback guiClickCallback) {
 		clickCallbacks.add(guiClickCallback);
 	}
+	
+	/**
+	 * Add a {@link GUIClickCallback} to be executed when a specific slot in the inventory is clicked
+	 * 
+	 * @param slot The slot number to bind the callback to
+	 * @param guiClickCallback {@link GUIClickCallback} to add
+	 */
+	public void addClickCallback(int slot, GUIClickCallback guiClickCallback) {
+		if(!slotClickCallbacks.containsKey(slot)) {
+			slotClickCallbacks.put(slot, new ArrayList<GUIClickCallback>());
+		}
+		
+		slotClickCallbacks.get(slot).add(guiClickCallback);
+	}
 
 	/**
 	 * Unused
@@ -63,4 +87,4 @@ public class GUIHolder implements InventoryHolder {
 	public Inventory getInventory() {
 		return null;
 	}
-}
+};

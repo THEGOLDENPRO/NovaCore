@@ -3,6 +3,7 @@ package xyz.zeeraa.novacore.module;
 import java.util.HashMap;
 
 import xyz.zeeraa.novacore.log.Log;
+import xyz.zeeraa.novacore.module.modules.gui.GUIManager;
 
 /**
  * This class is used to register, enable and disable {@link NovaModule}s
@@ -250,5 +251,12 @@ public class ModuleManager {
 				disable(module);
 			}
 		}
+	}
+
+	public static boolean require(Class<GUIManager> clazz) {
+		if (!isEnabled(clazz)) {
+			return enable(clazz);
+		}
+		return true;
 	}
 }

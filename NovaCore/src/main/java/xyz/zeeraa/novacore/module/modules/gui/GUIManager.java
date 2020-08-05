@@ -51,6 +51,15 @@ public class GUIManager extends NovaModule implements Listener {
 					action = newAction;
 				}
 			}
+			
+			if(holder.getSlotClickCallbacks().containsKey(e.getSlot())) {
+				for (GUIClickCallback gcc : holder.getSlotClickCallbacks().get(e.getSlot())) {
+					GUIAction newAction = gcc.onClick(e.getClickedInventory(), e.getInventory(), e.getWhoClicked(), e.getSlot(), e.getSlotType(), e.getAction());
+					if (!(newAction == null || newAction == GUIAction.NONE)) {
+						action = newAction;
+					}
+				}
+			}
 
 			if (holder instanceof GUIReadOnlyHolder) {
 				e.setCancelled(true);
