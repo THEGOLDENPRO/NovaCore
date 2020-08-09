@@ -23,6 +23,13 @@ public interface VersionIndependantUtils {
 	public ItemStack getItemInOffHand(Player player);
 	
 	/**
+	 * Get the ping of a player
+	 * @param player The player to get the ping of
+	 * @return ping
+	 */
+	public int getPlayerPing(Player player);
+	
+	/**
 	 * Get the max heath of a {@link LivingEntity}
 	 * @param entity The entity to get the max health from
 	 */
