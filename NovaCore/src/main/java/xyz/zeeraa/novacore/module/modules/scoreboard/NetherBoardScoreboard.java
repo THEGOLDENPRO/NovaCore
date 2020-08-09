@@ -18,6 +18,7 @@ import org.bukkit.scoreboard.Team;
 import fr.minuskube.netherboard.Netherboard;
 import fr.minuskube.netherboard.bukkit.BPlayerBoard;
 import xyz.zeeraa.novacore.NovaCore;
+import xyz.zeeraa.novacore.log.Log;
 import xyz.zeeraa.novacore.module.NovaModule;
 
 public class NetherBoardScoreboard extends NovaModule implements Listener {
@@ -90,7 +91,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 			BPlayerBoard board = boards.get(uuid);
 			board.delete();
-			
+
 			boards.remove(uuid);
 		}
 	}
@@ -124,23 +125,25 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 			playerLines.put(player.getUniqueId(), pLines);
 
 			for (ChatColor chatColor : ChatColor.values()) {
-				Team team = board.getScoreboard().registerNewTeam("PLAYER_COLOR_" + chatColor.name());
+				Team team = board.getScoreboard().registerNewTeam("C_" + chatColor.name());
 
 				team.setPrefix(chatColor + "");
 				team.setNameTagVisibility(NameTagVisibility.ALWAYS);
 			}
 
 			for (UUID uuid : playerNameColor.keySet()) {
-				Team team = board.getScoreboard().getTeam("PLAYER_COLOR_" + playerNameColor.get(uuid).name());
+				Team team = board.getScoreboard().getTeam("C_" + playerNameColor.get(uuid).name());
 				if (team != null) {
 					OfflinePlayer p = Bukkit.getServer().getOfflinePlayer(uuid);
 					if (p != null) {
 						if (p.getName() != null) {
-							if (!team.getEntries().contains(p.getName())) {
-								team.addEntry(p.getName());
-							}
+							team.addEntry(p.getName());
+						} else {
+							Log.debug("Failed to get name of offline player " + p.getUniqueId());
 						}
 					}
+				} else {
+					Log.warn("Missing team color: C_" + playerNameColor.get(uuid).name());
 				}
 			}
 
@@ -248,7 +251,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	public HashMap<UUID, HashMap<Integer, String>> getPlayerLines() {
 		return playerLines;
 	}
-	
+
 	public void resetPlayerNameColor(OfflinePlayer player) {
 		setPlayerNameColor(player, null);
 	}
@@ -263,7 +266,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 			for (UUID uuid : boards.keySet()) {
 				BPlayerBoard board = boards.get(uuid);
 
-				Team team = board.getScoreboard().getTeam("PLAYER_COLOR_" + oldColor.name());
+				Team team = board.getScoreboard().getTeam("C_" + oldColor.name());
 
 				if (team != null) {
 					if (player.getName() != null) {
@@ -276,10 +279,11 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		}
 
 		if (newColor != null) {
+			playerNameColor.put(player.getUniqueId(), newColor);
 			for (UUID uuid : boards.keySet()) {
 				BPlayerBoard board = boards.get(uuid);
 
-				Team team = board.getScoreboard().getTeam("PLAYER_COLOR_" + oldColor.name());
+				Team team = board.getScoreboard().getTeam("C_" + newColor.name());
 
 				if (team != null) {
 					if (player.getName() != null) {
