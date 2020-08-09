@@ -36,7 +36,6 @@ import xyz.zeeraa.novacore.module.modules.gamelobby.mapselector.LobbyMapSelector
 import xyz.zeeraa.novacore.module.modules.gamelobby.mapselector.selectors.RandomLobbyMapSelector;
 import xyz.zeeraa.novacore.module.modules.multiverse.MultiverseManager;
 import xyz.zeeraa.novacore.teams.Team;
-import xyz.zeeraa.novacore.teams.TeamManager;
 
 /**
  * This module creates a simple lobby where players wait for more players before

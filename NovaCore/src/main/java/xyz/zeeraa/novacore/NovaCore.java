@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import xyz.zeeraa.novacore.abstraction.ActionBar;
 import xyz.zeeraa.novacore.abstraction.CommandRegistrator;
+import xyz.zeeraa.novacore.abstraction.NovaCoreAbstraction;
 import xyz.zeeraa.novacore.abstraction.VersionIndependantLoader;
 import xyz.zeeraa.novacore.abstraction.VersionIndependantUtils;
 import xyz.zeeraa.novacore.command.CommandRegistry;
@@ -155,8 +156,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 			return;
 		}
 
-		String packageName = this.getServer().getClass().getPackage().getName();
-		String version = packageName.substring(packageName.lastIndexOf('.') + 1);
+		String version = NovaCoreAbstraction.getNMSVersion();
 
 		Log.info("Server version: " + version);
 

@@ -6,11 +6,14 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scoreboard.NameTagVisibility;
+import org.bukkit.scoreboard.Team;
 
 import fr.minuskube.netherboard.Netherboard;
 import fr.minuskube.netherboard.bukkit.BPlayerBoard;
@@ -28,6 +31,8 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 	private HashMap<Integer, String> globalLines;
 	private HashMap<UUID, HashMap<Integer, String>> playerLines;
+
+	private HashMap<UUID, ChatColor> playerNameColor;
 
 	private int taskId;
 
@@ -48,6 +53,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		this.boards = new HashMap<UUID, BPlayerBoard>();
 		this.globalLines = new HashMap<Integer, String>();
 		this.playerLines = new HashMap<UUID, HashMap<Integer, String>>();
+		this.playerNameColor = new HashMap<UUID, ChatColor>();
 		this.taskId = -1;
 	}
 
@@ -82,7 +88,9 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		while (boards.size() > 0) {
 			UUID uuid = boards.keySet().iterator().next();
 
-			boards.get(uuid).delete();
+			BPlayerBoard board = boards.get(uuid);
+			board.delete();
+			
 			boards.remove(uuid);
 		}
 	}
@@ -114,6 +122,27 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 			boards.put(player.getUniqueId(), board);
 			playerLines.put(player.getUniqueId(), pLines);
+
+			for (ChatColor chatColor : ChatColor.values()) {
+				Team team = board.getScoreboard().registerNewTeam("PLAYER_COLOR_" + chatColor.name());
+
+				team.setPrefix(chatColor + "");
+				team.setNameTagVisibility(NameTagVisibility.ALWAYS);
+			}
+
+			for (UUID uuid : playerNameColor.keySet()) {
+				Team team = board.getScoreboard().getTeam("PLAYER_COLOR_" + playerNameColor.get(uuid).name());
+				if (team != null) {
+					OfflinePlayer p = Bukkit.getServer().getOfflinePlayer(uuid);
+					if (p != null) {
+						if (p.getName() != null) {
+							if (!team.getEntries().contains(p.getName())) {
+								team.addEntry(p.getName());
+							}
+						}
+					}
+				}
+			}
 
 			update(player);
 
@@ -218,5 +247,48 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 	public HashMap<UUID, HashMap<Integer, String>> getPlayerLines() {
 		return playerLines;
+	}
+	
+	public void resetPlayerNameColor(OfflinePlayer player) {
+		setPlayerNameColor(player, null);
+	}
+
+	public void setPlayerNameColor(OfflinePlayer player, ChatColor newColor) {
+		ChatColor oldColor = null;
+		if (playerNameColor.containsKey(player.getUniqueId())) {
+			oldColor = playerNameColor.get(player.getUniqueId());
+		}
+
+		if (oldColor != null) {
+			for (UUID uuid : boards.keySet()) {
+				BPlayerBoard board = boards.get(uuid);
+
+				Team team = board.getScoreboard().getTeam("PLAYER_COLOR_" + oldColor.name());
+
+				if (team != null) {
+					if (player.getName() != null) {
+						if (team.getEntries().contains(player.getName())) {
+							team.removeEntry(player.getName());
+						}
+					}
+				}
+			}
+		}
+
+		if (newColor != null) {
+			for (UUID uuid : boards.keySet()) {
+				BPlayerBoard board = boards.get(uuid);
+
+				Team team = board.getScoreboard().getTeam("PLAYER_COLOR_" + oldColor.name());
+
+				if (team != null) {
+					if (player.getName() != null) {
+						if (!team.getEntries().contains(player.getName())) {
+							team.addEntry(player.getName());
+						}
+					}
+				}
+			}
+		}
 	}
 }
