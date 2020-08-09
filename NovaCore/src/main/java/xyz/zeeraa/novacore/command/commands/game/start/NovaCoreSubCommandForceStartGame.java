@@ -12,13 +12,13 @@ import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.module.modules.game.GameManager;
 import xyz.zeeraa.novacore.module.modules.gamelobby.GameLobby;
 
-public class EZCoreSubCommandForceStartGame extends NovaSubCommand {
+public class NovaCoreSubCommandForceStartGame extends NovaSubCommand {
 
-	public EZCoreSubCommandForceStartGame() {
+	public NovaCoreSubCommandForceStartGame() {
 		super("forcestart");
 
 		this.setDescription("Force start the game");
-		this.setPermission("ezcore.game.forcestart");
+		this.setPermission("novacore.command.game.forcestart");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 		this.setPermissionDescription("Access to the game force start command");
 

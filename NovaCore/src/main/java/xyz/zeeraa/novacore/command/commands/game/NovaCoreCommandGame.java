@@ -8,26 +8,28 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
 import xyz.zeeraa.novacore.command.NovaCommand;
-import xyz.zeeraa.novacore.command.commands.game.lootdrop.EZCoreSubCommandGameLootdrop;
-import xyz.zeeraa.novacore.command.commands.game.refill.EZCoreSubCommandGameRefill;
-import xyz.zeeraa.novacore.command.commands.game.start.EZCoreSubCommandForceStartGame;
-import xyz.zeeraa.novacore.command.commands.game.start.EZCoreSubCommandStartGame;
+import xyz.zeeraa.novacore.command.commands.game.listplayers.NovaCoreSubCommandGameListplayers;
+import xyz.zeeraa.novacore.command.commands.game.lootdrop.NovaCoreSubCommandGameLootdrop;
+import xyz.zeeraa.novacore.command.commands.game.refill.NovaCoreSubCommandGameRefill;
+import xyz.zeeraa.novacore.command.commands.game.start.NovaCoreSubCommandForceStartGame;
+import xyz.zeeraa.novacore.command.commands.game.start.NovaCoreSubCommandStartGame;
 
-public class EZCoreCommandGame extends NovaCommand {
+public class NovaCoreCommandGame extends NovaCommand {
 
-	public EZCoreCommandGame() {
+	public NovaCoreCommandGame() {
 		super("game");
 		
 		this.setDescription("Manage minigames");
-		this.setPermission("ezcore.game");
+		this.setPermission("novacore.command.game");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 		this.setPermissionDescription("Access to the game command");
 		
 		this.addHelpSubCommand();
-		this.addSubCommand(new EZCoreSubCommandStartGame());
-		this.addSubCommand(new EZCoreSubCommandForceStartGame());
-		this.addSubCommand(new EZCoreSubCommandGameRefill());
-		this.addSubCommand(new EZCoreSubCommandGameLootdrop());
+		this.addSubCommand(new NovaCoreSubCommandStartGame());
+		this.addSubCommand(new NovaCoreSubCommandForceStartGame());
+		this.addSubCommand(new NovaCoreSubCommandGameRefill());
+		this.addSubCommand(new NovaCoreSubCommandGameLootdrop());
+		this.addSubCommand(new NovaCoreSubCommandGameListplayers());
 	}
 
 	@Override

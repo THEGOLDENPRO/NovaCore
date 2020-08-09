@@ -67,21 +67,97 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 		return multiverseWorld;
 	}
-	
+
+	/**
+	 * Load a world from a file
+	 * <p>
+	 * This will call
+	 * {@link MultiverseManager#createFromFile(File, String, WorldUnloadOption, boolean)}
+	 * with the file name as the world name and with deleteUidFile as true
+	 * 
+	 * @param worldFile    The world {@link File}
+	 * @param unloadOption The {@link WorldUnloadOption} to use
+	 * @return The {@link MultiverseWorld} that was loaded
+	 * @throws IOException           An {@link IOException} can occur due to the
+	 *                               world already existing, failing to unload the
+	 *                               world or failing to copy the world file
+	 * @throws FileNotFoundException A {@link FileNotFoundException} if the world
+	 *                               file does not exist
+	 */
 	public MultiverseWorld createFromFile(File worldFile, WorldUnloadOption unloadOption) throws IOException {
 		String worldName = worldFile.getName();
-		
-		return this.createFromFile(worldFile, worldName, unloadOption);
+
+		return this.createFromFile(worldFile, worldName, unloadOption, true);
 	}
 
+	/**
+	 * Load a world from a file
+	 * <p>
+	 * This will call
+	 * {@link MultiverseManager#createFromFile(File, String, WorldUnloadOption, boolean)}
+	 * with the file name as the world name
+	 * 
+	 * @param worldFile     The world {@link File}
+	 * @param unloadOption  The {@link WorldUnloadOption} to use
+	 * @param deleteUidFile <code>true</code> to delete the <code>uid.dat</code>
+	 *                      file
+	 * @return The {@link MultiverseWorld} that was loaded
+	 * @throws IOException           An {@link IOException} can occur due to the
+	 *                               world already existing, failing to unload the
+	 *                               world or failing to copy the world file
+	 * @throws FileNotFoundException A {@link FileNotFoundException} if the world
+	 *                               file does not exist
+	 */
+	public MultiverseWorld createFromFile(File worldFile, WorldUnloadOption unloadOption, boolean deleteUidFile) throws IOException {
+		String worldName = worldFile.getName();
+
+		return this.createFromFile(worldFile, worldName, unloadOption, deleteUidFile);
+	}
+
+	/**
+	 * Load a world from a file
+	 * <p>
+	 * This will call
+	 * {@link MultiverseManager#createFromFile(File, String, WorldUnloadOption, boolean)}
+	 * with deleteUidFile as true
+	 * 
+	 * @param worldFile    The world {@link File}
+	 * @param name         The name the world should be loaded as
+	 * @param unloadOption The {@link WorldUnloadOption} to use
+	 * @return The {@link MultiverseWorld} that was loaded
+	 * @throws IOException           An {@link IOException} can occur due to the
+	 *                               world already existing, failing to unload the
+	 *                               world or failing to copy the world file
+	 * @throws FileNotFoundException A {@link FileNotFoundException} if the world
+	 *                               file does not exist
+	 */
 	public MultiverseWorld createFromFile(File worldFile, String name, WorldUnloadOption unloadOption) throws IOException {
+		return this.createFromFile(worldFile, name, unloadOption, true);
+	}
+
+	/**
+	 * Load a world from a file
+	 * 
+	 * @param worldFile     The world {@link File}
+	 * @param name          The name the world should be loaded as
+	 * @param unloadOption  The {@link WorldUnloadOption} to use
+	 * @param deleteUidFile <code>true</code> to delete the <code>uid.dat</code>
+	 *                      file
+	 * @return The {@link MultiverseWorld} that was loaded
+	 * @throws IOException           An {@link IOException} can occur due to the
+	 *                               world already existing, failing to unload the
+	 *                               world or failing to copy the world file
+	 * @throws FileNotFoundException A {@link FileNotFoundException} if the world
+	 *                               file does not exist
+	 */
+	public MultiverseWorld createFromFile(File worldFile, String name, WorldUnloadOption unloadOption, boolean deleteUidFile) throws IOException {
 		if (!worldFile.exists()) {
 			throw new FileNotFoundException("Could not find world file: " + worldFile.getPath());
-		}		
+		}
 
 		File worldContainer = Bukkit.getServer().getWorldContainer();
 
-		File targetFile = Paths.get(worldContainer.getAbsolutePath() + "/" + name).toFile();
+		File targetFile = Paths.get(worldContainer.getAbsolutePath() + File.separator + name).toFile();
 		if (targetFile.exists()) {
 			Log.info("Multiverse", "Replacing old world " + name);
 			targetFile.delete();
@@ -90,6 +166,15 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 		Log.info("Multiverse", "Adding " + name + " to " + worldContainer.getAbsolutePath());
 		FileUtils.copyDirectory(worldFile, targetFile);
+
+		if (deleteUidFile) {
+			File uidFile = new File(targetFile.getAbsolutePath() + File.separator + "uid.dat");
+
+			if (uidFile.exists()) {
+				Log.debug("Multiverse", "Deleting uid file " + uidFile.getPath());
+				FileUtils.forceDelete(uidFile);
+			}
+		}
 
 		World world = Bukkit.getServer().createWorld(new WorldCreator(name));
 
@@ -141,18 +226,18 @@ public class MultiverseManager extends NovaModule implements Listener {
 	public boolean unload(MultiverseWorld multiverseWorld) {
 		String worldName = multiverseWorld.getWorld().getName();
 		Log.info("Multiverse", "Unloading world " + worldName);
-		
-		if(LootDropManager.getInstance().isEnabled()) {
+
+		if (LootDropManager.getInstance().isEnabled()) {
 			LootDropManager.getInstance().removeFromWorld(multiverseWorld.getWorld());
 		}
 
-		for(Player player : multiverseWorld.getWorld().getPlayers()) {
-			player.kickPlayer("Unloading world"); //TODO: move player to other world instead of kicking them
+		for (Player player : multiverseWorld.getWorld().getPlayers()) {
+			player.kickPlayer("Unloading world"); // TODO: move player to other world instead of kicking them
 		}
-		
+
 		Bukkit.getServer().unloadWorld(multiverseWorld.getWorld(), multiverseWorld.isSaveOnUnload());
 		worlds.remove(multiverseWorld.getName());
-		
+
 		if (multiverseWorld.getUnloadOption() == WorldUnloadOption.DELETE) {
 			Log.info("Multiverse", "Deleting unloaded world " + worldName);
 			try {
@@ -166,7 +251,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 	}
 
 	public void unloadAll() {
-		while(worlds.size() > 0) {
+		while (worlds.size() > 0) {
 			String key = worlds.keySet().iterator().next();
 			unload(worlds.get(key));
 		}

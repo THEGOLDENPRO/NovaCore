@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -22,11 +23,12 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 
 import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.callbacks.Callback;
 import xyz.zeeraa.novacore.command.CommandRegistry;
-import xyz.zeeraa.novacore.command.commands.game.EZCoreCommandGame;
+import xyz.zeeraa.novacore.command.commands.game.NovaCoreCommandGame;
 import xyz.zeeraa.novacore.log.Log;
 import xyz.zeeraa.novacore.module.NovaModule;
 import xyz.zeeraa.novacore.module.modules.game.countdown.DefaultGameCountdown;
@@ -43,6 +45,7 @@ import xyz.zeeraa.novacore.module.modules.game.map.readers.DefaultMapReader;
 import xyz.zeeraa.novacore.module.modules.game.mapselector.MapSelector;
 import xyz.zeeraa.novacore.module.modules.game.mapselector.selectors.RandomMapSelector;
 import xyz.zeeraa.novacore.module.modules.multiverse.MultiverseManager;
+import xyz.zeeraa.novacore.utils.PlayerUtils;
 
 /**
  * Module used to manage games and maps
@@ -229,7 +232,7 @@ public class GameManager extends NovaModule implements Listener {
 	public void onEnable() {
 		if (!commandAdded) {
 			Log.info("Adding the game command");
-			CommandRegistry.registerCommand(new EZCoreCommandGame());
+			CommandRegistry.registerCommand(new NovaCoreCommandGame());
 			commandAdded = true;
 		}
 	}
@@ -375,9 +378,27 @@ public class GameManager extends NovaModule implements Listener {
 				if (getActiveGame().getPlayers().contains(p.getUniqueId())) {
 					e.setDeathMessage(null);
 
-					LivingEntity killer = p.getKiller();
+					if (getActiveGame().eliminatePlayerOnDeath(p)) {
+						try {
+						Location lootLocation = e.getEntity().getLocation().clone();
+						for (ItemStack item : e.getEntity().getInventory().getContents()) {
+							if (item != null) {
+								e.getEntity().getWorld().dropItem(lootLocation, item.clone());
+							}
+						}
+						}catch(Exception e2) {
+							e2.printStackTrace();
+						}
 
-					getActiveGame().eliminatePlayer(p, killer, (killer == null ? PlayerEliminationReason.DEATH : PlayerEliminationReason.KILLED));
+						e.setKeepInventory(true);
+
+						PlayerUtils.clearPlayerInventory(e.getEntity());
+
+						LivingEntity killer = p.getKiller();
+
+						Log.trace("Eliminating player on death");
+						getActiveGame().eliminatePlayer(p, killer, (killer == null ? PlayerEliminationReason.DEATH : PlayerEliminationReason.KILLED));
+					}
 
 					if (!callOnRespawn.contains(p.getUniqueId())) {
 						callOnRespawn.add(p.getUniqueId());
@@ -415,7 +436,7 @@ public class GameManager extends NovaModule implements Listener {
 							Projectile projectile = (Projectile) e.getDamager();
 							if (projectile.getShooter() != null) {
 								if (projectile.getShooter() instanceof Player) {
-									damager = (Player) e.getDamager();
+									damager = (Player) ((Projectile) e.getDamager()).getShooter();
 								}
 							}
 						}
@@ -461,36 +482,38 @@ public class GameManager extends NovaModule implements Listener {
 		}
 
 		if (hasGame()) {
-			if(activeGame.hasEnded()) {
+			if (activeGame.hasEnded()) {
 				return;
 			}
 			if (activeGame.hasStarted()) {
 				Player p = e.getPlayer();
 
-				switch (activeGame.getPlayerQuitEliminationAction()) {
-				case NONE:
-					break;
+				if (activeGame.getPlayers().contains(p.getUniqueId())) {
+					switch (activeGame.getPlayerQuitEliminationAction()) {
+					case NONE:
+						break;
 
-				case INSTANT:
-					activeGame.eliminatePlayer(p, null, PlayerEliminationReason.QUIT);
-					break;
+					case INSTANT:
+						activeGame.eliminatePlayer(p, null, PlayerEliminationReason.QUIT);
+						break;
 
-				case DELAYED:
-					EliminationTask eliminationTask = new EliminationTask(p.getUniqueId(), p.getName(), activeGame.getPlayerEliminationDelay(), new Callback() {
-						@Override
-						public void execute() {
-							getActiveGame().eliminatePlayer(p, null, PlayerEliminationReason.DID_NOT_RECONNECT);
-						}
-					});
-					eliminationTasks.put(e.getPlayer().getUniqueId(), eliminationTask);
-					int minutes = (activeGame.getPlayerEliminationDelay() / 60);
-					int seconds = activeGame.getPlayerEliminationDelay() % 60;
+					case DELAYED:
+						EliminationTask eliminationTask = new EliminationTask(p.getUniqueId(), p.getName(), activeGame.getPlayerEliminationDelay(), new Callback() {
+							@Override
+							public void execute() {
+								getActiveGame().eliminatePlayer(p, null, PlayerEliminationReason.DID_NOT_RECONNECT);
+							}
+						});
+						eliminationTasks.put(e.getPlayer().getUniqueId(), eliminationTask);
+						int minutes = (activeGame.getPlayerEliminationDelay() / 60);
+						int seconds = activeGame.getPlayerEliminationDelay() % 60;
 
-					Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
-					break;
+						Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
+						break;
 
-				default:
-					break;
+					default:
+						break;
+					}
 				}
 			}
 		}

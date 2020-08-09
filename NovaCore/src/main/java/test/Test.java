@@ -2,6 +2,7 @@ package test;
 
 import xyz.zeeraa.novacore.module.NovaModule;
 import xyz.zeeraa.novacore.utils.RandomGenerator;
+import xyz.zeeraa.novacore.world.worldgenerator.worldpregenerator.WorldPreGenerator;
 
 public class Test {
 

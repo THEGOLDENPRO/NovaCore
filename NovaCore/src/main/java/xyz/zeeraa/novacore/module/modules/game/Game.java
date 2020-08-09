@@ -259,12 +259,24 @@ public abstract class Game {
 	}
 
 	/**
+	 * Check if the game can be started
+	 * <p>
+	 * This can be used to create games that need to generate a world before
+	 * starting to prevent the game from starting before the world is ready
+	 * 
+	 * @return <code>true</code> if the game can start
+	 */
+	public boolean canStart() {
+		return true;
+	}
+
+	/**
 	 * Check if the game has started
 	 * 
 	 * @return <code>true</code> if the game has started
 	 */
 	public abstract boolean hasStarted();
-	
+
 	/**
 	 * Check if the game has ended
 	 * 
@@ -354,11 +366,13 @@ public abstract class Game {
 	 */
 	public boolean eliminatePlayer(OfflinePlayer player, Entity killer, PlayerEliminationReason reason) {
 		if (!players.contains(player.getUniqueId())) {
+			Log.trace("Canceling elimination because the player is not in game");
 			return false;
 		}
 
 		if (autoWinnerCheckCompleted) {
 			if (!eliminateAfterAutoWin()) {
+				Log.trace("Canceling elimination because the game has ended");
 				return false;
 			}
 		}
@@ -370,6 +384,7 @@ public abstract class Game {
 		Bukkit.getServer().getPluginManager().callEvent(playerEliminatedEvent);
 
 		if (playerEliminatedEvent.isCancelled()) {
+			Log.trace("Canceling elimination because the elimination event was canceled");
 			return false;
 		}
 
@@ -456,8 +471,8 @@ public abstract class Game {
 
 			if (teamsLeft.size() <= 1) {
 				getGameManager().endGame();
+				autoWinnerCheckCompleted = true;
 			}
-			autoWinnerCheckCompleted = true;
 		} else {
 			if (players.size() == 1) {
 				OfflinePlayer player = Bukkit.getOfflinePlayer(players.get(0));
@@ -470,8 +485,8 @@ public abstract class Game {
 
 			if (players.size() <= 1) {
 				getGameManager().endGame();
+				autoWinnerCheckCompleted = true;
 			}
-			autoWinnerCheckCompleted = true;
 		}
 	}
 

@@ -10,13 +10,13 @@ import org.bukkit.permissions.PermissionDefault;
 import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.module.modules.chestloot.ChestLootManager;
 
-public class EZCoreSubCommandGameRefill extends NovaSubCommand {
+public class NovaCoreSubCommandGameRefill extends NovaSubCommand {
 
-	public EZCoreSubCommandGameRefill() {
+	public NovaCoreSubCommandGameRefill() {
 		super("refill");
 
 		this.setDescription("Force a chest refill");
-		this.setPermission("ezcore.game.refill");
+		this.setPermission("novacore.command.game.refill");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 		this.setPermissionDescription("Access to the game chest refill command");
 

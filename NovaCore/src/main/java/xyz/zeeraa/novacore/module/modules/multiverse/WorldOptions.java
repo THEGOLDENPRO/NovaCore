@@ -55,6 +55,10 @@ public class WorldOptions {
 		return this;
 	}
 	
+	public void setLockWeather(boolean lockWeather) {
+		this.lockWeather = lockWeather;
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -35,6 +35,8 @@ import xyz.zeeraa.novacore.module.modules.gamelobby.map.readers.DefaultLobbyMapR
 import xyz.zeeraa.novacore.module.modules.gamelobby.mapselector.LobbyMapSelector;
 import xyz.zeeraa.novacore.module.modules.gamelobby.mapselector.selectors.RandomLobbyMapSelector;
 import xyz.zeeraa.novacore.module.modules.multiverse.MultiverseManager;
+import xyz.zeeraa.novacore.teams.Team;
+import xyz.zeeraa.novacore.teams.TeamManager;
 
 /**
  * This module creates a simple lobby where players wait for more players before
@@ -109,6 +111,15 @@ public class GameLobby extends NovaModule implements Listener {
 			public void run() {
 				if (hasActiveMap()) {
 					for (Player player : getActiveMap().getWorld().getPlayers()) {
+						if (GameManager.getInstance().hasGame()) {
+							if (GameManager.getInstance().getActiveGame().hasStarted()) {
+								GameManager.getInstance().getActiveGame().tpToSpectator(player);
+								continue;
+							}
+						}
+
+						player.setFoodLevel(20);
+						
 						if (player.getLocation().getY() < 0) {
 							player.setFallDistance(0);
 							player.teleport(activeMap.getSpawnLocation());
@@ -162,11 +173,21 @@ public class GameLobby extends NovaModule implements Listener {
 
 				if (player != null) {
 					if (player.isOnline()) {
+						// Prevent players from joining if teams are enabled and the player does not
+						// have a team
+						if (NovaCore.getInstance().hasTeamManager()) {
+							Team team = NovaCore.getInstance().getTeamManager().getPlayerTeam(player);
+							if (team == null) {
+								player.sendMessage(ChatColor.GREEN + "You joined as spectator since you are not in a team");
+								continue;
+							}
+						}
+
 						GameManager.getInstance().getActiveGame().addPlayer(player);
 					}
 				}
 			}
-			
+
 			waitingPlayers.clear();
 
 			GameManager.getInstance().start();
@@ -203,7 +224,7 @@ public class GameLobby extends NovaModule implements Listener {
 						Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinGameLobbyEvent(e.getPlayer()));
 					}
 				} else {
-					if(!GameManager.getInstance().getActiveGame().getPlayers().contains(e.getPlayer().getUniqueId())) {
+					if (!GameManager.getInstance().getActiveGame().getPlayers().contains(e.getPlayer().getUniqueId())) {
 						GameManager.getInstance().getActiveGame().tpToSpectator(e.getPlayer());
 					}
 				}

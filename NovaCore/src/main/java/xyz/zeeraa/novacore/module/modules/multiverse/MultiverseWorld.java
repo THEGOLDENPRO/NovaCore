@@ -43,6 +43,10 @@ public class MultiverseWorld {
 		return this;
 	}
 	
+	public void setLockWeather(boolean lockWeather) {
+		this.lockWeather = lockWeather;
+	}
+	
 	public boolean isSaveOnUnload() {
 		return saveOnUnload;
 	}

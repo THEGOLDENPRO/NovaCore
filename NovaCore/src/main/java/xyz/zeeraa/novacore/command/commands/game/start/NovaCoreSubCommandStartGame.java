@@ -12,13 +12,13 @@ import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.module.modules.game.GameManager;
 import xyz.zeeraa.novacore.module.modules.gamelobby.GameLobby;
 
-public class EZCoreSubCommandStartGame extends NovaSubCommand {
+public class NovaCoreSubCommandStartGame extends NovaSubCommand {
 
-	public EZCoreSubCommandStartGame() {
+	public NovaCoreSubCommandStartGame() {
 		super("start");
 
 		this.setDescription("Start the game countdown");
-		this.setPermission("ezcore.game.start");
+		this.setPermission("novacore.command.game.start");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 		this.setPermissionDescription("Access to the game start command");
 

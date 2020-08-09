@@ -14,13 +14,13 @@ import xyz.zeeraa.novacore.module.modules.game.map.GameMap;
 import xyz.zeeraa.novacore.module.modules.game.map.mapmodule.MapModule;
 import xyz.zeeraa.novacore.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
 
-public class EZCoreSubCommandGameLootdrop extends NovaSubCommand {
+public class NovaCoreSubCommandGameLootdrop extends NovaSubCommand {
 
-	public EZCoreSubCommandGameLootdrop() {
+	public NovaCoreSubCommandGameLootdrop() {
 		super("lootdrop");
 
 		this.setDescription("Force a lootdrop to spawn");
-		this.setPermission("ezcore.game.lootdrop");
+		this.setPermission("novacore.command.game.lootdrop");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 		this.setPermissionDescription("Access to the game lootdrop command");
 
