@@ -9,7 +9,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 
 public class VersionIndependentUtils implements xyz.zeeraa.novacore.abstraction.VersionIndependantUtils {
@@ -57,8 +56,6 @@ public class VersionIndependentUtils implements xyz.zeeraa.novacore.abstraction.
 
 	@Override
 	public int getPlayerPing(Player player) {
-		EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-		
-		return entityPlayer.ping;
+		return ((CraftPlayer) player).getHandle().ping;
 	}
 }
