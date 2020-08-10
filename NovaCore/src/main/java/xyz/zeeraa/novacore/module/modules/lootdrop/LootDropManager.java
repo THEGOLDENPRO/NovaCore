@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -22,7 +20,11 @@ import org.bukkit.inventory.ItemStack;
 
 import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.log.Log;
+import xyz.zeeraa.novacore.loottable.LootTable;
 import xyz.zeeraa.novacore.module.NovaModule;
+import xyz.zeeraa.novacore.module.modules.lootdrop.event.LootDropSpawnEvent;
+import xyz.zeeraa.novacore.module.modules.lootdrop.message.DefaultLootDropSpawnMessage;
+import xyz.zeeraa.novacore.module.modules.lootdrop.message.LootDropSpawnMessage;
 import xyz.zeeraa.novacore.utils.LocationUtils;
 
 public class LootDropManager extends NovaModule implements Listener {
@@ -31,6 +33,8 @@ public class LootDropManager extends NovaModule implements Listener {
 	private ArrayList<LootDrop> chests;
 	private ArrayList<LootDropEffect> dropEffects;
 
+	private LootDropSpawnMessage spawnMessage;
+	
 	private int taskId;
 
 	public static LootDropManager getInstance() {
@@ -46,6 +50,7 @@ public class LootDropManager extends NovaModule implements Listener {
 		LootDropManager.instance = this;
 		chests = new ArrayList<LootDrop>();
 		dropEffects = new ArrayList<LootDropEffect>();
+		spawnMessage = new DefaultLootDropSpawnMessage();
 		taskId = -1;
 	}
 
@@ -95,11 +100,51 @@ public class LootDropManager extends NovaModule implements Listener {
 			}
 		}
 	}
+	
+	/**
+	 * Set the spawn message when a loot drop spawns
+	 * @param spawnMessage The custom {@link LootDropSpawnMessage} to use
+	 */
+	public void setSpawnMessage(LootDropSpawnMessage spawnMessage) {
+		this.spawnMessage = spawnMessage;
+	}
 
-	public void spawnDrop(Location location, String lootTable) {
+	/**
+	 * Spawn a loot drop
+	 * 
+	 * @param location  The {@link Location} to spawn the loot drop at
+	 * @param lootTable The name of the {@link LootTable} to use
+	 * @return <code>true</code> on success, <code>false</code> if can't spawn or if
+	 *         the event is canceled
+	 */
+	public boolean spawnDrop(Location location, String lootTable) {
+		return spawnDrop(location, lootTable, true);
+	}
+
+	/**
+	 * Spawn a loot drop
+	 * 
+	 * @param location  The {@link Location} to spawn the loot drop at
+	 * @param lootTable The name of the {@link LootTable} to use
+	 * @param announce  <code>true</code> to announce that a loot drop is spawning
+	 * @return <code>true</code> on success, <code>false</code> if can't spawn or if
+	 *         the event is canceled
+	 */
+	public boolean spawnDrop(Location location, String lootTable, boolean announce) {
 		if (canSpawnAt(location)) {
-			spawnDrop(location, lootTable, true);
+			LootDropSpawnEvent event = new LootDropSpawnEvent(location, lootTable);
+			Bukkit.getServer().getPluginManager().callEvent(event);
+			
+			if (!event.isCancelled()) {
+				LootDropEffect effect = new LootDropEffect(location, lootTable);
+				dropEffects.add(effect);
+				if (announce) {
+					spawnMessage.showLootDropSpawnMessage(effect);
+				}
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public boolean canSpawnAt(Location location) {
@@ -121,16 +166,6 @@ public class LootDropManager extends NovaModule implements Listener {
 		}
 
 		return true;
-	}
-
-	public void spawnDrop(Location location, String lootTable, boolean announce) {
-		dropEffects.add(new LootDropEffect(location, lootTable));
-		if (announce) {
-			for (Player p : Bukkit.getOnlinePlayers()) {
-				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);
-				p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "A loot drop is spawning at X: " + ChatColor.AQUA + "" + ChatColor.BOLD + location.getBlockX() + ChatColor.GOLD + "" + ChatColor.BOLD + " Z: " + ChatColor.AQUA + "" + ChatColor.BOLD + location.getBlockZ());
-			}
-		}
 	}
 
 	public void spawnChest(Location location, String lootTable) {

@@ -13,7 +13,7 @@ public class DefaultGameCountdown extends GameCountdown {
 	private boolean started;
 	private int timeLeft;
 	private int taskId;
-
+	
 	public DefaultGameCountdown() {
 		this.started = false;
 		this.timeLeft = 60;
