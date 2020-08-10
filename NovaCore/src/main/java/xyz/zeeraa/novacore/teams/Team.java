@@ -56,6 +56,12 @@ public abstract class Team {
 	}
 
 	public abstract ChatColor getTeamColor();
+	
+	/**
+	 * Get the display name of the team
+	 * @return display name
+	 */
+	public abstract String getDisplayName();
 
 	@Override
 	public boolean equals(Object obj) {

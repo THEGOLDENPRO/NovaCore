@@ -30,26 +30,30 @@ public class NovaCoreSubCommandStartGame extends NovaSubCommand {
 		if (GameManager.getInstance().isEnabled()) {
 			if (GameManager.getInstance().hasGame()) {
 				if (!GameManager.getInstance().getActiveGame().hasStarted()) {
-					if (GameManager.getInstance().hasCountdown()) {
-						if(!GameManager.getInstance().getCountdown().hasCountdownStarted()) {
-							GameManager.getInstance().getCountdown().startCountdown();
-							sender.sendMessage(ChatColor.GREEN + "Countdown started");
+					if(GameManager.getInstance().getActiveGame().canStart()) {
+						if (GameManager.getInstance().hasCountdown()) {
+							if(!GameManager.getInstance().getCountdown().hasCountdownStarted()) {
+								GameManager.getInstance().getCountdown().startCountdown();
+								sender.sendMessage(ChatColor.GREEN + "Countdown started");
+							} else {
+								sender.sendMessage(ChatColor.RED + "Countdown has already been started");
+							}
 						} else {
-							sender.sendMessage(ChatColor.RED + "Countdown has already been started");
-						}
-					} else {
-						if (GameLobby.getInstance().isEnabled()) {
-							GameLobby.getInstance().startGame();
-							sender.sendMessage(ChatColor.GREEN + "Game started");
-						} else {
-							try {
-								GameManager.getInstance().start();
+							if (GameLobby.getInstance().isEnabled()) {
+								GameLobby.getInstance().startGame();
 								sender.sendMessage(ChatColor.GREEN + "Game started");
-							} catch (IOException e) {
-								e.printStackTrace();
-								sender.sendMessage(ChatColor.DARK_RED + "An exception occured while trying to start the game");
+							} else {
+								try {
+									GameManager.getInstance().start();
+									sender.sendMessage(ChatColor.GREEN + "Game started");
+								} catch (IOException e) {
+									e.printStackTrace();
+									sender.sendMessage(ChatColor.DARK_RED + "An exception occured while trying to start the game");
+								}
 							}
 						}
+					} else {
+						sender.sendMessage(ChatColor.RED + "The game cant start right now");
 					}
 				} else {
 					sender.sendMessage(ChatColor.RED + "Game has already been started");

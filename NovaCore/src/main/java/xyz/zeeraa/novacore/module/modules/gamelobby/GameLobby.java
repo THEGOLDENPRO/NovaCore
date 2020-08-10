@@ -166,6 +166,10 @@ public class GameLobby extends NovaModule implements Listener {
 	}
 
 	public boolean startGame() {
+		if(!GameManager.getInstance().getActiveGame().canStart()) {
+			return false;
+		}
+		
 		try {
 			for (UUID uuid : waitingPlayers) {
 				Player player = Bukkit.getServer().getPlayer(uuid);

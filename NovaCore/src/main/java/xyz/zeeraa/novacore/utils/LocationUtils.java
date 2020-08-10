@@ -11,4 +11,14 @@ public class LocationUtils {
 		double x = location.getX() - center.getX(), z = location.getZ() - center.getZ();
 		return ((x > size || (-x) > size) || (z > size || (-z) > size));
 	}
+	
+	public static double blockCenter(int block) {
+		if (block >= 0) {
+			return ((double) block) + 0.5;
+		}
+		if (block < 0) {
+			return ((double) block) - 0.5;
+		}
+		return block;
+	}
 }

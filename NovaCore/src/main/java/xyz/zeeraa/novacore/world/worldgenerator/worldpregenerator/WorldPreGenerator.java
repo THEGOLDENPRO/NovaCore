@@ -109,6 +109,15 @@ public class WorldPreGenerator {
 	}
 
 	/**
+	 * Get progress from 0 to 1
+	 * 
+	 * @return the progress from 0 to 1
+	 */
+	public double getProgressValue() {
+		return ((double) generatedChunks) / ((double) (size * size * 4));
+	}
+
+	/**
 	 * Get instance of the {@link World} that this generator is working on
 	 * 
 	 * @return The {@link World}
@@ -247,7 +256,7 @@ public class WorldPreGenerator {
 	 */
 	private boolean generateNext() {
 		boolean isLast = false;
-		
+
 		// Check x and z
 		int gx, gz;
 
