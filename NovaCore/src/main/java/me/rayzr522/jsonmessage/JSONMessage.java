@@ -707,7 +707,6 @@ public class JSONMessage {
 				e.printStackTrace();
 				return null;
 			}
-
 		}
 
 		/**
