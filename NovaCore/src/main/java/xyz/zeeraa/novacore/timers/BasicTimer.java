@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.callbacks.Callback;
 
-public class BasicTimer {
+public class BasicTimer implements Timer {
 	private int taskId;
 	private int timeLeft;
 	private Long tickTime;
@@ -67,6 +67,7 @@ public class BasicTimer {
 	 * @return <code>true</code> if the timer was started. <code>false</code> if it
 	 *         has already been started
 	 */
+	@Override
 	public boolean start() {
 		if (this.isRunning()) {
 			return false;
@@ -117,6 +118,7 @@ public class BasicTimer {
 	 * 
 	 * @return <code>true</code> if the timer has started
 	 */
+	@Override
 	public boolean hasStarted() {
 		return this.started;
 	}
@@ -127,6 +129,7 @@ public class BasicTimer {
 	 * @return <code>true</code> if the timer is running. <code>false</code> if the
 	 *         timer is finished or has not started
 	 */
+	@Override
 	public boolean isRunning() {
 		return this.taskId != -1;
 	}
@@ -137,6 +140,7 @@ public class BasicTimer {
 	 * @return <code>true</code> if the timer is canceled. <code>false</code> if it
 	 *         has already been canceled
 	 */
+	@Override
 	public boolean cancel() {
 		return this.stop();
 	}
@@ -146,6 +150,7 @@ public class BasicTimer {
 	 * 
 	 * @return the time left
 	 */
+	@Override
 	public int getTimeLeft() {
 		return this.timeLeft;
 	}

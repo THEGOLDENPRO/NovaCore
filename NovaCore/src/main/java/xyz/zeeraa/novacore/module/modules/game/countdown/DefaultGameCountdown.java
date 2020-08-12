@@ -12,11 +12,25 @@ public class DefaultGameCountdown extends GameCountdown {
 	private boolean started;
 	private int timeLeft;
 	private int taskId;
-	
+
+	private int startTime;
+
 	public DefaultGameCountdown() {
+		this(60);
+	}
+
+	public DefaultGameCountdown(int time) {
+		super();
+
 		this.started = false;
-		this.timeLeft = 60;
+		this.timeLeft = time;
+		this.startTime = time;
 		this.taskId = -1;
+	}
+
+	@Override
+	public void resetTimeLeft() {
+		this.timeLeft = startTime;
 	}
 
 	@Override
@@ -24,6 +38,11 @@ public class DefaultGameCountdown extends GameCountdown {
 		return started;
 	}
 
+	@Override
+	public boolean isCountdownRunning() {
+		return taskId != -1;
+	}
+	
 	@Override
 	public boolean startCountdown() {
 		if (this.started) {
@@ -80,6 +99,7 @@ public class DefaultGameCountdown extends GameCountdown {
 		this.timeLeft = timeLeft;
 	}
 
+	@Override
 	public int getTimeLeft() {
 		return timeLeft;
 	}

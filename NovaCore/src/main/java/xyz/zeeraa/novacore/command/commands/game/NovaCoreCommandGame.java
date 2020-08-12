@@ -11,6 +11,7 @@ import xyz.zeeraa.novacore.command.NovaCommand;
 import xyz.zeeraa.novacore.command.commands.game.listplayers.NovaCoreSubCommandGameListplayers;
 import xyz.zeeraa.novacore.command.commands.game.lootdrop.NovaCoreSubCommandGameLootdrop;
 import xyz.zeeraa.novacore.command.commands.game.refill.NovaCoreSubCommandGameRefill;
+import xyz.zeeraa.novacore.command.commands.game.resetcountdown.NovaCoreSubCommandResetCountdownGame;
 import xyz.zeeraa.novacore.command.commands.game.start.NovaCoreSubCommandForceStartGame;
 import xyz.zeeraa.novacore.command.commands.game.start.NovaCoreSubCommandStartGame;
 
@@ -30,6 +31,7 @@ public class NovaCoreCommandGame extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandGameRefill());
 		this.addSubCommand(new NovaCoreSubCommandGameLootdrop());
 		this.addSubCommand(new NovaCoreSubCommandGameListplayers());
+		this.addSubCommand(new NovaCoreSubCommandResetCountdownGame());
 	}
 
 	@Override

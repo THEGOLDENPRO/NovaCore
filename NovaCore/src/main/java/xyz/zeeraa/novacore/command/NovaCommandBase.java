@@ -35,6 +35,8 @@ public abstract class NovaCommandBase {
 	private String name;
 	private List<String> aliases;
 
+	private boolean noTabAutoComplete;
+
 	public NovaCommandBase(String name) {
 		this.name = name;
 		this.description = "";
@@ -47,6 +49,8 @@ public abstract class NovaCommandBase {
 		this.parentCommand = null;
 
 		this.aliases = new ArrayList<String>();
+
+		this.noTabAutoComplete = false;
 	}
 
 	/**
@@ -69,8 +73,8 @@ public abstract class NovaCommandBase {
 
 	/**
 	 * FSet the aliases for this command.
-	 * {@link NovaCommandBase#generateAliasList(String...)} can be used to create the
-	 * list in one line
+	 * {@link NovaCommandBase#generateAliasList(String...)} can be used to create
+	 * the list in one line
 	 * 
 	 * @param aliases {@link List} with aliases
 	 */
@@ -186,6 +190,30 @@ public abstract class NovaCommandBase {
 	}
 
 	/**
+	 * Check if auto complete is disabled
+	 * <p>
+	 * This will only work if the command does not include the
+	 * {@link NovaCommandBase#tabComplete(CommandSender, String, String[])} function
+	 * 
+	 * @return <code>true</code> if auto complete is disabled
+	 */
+	public boolean isNoTabAutoComplete() {
+		return noTabAutoComplete;
+	}
+
+	/**
+	 * Set to <code>true</code> to disable tab auto complete
+	 * <p>
+	 * This will only work if the command does not include the
+	 * {@link NovaCommandBase#tabComplete(CommandSender, String, String[])} function
+	 * 
+	 * @param noTabAutoComplete <code>true</code> to disable auto complete
+	 */
+	public void setNoTabAutoComplete(boolean noTabAutoComplete) {
+		this.noTabAutoComplete = noTabAutoComplete;
+	}
+
+	/**
 	 * Add the help sub command to this command
 	 */
 	protected void addHelpSubCommand() {
@@ -269,6 +297,10 @@ public abstract class NovaCommandBase {
 	 * @throws IllegalArgumentException if sender, alias, or args is null
 	 */
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+		if (noTabAutoComplete) {
+			return new ArrayList<String>();
+		}
+
 		Validate.notNull(sender, "Sender cannot be null");
 		Validate.notNull(args, "Arguments cannot be null");
 		Validate.notNull(alias, "Alias cannot be null");
