@@ -33,7 +33,7 @@ public class BukkitSerailization {
 	 * 
 	 * @param items to turn into a Base64 String.
 	 * @return Base64 string of the items.
-	 * @throws IllegalStateException
+	 * @throws IllegalStateException IllegalStateException
 	 */
 	public static String itemStackArrayToBase64(ItemStack[] items) throws IllegalStateException {
 		try {
@@ -62,7 +62,7 @@ public class BukkitSerailization {
 	 * 
 	 * @param inventory to serialize
 	 * @return Base64 string of the provided inventory
-	 * @throws IllegalStateException
+	 * @throws IllegalStateException IllegalStateException
 	 */
 	public static String toBase64(Inventory inventory) throws IllegalStateException {
 		try {
@@ -92,7 +92,7 @@ public class BukkitSerailization {
 	 * 
 	 * @param data Base64 string of data containing an inventory.
 	 * @return Inventory created from the Base64 string.
-	 * @throws IOException
+	 * @throws IOException IOException
 	 */
 	public static Inventory fromBase64(String data) throws IOException {
 		try {
@@ -120,7 +120,7 @@ public class BukkitSerailization {
 	 * 
 	 * @param data Base64 string to convert to ItemStack array.
 	 * @return ItemStack array created from the Base64 string.
-	 * @throws IOException
+	 * @throws IOException IOException
 	 */
 	public static ItemStack[] itemStackArrayFromBase64(String data) throws IOException {
 		try {
