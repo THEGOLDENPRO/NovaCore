@@ -20,7 +20,7 @@ public class BasicTimer implements Timer {
 	/**
 	 * Timer that will run a callback every second and when finished
 	 * 
-	 * @param ticks the amount of seconds the timer will count down from
+	 * @param time the amount of seconds the timer will count down from
 	 */
 	public BasicTimer(int time) {
 		this(time, 20L);

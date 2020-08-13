@@ -121,7 +121,7 @@ public class LootTableManager {
 	/**
 	 * Try to load all JSON files from a directory as a loot table
 	 * 
-	 * @param directory
+	 * @param directory The direcorty to read loot tables from
 	 */
 	public void loadAll(File directory) {
 		for (File file : directory.listFiles()) {

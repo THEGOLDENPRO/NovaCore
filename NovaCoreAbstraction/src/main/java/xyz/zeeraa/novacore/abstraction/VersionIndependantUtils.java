@@ -31,19 +31,19 @@ public interface VersionIndependantUtils {
 	
 	/**
 	 * Get the max heath of a {@link LivingEntity}
-	 * @param entity The entity to get the max health from
+	 * @param livingEntity The entity to get the max health from
 	 */
 	public double getEntityMaxHealth(LivingEntity livingEntity);
 	
 	/**
 	 * Set the max heath of a {@link LivingEntity}
-	 * @param entity The entity to reset the set health of
+	 * @param livingEntity The entity to reset the set health of
 	 */
 	public void setEntityMaxHealth(LivingEntity livingEntity);
 	
 	/**
 	 * Reset the max heath of a {@link LivingEntity}
-	 * @param entity The entity to reset the max health of
+	 * @param livingEntity The entity to reset the max health of
 	 */
 	public void resetEntityMaxHealth(LivingEntity livingEntity);
 	

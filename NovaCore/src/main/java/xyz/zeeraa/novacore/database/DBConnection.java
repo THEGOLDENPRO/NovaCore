@@ -35,8 +35,8 @@ public class DBConnection {
 	 * @param password password of the MySQL user
 	 * @param database name of the database to use
 	 * @return <code>true</code> on success or <code>false</code> on failure
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
+	 * @throws ClassNotFoundException ClassNotFoundException
+	 * @throws SQLException SQLException
 	 */
 	public boolean connect(String host, String username, String password, String database) throws ClassNotFoundException, SQLException {
 		return this.connect(host, username, password, database, "com.mysql.jdbc.Driver");
@@ -51,8 +51,8 @@ public class DBConnection {
 	 * @param database name of the database to use
 	 * @param driver   driver to use
 	 * @return <code>true</code> on success or <code>false</code> on failure
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
+	 * @throws ClassNotFoundException ClassNotFoundException
+	 * @throws SQLException SQLException
 	 */
 	public boolean connect(String host, String username, String password, String database, String driver) throws ClassNotFoundException, SQLException {
 		DBCredentials credentials = new DBCredentials(driver, host, username, password, database);
@@ -64,8 +64,8 @@ public class DBConnection {
 	 * Connects to the database using the com.mysql.jdbc.Driver as driver
 	 * 
 	 * @param credentials The {@link DBCredentials} to use
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
+	 * @throws ClassNotFoundException ClassNotFoundException
+	 * @throws SQLException SQLException
 	 */
 	public boolean connect(DBCredentials credentials) throws ClassNotFoundException, SQLException {
 		if (connection != null) {
@@ -88,8 +88,8 @@ public class DBConnection {
 	 * Try to reconnect to the database with the last used credentials
 	 * 
 	 * @return <code>true</code> on success
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
+	 * @throws ClassNotFoundException ClassNotFoundException
+	 * @throws SQLException SQLException
 	 */
 	public boolean reconnect() throws ClassNotFoundException, SQLException {
 		Log.info("DBC","Trying to reconnect to database " + credentials.getHost());
@@ -109,7 +109,7 @@ public class DBConnection {
 	 * Close the {@link Connection} to the database
 	 * 
 	 * @return <code>true</code> if the {@link Connection} was closed
-	 * @throws SQLException
+	 * @throws SQLException SQLException
 	 */
 	public boolean close() throws SQLException {
 		if (connection == null) {
@@ -128,7 +128,7 @@ public class DBConnection {
 	 * Check if the connection is open
 	 * 
 	 * @return <code>true</code> if connected
-	 * @throws SQLException
+	 * @throws SQLException SQLException
 	 */
 	public boolean isConnected() throws SQLException {
 		if (connection != null) {

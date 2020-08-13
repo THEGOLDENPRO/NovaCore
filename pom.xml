@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>xyz.zeeraa</groupId>
+	<groupId>net.zeeraa.novacore</groupId>
 	<artifactId>novacore-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>PARENT</version>
@@ -54,6 +54,17 @@
             </plugin>
         </plugins>-->
     </build>
+	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<url>http://maven.zeeraa.xyz/repository/maven-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>nexus-releases</id>
+			<url>http://maven.zeeraa.xyz/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
 	
 	<modules>
 		<module>NovaCore</module>

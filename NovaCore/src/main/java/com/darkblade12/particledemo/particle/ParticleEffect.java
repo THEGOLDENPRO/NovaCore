@@ -468,6 +468,7 @@ public enum ParticleEffect {
 	/**
 	 * Determine if this particle effect has a specific property
 	 * 
+	 * @param property {@link ParticleProperty}
 	 * @return Whether it has the property or not
 	 */
 	public boolean hasProperty(ParticleProperty property) {
@@ -681,9 +682,7 @@ public enum ParticleEffect {
 	 *                                  data
 	 * @throws IllegalArgumentException If the particle effect is not directional or
 	 *                                  if it requires water and none is at the
-	 *                                  center location
-	 * @see ParticlePacket#ParticlePacket(ParticleEffect, Vector, float, boolean,
-	 *      ParticleData)
+	 * 
 	 * @see ParticlePacket#sendTo(Location, double)
 	 */
 	public void display(Vector direction, float speed, Location center, double range) throws ParticleVersionException, ParticleDataException, IllegalArgumentException {
@@ -717,8 +716,6 @@ public enum ParticleEffect {
 	 * @throws IllegalArgumentException If the particle effect is not directional or
 	 *                                  if it requires water and none is at the
 	 *                                  center location
-	 * @see ParticlePacket#ParticlePacket(ParticleEffect, Vector, float, boolean,
-	 *      ParticleData)
 	 * @see ParticlePacket#sendTo(Location, List)
 	 */
 	public void display(Vector direction, float speed, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException, IllegalArgumentException {
@@ -769,7 +766,6 @@ public enum ParticleEffect {
 	 *                                  the server version
 	 * @throws ParticleColorException   If the particle effect is not colorable or
 	 *                                  the color type is incorrect
-	 * @see ParticlePacket#ParticlePacket(ParticleEffect, ParticleColor, boolean)
 	 * @see ParticlePacket#sendTo(Location, double)
 	 */
 	public void display(ParticleColor color, Location center, double range) throws ParticleVersionException, ParticleColorException {

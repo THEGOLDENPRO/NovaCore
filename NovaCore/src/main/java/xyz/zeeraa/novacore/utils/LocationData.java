@@ -125,7 +125,7 @@ public class LocationData {
 	/**
 	 * Convert a {@link List} with {@link LocationData} to a bukkit {@link Location}
 	 * 
-	 * @param loacations The {@link List} with {@link LocationData} to be converted
+	 * @param locations The {@link List} with {@link LocationData} to be converted
 	 * @param world      The {@link World} the locations should be in
 	 * @return A {@link List} with bukkit {@link Location}s
 	 */

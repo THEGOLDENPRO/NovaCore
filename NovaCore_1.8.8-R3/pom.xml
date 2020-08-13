@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>novacore_v1.8.8-R3</artifactId>
 	<name>NovaCore_1.8.8-R3</name>
-	<version>v1.8.8-R3</version>
+	<version>v1.8.8-R3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>xyz.zeeraa</groupId>
+		<groupId>net.zeeraa.novacore</groupId>
 		<artifactId>novacore-parent</artifactId>
 		<version>PARENT</version>
 		<relativePath>..</relativePath>
@@ -16,6 +16,23 @@
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+
+		<plugins>
+			<plugin>
+				<!-- explicitly define maven-deploy-plugin after other to force exec 
+					order -->
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<properties>
@@ -31,22 +48,22 @@
 
 		<repository>
 			<id>zeeraas-repo</id>
-			<url>http://maven.zeeraa.xyz/artifactory/spigot</url>
+			<url>http://maven.zeeraa.xyz/repository/maven-group/</url>
 		</repository>
 	</repositories>
 
 	<dependencies>
 		<dependency>
-			<groupId>xyz.zeeraa</groupId>
+			<groupId>net.zeeraa.novacore</groupId>
 			<artifactId>novacore-abstraction</artifactId>
-			<version>ABSTRACTION</version>
+			<version>1.0.0-SNAPSHOT</version>
 			<type>jar</type>
 		</dependency>
 
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot</artifactId>
-			<version>1.8.8-R0.1-20200719.171523-1</version>
+			<version>1.8.8-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

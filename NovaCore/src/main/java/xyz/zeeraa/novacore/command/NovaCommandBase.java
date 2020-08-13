@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -35,7 +36,7 @@ public abstract class NovaCommandBase {
 	private String name;
 	private List<String> aliases;
 
-	private boolean noTabAutoComplete;
+	private boolean emptyTabMode;
 
 	public NovaCommandBase(String name) {
 		this.name = name;
@@ -50,7 +51,7 @@ public abstract class NovaCommandBase {
 
 		this.aliases = new ArrayList<String>();
 
-		this.noTabAutoComplete = false;
+		this.emptyTabMode = false;
 	}
 
 	/**
@@ -190,27 +191,31 @@ public abstract class NovaCommandBase {
 	}
 
 	/**
-	 * Check if auto complete is disabled
+	 * {@link TrueFileFilter} to not use any tab auto complete
+	 * <p>
+	 * This wont disable tab complete for sub commands
 	 * <p>
 	 * This will only work if the command does not include the
 	 * {@link NovaCommandBase#tabComplete(CommandSender, String, String[])} function
 	 * 
 	 * @return <code>true</code> if auto complete is disabled
 	 */
-	public boolean isNoTabAutoComplete() {
-		return noTabAutoComplete;
+	public boolean isEmptyTabMode() {
+		return emptyTabMode;
 	}
 
 	/**
-	 * Set to <code>true</code> to disable tab auto complete
+	 * Set to <code>true</code> to not use any tab auto complete
+	 * <p>
+	 * This wont disable tab complete for sub commands
 	 * <p>
 	 * This will only work if the command does not include the
 	 * {@link NovaCommandBase#tabComplete(CommandSender, String, String[])} function
 	 * 
-	 * @param noTabAutoComplete <code>true</code> to disable auto complete
+	 * @param emptyTabMode <code>true</code> to disable auto complete
 	 */
-	public void setNoTabAutoComplete(boolean noTabAutoComplete) {
-		this.noTabAutoComplete = noTabAutoComplete;
+	public void setEmptyTabMode(boolean emptyTabMode) {
+		this.emptyTabMode = emptyTabMode;
 	}
 
 	/**
@@ -297,7 +302,7 @@ public abstract class NovaCommandBase {
 	 * @throws IllegalArgumentException if sender, alias, or args is null
 	 */
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		if (noTabAutoComplete) {
+		if (emptyTabMode) {
 			return new ArrayList<String>();
 		}
 
