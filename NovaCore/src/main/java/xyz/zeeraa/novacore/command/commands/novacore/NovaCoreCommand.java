@@ -14,6 +14,11 @@ import xyz.zeeraa.novacore.command.commands.novacore.loottable.NovaCoreSubComman
 import xyz.zeeraa.novacore.command.commands.novacore.module.NovaCoreSubCommandModules;
 import xyz.zeeraa.novacore.command.commands.novacore.whereami.NovaCoreSubCommandWhereAmI;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreCommand extends NovaCommand {
 
 	public NovaCoreCommand() {

@@ -18,6 +18,11 @@ import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.log.Log;
 import xyz.zeeraa.novacore.log.LogLevel;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandLoggerSet extends NovaSubCommand {
 	public NovaCoreSubCommandLoggerSet() {
 		super("set");

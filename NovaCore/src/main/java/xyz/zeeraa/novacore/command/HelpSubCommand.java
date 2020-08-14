@@ -7,6 +7,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
+/**
+ * This is a command that can be added to show all sub commands and their
+ * description for a command
+ * 
+ * @author Zeeraa
+ */
 public class HelpSubCommand extends NovaSubCommand {
 
 	public HelpSubCommand() {

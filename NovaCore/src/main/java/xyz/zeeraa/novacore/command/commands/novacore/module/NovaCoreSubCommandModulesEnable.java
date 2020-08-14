@@ -12,6 +12,11 @@ import xyz.zeeraa.novacore.module.NovaModule;
 import xyz.zeeraa.novacore.module.ModuleEnableFailureReason;
 import xyz.zeeraa.novacore.module.ModuleManager;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandModulesEnable extends NovaSubCommand {
 	public NovaCoreSubCommandModulesEnable() {
 		super("enable");

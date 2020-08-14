@@ -7,6 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+/**
+ * Used to log messages
+ * <p>
+ * Players and the console can change what logs to receive by using the command
+ * <code>/novacore log set <LOG LEVEL><code>
+ * 
+ * @author Zeeraa
+ */
 public class Log {
 	private static LogLevel consoleLogLevel = LogLevel.INFO;
 

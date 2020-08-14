@@ -12,6 +12,11 @@ import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.module.modules.game.GameManager;
 import xyz.zeeraa.novacore.module.modules.gamelobby.GameLobby;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandForceStartGame extends NovaSubCommand {
 
 	public NovaCoreSubCommandForceStartGame() {

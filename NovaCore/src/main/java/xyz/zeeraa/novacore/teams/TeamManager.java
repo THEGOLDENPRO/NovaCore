@@ -14,6 +14,10 @@ public abstract class TeamManager {
 		this.teams = new ArrayList<Team>();
 	}
 
+	/**
+	 * Get a list of all {@link Team}s
+	 * @return List of teams
+	 */
 	public List<Team> getTeams() {
 		return teams;
 	}

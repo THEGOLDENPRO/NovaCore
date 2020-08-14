@@ -14,6 +14,11 @@ import xyz.zeeraa.novacore.module.modules.game.map.GameMap;
 import xyz.zeeraa.novacore.module.modules.game.map.mapmodule.MapModule;
 import xyz.zeeraa.novacore.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandGameLootdrop extends NovaSubCommand {
 
 	public NovaCoreSubCommandGameLootdrop() {

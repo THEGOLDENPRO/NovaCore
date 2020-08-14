@@ -7,6 +7,11 @@ import org.bukkit.permissions.PermissionDefault;
 import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.module.ModuleManager;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandModules extends NovaSubCommand {
 	public NovaCoreSubCommandModules() {
 		super("modules");

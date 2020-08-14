@@ -3,6 +3,15 @@ package xyz.zeeraa.novacore.customcrafting;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
+/**
+ * Represents a custom crafting recipe that can limit the amount of times it can
+ * be used
+ * <p>
+ * Note that the crafting limit will only apply to this server and wont be
+ * persistent during reloads or restarts
+ * 
+ * @author Zeeraa
+ */
 public abstract class CustomRecipe {
 	private Recipe cachedRecipe = null;
 

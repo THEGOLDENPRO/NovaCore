@@ -15,6 +15,11 @@ import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.module.modules.game.GameManager;
 import xyz.zeeraa.novacore.teams.Team;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandGameListplayers extends NovaSubCommand {
 
 	public NovaCoreSubCommandGameListplayers() {

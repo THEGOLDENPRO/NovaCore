@@ -19,19 +19,28 @@ import org.bukkit.inventory.Recipe;
 import xyz.zeeraa.novacore.log.Log;
 import xyz.zeeraa.novacore.utils.RecipeUtils;
 
-public class CustomCraftingManager implements Listener  {
+/**
+ * Used to register {@link CustomRecipe}s and limit the amount of times they can
+ * be crafted.
+ * <p>
+ * Please read the description of {@link CustomRecipe} for some important info
+ * about crafting limits
+ * 
+ * @author Zeeraa
+ */
+public class CustomCraftingManager implements Listener {
 	private static CustomCraftingManager instance;
-	
+
 	private HashMap<String, CustomRecipe> recipes;
 	private HashMap<UUID, HashMap<String, Integer>> craftingLimit;
 
 	public static CustomCraftingManager getInstance() {
 		return instance;
 	}
-	
+
 	public CustomCraftingManager() {
 		CustomCraftingManager.instance = this;
-		
+
 		this.recipes = new HashMap<String, CustomRecipe>();
 		this.craftingLimit = new HashMap<UUID, HashMap<String, Integer>>();
 

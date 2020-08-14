@@ -10,6 +10,11 @@ import org.bukkit.permissions.PermissionDefault;
 import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.command.NovaSubCommand;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandLootTable extends NovaSubCommand {
 	public NovaCoreSubCommandLootTable() {
 		super("loottable");

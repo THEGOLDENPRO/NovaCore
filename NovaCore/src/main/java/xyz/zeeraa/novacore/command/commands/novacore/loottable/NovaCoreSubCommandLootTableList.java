@@ -11,6 +11,11 @@ import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.loottable.LootTable;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandLootTableList extends NovaSubCommand {
 	public NovaCoreSubCommandLootTableList() {
 		super("list");

@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public enum ColoredParticle {
-
 	SPELL_MOB("SPELL_MOB"), SPELL_MOB_AMBIENT("SPELL_MOB_AMBIENT"), REDSTONE("REDSTONE");
 
 	private ColoredParticle(String name) {

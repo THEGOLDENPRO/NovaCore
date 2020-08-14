@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Represents a loot table that can generate random loot
+ * 
+ * @author Zeeraa
+ */
 public abstract class LootTable {
 	private String name;
 	private String displayName;
@@ -42,7 +47,7 @@ public abstract class LootTable {
 	protected void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
-	
+
 	/**
 	 * Get minimum items to add
 	 * 
@@ -60,7 +65,7 @@ public abstract class LootTable {
 	public int getMaxItems() {
 		return maxItems;
 	}
-	
+
 	/**
 	 * Generate loot using loot table
 	 * 

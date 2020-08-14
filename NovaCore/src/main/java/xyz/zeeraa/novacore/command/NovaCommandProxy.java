@@ -36,7 +36,7 @@ public class NovaCommandProxy extends Command {
 	 * 
 	 * @return {@link NovaCommand} instance
 	 */
-	public NovaCommand getEzCommand() {
+	public NovaCommand getNovaCommand() {
 		return ezCommand;
 	}
 

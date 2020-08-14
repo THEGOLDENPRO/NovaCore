@@ -10,7 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import xyz.zeeraa.novacore.loottable.LootTable;
 
 /**
- * This is just the code from my minecraft tournament MCFridays
+ * NovaCores default {@link LootTable} Version 1
+ * <p>
+ * This is code is from my minecraft tournament MCFridays
  * 
  * @author Zeeraa
  */

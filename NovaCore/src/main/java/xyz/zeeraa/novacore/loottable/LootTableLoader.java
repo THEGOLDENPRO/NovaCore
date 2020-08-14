@@ -2,6 +2,10 @@ package xyz.zeeraa.novacore.loottable;
 
 import org.json.JSONObject;
 
+/**
+ * Represents a class that is used to load a {@link LootTable}
+ * @author Zeeraa
+ */
 public interface LootTableLoader {
 	/**
 	 * Read loot table from file

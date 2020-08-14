@@ -20,7 +20,16 @@ import fr.minuskube.netherboard.bukkit.BPlayerBoard;
 import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.log.Log;
 import xyz.zeeraa.novacore.module.NovaModule;
+import xyz.zeeraa.novacore.module.modules.scoreboard.event.PlayerNetherboardScoreboardInitEvent;
 
+/**
+ * This module creates a scoreboard for all players using the Netherboard
+ * plugin. This can also be used to change the name color of players
+ * <p>
+ * The Netherboard plugin is required for this module to work
+ * 
+ * @author Zeeraa
+ */
 public class NetherBoardScoreboard extends NovaModule implements Listener {
 	private static NetherBoardScoreboard instance;
 
@@ -112,7 +121,11 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 	private boolean createPlayerScoreboard(Player player) {
 		if (!boards.containsKey(player.getUniqueId())) {
-			BPlayerBoard board = Netherboard.instance().createBoard(player, defaultTitle);
+			PlayerNetherboardScoreboardInitEvent event = new PlayerNetherboardScoreboardInitEvent(player, defaultTitle);
+
+			Bukkit.getServer().getPluginManager().callEvent(event);
+
+			BPlayerBoard board = Netherboard.instance().createBoard(player, event.getTitle());
 
 			HashMap<Integer, String> pLines = new HashMap<Integer, String>();
 
@@ -164,6 +177,11 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		return false;
 	}
 
+	/**
+	 * Force an update of the scoreboard for a player
+	 * 
+	 * @param player The player to force an update for
+	 */
 	public void update(Player player) {
 		if (boards.containsKey(player.getUniqueId())) {
 			BPlayerBoard board = boards.get(player.getUniqueId());
@@ -206,56 +224,139 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		}
 	}
 
+	/**
+	 * Get a {@link HashMap} with the {@link BPlayerBoard} for all players that has
+	 * a scoreboard
+	 * 
+	 * @return {@link HashMap} with {@link BPlayerBoard}
+	 */
 	public HashMap<UUID, BPlayerBoard> getBoards() {
 		return boards;
 	}
 
+	/**
+	 * Get the line count of the scoreboards
+	 * 
+	 * @return line count
+	 */
 	public int getLineCount() {
 		return lineCount;
 	}
 
+	/**
+	 * Set the line count for the scoreboards
+	 * 
+	 * @param lineCount The amount of lines to display
+	 */
 	public void setLineCount(int lineCount) {
 		this.lineCount = lineCount;
 	}
 
+	/**
+	 * Get the default title for scoreboards
+	 * 
+	 * @return Default scoreboard title
+	 */
 	public String getDefaultTitle() {
 		return defaultTitle;
 	}
 
+	/**
+	 * Set the default title for scoreboards
+	 * 
+	 * @param defaultTitle The new default title for scoreboards
+	 */
 	public void setDefaultTitle(String defaultTitle) {
 		this.defaultTitle = defaultTitle;
 	}
 
+	/**
+	 * Set a line to display for all players
+	 * <p>
+	 * If a player line (see
+	 * {@link NetherBoardScoreboard#setPlayerLine(int, Player, String)}) exists with
+	 * the same line number the player line will be used instead
+	 * 
+	 * @param line    The line number. Note that this starts from 0
+	 * @param content The text to set
+	 */
 	public void setGlobalLine(int line, String content) {
 		globalLines.put(line, content);
 	}
 
+	/**
+	 * Remove a global line from the scoreboard
+	 * 
+	 * @param line The line number. Note that this starts from 0
+	 */
 	public void clearGlobalLine(int line) {
 		this.setGlobalLine(line, "");
 	}
 
+	/**
+	 * Set a line to display for a single player
+	 * <p>
+	 * This will override global lines with the same line number
+	 * 
+	 * @param line    The line number. Note that this starts from 0
+	 * @param player  The player to display the line to
+	 * @param content The text to set
+	 */
 	public void setPlayerLine(int line, Player player, String content) {
 		if (playerLines.containsKey(player.getUniqueId())) {
 			playerLines.get(player.getUniqueId()).put(line, content);
 		}
 	}
 
+	/**
+	 * Remove a player line from the scoreboard
+	 * 
+	 * @param line   The line number. Note that this starts from 0
+	 * @param player The player to remove the line from
+	 */
 	public void clearPlayerLine(int line, Player player) {
 		this.setPlayerLine(line, player, "");
 	}
 
+	/**
+	 * Get a {@link HashMap} with all global lines
+	 * 
+	 * @return{@link HashMap} with global lines
+	 */
 	public HashMap<Integer, String> getGlobalLines() {
 		return globalLines;
 	}
 
+	/**
+	 * Get a {@link HashMap} with all player lines
+	 * 
+	 * @return {@link HashMap} with player lines
+	 */
 	public HashMap<UUID, HashMap<Integer, String>> getPlayerLines() {
 		return playerLines;
 	}
 
+	/**
+	 * Reset the name color of a player
+	 * <p>
+	 * Name colors use scoreboard teams to chance the name color above the players
+	 * head
+	 * 
+	 * @param player _The player to reset the name color for
+	 */
 	public void resetPlayerNameColor(OfflinePlayer player) {
 		setPlayerNameColor(player, null);
 	}
 
+	/**
+	 * Set the name color of a player
+	 * <p>
+	 * Name colors use scoreboard teams to chance the name color above the players
+	 * head
+	 * 
+	 * @param player   The player to set the color of
+	 * @param newColor The {@link ChatColor} to use
+	 */
 	public void setPlayerNameColor(OfflinePlayer player, ChatColor newColor) {
 		ChatColor oldColor = null;
 		if (playerNameColor.containsKey(player.getUniqueId())) {

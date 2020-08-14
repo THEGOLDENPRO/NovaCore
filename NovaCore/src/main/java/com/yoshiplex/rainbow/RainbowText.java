@@ -3,6 +3,11 @@ package com.yoshiplex.rainbow;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This is used to make rainbow animated text messages
+ * 
+ * @author Yoshiplex
+ */
 public class RainbowText {
 	private int place = 0;
 	private String text = "You did not provide any text.";

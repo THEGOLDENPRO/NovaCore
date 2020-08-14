@@ -10,6 +10,11 @@ import org.bukkit.permissions.PermissionDefault;
 import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.module.modules.chestloot.ChestLootManager;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandGameRefill extends NovaSubCommand {
 
 	public NovaCoreSubCommandGameRefill() {

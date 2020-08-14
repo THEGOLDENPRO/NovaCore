@@ -14,6 +14,11 @@ import xyz.zeeraa.novacore.command.AllowedSenders;
 import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.loottable.LootTable;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandLootTableTest extends NovaSubCommand {
 	public NovaCoreSubCommandLootTableTest() {
 		super("test");

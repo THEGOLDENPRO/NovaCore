@@ -1,5 +1,10 @@
 package xyz.zeeraa.novacore.tasks;
 
+/**
+ * Represents a task that can be started or canceled
+ * 
+ * @author Zeeraa
+ */
 public interface Task {
 	/**
 	 * Start the task

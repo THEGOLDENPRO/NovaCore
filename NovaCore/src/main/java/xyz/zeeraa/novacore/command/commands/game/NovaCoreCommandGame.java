@@ -15,6 +15,11 @@ import xyz.zeeraa.novacore.command.commands.game.resetcountdown.NovaCoreSubComma
 import xyz.zeeraa.novacore.command.commands.game.start.NovaCoreSubCommandForceStartGame;
 import xyz.zeeraa.novacore.command.commands.game.start.NovaCoreSubCommandStartGame;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreCommandGame extends NovaCommand {
 
 	public NovaCoreCommandGame() {

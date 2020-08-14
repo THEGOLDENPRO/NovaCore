@@ -7,6 +7,15 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.json.JSONObject;
 
+/**
+ * Represents a location without a world. This can be used in config files for
+ * maps
+ * <p>
+ * To convert to a bukkit {@link Location} use
+ * {@link LocationData#toLocation(World)}
+ * 
+ * @author Zeeraa
+ */
 public class LocationData {
 	private double x;
 	private double y;
@@ -95,10 +104,10 @@ public class LocationData {
 	public float getPitch() {
 		return pitch;
 	}
-	
+
 	public void center() {
-		this.x = blockCenterLocation((int)x);
-		this.z = blockCenterLocation((int)z);
+		this.x = blockCenterLocation((int) x);
+		this.z = blockCenterLocation((int) z);
 	}
 
 	/**
@@ -126,7 +135,7 @@ public class LocationData {
 	 * Convert a {@link List} with {@link LocationData} to a bukkit {@link Location}
 	 * 
 	 * @param locations The {@link List} with {@link LocationData} to be converted
-	 * @param world      The {@link World} the locations should be in
+	 * @param world     The {@link World} the locations should be in
 	 * @return A {@link List} with bukkit {@link Location}s
 	 */
 	public static List<Location> toLocations(List<LocationData> locations, World world) {
@@ -138,7 +147,7 @@ public class LocationData {
 
 		return result;
 	}
-	
+
 	public static double blockCenterLocation(int block) {
 		if (block >= 0) {
 			return ((double) block) + 0.5;

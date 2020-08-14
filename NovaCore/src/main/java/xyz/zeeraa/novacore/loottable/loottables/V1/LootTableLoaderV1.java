@@ -16,6 +16,13 @@ import xyz.zeeraa.novacore.log.Log;
 import xyz.zeeraa.novacore.loottable.LootTable;
 import xyz.zeeraa.novacore.loottable.LootTableLoader;
 
+/**
+ * The loader for NovaCores default {@link LootTable} Version 1
+ * <p>
+ * This is code is from my minecraft tournament MCFridays
+ * 
+ * @author Zeeraa
+ */
 public class LootTableLoaderV1 implements LootTableLoader {
 	@Override
 	public LootTable read(JSONObject json) {
@@ -39,7 +46,6 @@ public class LootTableLoaderV1 implements LootTableLoader {
 			try {
 
 				LootEntryV1 entry = readLootEntry(jsonItem);
-				
 
 				lootTable.addItem(entry);
 			} catch (Exception e) {
@@ -52,12 +58,12 @@ public class LootTableLoaderV1 implements LootTableLoader {
 
 		return (LootTable) lootTable;
 	}
-	
+
 	@Override
 	public String getLoaderName() {
 		return "EZLootTableV1";
 	}
-	
+
 	private static LootEntryV1 readLootEntry(JSONObject itemJson) {
 		ItemStack item;
 
@@ -161,26 +167,26 @@ public class LootTableLoaderV1 implements LootTableLoader {
 
 		return entry;
 	}
-	
+
 	private static PotionEffect readPotionEffect(JSONObject potion) {
 		PotionEffectType type = PotionEffectType.getByName(potion.getString("type"));
 		int duration = potion.getInt("duration");
-		
+
 		int amplifier = 0;
-		if(potion.has("amplifier")) {
+		if (potion.has("amplifier")) {
 			amplifier = potion.getInt("amplifier");
 		}
-		
+
 		boolean ambient = false;
-		if(potion.has("ambient")) {
+		if (potion.has("ambient")) {
 			ambient = potion.getBoolean("ambient");
 		}
-		
+
 		boolean particles = true;
-		if(potion.has("particles")) {
+		if (potion.has("particles")) {
 			particles = potion.getBoolean("particles");
 		}
-		
+
 		return new PotionEffect(type, duration, amplifier, ambient, particles);
 	}
 }

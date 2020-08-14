@@ -12,10 +12,20 @@ import xyz.zeeraa.novacore.module.event.ModuleDisabledEvent;
 import xyz.zeeraa.novacore.module.event.ModuleEnableEvent;
 
 /**
- * Represents a module that can be loaded, enabled and disabled.<br>
- * Modules need to be loaded with {@link ModuleManager#loadModule(Class)}<br>
- * <br>
- * All modules will be disabled in {@link NovaCore#onDisable()}
+ * Represents a module that can be loaded, enabled and disabled.
+ * <p>
+ * Important information
+ * <ul>
+ * <li>Module names can't contain spaces</li>
+ * <li>Modules need to be loaded with
+ * {@link ModuleManager#loadModule(Class)}</li>
+ * <li>All modules will be disabled in {@link NovaCore#onDisable()}</li>
+ * <li>All modules added to {@link NovaModule#addDependency(Class)} will be
+ * enabled before this module is enabled</li>
+ * <li>The dependencies can in no way have the module as a dependency or the
+ * enable function will cause a {@link StackOverflowError}</li>
+ * </ul>
+ * <p>
  * 
  * @author Zeeraa
  */
@@ -53,7 +63,7 @@ public abstract class NovaModule {
 	 * 
 	 * @throws Exception Thrown if something goes wrong while loading the module
 	 */
-	public void onEnable() throws Exception{
+	public void onEnable() throws Exception {
 	}
 
 	/**
@@ -109,7 +119,7 @@ public abstract class NovaModule {
 				}
 			}
 		}
-		
+
 		boolean returnValue = true;
 
 		try {
@@ -125,10 +135,10 @@ public abstract class NovaModule {
 			this.enableFailureReason = ModuleEnableFailureReason.EXCEPTION;
 			returnValue = false;
 		}
-		
+
 		ModuleEnableEvent event = new ModuleEnableEvent(this, returnValue, enableFailureReason);
 		Bukkit.getServer().getPluginManager().callEvent(event);
-		
+
 		return returnValue;
 	}
 
@@ -160,10 +170,9 @@ public abstract class NovaModule {
 			returnValue = false;
 		}
 		this.enabled = false;
-		
+
 		ModuleDisabledEvent event = new ModuleDisabledEvent(this);
 		Bukkit.getServer().getPluginManager().callEvent(event);
-		
 
 		return returnValue;
 	}

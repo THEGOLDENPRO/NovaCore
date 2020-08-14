@@ -5,6 +5,15 @@ import java.util.Random;
 
 import org.bukkit.inventory.ItemStack;
 
+import xyz.zeeraa.novacore.loottable.LootTable;
+
+/**
+ * Represents an item in NovaCores default {@link LootTable} Version 1
+ * <p>
+ * This is code is from my minecraft tournament MCFridays
+ * 
+ * @author Zeeraa
+ */
 public class LootEntryV1 {
 	private ItemStack item;
 	private int minAmount;
@@ -52,15 +61,15 @@ public class LootEntryV1 {
 		}
 		return min + random.nextInt((max + 1) - min);
 	}
-	
+
 	public boolean hasExtraItems() {
 		return extraItems != null;
 	}
-	
+
 	public ArrayList<LootEntryV1> getExtraItems() {
 		return extraItems;
 	}
-	
+
 	public int getChance() {
 		return chance;
 	}

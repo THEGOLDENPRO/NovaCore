@@ -17,6 +17,11 @@ import net.md_5.bungee.api.ChatColor;
 import xyz.zeeraa.novacore.command.AllowedSenders;
 import xyz.zeeraa.novacore.command.NovaSubCommand;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandGoToWorld extends NovaSubCommand {
 	public NovaCoreSubCommandGoToWorld() {
 		super("gotoworld");

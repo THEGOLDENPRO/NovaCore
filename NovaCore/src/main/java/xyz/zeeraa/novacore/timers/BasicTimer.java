@@ -7,6 +7,11 @@ import org.bukkit.Bukkit;
 import xyz.zeeraa.novacore.NovaCore;
 import xyz.zeeraa.novacore.callbacks.Callback;
 
+/**
+ * This is a simple timer that can be used for countdowns and delayed tasks
+ * 
+ * @author Zeeraa
+ */
 public class BasicTimer implements Timer {
 	private int taskId;
 	private int timeLeft;

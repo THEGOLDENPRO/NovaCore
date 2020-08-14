@@ -2,9 +2,17 @@ package xyz.zeeraa.novacore.tasks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import xyz.zeeraa.novacore.NovaCore;
 
+/**
+ * This creates a task using the
+ * {@link BukkitScheduler#scheduleSyncRepeatingTask(Plugin, org.bukkit.scheduler.BukkitRunnable, long, long)}
+ * function
+ * 
+ * @author Anton
+ */
 public class SimpleTask implements Task {
 	protected Runnable runnable;
 	protected Plugin plugin;
@@ -32,7 +40,7 @@ public class SimpleTask implements Task {
 		this.delay = delay;
 		this.period = period;
 	}
-	
+
 	@Override
 	public boolean start() {
 		if (taskId != -1) {
@@ -53,7 +61,7 @@ public class SimpleTask implements Task {
 		taskId = -1;
 		return true;
 	}
-	
+
 	@Override
 	public boolean isRunning() {
 		return taskId != -1;

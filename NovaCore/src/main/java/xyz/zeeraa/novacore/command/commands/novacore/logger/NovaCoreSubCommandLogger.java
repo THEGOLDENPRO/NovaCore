@@ -11,6 +11,11 @@ import net.md_5.bungee.api.ChatColor;
 import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.log.Log;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandLogger extends NovaSubCommand {
 	public NovaCoreSubCommandLogger() {
 		super("logger");

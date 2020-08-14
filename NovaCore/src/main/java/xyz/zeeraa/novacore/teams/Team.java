@@ -9,6 +9,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+/**
+ * Represents a team used by games
+ * 
+ * @author Zeeraa
+ */
 public abstract class Team {
 	protected UUID teamUuid;
 	protected List<UUID> members;
@@ -18,18 +23,40 @@ public abstract class Team {
 		members = new ArrayList<UUID>();
 	}
 
+	/**
+	 * Get a list with the {@link UUID} of all team members
+	 * 
+	 * @return List with the {@link UUID} of all team members
+	 */
 	public List<UUID> getMembers() {
 		return members;
 	}
 
+	/**
+	 * Check if a player is a member of this team
+	 * 
+	 * @param player The {@link OfflinePlayer} to check
+	 * @return <code>true</code> if the player is a member of this team
+	 */
 	public boolean isMember(OfflinePlayer player) {
 		return isMember(player.getUniqueId());
 	}
 
+	/**
+	 * Check if a player is a member of this team
+	 * 
+	 * @param uuid The {@link UUID} of the player to check
+	 * @return <code>true</code> if the player is a member of this team
+	 */
 	public boolean isMember(UUID uuid) {
 		return members.contains(uuid);
 	}
 
+	/**
+	 * Get the {@link UUID} of this team
+	 * 
+	 * @return Team {@link UUID}
+	 */
 	public UUID getTeamUuid() {
 		return teamUuid;
 	}
@@ -55,10 +82,16 @@ public abstract class Team {
 		return count;
 	}
 
+	/**
+	 * Get the {@link ChatColor} of the team
+	 * 
+	 * @return {@link ChatColor} of the team
+	 */
 	public abstract ChatColor getTeamColor();
-	
+
 	/**
 	 * Get the display name of the team
+	 * 
 	 * @return display name
 	 */
 	public abstract String getDisplayName();

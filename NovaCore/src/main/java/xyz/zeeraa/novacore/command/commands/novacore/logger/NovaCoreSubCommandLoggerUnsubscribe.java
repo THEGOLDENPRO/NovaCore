@@ -12,6 +12,11 @@ import xyz.zeeraa.novacore.command.AllowedSenders;
 import xyz.zeeraa.novacore.command.NovaSubCommand;
 import xyz.zeeraa.novacore.log.Log;
 
+/**
+ * A command from NovaCore
+ * 
+ * @author Zeeraa
+ */
 public class NovaCoreSubCommandLoggerUnsubscribe extends NovaSubCommand {
 	public NovaCoreSubCommandLoggerUnsubscribe() {
 		super("unsubscribe");

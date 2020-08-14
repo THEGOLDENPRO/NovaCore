@@ -1,5 +1,10 @@
 package xyz.zeeraa.novacore.timers;
 
+/**
+ * Contains the basic functions in a timer
+ * 
+ * @author Zeeraa
+ */
 public interface Timer {
 	/**
 	 * Start the timer
