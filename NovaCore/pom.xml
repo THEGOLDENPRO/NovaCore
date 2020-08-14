@@ -63,6 +63,10 @@
 						</goals>
 					</execution>
 				</executions>
+
+				<configuration>
+					<excludePackageNames>com.darkblade12.particledemo.*</excludePackageNames>
+				</configuration>
 			</plugin>
 			<plugin>
 				<!-- explicitly define maven-deploy-plugin after other to force exec 
