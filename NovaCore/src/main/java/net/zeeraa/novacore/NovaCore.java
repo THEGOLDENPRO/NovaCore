@@ -161,7 +161,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		Log.info("Server version: " + version);
 
 		try {
-			Class<?> clazz = Class.forName("xyz.zeeraa.novacore.version." + version + ".VersionIndependantLoader");
+			Class<?> clazz = Class.forName("net.zeeraa.novacore.version." + version + ".VersionIndependantLoader");
 			if (VersionIndependantLoader.class.isAssignableFrom(clazz)) {
 				VersionIndependantLoader versionIndependantLoader = (VersionIndependantLoader) clazz.getConstructor().newInstance();
 
@@ -182,7 +182,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 				
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
 			} else {
-				throw new InvalidClassException("xyz.zeeraa.novacore.version." + version + ".VersionIndependantLoader is not assignable from " + VersionIndependantLoader.class.getName());
+				throw new InvalidClassException("net.zeeraa.novacore.version." + version + ".VersionIndependantLoader is not assignable from " + VersionIndependantLoader.class.getName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
