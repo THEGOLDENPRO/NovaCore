@@ -259,6 +259,23 @@ public abstract class Game {
 	}
 
 	/**
+	 * Set to true to eliminate players for combat logging
+	 * 
+	 * @return <code>true</code> if players will be eliminated for combat logging
+	 */
+	public boolean eliminateIfCombatLogging() {
+		return false;
+	}
+
+	/**
+	 * Get the delay in second the player is combat tagged for if hurt by another player
+	 * @return delay in seconds for combat tag to expire
+	 */
+	public int combatTagDelay() {
+		return 5;
+	}
+
+	/**
 	 * Check if the game can be started
 	 * <p>
 	 * This can be used to create games that need to generate a world before

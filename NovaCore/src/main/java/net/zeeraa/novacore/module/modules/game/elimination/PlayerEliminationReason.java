@@ -26,6 +26,10 @@ public enum PlayerEliminationReason {
 	 */
 	DID_NOT_RECONNECT,
 	/**
+	 * The player logged out while combat tagged
+	 */
+	COMBAT_LOGGING,
+	/**
 	 * This can be used for custom elimination reasons
 	 */
 	OTHER;

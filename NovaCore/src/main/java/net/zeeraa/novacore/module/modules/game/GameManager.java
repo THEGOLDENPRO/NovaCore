@@ -35,6 +35,7 @@ import net.zeeraa.novacore.module.modules.game.countdown.DefaultGameCountdown;
 import net.zeeraa.novacore.module.modules.game.countdown.GameCountdown;
 import net.zeeraa.novacore.module.modules.game.elimination.EliminationTask;
 import net.zeeraa.novacore.module.modules.game.elimination.PlayerEliminationReason;
+import net.zeeraa.novacore.module.modules.game.elimination.PlayerQuitEliminationAction;
 import net.zeeraa.novacore.module.modules.game.eliminationmessage.PlayerEliminationMessage;
 import net.zeeraa.novacore.module.modules.game.eliminationmessage.TeamEliminationMessage;
 import net.zeeraa.novacore.module.modules.game.eliminationmessage.defaultmessage.DefaultPlayerEliminationMessage;
@@ -45,6 +46,8 @@ import net.zeeraa.novacore.module.modules.game.map.readers.DefaultMapReader;
 import net.zeeraa.novacore.module.modules.game.mapselector.MapSelector;
 import net.zeeraa.novacore.module.modules.game.mapselector.selectors.RandomMapSelector;
 import net.zeeraa.novacore.module.modules.multiverse.MultiverseManager;
+import net.zeeraa.novacore.tasks.SimpleTask;
+import net.zeeraa.novacore.tasks.Task;
 import net.zeeraa.novacore.utils.PlayerUtils;
 
 /**
@@ -71,6 +74,10 @@ public class GameManager extends NovaModule implements Listener {
 
 	private PlayerEliminationMessage playerEliminationMessage;
 	private TeamEliminationMessage teamEliminationMessage;
+
+	private HashMap<UUID, Integer> combatTaggedPlayers;
+
+	private Task combatTagCountdownTask;
 
 	/**
 	 * Get instance of {@link GameManager}
@@ -102,6 +109,19 @@ public class GameManager extends NovaModule implements Listener {
 		this.callOnRespawn = new ArrayList<UUID>();
 
 		this.commandAdded = false;
+
+		this.combatTaggedPlayers = new HashMap<UUID, Integer>();
+
+		this.combatTagCountdownTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				for (UUID uuid : combatTaggedPlayers.keySet()) {
+					combatTaggedPlayers.put(uuid, combatTaggedPlayers.get(uuid) - 1);
+				}
+
+				combatTaggedPlayers.entrySet().removeIf(i -> i.getValue() <= 0);
+			}
+		}, 20L, 20L);
 	}
 
 	/**
@@ -172,7 +192,7 @@ public class GameManager extends NovaModule implements Listener {
 	 * Read {@link GameMapData} from a {@link File} list and add it to the active
 	 * {@link MapSelector} defined by {@link GameManager#getMapSelector()}
 	 * 
-	 * @param mapFile           The {@link File} to read
+	 * @param mapFile        The {@link File} to read
 	 * @param worldDirectory The directory containing the worlds
 	 * @return <code>true</code> on success
 	 */
@@ -235,6 +255,8 @@ public class GameManager extends NovaModule implements Listener {
 			CommandRegistry.registerCommand(new NovaCoreCommandGame());
 			commandAdded = true;
 		}
+
+		combatTagCountdownTask.start();
 	}
 
 	@Override
@@ -253,6 +275,10 @@ public class GameManager extends NovaModule implements Listener {
 
 			activeGame.onUnload();
 		}
+
+		combatTagCountdownTask.stop();
+
+		combatTaggedPlayers.clear();
 
 		if (callOnRespawn != null) {
 			callOnRespawn.clear();
@@ -369,6 +395,102 @@ public class GameManager extends NovaModule implements Listener {
 		this.teamEliminationMessage = teamEliminationMessage;
 	}
 
+	/**
+	 * Call this to combat tag a player.
+	 * <p>
+	 * If {@link Game#eliminateIfCombatLogging()} is disabled this will not tag the
+	 * player
+	 * <p>
+	 * When combat tagged and {@link Game#eliminateIfCombatLogging()} is enabled
+	 * players will be eliminated on logout
+	 * <p>
+	 * Combat tagged players will always be eliminated even if the
+	 * {@link Game#getPlayerQuitEliminationAction()} is set
+	 * {@link PlayerQuitEliminationAction#NONE}
+	 * 
+	 * @param player The {@link Player} to combat tag
+	 * @return <code>true</code> if the player was tagged
+	 */
+	public boolean combatTagPlayer(Player player) {
+		if (hasGame()) {
+			if (getActiveGame().hasStarted()) {
+				if (getActiveGame().eliminateIfCombatLogging()) {
+					combatTaggedPlayers.put(player.getUniqueId(), getActiveGame().combatTagDelay());
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Remove the combat tag from a player
+	 * <p>
+	 * Combat tagged players will always be eliminated even if the
+	 * {@link Game#getPlayerQuitEliminationAction()} is set
+	 * {@link PlayerQuitEliminationAction#NONE}
+	 * 
+	 * @param player The {@link Player} to remove the combat tag from
+	 */
+	public void removeCombatTag(Player player) {
+		removeCombatTag(player.getUniqueId());
+	}
+
+	/**
+	 * Remove the combat tag from a player
+	 * <p>
+	 * Combat tagged players will always be eliminated even if the
+	 * {@link Game#getPlayerQuitEliminationAction()} is set
+	 * {@link PlayerQuitEliminationAction#NONE}
+	 * 
+	 * @param uuid The {@link UUID} of the player to remove the combat tag from
+	 */
+	public void removeCombatTag(UUID uuid) {
+		combatTaggedPlayers.remove(uuid);
+	}
+
+	/**
+	 * Get a {@link HashMap} containing all combat tagged players with the
+	 * {@link UUID} of the player as key and seconds left as value
+	 * <p>
+	 * Combat tagged players will always be eliminated even if the
+	 * {@link Game#getPlayerQuitEliminationAction()} is set
+	 * {@link PlayerQuitEliminationAction#NONE}
+	 * 
+	 * @return {@link HashMap} containing all combat tagged players
+	 */
+	public HashMap<UUID, Integer> getCombatTaggedPlayers() {
+		return combatTaggedPlayers;
+	}
+
+	/**
+	 * Check if a player is combat tagged
+	 * <p>
+	 * Combat tagged players will always be eliminated even if the
+	 * {@link Game#getPlayerQuitEliminationAction()} is set
+	 * {@link PlayerQuitEliminationAction#NONE}
+	 * 
+	 * @param player The {@link Player} to check
+	 * @return <code>true</code> if the player is combat tagged
+	 */
+	public boolean isCombatTagged(Player player) {
+		return isCombatTagged(player.getUniqueId());
+	}
+
+	/**
+	 * Check if a player is combat tagged
+	 * <p>
+	 * Combat tagged players will always be eliminated even if the
+	 * {@link Game#getPlayerQuitEliminationAction()} is set
+	 * {@link PlayerQuitEliminationAction#NONE}
+	 * 
+	 * @param uuid The {@link UUID} of the player to check
+	 * @return <code>true</code> if the player is combat tagged
+	 */
+	public boolean isCombatTagged(UUID uuid) {
+		return combatTaggedPlayers.containsKey(uuid);
+	}
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		Player p = e.getEntity();
@@ -380,13 +502,13 @@ public class GameManager extends NovaModule implements Listener {
 
 					if (getActiveGame().eliminatePlayerOnDeath(p)) {
 						try {
-						Location lootLocation = e.getEntity().getLocation().clone();
-						for (ItemStack item : e.getEntity().getInventory().getContents()) {
-							if (item != null) {
-								e.getEntity().getWorld().dropItem(lootLocation, item.clone());
+							Location lootLocation = e.getEntity().getLocation().clone();
+							for (ItemStack item : e.getEntity().getInventory().getContents()) {
+								if (item != null) {
+									e.getEntity().getWorld().dropItem(lootLocation, item.clone());
+								}
 							}
-						}
-						}catch(Exception e2) {
+						} catch (Exception e2) {
 							e2.printStackTrace();
 						}
 
@@ -457,6 +579,10 @@ public class GameManager extends NovaModule implements Listener {
 									}
 								}
 							}
+							// Wont be called if players are in the same team due to the return; above
+							combatTagPlayer((Player) e.getEntity());
+						} else {
+							combatTagPlayer((Player) e.getEntity());
 						}
 					}
 				}
@@ -477,8 +603,9 @@ public class GameManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent e) {
-		if (callOnRespawn.contains(e.getPlayer().getUniqueId())) {
-			callOnRespawn.remove(e.getPlayer().getUniqueId());
+		Player p = e.getPlayer();
+		if (callOnRespawn.contains(p.getUniqueId())) {
+			callOnRespawn.remove(p.getUniqueId());
 		}
 
 		if (hasGame()) {
@@ -486,36 +613,41 @@ public class GameManager extends NovaModule implements Listener {
 				return;
 			}
 			if (activeGame.hasStarted()) {
-				Player p = e.getPlayer();
-
 				if (activeGame.getPlayers().contains(p.getUniqueId())) {
-					switch (activeGame.getPlayerQuitEliminationAction()) {
-					case NONE:
-						break;
+					if (isCombatTagged(p)) {
+						activeGame.eliminatePlayer(p, null, PlayerEliminationReason.COMBAT_LOGGING);
+					} else {
 
-					case INSTANT:
-						activeGame.eliminatePlayer(p, null, PlayerEliminationReason.QUIT);
-						break;
+						switch (activeGame.getPlayerQuitEliminationAction()) {
+						case NONE:
+							break;
 
-					case DELAYED:
-						EliminationTask eliminationTask = new EliminationTask(p.getUniqueId(), p.getName(), activeGame.getPlayerEliminationDelay(), new Callback() {
-							@Override
-							public void execute() {
-								getActiveGame().eliminatePlayer(p, null, PlayerEliminationReason.DID_NOT_RECONNECT);
-							}
-						});
-						eliminationTasks.put(e.getPlayer().getUniqueId(), eliminationTask);
-						int minutes = (activeGame.getPlayerEliminationDelay() / 60);
-						int seconds = activeGame.getPlayerEliminationDelay() % 60;
+						case INSTANT:
+							activeGame.eliminatePlayer(p, null, PlayerEliminationReason.QUIT);
+							break;
 
-						Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
-						break;
+						case DELAYED:
+							EliminationTask eliminationTask = new EliminationTask(p.getUniqueId(), p.getName(), activeGame.getPlayerEliminationDelay(), new Callback() {
+								@Override
+								public void execute() {
+									getActiveGame().eliminatePlayer(p, null, PlayerEliminationReason.DID_NOT_RECONNECT);
+								}
+							});
+							eliminationTasks.put(e.getPlayer().getUniqueId(), eliminationTask);
+							int minutes = (activeGame.getPlayerEliminationDelay() / 60);
+							int seconds = activeGame.getPlayerEliminationDelay() % 60;
 
-					default:
-						break;
+							Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
+							break;
+
+						default:
+							break;
+						}
 					}
 				}
 			}
 		}
+
+		removeCombatTag(p);
 	}
 }

@@ -57,6 +57,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <excludePackageNames>com.darkblade12.particledemo.*</excludePackageNames>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>

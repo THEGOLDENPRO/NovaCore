@@ -39,6 +39,10 @@ public class DefaultPlayerEliminationMessage implements PlayerEliminationMessage
 			extra += "did not reconnect in time";
 			break;
 
+		case COMBAT_LOGGING:
+			extra += "logged out during combat";
+			break;
+			
 		case QUIT:
 			extra += "quit";
 			break;
@@ -62,9 +66,6 @@ public class DefaultPlayerEliminationMessage implements PlayerEliminationMessage
 			extra += "was killed " + killerName;
 			break;
 
-		case OTHER:
-			extra += "went out to buy some milk but never returned";
-			break;
 		default:
 			extra += "went out to buy some milk but never returned";
 			break;

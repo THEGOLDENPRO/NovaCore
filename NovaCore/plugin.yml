@@ -1,5 +1,5 @@
 name: NovaCore
-main: xyz.zeeraa.novacore.NovaCore
+main: net.zeeraa.novacore.NovaCore
 description: A core plugin
 version: 1.0
 
