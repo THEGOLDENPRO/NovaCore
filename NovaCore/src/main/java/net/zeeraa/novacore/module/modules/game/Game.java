@@ -21,6 +21,8 @@ import net.zeeraa.novacore.module.modules.game.events.PlayerEliminatedEvent;
 import net.zeeraa.novacore.module.modules.game.events.PlayerWinEvent;
 import net.zeeraa.novacore.module.modules.game.events.TeamEliminatedEvent;
 import net.zeeraa.novacore.module.modules.game.events.TeamWinEvent;
+import net.zeeraa.novacore.tasks.SimpleTask;
+import net.zeeraa.novacore.tasks.Task;
 import net.zeeraa.novacore.teams.Team;
 
 /**
@@ -30,12 +32,12 @@ import net.zeeraa.novacore.teams.Team;
  */
 public abstract class Game {
 	/**
-	 * This is the task id for the winner check.
+	 * This is the task that run the winner check.
 	 * <p>
 	 * This should never be changed by the game code unless you know what you are
 	 * doing
 	 */
-	protected int winCheckTaskId;
+	protected Task winCheckTask;
 
 	/**
 	 * This is used the prevent {@link Game#endGame()} from being called twice
@@ -78,10 +80,19 @@ public abstract class Game {
 	public Game() {
 		this.players = new ArrayList<UUID>();
 		this.world = null;
-		this.winCheckTaskId = -1;
 		this.endCalled = false;
 		this.startCalled = false;
 		this.autoWinnerCheckCompleted = false;
+		this.winCheckTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				if (!autoWinnerCheckCompleted) {
+					if (autoEndGame()) {
+						checkWinner();
+					}
+				}
+			}
+		}, 5L);
 	}
 
 	/**
@@ -127,17 +138,6 @@ public abstract class Game {
 	 */
 	public void load() {
 		onLoad();
-
-		if (winCheckTaskId == -1) {
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					if (autoEndGame()) {
-						checkWinner();
-					}
-				}
-			}, 4L, 4L);
-		}
 	}
 
 	/**
@@ -146,10 +146,7 @@ public abstract class Game {
 	 * This should not be called outside of {@link GameManager}
 	 */
 	public void unload() {
-		if (winCheckTaskId != -1) {
-			Bukkit.getScheduler().cancelTask(winCheckTaskId);
-			winCheckTaskId = -1;
-		}
+		winCheckTask.stop();
 
 		onUnload();
 	}
@@ -268,7 +265,9 @@ public abstract class Game {
 	}
 
 	/**
-	 * Get the delay in second the player is combat tagged for if hurt by another player
+	 * Get the delay in second the player is combat tagged for if hurt by another
+	 * player
+	 * 
 	 * @return delay in seconds for combat tag to expire
 	 */
 	public int combatTagDelay() {
@@ -332,6 +331,10 @@ public abstract class Game {
 		}
 		startCalled = true;
 
+		if (autoEndGame()) {
+			winCheckTask.start();
+		}
+
 		Bukkit.getServer().getPluginManager().callEvent(new GameStartEvent(this));
 		this.onStart();
 
@@ -355,6 +358,8 @@ public abstract class Game {
 			return false;
 		}
 		endCalled = true;
+
+		winCheckTask.stop();
 
 		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this));
 		this.onEnd();
@@ -491,16 +496,20 @@ public abstract class Game {
 				autoWinnerCheckCompleted = true;
 			}
 		} else {
+			Log.trace("Player size: " + players.size());
 			if (players.size() == 1) {
 				OfflinePlayer player = Bukkit.getOfflinePlayer(players.get(0));
 
 				if (player != null) {
 					onPlayerWin(player);
 					Bukkit.getServer().getPluginManager().callEvent(new PlayerWinEvent(player));
+				} else {
+					Log.trace("Game#checkWinner()","OfflinePlayer was null");
 				}
 			}
 
 			if (players.size() <= 1) {
+				Log.debug("Game#checkWinner()","Player size is less than or equal to 1. Ending the game");
 				getGameManager().endGame();
 				autoWinnerCheckCompleted = true;
 			}

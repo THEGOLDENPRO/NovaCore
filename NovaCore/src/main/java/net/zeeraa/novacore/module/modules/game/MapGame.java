@@ -87,6 +87,10 @@ public abstract class MapGame extends Game {
 			module.onGameStart(this);
 		}
 
+		if (autoEndGame()) {
+			winCheckTask.start();
+		}
+
 		this.onStart();
 
 		return true;
@@ -104,6 +108,8 @@ public abstract class MapGame extends Game {
 			return false;
 		}
 		endCalled = true;
+		
+		winCheckTask.stop();
 
 		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this));
 
