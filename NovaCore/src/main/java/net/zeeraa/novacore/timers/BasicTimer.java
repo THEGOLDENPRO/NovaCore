@@ -161,6 +161,15 @@ public class BasicTimer implements Timer {
 	}
 
 	/**
+	 * Set the time left
+	 * 
+	 * @param timeLeft Value
+	 */
+	public void setTimeLeft(int timeLeft) {
+		this.timeLeft = timeLeft;
+	}
+
+	/**
 	 * Get mow many ticks before the timer will count down
 	 * 
 	 * @return ticks

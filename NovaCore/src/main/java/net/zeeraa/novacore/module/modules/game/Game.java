@@ -496,7 +496,6 @@ public abstract class Game {
 				autoWinnerCheckCompleted = true;
 			}
 		} else {
-			Log.trace("Player size: " + players.size());
 			if (players.size() == 1) {
 				OfflinePlayer player = Bukkit.getOfflinePlayer(players.get(0));
 

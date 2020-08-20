@@ -57,11 +57,11 @@
 	
 	<distributionManagement>
 		<snapshotRepository>
-			<id>nexus-snapshots</id>
+			<id>zeeraas-snapshots</id>
 			<url>http://maven.zeeraa.xyz/repository/maven-snapshots/</url>
 		</snapshotRepository>
 		<repository>
-			<id>nexus-releases</id>
+			<id>zeeraas-releases</id>
 			<url>http://maven.zeeraa.xyz/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>

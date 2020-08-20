@@ -18,7 +18,7 @@ public class CommandRegistry {
 	 * @param command {@link NovaCommand} to be registered
 	 */
 	public static void registerCommand(NovaCommand command) {
-		Log.info("Registering command " + command.getName());
+		Log.debug("CommandRegistry", "Registering command " + command.getName());
 		registerCommandPermissions(command);
 		NovaCommandProxy commandProxy = new NovaCommandProxy(command);
 		NovaCore.getInstance().getCommandRegistrator().registerCommand(commandProxy);
@@ -26,6 +26,7 @@ public class CommandRegistry {
 
 	private static void registerCommandPermissions(NovaCommandBase command) {
 		if (command.hasPermission()) {
+			Log.trace("CommandRegistry", "Registering permission " + command.getPermission());
 			if (Bukkit.getServer().getPluginManager().getPermission(command.getPermission()) == null) {
 				Bukkit.getServer().getPluginManager().addPermission(new Permission(command.getPermission(), command.getPermissionDescription(), command.getPermissionDefaultValue()));
 			}

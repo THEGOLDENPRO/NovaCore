@@ -69,7 +69,7 @@ public class Log {
 	}
 
 	public static void log(String source, String message, LogLevel logLevel) {
-		String fullMessage = "[" + logLevel.getMessagePrefix() + ChatColor.RESET + "]" + (source == null ? "" : "[" + ChatColor.BOLD + source + ChatColor.RESET + "]") + ": " + message;
+		String fullMessage = "[" + logLevel.getMessagePrefix() + ChatColor.RESET + "]" + (source == null ? "" : "[" + ChatColor.GOLD + source + ChatColor.RESET + "]") + ": " + message;
 		if (logLevel.shouldLog(consoleLogLevel)) {
 			Bukkit.getServer().getConsoleSender().sendMessage(fullMessage);
 		}
