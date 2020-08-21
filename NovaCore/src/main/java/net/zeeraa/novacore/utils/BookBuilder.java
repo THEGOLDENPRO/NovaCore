@@ -20,11 +20,21 @@ import org.bukkit.inventory.meta.BookMeta;
  * @author Zeeraa
  */
 public class BookBuilder extends ItemBuilder {
+	public BookBuilder() {
+		this(null,null,null);
+	}
+	
+	public BookBuilder(String title, String author) {
+		this(null, title, author);
+	}
+	
 	public BookBuilder(List<String> pages, String title, String author) {
 		super(Material.WRITTEN_BOOK);
 
 		if (pages != null) {
 			setPages(pages);
+		} else {
+			((BookMeta) meta).setPages();
 		}
 
 		if (title != null) {
