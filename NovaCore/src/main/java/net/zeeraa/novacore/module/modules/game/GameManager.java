@@ -36,15 +36,18 @@ import net.zeeraa.novacore.module.modules.game.countdown.GameCountdown;
 import net.zeeraa.novacore.module.modules.game.elimination.EliminationTask;
 import net.zeeraa.novacore.module.modules.game.elimination.PlayerEliminationReason;
 import net.zeeraa.novacore.module.modules.game.elimination.PlayerQuitEliminationAction;
-import net.zeeraa.novacore.module.modules.game.eliminationmessage.PlayerEliminationMessage;
-import net.zeeraa.novacore.module.modules.game.eliminationmessage.TeamEliminationMessage;
-import net.zeeraa.novacore.module.modules.game.eliminationmessage.defaultmessage.DefaultPlayerEliminationMessage;
 import net.zeeraa.novacore.module.modules.game.events.GameLoadedEvent;
+import net.zeeraa.novacore.module.modules.game.events.GameStartFailureEvent;
 import net.zeeraa.novacore.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.module.modules.game.map.MapReader;
 import net.zeeraa.novacore.module.modules.game.map.readers.DefaultMapReader;
 import net.zeeraa.novacore.module.modules.game.mapselector.MapSelector;
 import net.zeeraa.novacore.module.modules.game.mapselector.selectors.RandomMapSelector;
+import net.zeeraa.novacore.module.modules.game.messages.GameStartFailureMessage;
+import net.zeeraa.novacore.module.modules.game.messages.PlayerEliminationMessage;
+import net.zeeraa.novacore.module.modules.game.messages.TeamEliminationMessage;
+import net.zeeraa.novacore.module.modules.game.messages.defaultmessage.DefaultGameStartFailureMessage;
+import net.zeeraa.novacore.module.modules.game.messages.defaultmessage.DefaultPlayerEliminationMessage;
 import net.zeeraa.novacore.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.tasks.SimpleTask;
 import net.zeeraa.novacore.tasks.Task;
@@ -74,6 +77,7 @@ public class GameManager extends NovaModule implements Listener {
 
 	private PlayerEliminationMessage playerEliminationMessage;
 	private TeamEliminationMessage teamEliminationMessage;
+	private GameStartFailureMessage startFailureMessage;
 
 	private HashMap<UUID, Integer> combatTaggedPlayers;
 
@@ -103,6 +107,7 @@ public class GameManager extends NovaModule implements Listener {
 
 		this.countdown = new DefaultGameCountdown();
 
+		this.startFailureMessage = new DefaultGameStartFailureMessage();
 		this.playerEliminationMessage = new DefaultPlayerEliminationMessage();
 		this.teamEliminationMessage = null;
 
@@ -297,33 +302,58 @@ public class GameManager extends NovaModule implements Listener {
 	 * 
 	 */
 	public void start() throws IOException {
-		Log.debug("GameManager is trying to start a game");
-		if (activeGame instanceof MapGame) {
-			if (mapSelector.getMaps().size() == 0) {
-				Log.fatal("No maps has been loaded");
-				throw new NoMapsAddedException("No maps has been loaded");
+		try {
+			Log.debug("GameManager is trying to start a game");
+			if (activeGame instanceof MapGame) {
+				if (mapSelector.getMaps().size() == 0) {
+					Log.fatal("No maps has been loaded");
+					throw new NoMapsAddedException("No maps has been loaded");
+				}
+
+				GameMapData map = mapSelector.getMapToUse();
+				Log.debug("Selected map: " + map.getDisplayName());
+
+				Log.info("Loading game map");
+				((MapGame) activeGame).loadMap(map);
 			}
 
-			GameMapData map = mapSelector.getMapToUse();
-			Log.debug("Selected map: " + map.getDisplayName());
-
-			Log.info("Loading game map");
-			((MapGame) activeGame).loadMap(map);
+			Log.debug("Calling start on " + activeGame.getClass().getName());
+			activeGame.startGame();
+		} catch (Exception e) {
+			e.printStackTrace();
+			GameStartFailureEvent event = new GameStartFailureEvent(GameManager.getInstance().getActiveGame(), e);
+			Bukkit.getPluginManager().callEvent(event);
 		}
-
-		Log.debug("Calling start on " + activeGame.getClass().getName());
-		activeGame.startGame();
 	}
 
 	/**
-	 * Call the {@link Game#endGame()} of the active game
+	 * Call the {@link Game#endGame(GameEndReason)} of the active game
+	 * <p>
+	 * Deprecated since {@link GameManager#endGame(GameEndReason)} should be used
+	 * instead of this
+	 * <p>
+	 * This will use the default {@link GameEndReason} value of
+	 * {@link GameEndReason#UNSPECIFIED}
 	 * 
-	 * @return <code>false</code> if {@link Game#endGame()} returns
+	 * @return <code>false</code> if {@link Game#endGame(GameEndReason)} returns
 	 *         <code>false</code> or if not game has been loaded
 	 */
+	@Deprecated
 	public boolean endGame() {
+		return this.endGame(GameEndReason.UNSPECIFIED);
+	}
+
+	/**
+	 * Call the {@link Game#endGame(GameEndReason)} of the active game
+	 * 
+	 * @param reason The reason why the game ended
+	 * 
+	 * @return <code>false</code> if {@link Game#endGame(GameEndReason)} returns
+	 *         <code>false</code> or if not game has been loaded
+	 */
+	public boolean endGame(GameEndReason reason) {
 		if (hasGame()) {
-			return activeGame.endGame();
+			return activeGame.endGame(reason);
 		}
 		return false;
 	}
@@ -649,5 +679,12 @@ public class GameManager extends NovaModule implements Listener {
 		}
 
 		removeCombatTag(p);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onGameStartFailure(GameStartFailureEvent e) {
+		if(startFailureMessage != null) {
+			startFailureMessage.showStartFailureMessage(e.getGame(), e.getException());
+		}
 	}
 }

@@ -27,6 +27,7 @@ import net.zeeraa.novacore.NovaCore;
 import net.zeeraa.novacore.log.Log;
 import net.zeeraa.novacore.module.NovaModule;
 import net.zeeraa.novacore.module.modules.game.GameManager;
+import net.zeeraa.novacore.module.modules.game.events.GameStartFailureEvent;
 import net.zeeraa.novacore.module.modules.gamelobby.events.PlayerJoinGameLobbyEvent;
 import net.zeeraa.novacore.module.modules.gamelobby.map.GameLobbyMap;
 import net.zeeraa.novacore.module.modules.gamelobby.map.GameLobbyMapData;
@@ -197,9 +198,10 @@ public class GameLobby extends NovaModule implements Listener {
 
 			return true;
 		} catch (Exception e) {
-			Log.fatal("An exception occured while trying to start the game");
-			Bukkit.getServer().broadcastMessage(ChatColor.RED + "An uncorrectable error occurred while trying to start the game");
 			e.printStackTrace();
+			
+			GameStartFailureEvent event = new GameStartFailureEvent(GameManager.getInstance().getActiveGame(), e);
+			Bukkit.getPluginManager().callEvent(event);
 		}
 
 		return false;

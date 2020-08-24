@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.module.modules.game.eliminationmessage;
+package net.zeeraa.novacore.module.modules.game.messages;
 
 import net.zeeraa.novacore.teams.Team;
 

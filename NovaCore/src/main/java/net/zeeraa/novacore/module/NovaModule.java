@@ -47,6 +47,8 @@ public abstract class NovaModule {
 	 * before this module is enabled. The dependencies can in no way have this
 	 * module as a dependency or the enable function will cause a
 	 * {@link StackOverflowError}
+	 * 
+	 * @param dependency The module class to depend on
 	 */
 	protected void addDependency(Class<? extends NovaModule> dependency) {
 		dependencies.add(dependency);

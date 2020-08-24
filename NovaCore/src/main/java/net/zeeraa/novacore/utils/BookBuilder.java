@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -21,13 +22,13 @@ import org.bukkit.inventory.meta.BookMeta;
  */
 public class BookBuilder extends ItemBuilder {
 	public BookBuilder() {
-		this(null,null,null);
+		this(null, null, null);
 	}
-	
+
 	public BookBuilder(String title, String author) {
 		this(null, title, author);
 	}
-	
+
 	public BookBuilder(List<String> pages, String title, String author) {
 		super(Material.WRITTEN_BOOK);
 
@@ -87,7 +88,7 @@ public class BookBuilder extends ItemBuilder {
 	 * @return Instance of the {@link BookBuilder}
 	 */
 	public BookBuilder addPages(List<String> pages) {
-		List<String> bookPages = ((BookMeta) meta).getPages();
+		List<String> bookPages = getPageArrayListClone();
 
 		bookPages.addAll(pages);
 
@@ -106,13 +107,17 @@ public class BookBuilder extends ItemBuilder {
 	 * @return Instance of the {@link BookBuilder}
 	 */
 	public BookBuilder addPage(String page) {
-		List<String> pages = ((BookMeta) meta).getPages();
+		List<String> bookPages = getPageArrayListClone();
 
-		pages.add(page);
+		bookPages.add(page);
 
-		((BookMeta) meta).setPages(pages);
+		((BookMeta) meta).setPages(bookPages);
 
 		return this;
+	}
+
+	private ArrayList<String> getPageArrayListClone() {
+		return new ArrayList<String>(((BookMeta) meta).getPages());
 	}
 
 	/**

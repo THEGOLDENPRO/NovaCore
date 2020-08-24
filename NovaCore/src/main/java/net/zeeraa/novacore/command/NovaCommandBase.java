@@ -32,6 +32,7 @@ public abstract class NovaCommandBase {
 	private boolean requireOp;
 
 	private String description;
+	private String useage;
 
 	private String name;
 	private List<String> aliases;
@@ -48,6 +49,7 @@ public abstract class NovaCommandBase {
 		this.subCommands = new ArrayList<NovaSubCommand>();
 		this.allowedSenders = AllowedSenders.ALL;
 		this.parentCommand = null;
+		this.useage = null;
 
 		this.aliases = new ArrayList<String>();
 
@@ -92,6 +94,14 @@ public abstract class NovaCommandBase {
 		return description;
 	}
 
+	public void setUseage(String useage) {
+		this.useage = useage;
+	}
+	
+	public String getUseage() {
+		return useage;
+	}
+	
 	/**
 	 * Set the description for this command
 	 * 

@@ -1,6 +1,5 @@
 package net.zeeraa.novacore.module.modules.game.events;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import net.zeeraa.novacore.module.modules.game.Game;
@@ -10,24 +9,12 @@ import net.zeeraa.novacore.module.modules.game.Game;
  * 
  * @author Zeeraa
  */
-public class GameStartEvent extends Event {
+public class GameStartEvent extends GameEvent {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-	private Game game;
-
 	public GameStartEvent(Game game) {
-		this.game = game;
+		super(game);
 	}
-
-	/**
-	 * Get instance of the {@link Game} that is starting
-	 * 
-	 * @return The {@link Game} that is starting
-	 */
-	public Game getGame() {
-		return game;
-	}
-
 	@Override
 	public HandlerList getHandlers() {
 		return HANDLERS_LIST;

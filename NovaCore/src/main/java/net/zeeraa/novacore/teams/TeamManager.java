@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import net.zeeraa.novacore.NovaCore;
+
 public abstract class TeamManager {
 	protected List<Team> teams;
 
@@ -16,6 +18,7 @@ public abstract class TeamManager {
 
 	/**
 	 * Get a list of all {@link Team}s
+	 * 
 	 * @return List of teams
 	 */
 	public List<Team> getTeams() {
@@ -34,14 +37,14 @@ public abstract class TeamManager {
 		}
 		return null;
 	}
-	
+
 	public Team getTeamByTeamUUID(UUID uuid) {
-		for(Team team : teams) {
-			if(team.getTeamUuid().equals(uuid)) {
+		for (Team team : teams) {
+			if (team.getTeamUuid().equals(uuid)) {
 				return team;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -58,6 +61,24 @@ public abstract class TeamManager {
 
 		return false;
 	}
-	
+
 	public abstract boolean requireTeamToJoin(Player player);
+
+	/**
+	 * Check if {@link NovaCore} has a team manager
+	 * 
+	 * @return The result of {@link NovaCore#hasTeamManager()}
+	 */
+	public static boolean hasTeamManager() {
+		return NovaCore.getInstance().hasTeamManager();
+	}
+
+	/**
+	 * Get the {@link TeamManager} from {@link NovaCore}
+	 * 
+	 * @return The result of {@link NovaCore#getTeamManager()}
+	 */
+	public static TeamManager getTeamManager() {
+		return NovaCore.getInstance().getTeamManager();
+	}
 }

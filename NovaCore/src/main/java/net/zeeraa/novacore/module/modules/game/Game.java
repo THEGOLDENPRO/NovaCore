@@ -40,7 +40,7 @@ public abstract class Game {
 	protected Task winCheckTask;
 
 	/**
-	 * This is used the prevent {@link Game#endGame()} from being called twice
+	 * This is used the prevent {@link Game#endGame(GameEndReason)} from being called twice
 	 * <p>
 	 * This should never be changed by the game code unless you know what you are
 	 * doing
@@ -351,9 +351,10 @@ public abstract class Game {
 	 * <p>
 	 * This should also send all players to the lobby and reset the server
 	 * 
+	 * @param reason The {@link GameEndReason} why the game ended
 	 * @return <code>false</code> if this has already been called
 	 */
-	public boolean endGame() {
+	public boolean endGame(GameEndReason reason) {
 		if (endCalled) {
 			return false;
 		}
@@ -361,16 +362,18 @@ public abstract class Game {
 
 		winCheckTask.stop();
 
-		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this));
-		this.onEnd();
+		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this, reason));
+		this.onEnd(reason);
 
 		return true;
 	}
 
 	/**
 	 * Called when the game ends
+	 * 
+	 * @param reason The {@link GameEndReason} why the game ended
 	 */
-	public abstract void onEnd();
+	public abstract void onEnd(GameEndReason reason);
 
 	/**
 	 * Eliminate a player from the game
@@ -471,6 +474,8 @@ public abstract class Game {
 			return;
 		}
 
+		boolean hasWinner = false;
+
 		if (NovaCore.getInstance().hasTeamManager() && getGameManager().isUseTeams()) {
 			List<UUID> teamsLeft = new ArrayList<UUID>();
 
@@ -486,13 +491,14 @@ public abstract class Game {
 			if (teamsLeft.size() == 1) {
 				Team team = NovaCore.getInstance().getTeamManager().getTeamByTeamUUID(teamsLeft.get(0));
 				if (team != null) {
+					hasWinner = true;
 					onTeamWin(team);
 					Bukkit.getServer().getPluginManager().callEvent(new TeamWinEvent(team));
 				}
 			}
 
 			if (teamsLeft.size() <= 1) {
-				getGameManager().endGame();
+				getGameManager().endGame(hasWinner ? GameEndReason.WIN : GameEndReason.DRAW);
 				autoWinnerCheckCompleted = true;
 			}
 		} else {
@@ -500,16 +506,17 @@ public abstract class Game {
 				OfflinePlayer player = Bukkit.getOfflinePlayer(players.get(0));
 
 				if (player != null) {
+					hasWinner = true;
 					onPlayerWin(player);
 					Bukkit.getServer().getPluginManager().callEvent(new PlayerWinEvent(player));
 				} else {
-					Log.trace("Game#checkWinner()","OfflinePlayer was null");
+					Log.trace("Game#checkWinner()", "OfflinePlayer was null");
 				}
 			}
 
 			if (players.size() <= 1) {
-				Log.debug("Game#checkWinner()","Player size is less than or equal to 1. Ending the game");
-				getGameManager().endGame();
+				Log.debug("Game#checkWinner()", "Player size is less than or equal to 1. Ending the game");
+				getGameManager().endGame(hasWinner ? GameEndReason.WIN : GameEndReason.DRAW);
 				autoWinnerCheckCompleted = true;
 			}
 		}

@@ -3,31 +3,32 @@ package net.zeeraa.novacore.module.modules.game.events;
 import org.bukkit.event.HandlerList;
 
 import net.zeeraa.novacore.module.modules.game.Game;
-import net.zeeraa.novacore.module.modules.game.GameEndReason;
 
 /**
- * Called when a game is starting
+ * Called when a game fails to start
  * 
  * @author Zeeraa
  */
-public class GameEndEvent extends GameEvent {
+public class GameStartFailureEvent extends GameEvent {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-	private GameEndReason reason;
+	private Exception exception;
 
-	public GameEndEvent(Game game, GameEndReason reason) {
+	public GameStartFailureEvent(Game game, Exception exception) {
 		super(game);
-		this.reason = reason;
+
+		this.exception = exception;
 	}
 
 	/**
-	 * Get the reason why the game ended
-	 * @return {@link GameEndReason}
+	 * Get the exception that caused the game fail to start
+	 * 
+	 * @return {@link Exception} or null if the cause was not an exception
 	 */
-	public GameEndReason getReason() {
-		return reason;
+	public Exception getException() {
+		return exception;
 	}
-	
+
 	@Override
 	public HandlerList getHandlers() {
 		return HANDLERS_LIST;

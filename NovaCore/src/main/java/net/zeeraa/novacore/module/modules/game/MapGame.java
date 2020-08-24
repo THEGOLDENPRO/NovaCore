@@ -101,23 +101,19 @@ public abstract class MapGame extends Game {
 	 * <p>
 	 * This should also send all players to the lobby and reset the server
 	 * 
+	 * @param reason The {@link GameEndReason} why the game ended
 	 * @return <code>false</code> if this has already been called
 	 */
-	public boolean endGame() {
+	public boolean endGame(GameEndReason reason) {
 		if (endCalled) {
 			return false;
 		}
 		endCalled = true;
-		
+
 		winCheckTask.stop();
 
-		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this));
-
-		for (MapModule module : activeMap.getMapData().getMapModules()) {
-			module.onGameEnd(this);
-		}
-
-		this.onEnd();
+		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this, reason));
+		this.onEnd(reason);
 
 		return true;
 	}

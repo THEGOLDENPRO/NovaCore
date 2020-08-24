@@ -36,7 +36,7 @@ public class DBConnection {
 	 * @param database name of the database to use
 	 * @return <code>true</code> on success or <code>false</code> on failure
 	 * @throws ClassNotFoundException ClassNotFoundException
-	 * @throws SQLException SQLException
+	 * @throws SQLException           SQLException
 	 */
 	public boolean connect(String host, String username, String password, String database) throws ClassNotFoundException, SQLException {
 		return this.connect(host, username, password, database, "com.mysql.jdbc.Driver");
@@ -52,7 +52,7 @@ public class DBConnection {
 	 * @param driver   driver to use
 	 * @return <code>true</code> on success or <code>false</code> on failure
 	 * @throws ClassNotFoundException ClassNotFoundException
-	 * @throws SQLException SQLException
+	 * @throws SQLException           SQLException
 	 */
 	public boolean connect(String host, String username, String password, String database, String driver) throws ClassNotFoundException, SQLException {
 		DBCredentials credentials = new DBCredentials(driver, host, username, password, database);
@@ -64,8 +64,9 @@ public class DBConnection {
 	 * Connects to the database using the com.mysql.jdbc.Driver as driver
 	 * 
 	 * @param credentials The {@link DBCredentials} to use
+	 * @return <code>true</code> on success or <code>false</code> on failure
 	 * @throws ClassNotFoundException ClassNotFoundException
-	 * @throws SQLException SQLException
+	 * @throws SQLException           SQLException
 	 */
 	public boolean connect(DBCredentials credentials) throws ClassNotFoundException, SQLException {
 		if (connection != null) {
@@ -76,7 +77,7 @@ public class DBConnection {
 
 		this.credentials = credentials;
 
-		Log.info("DBC","Connecting to database " + credentials.getHost() + " using database driver: " + credentials.getDriver());
+		Log.info("DBC", "Connecting to database " + credentials.getHost() + " using database driver: " + credentials.getDriver());
 
 		Class.forName(credentials.getDriver());
 		connection = DriverManager.getConnection(credentials.getHost(), credentials.getUsername(), credentials.getPassword());
@@ -89,16 +90,16 @@ public class DBConnection {
 	 * 
 	 * @return <code>true</code> on success
 	 * @throws ClassNotFoundException ClassNotFoundException
-	 * @throws SQLException SQLException
+	 * @throws SQLException           SQLException
 	 */
 	public boolean reconnect() throws ClassNotFoundException, SQLException {
-		Log.info("DBC","Trying to reconnect to database " + credentials.getHost());
+		Log.info("DBC", "Trying to reconnect to database " + credentials.getHost());
 		try {
 			if (this.isConnected()) {
 				this.close();
 			}
 		} catch (Exception e) {
-			Log.warn("DBC","Failed to close the database while trying to reconnect");
+			Log.warn("DBC", "Failed to close the database while trying to reconnect");
 			e.printStackTrace();
 		}
 
@@ -170,7 +171,7 @@ public class DBConnection {
 		keepAliveTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
 			@Override
 			public void run() {
-				Log.trace("DBC","Sending keep alive query to database " + credentials.getHost());
+				Log.trace("DBC", "Sending keep alive query to database " + credentials.getHost());
 				testQuery();
 			}
 		}, 36000L, 36000L); // 30 minutes
