@@ -14,6 +14,7 @@ import net.zeeraa.novacore.command.commands.game.refill.NovaCoreSubCommandGameRe
 import net.zeeraa.novacore.command.commands.game.resetcountdown.NovaCoreSubCommandResetCountdownGame;
 import net.zeeraa.novacore.command.commands.game.start.NovaCoreSubCommandForceStartGame;
 import net.zeeraa.novacore.command.commands.game.start.NovaCoreSubCommandStartGame;
+import net.zeeraa.novacore.command.commands.game.stop.NovaCoreSubCommandStopGame;
 
 /**
  * A command from NovaCore
@@ -33,6 +34,7 @@ public class NovaCoreCommandGame extends NovaCommand {
 		this.addHelpSubCommand();
 		this.addSubCommand(new NovaCoreSubCommandStartGame());
 		this.addSubCommand(new NovaCoreSubCommandForceStartGame());
+		this.addSubCommand(new NovaCoreSubCommandStopGame());
 		this.addSubCommand(new NovaCoreSubCommandGameRefill());
 		this.addSubCommand(new NovaCoreSubCommandGameLootdrop());
 		this.addSubCommand(new NovaCoreSubCommandGameListplayers());

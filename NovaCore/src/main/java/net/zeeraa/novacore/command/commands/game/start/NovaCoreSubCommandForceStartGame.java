@@ -1,8 +1,6 @@
 package net.zeeraa.novacore.command.commands.game.start;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -27,6 +25,8 @@ public class NovaCoreSubCommandForceStartGame extends NovaSubCommand {
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 		this.setPermissionDescription("Access to the game force start command");
 
+		this.setEmptyTabMode(true);
+		
 		this.addHelpSubCommand();
 	}
 
@@ -67,10 +67,5 @@ public class NovaCoreSubCommandForceStartGame extends NovaSubCommand {
 			sender.sendMessage(ChatColor.RED + "GameManager is not enabled");
 		}
 		return false;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }
