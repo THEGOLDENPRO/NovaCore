@@ -40,8 +40,8 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.abstraction.
 	}
 
 	@Override
-	public void setEntityMaxHealth(LivingEntity livingEntity) {
-		livingEntity.getMaxHealth();
+	public void setEntityMaxHealth(LivingEntity livingEntity, double health) {
+		livingEntity.setMaxHealth(health);
 	}
 
 	@Override

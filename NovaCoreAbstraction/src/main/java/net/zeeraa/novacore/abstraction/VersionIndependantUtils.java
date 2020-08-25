@@ -39,7 +39,7 @@ public interface VersionIndependantUtils {
 	 * Set the max heath of a {@link LivingEntity}
 	 * @param livingEntity The entity to reset the set health of
 	 */
-	public void setEntityMaxHealth(LivingEntity livingEntity);
+	public void setEntityMaxHealth(LivingEntity livingEntity, double health);
 	
 	/**
 	 * Reset the max heath of a {@link LivingEntity}
