@@ -28,6 +28,13 @@ public interface Timer {
 	 * @return <code>true</code> if the timer has started
 	 */
 	public boolean hasStarted();
+	
+	/**
+	 * Check if the timer has finished. This does not get reset on cancel or stop
+	 * 
+	 * @return <code>true</code> if the timer has finished
+	 */
+	public boolean hasFinished();
 
 	/**
 	 * Check if the timer is running

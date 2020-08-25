@@ -18,6 +18,7 @@ public class BasicTimer implements Timer {
 	private Long tickTime;
 
 	private boolean started;
+	private boolean finished;
 
 	private ArrayList<Callback> finishCallbacks;
 	private ArrayList<TickCallback> tickCallbacks;
@@ -42,7 +43,9 @@ public class BasicTimer implements Timer {
 		this.tickTime = tickTime;
 
 		this.taskId = -1;
+		
 		this.started = false;
+		this.finished = false;
 
 		this.finishCallbacks = new ArrayList<Callback>();
 		this.tickCallbacks = new ArrayList<TickCallback>();
@@ -90,6 +93,7 @@ public class BasicTimer implements Timer {
 				}
 
 				if (timeLeft <= 0) {
+					finished = true;
 					for (Callback c : finishCallbacks) {
 						c.execute();
 					}
@@ -128,6 +132,11 @@ public class BasicTimer implements Timer {
 		return this.started;
 	}
 
+	@Override
+	public boolean hasFinished() {
+		return this.finished;
+	}
+	
 	/**
 	 * Check if the timer is running
 	 * 
