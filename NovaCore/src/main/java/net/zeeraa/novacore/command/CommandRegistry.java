@@ -1,5 +1,7 @@
 package net.zeeraa.novacore.command;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 
@@ -22,6 +24,21 @@ public class CommandRegistry {
 		registerCommandPermissions(command);
 		NovaCommandProxy commandProxy = new NovaCommandProxy(command);
 		NovaCore.getInstance().getCommandRegistrator().registerCommand(commandProxy);
+	}
+
+	/**
+	 * Create an instance of and register a {@link NovaCommand}
+	 * 
+	 * @param clazz The class of the {@link NovaCommand} to register
+	 * @throws InstantiationException    .
+	 * @throws IllegalAccessException    .
+	 * @throws IllegalArgumentException  .
+	 * @throws InvocationTargetException .
+	 * @throws NoSuchMethodException     .
+	 * @throws SecurityException         .
+	 */
+	public static void registerCommand(Class<? extends NovaCommand> clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		registerCommand(clazz.getConstructor().newInstance());
 	}
 
 	private static void registerCommandPermissions(NovaCommandBase command) {
