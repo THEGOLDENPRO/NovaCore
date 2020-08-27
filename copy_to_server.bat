@@ -6,7 +6,7 @@ if not exist NovaCore.jar (
 	goto end
 )
 
-copy %cd%\NovaCore.jar %cd%\test_server\plugins\NovaCore.jar /Y
+copy %cd%\NovaCore.jar %cd%\test_server\plugins\NovaCore-Spigot.jar /Y
 
 :end
 pause

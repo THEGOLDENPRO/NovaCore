@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>novacore-spigot_v1.8.8-R3</artifactId>
+	<name>NovaCore_1.8.8-R3</name>
+	<version>v1.8.8-R3-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>net.zeeraa.novacore</groupId>
+		<artifactId>novacore-parent</artifactId>
+		<version>PARENT</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+
+		<plugins>
+			<plugin>
+				<!-- explicitly define maven-deploy-plugin after other to force exec 
+					order -->
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>${maven-deploy-plugin-version}</version>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+
+		<repository>
+			<id>zeeraas-repo</id>
+			<url>http://maven.zeeraa.xyz/repository/maven-group/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.zeeraa.novacore</groupId>
+			<artifactId>novacore-spigot-abstraction</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot</artifactId>
+			<version>1.8.8-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>
