@@ -1,5 +1,5 @@
 name: NovaCore
-main: net.zeeraa.novacore.NovaCore
+main: net.zeeraa.novacore.spigot.NovaCore
 description: A core plugin
 version: 1.0
 
