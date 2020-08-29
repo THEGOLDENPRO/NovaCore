@@ -10,10 +10,13 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -533,11 +536,28 @@ public class GameManager extends NovaModule implements Listener {
 					if (getActiveGame().eliminatePlayerOnDeath(p)) {
 						try {
 							Location lootLocation = e.getEntity().getLocation().clone();
+
+							try {
+								ItemStack[] armor = e.getEntity().getInventory().getArmorContents();
+								for (ItemStack item : armor) {
+									if (item != null) {
+										if (item.getType() != Material.AIR) {
+											e.getEntity().getWorld().dropItem(lootLocation, item.clone());
+										}
+									}
+								}
+							} catch (Exception e2) {
+								e2.printStackTrace();
+							}
+
 							for (ItemStack item : e.getEntity().getInventory().getContents()) {
 								if (item != null) {
-									e.getEntity().getWorld().dropItem(lootLocation, item.clone());
+									if (item.getType() != Material.AIR) {
+										e.getEntity().getWorld().dropItem(lootLocation, item.clone());
+									}
 								}
 							}
+
 						} catch (Exception e2) {
 							e2.printStackTrace();
 						}
@@ -579,22 +599,26 @@ public class GameManager extends NovaModule implements Listener {
 		if (hasGame()) {
 			if (activeGame.hasStarted()) {
 				if (e.getEntity() instanceof Player) {
-					Player damager = null;
+					UUID damagerUuid = null;
 
 					if (e.getDamager() instanceof Player) {
-						damager = (Player) e.getDamager();
-					} else {
-						if (e.getDamager() instanceof Projectile) {
-							Projectile projectile = (Projectile) e.getDamager();
-							if (projectile.getShooter() != null) {
-								if (projectile.getShooter() instanceof Player) {
-									damager = (Player) ((Projectile) e.getDamager()).getShooter();
-								}
+						damagerUuid = e.getDamager().getUniqueId();
+					} else if (e.getDamager() instanceof Projectile) {
+						Projectile projectile = (Projectile) e.getDamager();
+						if (projectile.getShooter() != null) {
+							if (projectile.getShooter() instanceof Player) {
+								damagerUuid = ((Player) ((Projectile) e.getDamager()).getShooter()).getUniqueId();
 							}
+						}
+					} else if (e.getDamager() instanceof Tameable) {
+						Tameable tameable = (Tameable) e.getDamager();
+
+						if (tameable.getOwner() instanceof HumanEntity) {
+							damagerUuid = ((HumanEntity) tameable.getOwner()).getUniqueId();
 						}
 					}
 
-					if (damager != null) {
+					if (damagerUuid != null) {
 						if (!activeGame.isPVPEnabled()) {
 							e.setCancelled(true);
 							return;
@@ -602,7 +626,7 @@ public class GameManager extends NovaModule implements Listener {
 
 						if (useTeams) {
 							if (NovaCore.getInstance().hasTeamManager()) {
-								if (NovaCore.getInstance().getTeamManager().isInSameTeam((OfflinePlayer) e.getEntity(), damager)) {
+								if (NovaCore.getInstance().getTeamManager().isInSameTeam(((OfflinePlayer) e.getEntity()).getUniqueId(), damagerUuid)) {
 									if (!getActiveGame().isFriendlyFireAllowed()) {
 										e.setCancelled(true);
 										return;
@@ -680,10 +704,10 @@ public class GameManager extends NovaModule implements Listener {
 
 		removeCombatTag(p);
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onGameStartFailure(GameStartFailureEvent e) {
-		if(startFailureMessage != null) {
+		if (startFailureMessage != null) {
 			startFailureMessage.showStartFailureMessage(e.getGame(), e.getException());
 		}
 	}
