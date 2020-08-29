@@ -111,6 +111,16 @@ public class GameMapData {
 	public List<MapModule> getMapModules() {
 		return mapModules;
 	}
+	
+	public MapModule getMapModule(Class<? extends MapModule> clazz) {
+		for(MapModule mapModule : mapModules) {
+			if(mapModule.getClass().isAssignableFrom(clazz)) {
+				return mapModule;
+			}
+		}
+		
+		return null;
+	}
 
 	/**
 	 * Load the map as a {@link GameMap} and load the world into the multiverse
