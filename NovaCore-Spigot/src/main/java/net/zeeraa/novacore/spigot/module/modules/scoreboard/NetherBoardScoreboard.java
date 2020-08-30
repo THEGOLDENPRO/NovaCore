@@ -290,7 +290,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	 * @param line The line number. Note that this starts from 0
 	 */
 	public void clearGlobalLine(int line) {
-		this.setGlobalLine(line, "");
+		this.setGlobalLine(line, " ");
 	}
 
 	/**
@@ -315,7 +315,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	 * @param player The player to remove the line from
 	 */
 	public void clearPlayerLine(int line, Player player) {
-		this.setPlayerLine(line, player, "");
+		this.setPlayerLine(line, player, " ");
 	}
 
 	/**

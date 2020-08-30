@@ -3,7 +3,6 @@ package net.zeeraa.novacore.spigot.module;
 import java.util.HashMap;
 
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.spigot.module.modules.gui.GUIManager;
 
 /**
  * This class is used to register, enable and disable {@link NovaModule}s
@@ -253,7 +252,7 @@ public class ModuleManager {
 		}
 	}
 
-	public static boolean require(Class<GUIManager> clazz) {
+	public static boolean require(Class<? extends NovaModule> clazz) {
 		if (!isEnabled(clazz)) {
 			return enable(clazz);
 		}

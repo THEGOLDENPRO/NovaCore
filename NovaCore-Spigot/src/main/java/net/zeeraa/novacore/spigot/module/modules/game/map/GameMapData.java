@@ -32,12 +32,12 @@ public class GameMapData {
 	private File worldFile;
 
 	private List<MapModule> mapModules;
-	
+
 	private boolean enabled;
 
 	public GameMapData(List<MapModule> mapModules, ArrayList<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled) {
 		this.mapModules = mapModules;
-		
+
 		this.starterLocations = starterLocations;
 		this.spectatorLocation = spectatorLocation;
 
@@ -107,18 +107,22 @@ public class GameMapData {
 	public boolean isEnabled() {
 		return enabled;
 	}
-	
+
 	public List<MapModule> getMapModules() {
 		return mapModules;
 	}
-	
+
+	public boolean hasMapModule(Class<? extends MapModule> clazz) {
+		return getMapModule(clazz) != null;
+	}
+
 	public MapModule getMapModule(Class<? extends MapModule> clazz) {
-		for(MapModule mapModule : mapModules) {
-			if(mapModule.getClass().isAssignableFrom(clazz)) {
+		for (MapModule mapModule : mapModules) {
+			if (clazz.isAssignableFrom(mapModule.getClass())) {
 				return mapModule;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -136,7 +140,7 @@ public class GameMapData {
 		World world = multiverseWorld.getWorld();
 
 		Log.info("World " + world.getName() + " has been loaded");
-		
+
 		return new GameMap(world, this, LocationData.toLocations(starterLocations, world), spectatorLocation.toLocation(world));
 	}
 }
