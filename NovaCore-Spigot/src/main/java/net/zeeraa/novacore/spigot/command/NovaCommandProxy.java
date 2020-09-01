@@ -18,17 +18,22 @@ import net.zeeraa.novacore.commons.log.Log;
  * @author Zeeraa
  */
 public class NovaCommandProxy extends Command {
-	private NovaCommand ezCommand;
+	private NovaCommand novaCommand;
 
-	protected NovaCommandProxy(NovaCommand ezCommand) {
-		super(ezCommand.getName());
-		
-		Log.debug("Creating command proxy for mommand " + ezCommand.getName());
+	/**
+	 * Create a {@link NovaCommandProxy} for a {@link NovaCommand}
+	 * 
+	 * @param novaCommand The {@link NovaCommand} being proxied
+	 */
+	protected NovaCommandProxy(NovaCommand novaCommand) {
+		super(novaCommand.getName());
 
-		this.ezCommand = ezCommand;
+		Log.debug("Creating command proxy for mommand " + novaCommand.getName());
 
-		this.setAliases(ezCommand.getAliases());
-		this.setDescription(ezCommand.getDescription());
+		this.novaCommand = novaCommand;
+
+		this.setAliases(novaCommand.getAliases());
+		this.setDescription(novaCommand.getDescription());
 	}
 
 	/**
@@ -37,7 +42,7 @@ public class NovaCommandProxy extends Command {
 	 * @return {@link NovaCommand} instance
 	 */
 	public NovaCommand getNovaCommand() {
-		return ezCommand;
+		return novaCommand;
 	}
 
 	/**
@@ -46,12 +51,12 @@ public class NovaCommandProxy extends Command {
 	 * @return name of the {@link NovaCommand}
 	 */
 	public String getRealName() {
-		return ezCommand.getName();
+		return novaCommand.getName();
 	}
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		return recursiceCommandExecutionCheck(ezCommand, sender, commandLabel, args);
+		return recursiceCommandExecutionCheck(novaCommand, sender, commandLabel, args);
 	}
 
 	private boolean recursiceCommandExecutionCheck(NovaCommandBase command, CommandSender sender, String commandLabel, String[] args) {
@@ -78,8 +83,8 @@ public class NovaCommandProxy extends Command {
 						newArgs[i - 1] = args[i];
 					}
 
-					Log.trace("recursive check on sub command " + subCommand.getName() + " origin command: " + ezCommand.getName());
-					
+					Log.trace("recursive check on sub command " + subCommand.getName() + " origin command: " + novaCommand.getName());
+
 					return recursiceCommandExecutionCheck(subCommand, sender, commandLabel, newArgs);
 				}
 			}
@@ -88,25 +93,25 @@ public class NovaCommandProxy extends Command {
 
 		if (!(sender instanceof ConsoleCommandSender)) {
 			if (!command.hasSenderPermission(sender)) {
-				Log.trace("Sender " + sender.getName() + " did not have permission to execute command" + command.getName() + " origin command: " + ezCommand.getName());
+				Log.trace("Sender " + sender.getName() + " did not have permission to execute command" + command.getName() + " origin command: " + novaCommand.getName());
 				sender.sendMessage(command.getNoPermissionMessage());
 				return false;
 			}
 		}
 
 		if (!command.getAllowedSenders().isAllowed(sender)) {
-			Log.trace("Sender type " + sender.getName() + " was not in the allowed senders list to execute command" + command.getName() + " origin command: " + ezCommand.getName());
+			Log.trace("Sender type " + sender.getName() + " was not in the allowed senders list to execute command" + command.getName() + " origin command: " + novaCommand.getName());
 			sender.sendMessage(command.getAllowedSenders().getErrorMessage());
 			return false;
 		}
 
-		Log.trace("running execute on command " + command.getName() + " origin command: " + ezCommand.getName());
+		Log.trace("running execute on command " + command.getName() + " origin command: " + novaCommand.getName());
 		return command.execute(sender, commandLabel, args);
 	}
 
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return recursiceCommandTabCheck(ezCommand, sender, alias, args);
+		return recursiceCommandTabCheck(novaCommand, sender, alias, args);
 	}
 
 	private List<String> recursiceCommandTabCheck(NovaCommandBase command, CommandSender sender, String alias, String[] args) {
@@ -116,30 +121,46 @@ public class NovaCommandProxy extends Command {
 			}
 
 			List<String> result = new ArrayList<>();
-			result.addAll(command.tabComplete(sender, alias, args));
+
+			List<String> commandResults = command.tabComplete(sender, alias, args);
 
 			String lastWord = args[args.length - 1];
 
+			if (command.isFilterAutocomplete()) {
+				// Filter
+				Collections.sort(commandResults, String.CASE_INSENSITIVE_ORDER);
+				for (String string : commandResults) {
+					if (StringUtil.startsWithIgnoreCase(string, lastWord)) {
+						result.add(string);
+					}
+				}
+			} else {
+				// Do not filter
+				result.addAll(commandResults);
+			}
+
+			// Find aliases for sub commands
 			ArrayList<String> matchedSubCommands = new ArrayList<String>();
-			
+
 			for (NovaSubCommand subCommand : command.getSubCommands()) {
 				if (StringUtil.startsWithIgnoreCase(subCommand.getName(), lastWord)) {
 					matchedSubCommands.add(subCommand.getName());
 				}
-				
-				for(String subCommandAlias : subCommand.getAliases()) {
+
+				for (String subCommandAlias : subCommand.getAliases()) {
 					if (StringUtil.startsWithIgnoreCase(subCommandAlias, lastWord)) {
 						matchedSubCommands.add(subCommandAlias);
 					}
 				}
 			}
-			
+
 			Collections.sort(matchedSubCommands, String.CASE_INSENSITIVE_ORDER);
-			
+
 			result.addAll(0, matchedSubCommands);
-			
+
 			return result;
 		} else {
+			// Recursive check for sub commands
 			if (args.length >= 2) {
 				for (NovaSubCommand subCommand : command.getSubCommands()) {
 					boolean isMatching = false;
@@ -165,17 +186,18 @@ public class NovaCommandProxy extends Command {
 						for (int i = 1; i < args.length; i++) {
 							newArgs[i - 1] = args[i];
 						}
-						
+
 						return recursiceCommandTabCheck(subCommand, sender, newAlias, newArgs);
 					}
 				}
 			}
 
+			// No matching sub commands found, Check permission
 			if (!command.hasSenderPermission(sender)) {
 				return new ArrayList<String>();
 			}
 
-			// no matching sub commands found
+			// No matching sub commands found, Return the tab value of this command
 			return command.tabComplete(sender, alias, args);
 		}
 	}

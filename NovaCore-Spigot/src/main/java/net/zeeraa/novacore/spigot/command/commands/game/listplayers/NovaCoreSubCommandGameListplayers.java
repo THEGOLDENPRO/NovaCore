@@ -31,6 +31,8 @@ public class NovaCoreSubCommandGameListplayers extends NovaSubCommand {
 		this.setPermissionDescription("Access to the game listplayers command");
 
 		this.addHelpSubCommand();
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

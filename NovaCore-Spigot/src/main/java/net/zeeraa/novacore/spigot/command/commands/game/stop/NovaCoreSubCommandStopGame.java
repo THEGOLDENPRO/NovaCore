@@ -26,6 +26,8 @@ public class NovaCoreSubCommandStopGame extends NovaSubCommand {
 		this.setEmptyTabMode(true);
 
 		this.addHelpSubCommand();
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

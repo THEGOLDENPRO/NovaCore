@@ -30,6 +30,8 @@ public class NovaCoreSubCommandLoggerSet extends NovaSubCommand {
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 
 		this.setDescription("Set your log level");
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

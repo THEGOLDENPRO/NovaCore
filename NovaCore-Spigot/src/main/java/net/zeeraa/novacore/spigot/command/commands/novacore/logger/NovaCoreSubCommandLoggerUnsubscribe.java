@@ -26,6 +26,8 @@ public class NovaCoreSubCommandLoggerUnsubscribe extends NovaSubCommand {
 		this.setAllowedSenders(AllowedSenders.PLAYERS);
 
 		this.setDescription("Disable all log messages");
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

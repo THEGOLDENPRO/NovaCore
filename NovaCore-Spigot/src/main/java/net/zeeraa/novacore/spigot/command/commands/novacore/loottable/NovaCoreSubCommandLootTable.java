@@ -31,6 +31,8 @@ public class NovaCoreSubCommandLootTable extends NovaSubCommand {
 		this.addSubCommand(new NovaCoreSubCommandLootTableList());
 		this.addSubCommand(new NovaCoreSubCommandLootTableTest());
 		this.addSubCommand(new NovaCoreSubCommandLootTableLoaderList());
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

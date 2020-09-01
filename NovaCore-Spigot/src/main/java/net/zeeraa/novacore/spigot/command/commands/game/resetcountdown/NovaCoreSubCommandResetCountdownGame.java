@@ -26,6 +26,8 @@ public class NovaCoreSubCommandResetCountdownGame extends NovaSubCommand {
 		this.setPermissionDescription("Access to the reset countdown command");
 
 		this.addHelpSubCommand();
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

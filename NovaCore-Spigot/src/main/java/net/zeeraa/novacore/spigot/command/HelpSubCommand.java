@@ -26,6 +26,8 @@ public class HelpSubCommand extends NovaSubCommand {
 		setPermission(permission);
 		setPermissionDescription(permissionDescription);
 		setPermissionDefaultValue(permissionDefaultValue);
+		
+		setFilterAutocomplete(false);
 	}
 
 	@Override

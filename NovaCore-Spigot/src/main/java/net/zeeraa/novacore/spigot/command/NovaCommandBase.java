@@ -37,6 +37,8 @@ public abstract class NovaCommandBase {
 	private String name;
 	private List<String> aliases;
 
+	private boolean filterAutocomplete;
+
 	private boolean emptyTabMode;
 
 	public NovaCommandBase(String name) {
@@ -54,6 +56,8 @@ public abstract class NovaCommandBase {
 		this.aliases = new ArrayList<String>();
 
 		this.emptyTabMode = false;
+
+		this.filterAutocomplete = false;
 	}
 
 	/**
@@ -97,11 +101,11 @@ public abstract class NovaCommandBase {
 	public void setUseage(String useage) {
 		this.useage = useage;
 	}
-	
+
 	public String getUseage() {
 		return useage;
 	}
-	
+
 	/**
 	 * Set the description for this command
 	 * 
@@ -288,6 +292,32 @@ public abstract class NovaCommandBase {
 		}
 
 		addSubCommand(helpSubCommand);
+	}
+
+	/**
+	 * Check if auto complete list filtering is enabled. This is disabled by
+	 * default.
+	 * <p>
+	 * If enabled the tab auto complete will ignore values that does not match the
+	 * current text the user is typing
+	 * 
+	 * @return <code>true</code> if enabled
+	 */
+	public boolean isFilterAutocomplete() {
+		return filterAutocomplete;
+	}
+
+	/**
+	 * Enable or disable filtering the auto complete list. This is disabled by
+	 * default.
+	 * <p>
+	 * If enabled the tab auto complete will ignore values that does not match the
+	 * current text the user is typing
+	 * 
+	 * @param filterAutocomplete <code>true</code> to filter the auto complete list
+	 */
+	public void setFilterAutocomplete(boolean filterAutocomplete) {
+		this.filterAutocomplete = filterAutocomplete;
 	}
 
 	/**

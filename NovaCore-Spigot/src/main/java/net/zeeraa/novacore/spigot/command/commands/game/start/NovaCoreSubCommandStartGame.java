@@ -28,6 +28,8 @@ public class NovaCoreSubCommandStartGame extends NovaSubCommand {
 		this.setEmptyTabMode(true);
 		
 		this.addHelpSubCommand();
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

@@ -32,6 +32,8 @@ public interface VersionIndependantUtils {
 	/**
 	 * Get the max heath of a {@link LivingEntity}
 	 * @param livingEntity The entity to get the max health from
+	 * 
+	 * @return The max health of the player
 	 */
 	public double getEntityMaxHealth(LivingEntity livingEntity);
 	

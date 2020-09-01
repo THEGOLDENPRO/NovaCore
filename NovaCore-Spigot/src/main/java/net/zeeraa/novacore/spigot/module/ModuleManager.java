@@ -207,16 +207,16 @@ public class ModuleManager {
 	 */
 	public static boolean loadModule(Class<? extends NovaModule> clazz, boolean enable) {
 		if (moduleExists(clazz)) {
-			Log.warn("Module " + clazz.getName() + " was already loaded");
+			Log.warn("ModuleManager", "Module " + clazz.getName() + " was already loaded");
 			return false;
 		}
-		Log.info("Loading module " + clazz.getName());
+		Log.info("ModuleManager", "Loading module " + clazz.getName());
 		try {
 			Object module = clazz.getConstructor().newInstance(new Object[] {});
 
 			if (module instanceof NovaModule) {
 				if (((NovaModule) module).getName().contains(" ")) {
-					Log.error("The module name can't contain spaces. Module class: " + module.getClass().getName());
+					Log.error("ModuleManager", "The module name can't contain spaces. Module class: " + module.getClass().getName());
 					throw new InvalidModuleNameException("The module name can't contain spaces. Module class: " + module.getClass().getName());
 				}
 
@@ -229,11 +229,11 @@ public class ModuleManager {
 
 				return true;
 			} else {
-				Log.error("Module " + clazz.getName() + " does not extend EZModule");
+				Log.error("ModuleManager", "Module " + clazz.getName() + " does not extend EZModule");
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("An exception occured while loading " + clazz.getName());
+			Log.error("ModuleManager", "An exception occured while loading " + clazz.getName());
 			e.printStackTrace();
 		}
 
@@ -244,7 +244,7 @@ public class ModuleManager {
 	 * Try to disable all modules
 	 */
 	public static void disableAll() {
-		Log.info("Disabling all modules");
+		Log.info("ModuleManager", "Disabling all modules");
 		for (String module : modules.keySet()) {
 			if (isEnabled(module)) {
 				disable(module);

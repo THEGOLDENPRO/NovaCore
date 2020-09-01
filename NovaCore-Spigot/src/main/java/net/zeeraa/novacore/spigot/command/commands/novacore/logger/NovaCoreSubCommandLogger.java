@@ -29,6 +29,8 @@ public class NovaCoreSubCommandLogger extends NovaSubCommand {
 		this.addSubCommand(new NovaCoreSubCommandLoggerUnsubscribe());
 		
 		this.setDescription("Set log level for player and console");
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

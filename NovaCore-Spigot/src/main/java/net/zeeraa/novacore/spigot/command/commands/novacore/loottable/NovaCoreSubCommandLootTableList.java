@@ -24,6 +24,8 @@ public class NovaCoreSubCommandLootTableList extends NovaSubCommand {
 
 		this.setPermission("novacore.command.novacore.loottable.list");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

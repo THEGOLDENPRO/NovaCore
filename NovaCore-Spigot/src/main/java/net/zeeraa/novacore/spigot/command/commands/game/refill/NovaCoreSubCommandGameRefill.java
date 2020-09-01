@@ -26,6 +26,8 @@ public class NovaCoreSubCommandGameRefill extends NovaSubCommand {
 		this.setPermissionDescription("Access to the game chest refill command");
 
 		this.addHelpSubCommand();
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

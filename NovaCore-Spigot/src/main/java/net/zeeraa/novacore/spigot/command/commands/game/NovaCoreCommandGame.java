@@ -39,6 +39,8 @@ public class NovaCoreCommandGame extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandGameLootdrop());
 		this.addSubCommand(new NovaCoreSubCommandGameListplayers());
 		this.addSubCommand(new NovaCoreSubCommandResetCountdownGame());
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

@@ -31,6 +31,8 @@ public class NovaCoreSubCommandLootTableTest extends NovaSubCommand {
 		this.setAllowedSenders(AllowedSenders.PLAYERS);
 		
 		this.addHelpSubCommand();
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

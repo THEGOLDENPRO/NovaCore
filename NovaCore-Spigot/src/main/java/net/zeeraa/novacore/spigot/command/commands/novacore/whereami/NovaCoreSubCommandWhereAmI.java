@@ -27,6 +27,8 @@ public class NovaCoreSubCommandWhereAmI extends NovaSubCommand {
 		this.setAllowedSenders(AllowedSenders.PLAYERS);
 
 		this.setDescription("Show your location");
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

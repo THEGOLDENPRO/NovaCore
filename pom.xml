@@ -64,11 +64,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>zeeraas-snapshots</id>
-			<url>http://maven.zeeraa.xyz/repository/maven-snapshots/</url>
+			<url>https://nexus.zeeraa.net/repository/maven-snapshots/</url>
 		</snapshotRepository>
 		<repository>
 			<id>zeeraas-releases</id>
-			<url>http://maven.zeeraa.xyz/repository/maven-releases/</url>
+			<url>https://nexus.zeeraa.net/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>
 	

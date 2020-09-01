@@ -30,6 +30,8 @@ public class NovaCoreSubCommandGameLootdrop extends NovaSubCommand {
 		this.setPermissionDescription("Access to the game lootdrop command");
 
 		this.addHelpSubCommand();
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

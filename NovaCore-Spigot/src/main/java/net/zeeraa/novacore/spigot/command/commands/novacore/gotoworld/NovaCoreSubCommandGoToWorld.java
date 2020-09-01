@@ -34,6 +34,8 @@ public class NovaCoreSubCommandGoToWorld extends NovaSubCommand {
 		this.addHelpSubCommand();
 
 		this.setDescription("Teleport to the spawn of a world");
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

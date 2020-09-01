@@ -25,6 +25,8 @@ public class NovaCoreSubCommandModulesList extends NovaSubCommand {
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 		
 		this.setDescription("list modules");
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

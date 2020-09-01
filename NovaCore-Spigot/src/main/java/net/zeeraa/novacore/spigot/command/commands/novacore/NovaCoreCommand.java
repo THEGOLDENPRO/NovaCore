@@ -37,6 +37,8 @@ public class NovaCoreCommand extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandLogger());
 		this.addSubCommand(new NovaCoreSubCommandWhereAmI());
 		this.addSubCommand(new NovaCoreSubCommandGoToWorld());
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override

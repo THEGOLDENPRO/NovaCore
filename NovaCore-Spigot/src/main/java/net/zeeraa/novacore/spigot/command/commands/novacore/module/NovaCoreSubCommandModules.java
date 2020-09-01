@@ -27,6 +27,8 @@ public class NovaCoreSubCommandModules extends NovaSubCommand {
 		this.addSubCommand(new NovaCoreSubCommandModulesList());
 		this.addSubCommand(new NovaCoreSubCommandModulesDisable());
 		this.addSubCommand(new NovaCoreSubCommandModulesEnable());
+		
+		this.setFilterAutocomplete(true);
 	}
 
 	@Override
