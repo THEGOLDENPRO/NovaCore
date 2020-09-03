@@ -3,11 +3,19 @@ package net.zeeraa.novacore.commons.log;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+
 import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.commons.NovaCommons;
+import net.zeeraa.novacore.commons.ServerType;
+import net.zeeraa.novacore.commons.async.AsyncManager;
 
 /**
  * Used to log messages
+ * <p>
+ * The log functions can be called async since if
+ * {@link Log#log(String, String, LogLevel)} is called async it will use
+ * {@link AsyncManager#runSync(Runnable)} to jump to the main thread
  * 
  * @author Zeeraa
  */
@@ -65,6 +73,18 @@ public class Log {
 	}
 
 	public static void log(String source, String message, LogLevel logLevel) {
+		if (NovaCommons.getServerType() == ServerType.SPIGOT) {
+			if (!Bukkit.isPrimaryThread()) {
+				AsyncManager.runSync(new Runnable() {
+					@Override
+					public void run() {
+						Log.log(source, message, logLevel);
+					}
+				});
+				return;
+			}
+		}
+
 		String fullMessage = "[" + logLevel.getMessagePrefix() + ChatColor.RESET + "]" + (source == null ? "" : "[" + ChatColor.GOLD + source + ChatColor.RESET + "]") + ": " + message;
 		if (logLevel.shouldLog(consoleLogLevel)) {
 			if (NovaCommons.getAbstractConsoleSender() == null) {

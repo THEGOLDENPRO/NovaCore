@@ -3,9 +3,13 @@ package net.zeeraa.novacore.commons.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import net.zeeraa.novacore.commons.NovaCommons;
+import net.zeeraa.novacore.commons.async.AsyncManager;
+import net.zeeraa.novacore.commons.database.async.ExecuteQueryAsyncCallback;
+import net.zeeraa.novacore.commons.database.async.ExecuteUpdateAsyncCallback;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.tasks.Task;
 
@@ -208,5 +212,35 @@ public class DBConnection {
 	 */
 	public Connection getConnection() {
 		return connection;
+	}
+
+	public static void executeQueryAsync(PreparedStatement ps, ExecuteQueryAsyncCallback callback) {
+		AsyncManager.runAsync(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					ResultSet rs = ps.executeQuery();
+
+					callback.onExecute(rs, null);
+				} catch (Exception e) {
+					callback.onExecute(null, e);
+				}
+			}
+		});
+	}
+
+	public static void executeUpdateAsync(PreparedStatement ps, ExecuteUpdateAsyncCallback callback) {
+		AsyncManager.runAsync(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					int result = ps.executeUpdate();
+
+					callback.onExecute(result, null);
+				} catch (Exception e) {
+					callback.onExecute(0, e);
+				}
+			}
+		});
 	}
 }

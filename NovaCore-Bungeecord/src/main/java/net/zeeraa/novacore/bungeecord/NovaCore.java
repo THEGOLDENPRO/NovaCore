@@ -12,8 +12,10 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 import net.zeeraa.novacore.bungeecord.abstraction.AbstractBungeecordConsoleSender;
 import net.zeeraa.novacore.bungeecord.abstraction.AbstractBungeecordPlayerMessageSender;
+import net.zeeraa.novacore.bungeecord.abstraction.BungeecordAsyncManager;
 import net.zeeraa.novacore.bungeecord.abstraction.BungeecordSimpleTaskCreator;
 import net.zeeraa.novacore.commons.NovaCommons;
+import net.zeeraa.novacore.commons.ServerType;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.log.LogLevel;
 
@@ -45,7 +47,9 @@ public class NovaCore extends Plugin {
 		NovaCommons.setAbstractSimpleTaskCreator(new BungeecordSimpleTaskCreator());
 		NovaCommons.setAbstractConsoleSender(new AbstractBungeecordConsoleSender());
 		NovaCommons.setAbstractPlayerMessageSender(new AbstractBungeecordPlayerMessageSender());
-
+		NovaCommons.setAbstractAsyncManager(new BungeecordAsyncManager(this));
+		NovaCommons.setServerType(ServerType.BUNGEECORD);
+		
 		try {
 			FileUtils.forceMkdir(this.getDataFolder());
 

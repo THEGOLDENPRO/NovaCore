@@ -19,6 +19,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.zeeraa.novacore.commons.NovaCommons;
+import net.zeeraa.novacore.commons.ServerType;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.log.LogLevel;
 import net.zeeraa.novacore.spigot.abstraction.ActionBar;
@@ -28,6 +29,7 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependantLoader;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitConsoleSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitPlayerMessageSender;
+import net.zeeraa.novacore.spigot.abstraction.commons.BukkitAsyncManager;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
 import net.zeeraa.novacore.spigot.command.commands.novacore.NovaCoreCommand;
 import net.zeeraa.novacore.spigot.customcrafting.CustomCraftingManager;
@@ -137,6 +139,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 		NovaCommons.setAbstractConsoleSender(new AbstractBukkitConsoleSender());
 		NovaCommons.setAbstractPlayerMessageSender(new AbstractBukkitPlayerMessageSender());
 		NovaCommons.setAbstractSimpleTaskCreator(new BukkitSimpleTaskCreator());
+		NovaCommons.setAbstractAsyncManager(new BukkitAsyncManager(this));
+		NovaCommons.setServerType(ServerType.SPIGOT);
 
 		Log.setConsoleLogLevel(LogLevel.INFO);
 
