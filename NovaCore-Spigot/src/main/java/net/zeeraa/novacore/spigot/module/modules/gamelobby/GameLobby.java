@@ -17,10 +17,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -207,6 +209,17 @@ public class GameLobby extends NovaModule implements Listener {
 		return false;
 	}
 
+	private void tpToLobby(Player player) {
+		player.teleport(activeMap.getSpawnLocation());
+
+		player.getInventory().clear();
+
+		player.setGameMode(GameMode.ADVENTURE);
+		NovaCore.getInstance().getVersionIndependentUtils().setEntityMaxHealth(player, 20);
+		player.setHealth(20);
+		player.setFoodLevel(20);
+	}
+
 	// ----- Listeners -----
 
 	// -- Join and quit --
@@ -217,14 +230,8 @@ public class GameLobby extends NovaModule implements Listener {
 				if (!GameManager.getInstance().getActiveGame().hasStarted()) {
 					if (!waitingPlayers.contains(e.getPlayer().getUniqueId())) {
 						waitingPlayers.add(e.getPlayer().getUniqueId());
-						e.getPlayer().teleport(activeMap.getSpawnLocation());
 
-						e.getPlayer().getInventory().clear();
-
-						e.getPlayer().setGameMode(GameMode.ADVENTURE);
-						NovaCore.getInstance().getVersionIndependentUtils().resetEntityMaxHealth(e.getPlayer());
-						e.getPlayer().setHealth(20);
-						e.getPlayer().setFoodLevel(20);
+						tpToLobby(e.getPlayer());
 
 						Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinGameLobbyEvent(e.getPlayer()));
 					}
@@ -244,6 +251,22 @@ public class GameLobby extends NovaModule implements Listener {
 		if (waitingPlayers.contains(p.getUniqueId())) {
 			Log.debug("Removing player " + e.getPlayer().getName() + " from the waiting players list");
 			waitingPlayers.remove(p.getUniqueId());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerDeath(PlayerDeathEvent e) {
+		if (waitingPlayers.contains(e.getEntity().getUniqueId())) {
+			e.getEntity().spigot().respawn();
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerRespawn(PlayerRespawnEvent e) {
+		if (waitingPlayers.contains(e.getPlayer().getUniqueId())) {
+			e.setRespawnLocation(activeMap.getSpawnLocation());
+			
+			tpToLobby(e.getPlayer());
 		}
 	}
 

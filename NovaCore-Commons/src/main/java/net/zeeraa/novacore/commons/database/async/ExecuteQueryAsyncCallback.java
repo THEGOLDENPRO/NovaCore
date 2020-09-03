@@ -9,7 +9,7 @@ import net.zeeraa.novacore.commons.database.DBConnection;
  * Callback for
  * {@link DBConnection#executeQueryAsync(java.sql.PreparedStatement, ExecuteQueryAsyncCallback)}
  * <p>
- * Note that {@link ExecuteUpdateAsyncCallback#onExecute(int, Exception)} will
+ * Note that {@link ExecuteQueryAsyncCallback#onExecute(ResultSet, Exception)} will
  * be run async and may not use any Bukkit API functions. To use the Bukkit API
  * use {@link AsyncManager#runSync(Runnable)} before using Bukkit API
  * 
@@ -18,7 +18,7 @@ import net.zeeraa.novacore.commons.database.DBConnection;
 public interface ExecuteQueryAsyncCallback {
 	/**
 	 * Called when
-	 * {@link DBConnection#executeQueryAsync(java.sql.PreparedStatement, ExecuteUpdateAsyncCallback)}
+	 * {@link DBConnection#executeQueryAsync(java.sql.PreparedStatement, ExecuteQueryAsyncCallback)}
 	 * is finished
 	 * <p>
 	 * Error checking should be done by <code>if(exception != null) {}</code>

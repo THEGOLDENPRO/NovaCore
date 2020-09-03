@@ -18,7 +18,7 @@ import net.zeeraa.novacore.commons.database.DBConnection;
 public interface ExecuteUpdateAsyncCallback {
 	/**
 	 * Called when
-	 * {@link DBConnection#executeQueryAsync(java.sql.PreparedStatement, ExecuteQueryAsyncCallback)}
+	 * {@link DBConnection#executeUpdateAsync(PreparedStatement, ExecuteUpdateAsyncCallback)}
 	 * is finished
 	 * <p>
 	 * Error checking should be done by <code>if(exception != null) {}</code>

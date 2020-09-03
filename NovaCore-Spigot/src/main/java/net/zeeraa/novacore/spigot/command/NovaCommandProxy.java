@@ -28,7 +28,7 @@ public class NovaCommandProxy extends Command {
 	protected NovaCommandProxy(NovaCommand novaCommand) {
 		super(novaCommand.getName());
 
-		Log.debug("Creating command proxy for mommand " + novaCommand.getName());
+		Log.debug("Creating command proxy for command " + novaCommand.getName());
 
 		this.novaCommand = novaCommand;
 
