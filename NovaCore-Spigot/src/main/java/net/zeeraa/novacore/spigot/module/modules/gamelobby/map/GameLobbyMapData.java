@@ -2,6 +2,8 @@ package net.zeeraa.novacore.spigot.module.modules.gamelobby.map;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
 import org.bukkit.World;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -9,70 +11,15 @@ import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseWorld;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.WorldUnloadOption;
 import net.zeeraa.novacore.spigot.utils.LocationData;
+import net.zeeraa.novacore.spigot.utils.maps.AbstractMap;
+import net.zeeraa.novacore.spigot.utils.maps.AbstractMapData;
+import net.zeeraa.novacore.spigot.utils.maps.HologramData;
 
-public class GameLobbyMapData {
-	private LocationData spawnLocation;
-
-	private String mapName;
-	private String displayName;
-
-	private String description;
-
-	private File worldFile;
-
-	public GameLobbyMapData(LocationData spawnLocation, String mapName, String displayName, String description, File worldFile) {
-		this.spawnLocation = spawnLocation;
-
-		this.mapName = mapName;
-		this.displayName = displayName;
-		this.description = description;
-
-		this.worldFile = worldFile;
-	}
-
-	/**
-	 * Get the map name used by the plugin
-	 * 
-	 * @return The map name
-	 */
-	public String getMapName() {
-		return mapName;
-	}
-
-	/**
-	 * Get the display name that is shown to players
-	 * 
-	 * @return The display name
-	 */
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	/**
-	 * Get the lobby description
-	 * 
-	 * @return The description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * Get the world file that will be copied when the lobby is loaded
-	 * 
-	 * @return The world file
-	 */
-	public File getWorldFile() {
-		return worldFile;
-	}
+public class GameLobbyMapData extends AbstractMapData {
 	
-	/**
-	 * Get the spawn location
-	 * 
-	 * @return the spawn location
-	 */
-	public LocationData getSpawnLocation() {
-		return spawnLocation;
+
+	public GameLobbyMapData(LocationData spawnLocation, String mapName, String displayName, String description, File worldFile, List<HologramData> holograms) {
+		super(spawnLocation, mapName, displayName, description, worldFile, holograms);
 	}
 
 	/**
@@ -82,7 +29,7 @@ public class GameLobbyMapData {
 	 * @return The {@link GameLobbyMap} that was loaded
 	 * @throws IOException if the server fails to copy or read the world
 	 */
-	public GameLobbyMap load() throws IOException {
+	public  AbstractMap load() throws IOException {
 		Log.info("Loading lobby map " + getMapName() + " display name: " + getDisplayName());
 		MultiverseWorld multiverseWorld = MultiverseManager.getInstance().createFromFile(worldFile, WorldUnloadOption.DELETE);
 

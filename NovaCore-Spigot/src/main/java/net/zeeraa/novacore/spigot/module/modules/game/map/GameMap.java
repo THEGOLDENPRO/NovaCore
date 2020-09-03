@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+
 /**
  * Represents the data for a map after it has been loaded. You can access all
  * the other map data from {@link GameMap#getMapData()}

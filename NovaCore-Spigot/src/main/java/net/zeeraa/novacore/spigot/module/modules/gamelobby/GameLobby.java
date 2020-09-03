@@ -98,7 +98,7 @@ public class GameLobby extends NovaModule implements Listener {
 		}
 
 		try {
-			this.activeMap = map.load();
+			this.activeMap = (GameLobbyMap) map.load();
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.fatal("Failed to load the map to use for game lobby");
@@ -119,7 +119,7 @@ public class GameLobby extends NovaModule implements Listener {
 						}
 
 						player.setFoodLevel(20);
-						
+
 						if (player.getLocation().getY() < 0) {
 							player.setFallDistance(0);
 							player.teleport(activeMap.getSpawnLocation());
@@ -167,10 +167,10 @@ public class GameLobby extends NovaModule implements Listener {
 	}
 
 	public boolean startGame() {
-		if(!GameManager.getInstance().getActiveGame().canStart()) {
+		if (!GameManager.getInstance().getActiveGame().canStart()) {
 			return false;
 		}
-		
+
 		try {
 			for (UUID uuid : waitingPlayers) {
 				Player player = Bukkit.getServer().getPlayer(uuid);
@@ -199,7 +199,7 @@ public class GameLobby extends NovaModule implements Listener {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 			GameStartFailureEvent event = new GameStartFailureEvent(GameManager.getInstance().getActiveGame(), e);
 			Bukkit.getPluginManager().callEvent(event);
 		}

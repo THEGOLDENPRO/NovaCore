@@ -3,7 +3,7 @@ main: net.zeeraa.novacore.spigot.NovaCore
 description: A core plugin
 version: 1.0
 
-softdepend: [Netherboard]
+softdepend: [Netherboard, HolographicDisplays, ProtocolLib]
 
 permissions:
   novacore.gamelobby.forcemap:

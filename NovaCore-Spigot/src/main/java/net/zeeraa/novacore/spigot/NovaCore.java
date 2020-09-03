@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.log.LogLevel;
@@ -64,7 +66,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private VersionIndependantUtils versionIndependentUtils;
 
 	private CustomCraftingManager customCraftingManager;
-
+	
+	private boolean hologramsSupport;
+	
 	/**
 	 * Get instance of the {@link NovaCore} plugin
 	 * 
@@ -104,6 +108,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	public VersionIndependantUtils getVersionIndependentUtils() {
 		return versionIndependentUtils;
+	}
+	
+	public boolean hasHologramsSupport() {
+		return hologramsSupport;
 	}
 
 	public void setLogLevel(LogLevel logLevel) {
@@ -197,6 +205,14 @@ public class NovaCore extends JavaPlugin implements Listener {
 			Log.fatal("Could not find support for this CraftBukkit version.");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
+		}
+		
+		if (Bukkit.getServer().getPluginManager().getPlugin("HolographicDisplays") != null) {
+			this.hologramsSupport = true;
+			Log.info("Hologram support enabled");
+		} else {
+			this.hologramsSupport = false;
+			Log.warn("Hologram support disabled due to HolographicDisplays not being installed");
 		}
 
 		lootTableManager = new LootTableManager();
