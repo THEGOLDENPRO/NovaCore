@@ -162,7 +162,6 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 			try {
 				LogLevel logLevel = LogLevel.valueOf(logLevelName);
-				Log.info("Setting console log level to " + logLevel.name());
 				Log.setConsoleLogLevel(logLevel);
 			} catch (Exception e) {
 				Log.warn("The value " + logLevelName + " is not a valid LogLevel. Resetting it to " + LogLevel.INFO.name());

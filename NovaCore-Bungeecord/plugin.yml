@@ -1,0 +1,4 @@
+name: NovaCore
+main: net.zeeraa.novacore.bungeecord.NovaCore
+version: 1.0
+author: Zeeraa

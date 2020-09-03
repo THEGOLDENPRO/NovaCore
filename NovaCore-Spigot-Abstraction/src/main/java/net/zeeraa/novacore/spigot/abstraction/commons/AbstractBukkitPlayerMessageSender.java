@@ -21,5 +21,4 @@ public class AbstractBukkitPlayerMessageSender implements AbstractPlayerMessageS
 
 		return false;
 	}
-
 }
