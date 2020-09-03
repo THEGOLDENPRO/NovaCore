@@ -2,18 +2,15 @@ package net.zeeraa.novacore.spigot.utils.maps;
 
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.World;
 
 public abstract class AbstractMap {
 	protected World world;
 	protected AbstractMapData abstractMapData;
-	protected Location spawnLocation;
 
-	public AbstractMap(World world, AbstractMapData abstractMapData, Location spawnLocation) {
+	public AbstractMap(World world, AbstractMapData abstractMapData) {
 		this.world = world;
 		this.abstractMapData = abstractMapData;
-		this.spawnLocation = spawnLocation;
 	}
 
 	/**
@@ -33,15 +30,6 @@ public abstract class AbstractMap {
 	 */
 	public AbstractMapData getAbstractMapData() {
 		return abstractMapData;
-	}
-
-	/**
-	 * Get the spawn location
-	 * 
-	 * @return the spawn location
-	 */
-	public Location getSpawnLocation() {
-		return spawnLocation;
 	}
 
 	public List<HologramData> getHolograms() {

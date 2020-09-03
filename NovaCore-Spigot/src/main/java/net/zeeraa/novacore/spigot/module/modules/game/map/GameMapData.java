@@ -13,6 +13,8 @@ import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseWorld;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.WorldUnloadOption;
 import net.zeeraa.novacore.spigot.utils.LocationData;
+import net.zeeraa.novacore.spigot.utils.maps.AbstractMapData;
+import net.zeeraa.novacore.spigot.utils.maps.HologramData;
 
 /**
  * Represents the data for a map before it has been loaded. You can load it with
@@ -20,32 +22,21 @@ import net.zeeraa.novacore.spigot.utils.LocationData;
  * 
  * @author Zeeraa
  */
-public class GameMapData {
+public class GameMapData extends AbstractMapData {
 	private ArrayList<LocationData> starterLocations;
 	private LocationData spectatorLocation;
-
-	private String mapName;
-	private String displayName;
-
-	private String description;
-
-	private File worldFile;
 
 	private List<MapModule> mapModules;
 
 	private boolean enabled;
 
-	public GameMapData(List<MapModule> mapModules, ArrayList<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled) {
+	public GameMapData(List<MapModule> mapModules, ArrayList<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled, List<HologramData> holograms) {
+		super(mapName, displayName, description, worldFile, holograms);
+
 		this.mapModules = mapModules;
 
 		this.starterLocations = starterLocations;
 		this.spectatorLocation = spectatorLocation;
-
-		this.mapName = mapName;
-		this.displayName = displayName;
-		this.description = description;
-
-		this.worldFile = worldFile;
 
 		this.enabled = enabled;
 	}
@@ -66,42 +57,6 @@ public class GameMapData {
 	 */
 	public LocationData getSpectatorLocation() {
 		return spectatorLocation;
-	}
-
-	/**
-	 * Get the map name used by the plugin
-	 * 
-	 * @return The map name
-	 */
-	public String getMapName() {
-		return mapName;
-	}
-
-	/**
-	 * Get the display name that is shown to players
-	 * 
-	 * @return The display name
-	 */
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	/**
-	 * Get the description to display to players in the map list
-	 * 
-	 * @return The description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * Get the world file that will be copied when the map is loaded
-	 * 
-	 * @return The world file
-	 */
-	public File getWorldFile() {
-		return worldFile;
 	}
 
 	public boolean isEnabled() {
@@ -140,6 +95,8 @@ public class GameMapData {
 		World world = multiverseWorld.getWorld();
 
 		Log.info("World " + world.getName() + " has been loaded");
+
+		initHolograms(world);
 
 		return new GameMap(world, this, LocationData.toLocations(starterLocations, world), spectatorLocation.toLocation(world));
 	}

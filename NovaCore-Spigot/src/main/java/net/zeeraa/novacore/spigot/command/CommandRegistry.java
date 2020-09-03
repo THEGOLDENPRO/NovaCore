@@ -2,11 +2,9 @@ package net.zeeraa.novacore.spigot.command;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.bukkit.Bukkit;
-import org.bukkit.permissions.Permission;
-
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
 
 /**
  * This class is used to register {@link NovaCommand}s
@@ -43,10 +41,7 @@ public class CommandRegistry {
 
 	private static void registerCommandPermissions(NovaCommandBase command) {
 		if (command.hasPermission()) {
-			Log.trace("CommandRegistry", "Registering permission " + command.getPermission());
-			if (Bukkit.getServer().getPluginManager().getPermission(command.getPermission()) == null) {
-				Bukkit.getServer().getPluginManager().addPermission(new Permission(command.getPermission(), command.getPermissionDescription(), command.getPermissionDefaultValue()));
-			}
+			PermissionRegistrator.registerPermission(command.getPermission(), command.getPermissionDescription(), command.getPermissionDefaultValue());
 		}
 
 		for (NovaCommandBase subCommand : command.getSubCommands()) {

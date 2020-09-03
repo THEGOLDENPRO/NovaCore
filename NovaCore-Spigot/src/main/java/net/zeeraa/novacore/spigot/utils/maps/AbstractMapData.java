@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import net.zeeraa.novacore.spigot.utils.LocationData;
+import org.bukkit.World;
+
+import net.zeeraa.novacore.commons.log.Log;
 
 public abstract class AbstractMapData {
 	protected String mapName;
@@ -13,19 +15,15 @@ public abstract class AbstractMapData {
 
 	protected File worldFile;
 
-	protected LocationData spawnLocation;
-
 	protected List<HologramData> holograms;
 
-	public AbstractMapData(LocationData spawnLocation, String mapName, String displayName, String description, File worldFile, List<HologramData> holograms) {
+	public AbstractMapData(String mapName, String displayName, String description, File worldFile, List<HologramData> holograms) {
 		this.mapName = mapName;
 		this.displayName = displayName;
 
 		this.description = description;
 
 		this.worldFile = worldFile;
-
-		this.spawnLocation = spawnLocation;
 
 		this.holograms = holograms;
 	}
@@ -66,18 +64,23 @@ public abstract class AbstractMapData {
 		return description;
 	}
 
-	/**
-	 * Get the spawn location
-	 * 
-	 * @return the spawn location
-	 */
-	public LocationData getSpawnLocation() {
-		return spawnLocation;
-	}
-
 	public List<HologramData> getHolograms() {
 		return holograms;
 	}
 
 	public abstract AbstractMap load() throws IOException;
+
+	protected boolean initHolograms(World world) {
+		try {
+			for (HologramData hologramData : holograms) {
+				hologramData.create(world);
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.error("MapData#initHolograms()", "Failed to init holograms. Cause: " + e.getClass().getName() + " : " + e.getMessage());
+		}
+
+		return false;
+	}
 }

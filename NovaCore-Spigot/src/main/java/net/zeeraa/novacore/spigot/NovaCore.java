@@ -8,12 +8,15 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.log.Log;
@@ -46,6 +49,7 @@ import net.zeeraa.novacore.spigot.module.modules.gui.GUIManager;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.module.modules.scoreboard.NetherBoardScoreboard;
+import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
 import net.zeeraa.novacore.spigot.tasks.abstraction.BukkitSimpleTaskCreator;
 import net.zeeraa.novacore.spigot.teams.TeamManager;
 
@@ -66,9 +70,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private VersionIndependantUtils versionIndependentUtils;
 
 	private CustomCraftingManager customCraftingManager;
-	
+
 	private boolean hologramsSupport;
-	
+
 	/**
 	 * Get instance of the {@link NovaCore} plugin
 	 * 
@@ -109,7 +113,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 	public VersionIndependantUtils getVersionIndependentUtils() {
 		return versionIndependentUtils;
 	}
-	
+
 	public boolean hasHologramsSupport() {
 		return hologramsSupport;
 	}
@@ -206,13 +210,18 @@ public class NovaCore extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
-		
+
 		if (Bukkit.getServer().getPluginManager().getPlugin("HolographicDisplays") != null) {
 			this.hologramsSupport = true;
 			Log.info("Hologram support enabled");
 		} else {
 			this.hologramsSupport = false;
 			Log.warn("Hologram support disabled due to HolographicDisplays not being installed");
+		}
+
+		// Register permissions for log levels
+		for (LogLevel ll : LogLevel.values()) {
+			PermissionRegistrator.registerPermission("novacore.loglevel.auto." + ll.name().toLowerCase(), "Sets the players log level to " + ll.name().toLowerCase() + " whan they join", PermissionDefault.FALSE);
 		}
 
 		lootTableManager = new LootTableManager();
@@ -264,5 +273,34 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		// Unregister plugin channels
 		Bukkit.getMessenger().unregisterOutgoingPluginChannel(this);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerJoin(PlayerJoinEvent e) {
+		Player player = e.getPlayer();
+
+		if (Log.getSubscribedPlayers().containsKey(player.getUniqueId())) {
+			// Player has set their log level, do not modify
+			return;
+		}
+
+		int permissionErrorCheck = 0;
+
+		String perms = "";
+
+		// Register permissions for log levels
+		for (LogLevel ll : LogLevel.values()) {
+			if (player.hasPermission("novacore.loglevel.auto." + ll.name().toLowerCase())) {
+				perms += "novacore.loglevel.auto." + ll.name().toLowerCase() + " ";
+
+				Log.debug("NovaCore", "Set " + player.getName() + "s log level to " + ll.name() + " because they have the novacore.loglevel.auto." + ll.name().toLowerCase() + " permission");
+				Log.getSubscribedPlayers().put(player.getUniqueId(), ll);
+				permissionErrorCheck++;
+			}
+		}
+
+		if (permissionErrorCheck > 1) {
+			Log.warn("NovaCore", player.getName() + " has multiple log level set permissions. Please remove permissions until they only have one of the following: " + perms);
+		}
 	}
 }

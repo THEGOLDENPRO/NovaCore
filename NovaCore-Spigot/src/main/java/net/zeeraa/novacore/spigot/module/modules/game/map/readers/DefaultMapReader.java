@@ -15,6 +15,7 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.MapReader;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModuleManager;
 import net.zeeraa.novacore.spigot.utils.LocationData;
+import net.zeeraa.novacore.spigot.utils.maps.HologramData;
 
 public class DefaultMapReader extends MapReader {
 
@@ -45,7 +46,7 @@ public class DefaultMapReader extends MapReader {
 		List<MapModule> mapModules = new ArrayList<MapModule>();
 
 		for (String key : json.keySet()) {
-			if(MapModuleManager.hasMapModule(key)) {
+			if (MapModuleManager.hasMapModule(key)) {
 				Class<? extends MapModule> clazz = MapModuleManager.getMapModule(key);
 				MapModule mapModule;
 				try {
@@ -72,6 +73,28 @@ public class DefaultMapReader extends MapReader {
 			}
 		}
 
-		return new GameMapData(mapModules, starterLocations, spectatorLocation, mapName, displayName, description, worldFile, enabled);
+		List<HologramData> holograms = new ArrayList<HologramData>();
+
+		if (json.has("holograms")) {
+			JSONArray hologramsJson = json.getJSONArray("holograms");
+
+			for (int i = 0; i < hologramsJson.length(); i++) {
+				JSONObject hologramJson = hologramsJson.getJSONObject(i);
+
+				LocationData location = new LocationData(hologramJson.getJSONObject("location"));
+
+				List<String> lines = new ArrayList<String>();
+
+				JSONArray linesJson = hologramJson.getJSONArray("lines");
+
+				for (int j = 0; j < linesJson.length(); i++) {
+					lines.add(linesJson.getString(j));
+				}
+
+				holograms.add(new HologramData(lines, location));
+			}
+		}
+
+		return new GameMapData(mapModules, starterLocations, spectatorLocation, mapName, displayName, description, worldFile, enabled, holograms);
 	}
 }

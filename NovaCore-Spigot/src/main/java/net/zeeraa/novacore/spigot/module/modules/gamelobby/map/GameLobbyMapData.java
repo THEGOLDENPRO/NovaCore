@@ -16,10 +16,21 @@ import net.zeeraa.novacore.spigot.utils.maps.AbstractMapData;
 import net.zeeraa.novacore.spigot.utils.maps.HologramData;
 
 public class GameLobbyMapData extends AbstractMapData {
-	
+	private LocationData spawnLocation;
 
 	public GameLobbyMapData(LocationData spawnLocation, String mapName, String displayName, String description, File worldFile, List<HologramData> holograms) {
-		super(spawnLocation, mapName, displayName, description, worldFile, holograms);
+		super(mapName, displayName, description, worldFile, holograms);
+
+		this.spawnLocation = spawnLocation;
+	}
+
+	/**
+	 * Get the spawn location
+	 * 
+	 * @return the spawn location
+	 */
+	public LocationData getSpawnLocation() {
+		return spawnLocation;
 	}
 
 	/**
@@ -29,7 +40,7 @@ public class GameLobbyMapData extends AbstractMapData {
 	 * @return The {@link GameLobbyMap} that was loaded
 	 * @throws IOException if the server fails to copy or read the world
 	 */
-	public  AbstractMap load() throws IOException {
+	public AbstractMap load() throws IOException {
 		Log.info("Loading lobby map " + getMapName() + " display name: " + getDisplayName());
 		MultiverseWorld multiverseWorld = MultiverseManager.getInstance().createFromFile(worldFile, WorldUnloadOption.DELETE);
 
@@ -37,6 +48,8 @@ public class GameLobbyMapData extends AbstractMapData {
 
 		Log.info("World " + world.getName() + " has been loaded");
 
+		initHolograms(world);
+		
 		return new GameLobbyMap(world, this, spawnLocation.toLocation(world));
 	}
 }
