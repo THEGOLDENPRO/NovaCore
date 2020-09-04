@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.module.modules.game.mapselector.selectors.guivoteselector;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,22 +30,39 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.module.customitems.CustomItemManager;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.spigot.module.modules.game.mapselector.MapSelector;
 import net.zeeraa.novacore.spigot.module.modules.gamelobby.events.PlayerJoinGameLobbyEvent;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 
 public class GUIMapVote extends MapSelector implements Listener {
+	private static GUIMapVote instance;
+
 	private HashMap<UUID, String> votes;
 	private HashMap<UUID, Inventory> playerVoteInventory;
 
 	private String forcedMap;
 
+	public static GUIMapVote getInstance() {
+		return instance;
+	}
+
 	public GUIMapVote() {
+		GUIMapVote.instance = this;
+
 		this.votes = new HashMap<UUID, String>();
 		this.playerVoteInventory = new HashMap<UUID, Inventory>();
 
 		this.forcedMap = null;
+
+		if (!CustomItemManager.getInstance().hasCustomItem(GUIMapVoteMenuIcon.class)) {
+			try {
+				CustomItemManager.getInstance().addCustomItem(GUIMapVoteMenuIcon.class);
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void showPlayer(Player player) {
@@ -176,6 +194,8 @@ public class GUIMapVote extends MapSelector implements Listener {
 		item = NBTEditor.set(item, 1, "novacore", "mapselector");
 
 		e.getPlayer().getInventory().addItem(item);
+
+		e.getPlayer().getInventory().addItem(CustomItemManager.getInstance().getCustomItemStack(GUIMapVoteMenuIcon.class, e.getPlayer()));
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -201,7 +221,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 				}
 			}
 		}
-		
+
 		if (e.getInventory().getHolder() instanceof MapVoteInventoryHolder) {
 			e.setCancelled(true);
 			if (e.getClickedInventory() != null) {

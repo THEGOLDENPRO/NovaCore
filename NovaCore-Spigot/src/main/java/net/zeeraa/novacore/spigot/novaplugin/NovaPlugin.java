@@ -6,9 +6,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.module.InvalidModuleNameException;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
+import net.zeeraa.novacore.spigot.module.customitems.CustomItem;
+import net.zeeraa.novacore.spigot.module.customitems.CustomItemManager;
 
 /**
  * A {@link JavaPlugin} but with some more useful functions
@@ -101,5 +104,15 @@ public abstract class NovaPlugin extends JavaPlugin {
 	 */
 	protected void cancelTasks(Plugin plugin) {
 		Bukkit.getScheduler().cancelTasks(plugin);
+	}
+
+	protected boolean addCustomItem(Class<? extends CustomItem> clazz) {
+		try {
+			return CustomItemManager.getInstance().addCustomItem(clazz);
+		} catch (Exception e) {
+			Log.error(this.getName(), "Failed to add custom item " + clazz.getName() + ". Reason: " + e.getClass().getName() + " : " + e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

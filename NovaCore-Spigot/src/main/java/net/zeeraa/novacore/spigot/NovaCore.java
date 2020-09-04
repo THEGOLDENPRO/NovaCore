@@ -36,6 +36,7 @@ import net.zeeraa.novacore.spigot.customcrafting.CustomCraftingManager;
 import net.zeeraa.novacore.spigot.loottable.LootTableManager;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
+import net.zeeraa.novacore.spigot.module.customitems.CustomItemManager;
 import net.zeeraa.novacore.spigot.module.modules.chestloot.ChestLootManager;
 import net.zeeraa.novacore.spigot.module.modules.compass.CompassTracker;
 import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
@@ -252,6 +253,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(NetherBoardScoreboard.class);
 		ModuleManager.loadModule(GameManager.class);
 		ModuleManager.loadModule(GameLobby.class);
+		
+		// Load and enable
+		ModuleManager.loadModule(CustomItemManager.class, true);
 
 		MapModuleManager.addMapModule("novacore.chestloot", ChestLoot.class);
 		MapModuleManager.addMapModule("novacore.lootdrop", LootDropMapModule.class);

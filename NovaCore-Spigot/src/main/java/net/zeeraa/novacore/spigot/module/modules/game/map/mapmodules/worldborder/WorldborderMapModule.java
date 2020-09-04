@@ -8,10 +8,10 @@ import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.Callback;
+import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.timers.BasicTimer;
-import net.zeeraa.novacore.spigot.world.worldborder.WorldborderShrinkTask;
 
 public class WorldborderMapModule extends MapModule {
 	private double centerX;
@@ -30,10 +30,13 @@ public class WorldborderMapModule extends MapModule {
 
 	private Game game;
 
+	private int taskId = -1;
 
 	private int stepTime;
-
-	private WorldborderShrinkTask shrinkTask;
+	private double stepShrinkValue;
+	private int totalSteps;
+	private int activeStep;
+	private double lastSize;
 
 	public WorldborderMapModule(JSONObject json) {
 		super(json);
@@ -51,6 +54,8 @@ public class WorldborderMapModule extends MapModule {
 		this.startDelay = 600;
 
 		this.stepTime = 30;
+
+		this.taskId = -1;
 
 		if (json.has("center_x")) {
 			this.centerX = json.getDouble("center_x");
@@ -100,14 +105,21 @@ public class WorldborderMapModule extends MapModule {
 			this.stepTime = json.getInt("step_time");
 		}
 
-		shrinkTask = new WorldborderShrinkTask(game.getWorld(), centerX, centerZ, startSize, endSize, damage, damageBuffer, shrinkDuration, stepTime);
+		this.totalSteps = shrinkDuration / stepTime;
 
+		this.stepShrinkValue = (startSize - endSize) / (double) totalSteps;
+
+		this.lastSize = startSize;
+
+		this.taskId = -1;
+		this.activeStep = 0;
+		
 		this.startTimer = new BasicTimer(startDelay, 20L);
 		this.startTimer.addFinishCallback(new Callback() {
 			@Override
 			public void execute() {
-				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "The world border is starting to shrink");
-				for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + ""+ChatColor.BOLD + "The world border is starting to shrink");
+				for(Player player: Bukkit.getServer().getOnlinePlayers()) {
 					player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 1F);
 				}
 				start();
@@ -171,28 +183,45 @@ public class WorldborderMapModule extends MapModule {
 	}
 
 	public boolean cancel() {
-		if (shrinkTask.isRunning()) {
-			shrinkTask.cancel();
+		if (taskId != -1) {
+			Bukkit.getScheduler().cancelTask(taskId);
+			taskId = -1;
 			return true;
 		}
 		return false;
 	}
 
 	public boolean start() {
-		if (shrinkTask != null) {
-			if (shrinkTask.isRunning()) {
-				shrinkTask.cancel();
-				return true;
-			}
-		}
+		if (taskId == -1) {
+			taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					if (activeStep >= totalSteps) {
+						cancel();
+						return;
+					}
+					
+					if(game == null) {
+						return;
+					}
+					
+					if(game.getWorld() == null) {
+						return;
+					}
 
+					game.getWorld().getWorldBorder().setSize(lastSize - stepShrinkValue, (long) stepTime);
+
+					lastSize -= stepShrinkValue;
+
+					activeStep++;
+				}
+			}, 0, stepTime * 20);
+			return true;
+		}
 		return false;
 	}
 
 	public boolean isRunning() {
-		if (shrinkTask != null) {
-			return shrinkTask.isRunning();
-		}
-		return false;
+		return taskId != -1;
 	}
 }
