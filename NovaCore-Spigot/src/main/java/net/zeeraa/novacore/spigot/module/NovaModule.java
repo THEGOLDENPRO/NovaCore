@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.event.ModuleDisabledEvent;
@@ -34,7 +33,7 @@ public abstract class NovaModule {
 	protected ModuleEnableFailureReason enableFailureReason = null;
 
 	private ArrayList<Class<? extends NovaModule>> dependencies = new ArrayList<Class<? extends NovaModule>>();
-
+	
 	/**
 	 * Get the module display name. Module names can't contain spaces
 	 * 

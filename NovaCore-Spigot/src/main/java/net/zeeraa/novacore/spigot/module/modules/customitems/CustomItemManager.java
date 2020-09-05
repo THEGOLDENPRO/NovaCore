@@ -23,7 +23,7 @@ import net.zeeraa.novacore.spigot.module.NovaModule;
 public class CustomItemManager extends NovaModule implements Listener {
 	private static CustomItemManager instance = null;
 
-	private static Map<String, CustomItem> customItems = new HashMap<String, CustomItem>();
+	private Map<String, CustomItem> customItems = new HashMap<String, CustomItem>();
 
 	public static CustomItemManager getInstance() {
 		return instance;
@@ -46,23 +46,39 @@ public class CustomItemManager extends NovaModule implements Listener {
 
 	@Override
 	public void onEnable() throws Exception {
-
 	}
 
 	@Override
 	public void onDisable() throws Exception {
-
 	}
 
+	/**
+	 * Get a map containing all custom items
+	 * @return {@link Map} with custom items
+	 */
 	public Map<String, CustomItem> getCustomItems() {
 		return customItems;
 	}
 
+	/**
+	 * Add a custom item by its class
+	 * 
+	 * @param clazz The class of the {@link CustomItem}
+	 * @return <code>true</code> on success
+	 * @throws InstantiationException    .
+	 * @throws IllegalAccessException    .
+	 * @throws IllegalArgumentException  .
+	 * @throws InvocationTargetException .
+	 * @throws NoSuchMethodException     .
+	 * @throws SecurityException         .
+	 */
 	public boolean addCustomItem(Class<? extends CustomItem> clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		if (!hasCustomItem(clazz)) {
 			CustomItem custonItem = clazz.getConstructor().newInstance();
 
 			customItems.put(custonItem.getClass().getName(), custonItem);
+			
+			return true;
 		}
 		return false;
 	}

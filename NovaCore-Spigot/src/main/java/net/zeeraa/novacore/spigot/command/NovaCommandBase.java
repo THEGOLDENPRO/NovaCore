@@ -333,6 +333,10 @@ public abstract class NovaCommandBase {
 	/**
 	 * Executed on tab completion for this command, returning a list of options the
 	 * player can tab through.
+	 * <p>
+	 * {@link NovaCommandBase#setFilterAutocomplete(boolean)} can be set to true to
+	 * filter the results using
+	 * {@link StringUtil#startsWithIgnoreCase(String, String)}
 	 *
 	 * @param sender Source object which is executing this command
 	 * @param alias  the alias being used
