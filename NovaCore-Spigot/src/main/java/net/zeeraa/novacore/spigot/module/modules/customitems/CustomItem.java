@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.module.customitems;
+package net.zeeraa.novacore.spigot.module.modules.customitems;
 
 import javax.annotation.Nullable;
 

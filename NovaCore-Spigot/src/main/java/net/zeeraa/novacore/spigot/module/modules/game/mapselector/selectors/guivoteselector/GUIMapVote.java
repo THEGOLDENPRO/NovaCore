@@ -30,7 +30,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.spigot.module.customitems.CustomItemManager;
+import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.spigot.module.modules.game.mapselector.MapSelector;
 import net.zeeraa.novacore.spigot.module.modules.gamelobby.events.PlayerJoinGameLobbyEvent;

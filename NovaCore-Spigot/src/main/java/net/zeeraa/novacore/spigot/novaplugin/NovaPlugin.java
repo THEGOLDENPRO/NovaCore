@@ -10,8 +10,8 @@ import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.module.InvalidModuleNameException;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
-import net.zeeraa.novacore.spigot.module.customitems.CustomItem;
-import net.zeeraa.novacore.spigot.module.customitems.CustomItemManager;
+import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItem;
+import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
 
 /**
  * A {@link JavaPlugin} but with some more useful functions

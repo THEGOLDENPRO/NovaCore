@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import net.zeeraa.novacore.spigot.module.customitems.CustomItem;
+import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItem;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 
 public class GUIMapVoteMenuIcon extends CustomItem {
