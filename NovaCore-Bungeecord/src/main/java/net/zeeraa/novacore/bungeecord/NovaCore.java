@@ -81,6 +81,7 @@ public class NovaCore extends Plugin {
 			return;
 		}
 		
+		Log.info("NovaCore", "LogLevel: " + Log.getConsoleLogLevel().name());
 		Log.info("NovaCore", "NovaCore Bungeecord has been enabled");
 	}
 

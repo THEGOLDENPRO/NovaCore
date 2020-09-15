@@ -19,7 +19,7 @@ public class HashUtils {
 	 * @throws IOException IOException
 	 */
 	public static String md5(InputStream input) throws IOException {
-		return DigestUtils.md5(input).toString();
+		return DigestUtils.md5Hex(input);
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class HashUtils {
 	 * @return md5 string
 	 */
 	public static String md5(byte[] input) {
-		return DigestUtils.md5(input).toString();
+		return DigestUtils.md5Hex(input);
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class HashUtils {
 	 * @return md5 string
 	 */
 	public static String md5(String input) {
-		return DigestUtils.md5(input).toString();
+		return DigestUtils.md5Hex(input);
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class HashUtils {
 	 * @throws IOException IOException
 	 */
 	public static String sha256(InputStream input) throws IOException {
-		return DigestUtils.sha256(input).toString();
+		return DigestUtils.sha256Hex(input);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class HashUtils {
 	 * @return sha256 string
 	 */
 	public static String sha256(byte[] input) {
-		return DigestUtils.sha256(input).toString();
+		return DigestUtils.sha256Hex(input);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class HashUtils {
 	 * @return sha256 string
 	 */
 	public static String sha256(String input) {
-		return DigestUtils.sha256(input).toString();
+		return DigestUtils.sha256Hex(input);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class HashUtils {
 	 * @throws IOException IOException
 	 */
 	public static String sha512(InputStream input) throws IOException {
-		return DigestUtils.sha512(input).toString();
+		return DigestUtils.sha512Hex(input);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class HashUtils {
 	 * @return sha512 string
 	 */
 	public static String sha512(byte[] input) {
-		return DigestUtils.sha512(input).toString();
+		return  DigestUtils.sha512Hex(input);
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class HashUtils {
 	 * @return sha512 string
 	 */
 	public static String sha512(String input) {
-		return DigestUtils.sha512(input).toString();
+		return DigestUtils.sha512Hex(input);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class HashUtils {
 	 * @throws IOException IOException
 	 */
 	public static String sha1(InputStream input) throws IOException {
-		return DigestUtils.sha1(input).toString();
+		return DigestUtils.sha1Hex(input);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class HashUtils {
 	 * @return sha1 string
 	 */
 	public static String sha1(byte[] input) {
-		return DigestUtils.sha1(input).toString();
+		return DigestUtils.sha1Hex(input);
 	}
 
 	/**
@@ -132,6 +132,6 @@ public class HashUtils {
 	 * @return sha1 string
 	 */
 	public static String sha1(String input) {
-		return DigestUtils.sha1(input).toString();
+		return DigestUtils.sha1Hex(input);
 	}
 }
