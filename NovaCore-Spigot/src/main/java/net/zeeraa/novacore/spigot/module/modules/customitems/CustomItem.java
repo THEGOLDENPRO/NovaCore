@@ -32,7 +32,7 @@ public abstract class CustomItem {
 	 * 
 	 * @param player The player that crafted or was given the custom item. This will
 	 *               be null if there is no player involved with the custom item.
-	 * @return
+	 * @return .
 	 */
 	public ItemStack getItem(@Nullable Player player) {
 		ItemStack stack = createItemStack(player);
@@ -82,7 +82,7 @@ public abstract class CustomItem {
 	 * Note that this is not an {@link EventHandler} and wont be called unless the
 	 * custom item is involved
 	 * 
-	 * @param event The {@link InventoryClickEvents}
+	 * @param event The {@link InventoryClickEvent}
 	 */
 	public void onInventoryClick(InventoryClickEvent event) {
 	}

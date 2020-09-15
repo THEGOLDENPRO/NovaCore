@@ -54,6 +54,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 
 	/**
 	 * Get a map containing all custom items
+	 * 
 	 * @return {@link Map} with custom items
 	 */
 	public Map<String, CustomItem> getCustomItems() {
@@ -77,7 +78,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 			CustomItem custonItem = clazz.getConstructor().newInstance();
 
 			customItems.put(custonItem.getClass().getName(), custonItem);
-			
+
 			return true;
 		}
 		return false;
@@ -130,7 +131,8 @@ public class CustomItemManager extends NovaModule implements Listener {
 	/**
 	 * Get an {@link ItemStack} from a {@link CustomItem}
 	 * 
-	 * @param clazz The {@link CustomItem} class to get the {@link ItemStack} from
+	 * @param clazz  The {@link CustomItem} class to get the {@link ItemStack} from
+	 * @param player The player that the item was created by
 	 * @return An {@link ItemStack} or <code>null</code> if not loaded or not found
 	 */
 	@Nullable
@@ -143,6 +145,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 	 * 
 	 * @param className The name of the {@link CustomItem} class to get the
 	 *                  {@link ItemStack} from
+	 * @param player    The player that the item was created by
 	 * @return An {@link ItemStack} or <code>null</code> if not loaded or not found
 	 */
 	@Nullable
@@ -160,7 +163,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 	 * Check if a {@link ItemStack} has the {@link CustomItem} NBT data
 	 * 
 	 * @param item The {@link ItemStack} to check
-	 * @return <code>true</code> if the item contains the NBT tag <code>novacore ->
+	 * @return <code>true</code> if the item contains the NBT tag <code>novacore -
 	 *         iscustomitem</code>
 	 */
 	public boolean isCustomItem(ItemStack item) {
