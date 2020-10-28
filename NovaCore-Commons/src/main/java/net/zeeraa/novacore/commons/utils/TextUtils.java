@@ -61,6 +61,13 @@ public class TextUtils {
 	 * https://www.compart.com/en/unicode/U+2606
 	 */
 	public static final String ICON_WHITE_STAR = Character.toString((char) 2606);
+	
+	/**
+	 * Skull and Crossbones in unicode
+	 * <p>
+	 * https://www.compart.com/en/unicode/U+2620
+	 */
+	public static final String ICON_SKULL_AND_CROSSBONES = Character.toString((char) 2620);
 
 	/**
 	 * Get the ordinal name of a number<br>
