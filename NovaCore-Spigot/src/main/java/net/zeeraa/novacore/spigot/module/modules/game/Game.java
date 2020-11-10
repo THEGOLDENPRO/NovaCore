@@ -40,7 +40,8 @@ public abstract class Game {
 	protected Task winCheckTask;
 
 	/**
-	 * This is used the prevent {@link Game#endGame(GameEndReason)} from being called twice
+	 * This is used the prevent {@link Game#endGame(GameEndReason)} from being
+	 * called twice
 	 * <p>
 	 * This should never be changed by the game code unless you know what you are
 	 * doing
@@ -287,6 +288,16 @@ public abstract class Game {
 	}
 
 	/**
+	 * Check if the game is running
+	 * 
+	 * @return <code>true</code> if {@link Game#hasStarted()} is <code>true</code>
+	 *         and {@link Game#hasEnded()} is <code>false</code>
+	 */
+	public boolean isRunning() {
+		return hasStarted() && !hasEnded();
+	}
+
+	/**
 	 * Check if the game has started
 	 * 
 	 * @return <code>true</code> if the game has started
@@ -303,7 +314,8 @@ public abstract class Game {
 	/**
 	 * Check friendly fire is enabled. This wont do anything unless
 	 * {@link GameManager#setUseTeams(boolean)} is enabled and
-	 * {@link NovaCore#setTeamManager(net.zeeraa.novacore.spigot.teams.TeamManager)} is set
+	 * {@link NovaCore#setTeamManager(net.zeeraa.novacore.spigot.teams.TeamManager)}
+	 * is set
 	 * 
 	 * @return <code>true</code> if friendly fire is enabled
 	 */

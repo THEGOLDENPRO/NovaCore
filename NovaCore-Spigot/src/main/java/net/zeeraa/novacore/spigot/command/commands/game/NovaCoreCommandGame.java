@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
 import net.zeeraa.novacore.spigot.command.NovaCommand;
+import net.zeeraa.novacore.spigot.command.commands.game.addplayer.NovaCoreSubCommandGameAddPlayer;
+import net.zeeraa.novacore.spigot.command.commands.game.eliminateplayer.NovaCoreSubCommandGameEliminatePlayer;
 import net.zeeraa.novacore.spigot.command.commands.game.listplayers.NovaCoreSubCommandGameListplayers;
 import net.zeeraa.novacore.spigot.command.commands.game.lootdrop.NovaCoreSubCommandGameLootdrop;
 import net.zeeraa.novacore.spigot.command.commands.game.refill.NovaCoreSubCommandGameRefill;
@@ -25,12 +27,12 @@ public class NovaCoreCommandGame extends NovaCommand {
 
 	public NovaCoreCommandGame() {
 		super("game");
-		
+
 		this.setDescription("Manage minigames");
 		this.setPermission("novacore.command.game");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 		this.setPermissionDescription("Access to the game command");
-		
+
 		this.addHelpSubCommand();
 		this.addSubCommand(new NovaCoreSubCommandStartGame());
 		this.addSubCommand(new NovaCoreSubCommandForceStartGame());
@@ -38,8 +40,10 @@ public class NovaCoreCommandGame extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandGameRefill());
 		this.addSubCommand(new NovaCoreSubCommandGameLootdrop());
 		this.addSubCommand(new NovaCoreSubCommandGameListplayers());
+		this.addSubCommand(new NovaCoreSubCommandGameAddPlayer());
+		this.addSubCommand(new NovaCoreSubCommandGameEliminatePlayer());
 		this.addSubCommand(new NovaCoreSubCommandResetCountdownGame());
-		
+
 		this.setFilterAutocomplete(true);
 	}
 
@@ -48,7 +52,7 @@ public class NovaCoreCommandGame extends NovaCommand {
 		sender.sendMessage(ChatColor.GOLD + "Use " + ChatColor.AQUA + "/game help" + ChatColor.GOLD + " to see all commands");
 		return true;
 	}
-	
+
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
 		return new ArrayList<String>();

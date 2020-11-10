@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -180,7 +181,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 	@Nullable
 	private CustomItem getCustomItem(ItemStack item) {
 		if (isCustomItem(item)) {
-			String itemId = NBTEditor.getString(item, "novacore", "iscustomitem");
+			String itemId = NBTEditor.getString(item, "novacore", "customitemid");
 
 			return customItems.get(itemId);
 		}
@@ -208,11 +209,13 @@ public class CustomItemManager extends NovaModule implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if (e.getItem() != null) {
-			if (isCustomItem(e.getItem())) {
-				CustomItem customItem = getCustomItem(e.getItem());
+			if (e.getItem().getType() != Material.AIR) {
+				if (isCustomItem(e.getItem())) {
+					CustomItem customItem = getCustomItem(e.getItem());
 
-				if (customItem != null) {
-					customItem.onPlayerInteract(e);
+					if (customItem != null) {
+						customItem.onPlayerInteract(e);
+					}
 				}
 			}
 		}
@@ -221,11 +224,13 @@ public class CustomItemManager extends NovaModule implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDropItem(PlayerDropItemEvent e) {
 		if (e.getItemDrop() != null) {
-			if (isCustomItem(e.getItemDrop().getItemStack())) {
-				CustomItem customItem = getCustomItem(e.getItemDrop().getItemStack());
+			if (e.getItemDrop().getItemStack().getType() != Material.AIR) {
+				if (isCustomItem(e.getItemDrop().getItemStack())) {
+					CustomItem customItem = getCustomItem(e.getItemDrop().getItemStack());
 
-				if (customItem != null) {
-					customItem.onPlayerDropItem(e);
+					if (customItem != null) {
+						customItem.onPlayerDropItem(e);
+					}
 				}
 			}
 		}
@@ -235,11 +240,13 @@ public class CustomItemManager extends NovaModule implements Listener {
 	public void onBlockBreak(BlockBreakEvent e) {
 		ItemStack item = NovaCore.getInstance().getVersionIndependentUtils().getItemInMainHand(e.getPlayer());
 		if (item != null) {
-			if (isCustomItem(item)) {
-				CustomItem customItem = getCustomItem(item);
+			if (item.getType() != Material.AIR) {
+				if (isCustomItem(item)) {
+					CustomItem customItem = getCustomItem(item);
 
-				if (customItem != null) {
-					customItem.onBlockBreak(e);
+					if (customItem != null) {
+						customItem.onBlockBreak(e);
+					}
 				}
 			}
 		}
@@ -248,11 +255,13 @@ public class CustomItemManager extends NovaModule implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent e) {
 		if (e.getCurrentItem() != null) {
-			if (isCustomItem(e.getCurrentItem())) {
-				CustomItem customItem = getCustomItem(e.getCurrentItem());
+			if (e.getCurrentItem().getType() != Material.AIR) {
+				if (isCustomItem(e.getCurrentItem())) {
+					CustomItem customItem = getCustomItem(e.getCurrentItem());
 
-				if (customItem != null) {
-					customItem.onInventoryClick(e);
+					if (customItem != null) {
+						customItem.onInventoryClick(e);
+					}
 				}
 			}
 		}

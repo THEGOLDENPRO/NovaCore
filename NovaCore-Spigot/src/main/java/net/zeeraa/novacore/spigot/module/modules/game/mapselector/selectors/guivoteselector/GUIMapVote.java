@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -20,7 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
@@ -34,7 +32,6 @@ import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.spigot.module.modules.game.mapselector.MapSelector;
 import net.zeeraa.novacore.spigot.module.modules.gamelobby.events.PlayerJoinGameLobbyEvent;
-import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 
 public class GUIMapVote extends MapSelector implements Listener {
 	private static GUIMapVote instance;
@@ -190,15 +187,15 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoinGameLobby(PlayerJoinGameLobbyEvent e) {
-		ItemStack item = new ItemBuilder(Material.COMPASS).setName(ChatColor.GOLD + "" + ChatColor.BOLD + "Map selector").build();
+		/*ItemStack item = new ItemBuilder(Material.COMPASS).setName(ChatColor.GOLD + "" + ChatColor.BOLD + "Map selector").build();
 		item = NBTEditor.set(item, 1, "novacore", "mapselector");
 
-		e.getPlayer().getInventory().addItem(item);
+		e.getPlayer().getInventory().addItem(item);*/
 
 		e.getPlayer().getInventory().addItem(CustomItemManager.getInstance().getCustomItemStack(GUIMapVoteMenuIcon.class, e.getPlayer()));
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	/*@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDropItem(PlayerDropItemEvent e) {
 		if (e.getItemDrop().getItemStack().getType() == Material.COMPASS) {
 			if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
@@ -207,11 +204,12 @@ public class GUIMapVote extends MapSelector implements Listener {
 				}
 			}
 		}
-	}
+	}*/
 
+	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent e) {
-		if (e.getCurrentItem() != null) {
+		/*if (e.getCurrentItem() != null) {
 			if (e.getCurrentItem().getType() == Material.COMPASS) {
 				if (e.getWhoClicked().getGameMode() != GameMode.CREATIVE) {
 					if (NBTEditor.contains(e.getCurrentItem(), "novacore", "mapselector")) {
@@ -220,7 +218,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 					}
 				}
 			}
-		}
+		}*/
 
 		if (e.getInventory().getHolder() instanceof MapVoteInventoryHolder) {
 			e.setCancelled(true);

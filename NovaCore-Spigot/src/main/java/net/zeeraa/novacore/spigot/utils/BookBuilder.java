@@ -116,6 +116,11 @@ public class BookBuilder extends ItemBuilder {
 		return this;
 	}
 
+	/**
+	 * Get a clone of the page list
+	 * 
+	 * @return {@link ArrayList} with pages
+	 */
 	private ArrayList<String> getPageArrayListClone() {
 		return new ArrayList<String>(((BookMeta) meta).getPages());
 	}

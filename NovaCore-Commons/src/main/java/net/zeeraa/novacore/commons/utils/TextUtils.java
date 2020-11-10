@@ -23,7 +23,7 @@ public class TextUtils {
 	/**
 	 * Quarter Note in unicode
 	 * <p>
-	 * https://www.compart.com/en/unicode/U+2622
+	 * https://www.compart.com/en/unicode/U+2669
 	 */
 	public static final String ICON_NOTE = Character.toString((char) 2669);
 

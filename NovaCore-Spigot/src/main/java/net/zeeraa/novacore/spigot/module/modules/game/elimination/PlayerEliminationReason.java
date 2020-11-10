@@ -25,6 +25,10 @@ public enum PlayerEliminationReason {
 	 * The player quit and did not reconnect in time
 	 */
 	DID_NOT_RECONNECT,
+	/*
+	 * An admin used a command to elimanate the player
+	 */
+	COMMAND,
 	/**
 	 * The player logged out while combat tagged
 	 */
