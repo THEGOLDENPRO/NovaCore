@@ -40,7 +40,9 @@ import net.zeeraa.novacore.spigot.module.modules.game.countdown.GameCountdown;
 import net.zeeraa.novacore.spigot.module.modules.game.elimination.EliminationTask;
 import net.zeeraa.novacore.spigot.module.modules.game.elimination.PlayerEliminationReason;
 import net.zeeraa.novacore.spigot.module.modules.game.elimination.PlayerQuitEliminationAction;
+import net.zeeraa.novacore.spigot.module.modules.game.events.GameEndEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameLoadedEvent;
+import net.zeeraa.novacore.spigot.module.modules.game.events.GameStartEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameStartFailureEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.spigot.module.modules.game.map.MapReader;
@@ -52,6 +54,8 @@ import net.zeeraa.novacore.spigot.module.modules.game.messages.PlayerElimination
 import net.zeeraa.novacore.spigot.module.modules.game.messages.TeamEliminationMessage;
 import net.zeeraa.novacore.spigot.module.modules.game.messages.defaultmessage.DefaultGameStartFailureMessage;
 import net.zeeraa.novacore.spigot.module.modules.game.messages.defaultmessage.DefaultPlayerEliminationMessage;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.GameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerFlag;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 import net.zeeraa.novacore.spigot.utils.PlayerUtils;
@@ -710,5 +714,16 @@ public class GameManager extends NovaModule implements Listener {
 		if (startFailureMessage != null) {
 			startFailureMessage.showStartFailureMessage(e.getGame(), e.getException());
 		}
+		GameTrigger.triggerMany(e.getGame().getTriggersByFlag(TriggerFlag.TRIGGER_ON_GAME_START_FAILURE));
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onGameStart(GameStartEvent e) {
+		GameTrigger.triggerMany(e.getGame().getTriggersByFlag(TriggerFlag.TRIGGER_ON_GAME_START));
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onGameEnd(GameEndEvent e) {
+		GameTrigger.triggerMany(e.getGame().getTriggersByFlag(TriggerFlag.TRIGGER_ON_GAME_END));
 	}
 }

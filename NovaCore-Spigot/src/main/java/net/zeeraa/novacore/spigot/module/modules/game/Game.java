@@ -22,6 +22,8 @@ import net.zeeraa.novacore.spigot.module.modules.game.events.PlayerEliminatedEve
 import net.zeeraa.novacore.spigot.module.modules.game.events.PlayerWinEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.TeamEliminatedEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.TeamWinEvent;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.GameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerFlag;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 import net.zeeraa.novacore.spigot.teams.Team;
 
@@ -67,7 +69,12 @@ public abstract class Game {
 	/**
 	 * List of all players participating in the game
 	 */
-	protected ArrayList<UUID> players;
+	protected List<UUID> players;
+
+	/**
+	 * List of all game triggers
+	 */
+	protected List<GameTrigger> triggers;
 
 	/**
 	 * The {@link World} that the game takes place in.
@@ -80,6 +87,7 @@ public abstract class Game {
 
 	public Game() {
 		this.players = new ArrayList<UUID>();
+		this.triggers = new ArrayList<GameTrigger>();
 		this.world = null;
 		this.endCalled = false;
 		this.startCalled = false;
@@ -175,10 +183,106 @@ public abstract class Game {
 	/**
 	 * Get a list of all players participating in the game
 	 * 
-	 * @return {@link ArrayList} with the {@link UUID} of all participants
+	 * @return {@link List} with the {@link UUID} of all participants
 	 */
-	public ArrayList<UUID> getPlayers() {
+	public List<UUID> getPlayers() {
 		return players;
+	}
+
+	/**
+	 * Get a list with all game triggers
+	 * 
+	 * @return {@link List} with game triggers
+	 */
+	public List<GameTrigger> getTriggers() {
+		return triggers;
+	}
+
+	/**
+	 * Try to add a {@link GameTrigger}
+	 * <p>
+	 * This will fail if the trigger has spaces in the name or if a trigger with
+	 * that name already exists
+	 * 
+	 * @param trigger The {@link GameTrigger} to add
+	 * @return <code>true</code> on success
+	 */
+	public boolean addTrigger(GameTrigger trigger) {
+		if (!triggerExist(trigger)) {
+			if (trigger.hasValidName()) {
+				triggers.add(trigger);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get a list with triggers that has the provided flag
+	 * @param flag The flag to check for
+	 * @return List with triggers
+	 */
+	public List<GameTrigger> getTriggersByFlag(TriggerFlag flag) {
+		return this.getTriggersByFlags(flag);
+	}
+
+	/**
+	 * Get a list with triggers that contains 1 or more of the provided flags 
+	 * @param flags The flags to check for
+	 * @return List with triggers
+	 */
+	public List<GameTrigger> getTriggersByFlags(TriggerFlag... flags) {
+		List<GameTrigger> result = new ArrayList<GameTrigger>();
+
+		for (GameTrigger trigger : triggers) {
+			for (TriggerFlag flag : flags) {
+				if (trigger.hasFlag(flag)) {
+					result.add(trigger);
+					continue;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Check if a {@link GameTrigger} exists by name
+	 * 
+	 * @param name The name of the {@link GameTrigger}
+	 * @return <code>true</code> if a trigger with that name exists
+	 */
+	public boolean triggerExist(String name) {
+		return this.getTrigger(name) != null;
+	}
+
+	/**
+	 * Check if a {@link GameTrigger} has been added
+	 * <p>
+	 * Not that triggers are checked for by name and not their value
+	 * 
+	 * @param trigger The {@link GameTrigger} to check for
+	 * @return <code>true</code> if that trigger has been added
+	 */
+	public boolean triggerExist(GameTrigger trigger) {
+		return this.triggerExist(trigger.getName());
+	}
+
+	/**
+	 * Try to get a {@link GameTrigger} by its name
+	 * 
+	 * @param name The name of the {@link GameTrigger}
+	 * @return The {@link GameTrigger} or <code>null</code> if not found
+	 */
+	public GameTrigger getTrigger(String name) {
+		for (GameTrigger trigger : triggers) {
+			if (trigger.getName().equalsIgnoreCase(name)) {
+				return trigger;
+			}
+		}
+
+		return null;
 	}
 
 	/**

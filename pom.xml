@@ -21,46 +21,6 @@
 		<maven-deploy-plugin-version>3.0.0-M1</maven-deploy-plugin-version>
 	</properties>
 	
-	<build>
-        <!--<pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.9</version>
-                    <configuration>
-                        <outputDirectory>${project.basedir}/javadocs</outputDirectory>
-                        <reportOutputDirectory>${project.basedir}/javadocs</reportOutputDirectory>
-                        <destDir>${project.basedir}/javadocs</destDir>
-                        <failOnError>false</failOnError>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
-                <configuration>
-                    <outputDirectory>${project.basedir}/javadocs</outputDirectory>
-                    <reportOutputDirectory>${project.basedir}/javadocs</reportOutputDirectory>
-                    <destDir>${project.basedir}/javadocs</destDir>
-                    <failOnError>false</failOnError>
-                </configuration>
-            </plugin>
-        </plugins>-->
-    </build>
-	
 	<distributionManagement>
 		<snapshotRepository>
 			<id>zeeraas-snapshots</id>
@@ -70,7 +30,42 @@
 			<id>zeeraas-releases</id>
 			<url>https://nexus.zeeraa.net/repository/maven-releases/</url>
 		</repository>
+		
+		<site>
+		  <id>zeeraa.net</id>
+		  <url>https://zeeraa.net/javadocs/novacore</url>
+		</site>
 	</distributionManagement>
+	
+	<build>
+		<plugins>
+			<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <version>3.3</version>
+            <configuration>
+                <reportPlugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9</version>
+                        <reportSets>
+                            <reportSet>
+                                <id>aggregate</id>
+                                <reports>
+                                    <report>aggregate</report>
+                                </reports>
+                            </reportSet>
+                        </reportSets>
+                        <configuration>
+							<excludePackageNames>com.darkblade12.particledemo.*</excludePackageNames>
+						</configuration>
+                    </plugin>
+                </reportPlugins>
+            </configuration>
+        </plugin>
+		</plugins>
+	</build>
 	
 	<modules>
 		<module>NovaCore-Commons</module>
