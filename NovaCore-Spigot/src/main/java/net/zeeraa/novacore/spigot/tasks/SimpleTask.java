@@ -14,7 +14,7 @@ import net.zeeraa.novacore.spigot.NovaCore;
  * 
  * @author Anton
  */
-public class SimpleTask implements Task {
+public class SimpleTask extends Task {
 	protected Runnable runnable;
 	protected Plugin plugin;
 	protected long delay;

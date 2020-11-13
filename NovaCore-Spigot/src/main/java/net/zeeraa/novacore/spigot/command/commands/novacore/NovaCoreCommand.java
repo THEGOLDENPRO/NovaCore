@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
+import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.NovaCommand;
 import net.zeeraa.novacore.spigot.command.commands.novacore.gotoworld.NovaCoreSubCommandGoToWorld;
 import net.zeeraa.novacore.spigot.command.commands.novacore.logger.NovaCoreSubCommandLogger;
@@ -22,7 +23,7 @@ import net.zeeraa.novacore.spigot.command.commands.novacore.whereami.NovaCoreSub
 public class NovaCoreCommand extends NovaCommand {
 
 	public NovaCoreCommand() {
-		super("novacore");
+		super("novacore", NovaCore.getInstance());
 
 		this.setAliases(NovaCommand.generateAliasList("nc", "nova"));
 

@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
@@ -41,7 +42,9 @@ public abstract class NovaCommandBase {
 
 	private boolean emptyTabMode;
 
-	public NovaCommandBase(String name) {
+	private NodeType nodeType;
+
+	public NovaCommandBase(String name, NodeType nodeType) {
 		this.name = name;
 		this.description = "";
 		this.permission = null;
@@ -58,6 +61,8 @@ public abstract class NovaCommandBase {
 		this.emptyTabMode = false;
 
 		this.filterAutocomplete = false;
+
+		this.nodeType = nodeType;
 	}
 
 	/**
@@ -498,5 +503,47 @@ public abstract class NovaCommandBase {
 	 */
 	protected void setAllowedSenders(AllowedSenders allowedSenders) {
 		this.allowedSenders = allowedSenders;
+	}
+
+	/**
+	 * Get the {@link NodeType} of this command<p>This can be used to check if the command is a {@link NovaCommand} or a {@link NovaSubCommand}
+	 * 
+	 * @return {@link NodeType}
+	 */
+	public NodeType getNodeType() {
+		return nodeType;
+	}
+
+	/**
+	 * Get the base command for this command
+	 * <p>
+	 * Might return <code>null</code> if its called on a {@link NovaSubCommand} that
+	 * has not been added to a {@link NovaCommand}
+	 * 
+	 * @return The {@link NovaCommand} this command belongs to
+	 */
+	public NovaCommand getBaseCommand() {
+		if (this.getNodeType() == NodeType.BASE_COMMAND) {
+			return (NovaCommand) this;
+		} else if (this.hasParentCommand()) {
+			// Find base command parent using recursion
+			return this.getParentCommand().getBaseCommand();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get the plugin that owns this command
+	 * <p>
+	 * Might return <code>null</code> if its called on a {@link NovaSubCommand} that
+	 * has not been added to a {@link NovaCommand}
+	 */
+	public Plugin getOwner() {
+		NovaCommand base = this.getBaseCommand();
+		if (base != null) {
+			return base.getOwner();
+		}
+		return null;
 	}
 }

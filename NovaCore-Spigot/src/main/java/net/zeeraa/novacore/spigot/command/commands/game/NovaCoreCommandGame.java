@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
+import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.NovaCommand;
 import net.zeeraa.novacore.spigot.command.commands.game.addplayer.NovaCoreSubCommandGameAddPlayer;
 import net.zeeraa.novacore.spigot.command.commands.game.eliminateplayer.NovaCoreSubCommandGameEliminatePlayer;
@@ -26,7 +27,7 @@ import net.zeeraa.novacore.spigot.command.commands.game.stop.NovaCoreSubCommandS
 public class NovaCoreCommandGame extends NovaCommand {
 
 	public NovaCoreCommandGame() {
-		super("game");
+		super("game", NovaCore.getInstance());
 
 		this.setDescription("Manage minigames");
 		this.setPermission("novacore.command.game");

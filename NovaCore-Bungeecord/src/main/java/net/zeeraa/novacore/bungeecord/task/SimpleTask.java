@@ -19,7 +19,7 @@ import net.zeeraa.novacore.commons.tasks.Task;
  * 
  * @author Anton
  */
-public class SimpleTask implements Task {
+public class SimpleTask extends Task {
 	protected Runnable runnable;
 	protected Plugin plugin;
 	protected long delay;

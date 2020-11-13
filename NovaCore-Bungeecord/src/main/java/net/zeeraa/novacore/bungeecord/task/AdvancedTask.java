@@ -8,7 +8,7 @@ import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.zeeraa.novacore.bungeecord.NovaCore;
 import net.zeeraa.novacore.commons.tasks.Task;
 
-public class AdvancedTask implements Task {
+public class AdvancedTask extends Task {
 	protected Runnable runnable;
 	protected Plugin plugin;
 	protected long delay;

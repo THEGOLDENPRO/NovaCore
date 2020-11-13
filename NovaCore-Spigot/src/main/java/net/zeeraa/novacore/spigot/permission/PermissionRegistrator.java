@@ -21,7 +21,7 @@ public class PermissionRegistrator {
 
 	public static boolean registerPermission(Permission permission) {
 		if (Bukkit.getServer().getPluginManager().getPermission(permission.getName()) == null) {
-			Log.trace("PermissionRegistrator", "Registering permission " + permission);
+			Log.trace("PermissionRegistrator", "Registering permission " + permission.getName());
 
 			Bukkit.getServer().getPluginManager().addPermission(permission);
 
