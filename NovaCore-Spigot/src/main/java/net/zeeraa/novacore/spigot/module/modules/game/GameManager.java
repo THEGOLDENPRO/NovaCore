@@ -34,6 +34,7 @@ import net.zeeraa.novacore.commons.utils.Callback;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
 import net.zeeraa.novacore.spigot.command.commands.game.NovaCoreCommandGame;
+import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.game.countdown.DefaultGameCountdown;
 import net.zeeraa.novacore.spigot.module.modules.game.countdown.GameCountdown;
@@ -655,7 +656,9 @@ public class GameManager extends NovaModule implements Listener {
 			eliminationTasks.get(p.getUniqueId()).cancel();
 			eliminationTasks.remove(p.getUniqueId());
 
-			Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.GREEN + ChatColor.BOLD + " reconnected in time");
+			// Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + ""
+			// + p.getName() + ChatColor.GREEN + ChatColor.BOLD + " reconnected in time");
+			LanguageManager.broadcast("novacore.game.elimination.player.reconnected", p.getName());
 		}
 	}
 
@@ -696,6 +699,10 @@ public class GameManager extends NovaModule implements Listener {
 							int seconds = activeGame.getPlayerEliminationDelay() % 60;
 
 							Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
+							
+							
+							
+							
 							break;
 
 						default:
@@ -714,16 +721,18 @@ public class GameManager extends NovaModule implements Listener {
 		if (startFailureMessage != null) {
 			startFailureMessage.showStartFailureMessage(e.getGame(), e.getException());
 		}
-		GameTrigger.triggerMany(e.getGame().getTriggersByFlag(TriggerFlag.TRIGGER_ON_GAME_START_FAILURE));
+		GameTrigger.triggerMany(e.getGame().getTriggersByFlag(TriggerFlag.TRIGGER_ON_GAME_START_FAILURE), TriggerFlag.TRIGGER_ON_GAME_START_FAILURE);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onGameStart(GameStartEvent e) {
-		GameTrigger.triggerMany(e.getGame().getTriggersByFlag(TriggerFlag.TRIGGER_ON_GAME_START));
+		GameTrigger.triggerMany(e.getGame().getTriggersByFlag(TriggerFlag.TRIGGER_ON_GAME_START), TriggerFlag.TRIGGER_ON_GAME_START);
+		GameTrigger.startMany(e.getGame().getTriggersByFlag(TriggerFlag.START_ON_GAME_START));
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onGameEnd(GameEndEvent e) {
-		GameTrigger.triggerMany(e.getGame().getTriggersByFlag(TriggerFlag.TRIGGER_ON_GAME_END));
+		GameTrigger.triggerMany(e.getGame().getTriggersByFlag(TriggerFlag.TRIGGER_ON_GAME_END), TriggerFlag.TRIGGER_ON_GAME_END);
+		GameTrigger.stopMany(e.getGame().getTriggersByFlag(TriggerFlag.STOP_ON_GAME_END));
 	}
 }

@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.RandomGenerator;
-import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMap;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.DelayedGameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.GameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerCallback;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerFlag;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
 import net.zeeraa.novacore.spigot.utils.LocationData;
 
@@ -24,7 +26,7 @@ public class LootDropMapModule extends MapModule {
 	private int minDropTime;
 	private int maxDropTime;
 
-	private int taskId;
+	private DelayedGameTrigger trigger;
 
 	private List<LocationData> locations;
 
@@ -35,9 +37,8 @@ public class LootDropMapModule extends MapModule {
 
 		this.lootTable = null;
 
-		this.taskId = -1;
-		this.minDropTime = -1;
-		this.maxDropTime = -1;
+		this.minDropTime = 200;
+		this.maxDropTime = 900;
 
 		this.locations = new ArrayList<LocationData>();
 
@@ -62,6 +63,33 @@ public class LootDropMapModule extends MapModule {
 		if (minDropTime != -1 && maxDropTime == -1) {
 			maxDropTime = minDropTime;
 		}
+
+		trigger = new DelayedGameTrigger("novacore.lootdrop", minDropTime, new TriggerCallback() {
+			@Override
+			public void run(GameTrigger trigger2, TriggerFlag reason) {
+				onTrigger(reason);
+			}
+		});
+		trigger.addFlag(TriggerFlag.STOP_ON_GAME_END);
+	}
+
+	private void onTrigger(TriggerFlag reason) {
+		spawnDrop();
+		startTriggerTimer();
+	}
+	
+	private void startTriggerTimer() {
+		int delay = RandomGenerator.generate(minDropTime, maxDropTime);
+
+		Log.debug("Next loot drop in " + delay + " seconds");
+
+		if(trigger.isRunning()) {
+			trigger.stop();
+		}
+		
+		trigger.setDelay(delay * 20);
+		
+		trigger.start();
 	}
 
 	@Override
@@ -79,33 +107,24 @@ public class LootDropMapModule extends MapModule {
 
 	@Override
 	public void onGameStart(Game game) {
+		game.addTrigger(trigger);
 		if (lootTable != null && minDropTime > 0) {
-			startTask();
+			startTriggerTimer();
 		}
 	}
 
 	@Override
 	public void onGameEnd(Game game) {
-		if (taskId != -1) {
-			Bukkit.getScheduler().cancelTask(taskId);
+		if (trigger != null) {
+			trigger.stop();
 		}
+		game.removeTrigger(trigger);
 	}
-
-	private void startTask() {
-		int delay = RandomGenerator.generate(minDropTime, maxDropTime);
-
-		Log.debug("Next loot drop in " + delay + " seconds");
-
-		this.taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				spawnDrop();
-
-				startTask();
-			}
-		}, delay * 20);
+	
+	public DelayedGameTrigger getTrigger() {
+		return trigger;
 	}
-
+	
 	public boolean spawnDrop() {
 		if (lootTable != null && minDropTime > 0) {
 			if (locationsReal.size() > 0) {

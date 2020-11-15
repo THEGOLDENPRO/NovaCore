@@ -8,6 +8,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import net.zeeraa.novacore.spigot.language.LanguageManager;
+
 /**
  * Represents the allowed senders for a command. This is used to prevent some
  * types of {@link CommandSender}s from using the command
@@ -67,29 +69,37 @@ public enum AllowedSenders {
 	 * @return message
 	 */
 	public String getErrorMessage() {
+		return this.getErrorMessage(null);
+	}
+
+	/**
+	 * Get a message to display to senders not allowed to use this command
+	 * 
+	 * @param sender The command sender. This is used for translation
+	 * 
+	 * @return message
+	 */
+	public String getErrorMessage(CommandSender sender) {
 		switch (this) {
 		case PLAYERS:
-			return ChatColor.RED + "Only players can use this command";
+			return ChatColor.RED + LanguageManager.getString(sender, "novacore.command.allowed_senders.players_only"); // "Only players can use this command";
 
 		case CONSOLE:
-			return ChatColor.RED + "Only the console can use this command";
+			return ChatColor.RED + LanguageManager.getString(sender, "novacore.command.allowed_senders.console_only"); // "Only the console can use this command";
 
 		case COMMAND_BLOCK:
-			return ChatColor.RED + "Only command blocks can use this command";
+			return ChatColor.RED + LanguageManager.getString(sender, "novacore.command.allowed_senders.commandblock_only"); // "Only command blocks can use this command";
 
 		case ENTITY:
-			return ChatColor.RED + "Only entities can use this command";
+			return ChatColor.RED + LanguageManager.getString(sender, "novacore.command.allowed_senders.entity_only"); // "Only entities can use this command";
 
 		case LIVING_ENTITY:
-			return ChatColor.RED + "Only living entities can use this command";
-
-		case ALL:
-			return ChatColor.RED + "You should be able to use this command but the developers messed up the allowed senders check";
+			return ChatColor.RED + LanguageManager.getString(sender, "novacore.command.allowed_senders.living_entity_only"); // "Only living entities can use this command";
 
 		default:
 			break;
 		}
 
-		return ChatColor.RED + "You cant use this command for some reason";
+		return ChatColor.RED + LanguageManager.getString(sender, "novacore.command.allowed_senders.bad_value");
 	}
 }

@@ -2,11 +2,11 @@ package net.zeeraa.novacore.spigot.module.modules.game.countdown;
 
 import java.io.IOException;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.language.LanguageManager;
 
 public class DefaultGameCountdown extends GameCountdown {
 	private boolean started;
@@ -66,7 +66,8 @@ public class DefaultGameCountdown extends GameCountdown {
 				}
 
 				if (timeLeft <= 10) {
-					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Starting in " + ChatColor.AQUA + "" + ChatColor.BOLD + timeLeft);
+					//Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Starting in " + ChatColor.AQUA + "" + ChatColor.BOLD + timeLeft);
+					LanguageManager.broadcast("novacore.game.lobby.starting_in", timeLeft);
 
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);
@@ -75,7 +76,8 @@ public class DefaultGameCountdown extends GameCountdown {
 			}
 		}, 20L, 20L);
 
-		Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "The game will start in " + ChatColor.AQUA + "" + ChatColor.BOLD + timeLeft + ChatColor.GOLD + "" + ChatColor.BOLD + " seconds!");
+		
+		LanguageManager.broadcast("novacore.game.lobby.countdown", timeLeft);
 
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);

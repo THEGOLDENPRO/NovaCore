@@ -94,14 +94,14 @@ public class NovaCommandProxy extends Command {
 		if (!(sender instanceof ConsoleCommandSender)) {
 			if (!command.hasSenderPermission(sender)) {
 				Log.trace("Sender " + sender.getName() + " did not have permission to execute command" + command.getName() + " origin command: " + novaCommand.getName());
-				sender.sendMessage(command.getNoPermissionMessage());
+				sender.sendMessage(command.getNoPermissionMessage(sender));
 				return false;
 			}
 		}
 
 		if (!command.getAllowedSenders().isAllowed(sender)) {
 			Log.trace("Sender type " + sender.getName() + " was not in the allowed senders list to execute command" + command.getName() + " origin command: " + novaCommand.getName());
-			sender.sendMessage(command.getAllowedSenders().getErrorMessage());
+			sender.sendMessage(command.getAllowedSenders().getErrorMessage(sender));
 			return false;
 		}
 

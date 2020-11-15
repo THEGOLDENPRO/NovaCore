@@ -1,9 +1,7 @@
 package net.zeeraa.novacore.spigot.module.modules.game.messages.defaultmessage;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.module.modules.game.messages.GameStartFailureMessage;
 
@@ -14,6 +12,8 @@ public class DefaultGameStartFailureMessage implements GameStartFailureMessage {
 		if (exception != null) {
 			Log.fatal("Caused by a " + exception.getClass().getName() + ". Message: " + exception.getMessage());
 		}
-		Bukkit.getServer().broadcastMessage(ChatColor.RED + "An uncorrectable error occurred while trying to start the game");
+		// Bukkit.getServer().broadcastMessage(ChatColor.RED + "An uncorrectable error
+		// occurred while trying to start the game");
+		LanguageManager.broadcast("novacore.game.lobby.start_exception");
 	}
 }

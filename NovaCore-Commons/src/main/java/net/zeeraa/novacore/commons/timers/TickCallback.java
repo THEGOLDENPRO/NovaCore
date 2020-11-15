@@ -12,5 +12,5 @@ public interface TickCallback {
 	 * @param timeLeft Ticks left, Note that the duration of a timer tick is defined
 	 *                 by the timer.
 	 */
-	public void execute(int timeLeft);
+	public void execute(long timeLeft);
 }

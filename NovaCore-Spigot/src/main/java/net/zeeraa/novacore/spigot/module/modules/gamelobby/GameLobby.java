@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,6 +26,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameStartFailureEvent;
@@ -184,7 +184,7 @@ public class GameLobby extends NovaModule implements Listener {
 						if (NovaCore.getInstance().hasTeamManager()) {
 							Team team = NovaCore.getInstance().getTeamManager().getPlayerTeam(player);
 							if (team == null) {
-								player.sendMessage(ChatColor.GREEN + "You joined as spectator since you are not in a team");
+								player.sendMessage(LanguageManager.getString(player, "novacore.game.lobby.spectator_no_team"));
 								continue;
 							}
 						}

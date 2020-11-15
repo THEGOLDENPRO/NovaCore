@@ -23,6 +23,7 @@ import net.zeeraa.novacore.spigot.module.modules.game.events.PlayerWinEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.TeamEliminatedEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.TeamWinEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.triggers.GameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.ScheduledGameTrigger;
 import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerFlag;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 import net.zeeraa.novacore.spigot.teams.Team;
@@ -219,7 +220,35 @@ public abstract class Game {
 	}
 
 	/**
+	 * Try to remove a {@link GameTrigger}
+	 * <p>
+	 * This will fail if a trigger with that name does not exists
+	 * <p>
+	 * If the trigger is of type {@link ScheduledGameTrigger} then
+	 * {@link ScheduledGameTrigger#stop()} will be called on successful removal
+	 * 
+	 * @param trigger The {@link GameTrigger} to remove
+	 * @return <code>true</code> on success
+	 */
+	public boolean removeTrigger(GameTrigger trigger) {
+		for (int i = 0; i < triggers.size(); i++) {
+			if (triggers.get(i).getName().equalsIgnoreCase(trigger.getName())) {
+				triggers.remove(i);
+
+				if (trigger instanceof ScheduledGameTrigger) {
+					((ScheduledGameTrigger) trigger).stop();
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get a list with triggers that has the provided flag
+	 * 
 	 * @param flag The flag to check for
 	 * @return List with triggers
 	 */
@@ -228,7 +257,8 @@ public abstract class Game {
 	}
 
 	/**
-	 * Get a list with triggers that contains 1 or more of the provided flags 
+	 * Get a list with triggers that contains 1 or more of the provided flags
+	 * 
 	 * @param flags The flags to check for
 	 * @return List with triggers
 	 */

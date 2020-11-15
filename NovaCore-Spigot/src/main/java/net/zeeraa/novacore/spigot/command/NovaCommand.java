@@ -16,12 +16,11 @@ public abstract class NovaCommand extends NovaCommandBase {
 	private Plugin owner;
 
 	/**
+	 * Deprecated: Provide a owning plugin using
+	 * {@link NovaCommand#NovaCommand(String, Plugin)} instead
+	 * 
 	 * @param name The name of the command. If the name is hello the command will be
 	 *             /hello
-	 *             <p>
-	 *             Deprecated: Provide a owning plugin using
-	 *             {@link NovaCommand#NovaCommand(String, Plugin)} instead
-	 * 
 	 */
 	@Deprecated
 	public NovaCommand(String name) {
@@ -33,6 +32,7 @@ public abstract class NovaCommand extends NovaCommandBase {
 	/**
 	 * @param name The name of the command. If the name is hello the command will be
 	 *             /hello
+	 * @param owner The plugin that owns this command
 	 */
 	public NovaCommand(String name, Plugin owner) {
 		super(name, NodeType.BASE_COMMAND);

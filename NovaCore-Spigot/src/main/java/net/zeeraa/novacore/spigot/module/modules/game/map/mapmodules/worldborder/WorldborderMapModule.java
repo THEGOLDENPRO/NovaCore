@@ -1,17 +1,19 @@
 package net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.worldborder;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.commons.utils.Callback;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
-import net.zeeraa.novacore.spigot.timers.BasicTimer;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.DelayedGameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.GameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerCallback;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerFlag;
 
 public class WorldborderMapModule extends MapModule {
 	private double centerX;
@@ -26,7 +28,7 @@ public class WorldborderMapModule extends MapModule {
 	private int shrinkDuration;
 	private int startDelay;
 
-	private BasicTimer startTimer;
+	private DelayedGameTrigger startTrigger;
 
 	private Game game;
 
@@ -113,18 +115,22 @@ public class WorldborderMapModule extends MapModule {
 
 		this.taskId = -1;
 		this.activeStep = 0;
-		
-		this.startTimer = new BasicTimer(startDelay, 20L);
-		this.startTimer.addFinishCallback(new Callback() {
+
+		this.startTrigger = new DelayedGameTrigger("novacore.worldborder.start", startDelay * 20, new TriggerCallback() {
 			@Override
-			public void execute() {
-				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + ""+ChatColor.BOLD + "The world border is starting to shrink");
-				for(Player player: Bukkit.getServer().getOnlinePlayers()) {
+			public void run(GameTrigger trigger, TriggerFlag reason) {
+				startTrigger.stop();
+				// Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD +
+				// "The world border is starting to shrink");
+				LanguageManager.broadcast("novacore.game.wordborder.start");
+				for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 					player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 1F);
 				}
 				start();
 			}
 		});
+		this.startTrigger.addFlag(TriggerFlag.RUN_ONLY_ONCE);
+		this.startTrigger.addFlag(TriggerFlag.STOP_ON_GAME_END);
 	}
 
 	public double getCenterX() {
@@ -155,13 +161,15 @@ public class WorldborderMapModule extends MapModule {
 		return damageBuffer;
 	}
 
-	public BasicTimer getStartTimer() {
-		return startTimer;
+	public DelayedGameTrigger getStartTrigger() {
+		return startTrigger;
 	}
 
 	@Override
 	public void onGameStart(Game game) {
 		this.game = game;
+
+		game.addTrigger(startTrigger);
 
 		if (game.hasWorld()) {
 			game.getWorld().getWorldBorder().setCenter(centerX, centerZ);
@@ -174,7 +182,7 @@ public class WorldborderMapModule extends MapModule {
 			return;
 		}
 
-		startTimer.start();
+		startTrigger.start();
 	}
 
 	@Override
@@ -200,12 +208,12 @@ public class WorldborderMapModule extends MapModule {
 						cancel();
 						return;
 					}
-					
-					if(game == null) {
+
+					if (game == null) {
 						return;
 					}
-					
-					if(game.getWorld() == null) {
+
+					if (game.getWorld() == null) {
 						return;
 					}
 

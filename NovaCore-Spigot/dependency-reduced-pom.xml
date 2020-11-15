@@ -18,6 +18,7 @@
         <directory>.</directory>
         <includes>
           <include>plugin.yml</include>
+          <include>lang/en-us.json</include>
         </includes>
       </resource>
     </resources>

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -23,13 +22,14 @@ import org.bukkit.inventory.ItemStack;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.loottable.LootTable;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.chestloot.events.ChestFillEvent;
 
 public class ChestLootManager extends NovaModule implements Listener {
 	private static ChestLootManager instance;
-	
+
 	private ArrayList<Location> chests;
 	private HashMap<Location, Inventory> enderChests;
 
@@ -41,7 +41,7 @@ public class ChestLootManager extends NovaModule implements Listener {
 	public static ChestLootManager getInstance() {
 		return instance;
 	}
-	
+
 	public ChestLootManager() {
 		ChestLootManager.instance = this;
 		this.enderChests = new HashMap<Location, Inventory>();
@@ -60,7 +60,7 @@ public class ChestLootManager extends NovaModule implements Listener {
 		if (announce) {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);
-				p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Chests have been refilled");
+				p.sendMessage(LanguageManager.getString(p, "novacore.game.modules.chestloot.refill"));
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public class ChestLootManager extends NovaModule implements Listener {
 
 					if (e.getClickedBlock() != null) {
 						Log.trace("Filling ender chest at location " + e.getClickedBlock().getLocation().toString());
-						
+
 						if (!enderChests.containsKey(e.getClickedBlock().getLocation())) {
 							Inventory inventory = Bukkit.createInventory(new EnderChestHolder(), 27, "Ender chest");
 
@@ -152,7 +152,7 @@ public class ChestLootManager extends NovaModule implements Listener {
 			if (chestLootTable != null) {
 				if (!chests.contains(block.getLocation())) {
 					Log.trace("Filling chest at location " + block.getLocation().toString());
-					
+
 					LootTable lootTable = NovaCore.getInstance().getLootTableManager().getLootTable(chestLootTable);
 
 					if (lootTable == null) {

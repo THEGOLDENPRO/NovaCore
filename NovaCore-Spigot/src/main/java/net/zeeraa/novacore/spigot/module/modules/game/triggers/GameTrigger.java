@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.zeeraa.novacore.commons.log.Log;
+
 /**
  * Game triggers can be used to make certain events in games that can be
  * triggered by either a timer, a command or by code
@@ -59,11 +61,18 @@ public class GameTrigger {
 	 * Add a flag to this trigger
 	 * <p>
 	 * If the flag already exists it wont be added again
+	 * <p>
+	 * This wont add the trigger if {@link TriggerFlag#canBeApplied()} is
+	 * <code>false</code>
 	 * 
 	 * @param flag The flag to add
 	 * @return this instance so the commands can be chained
 	 */
 	public GameTrigger addFlag(TriggerFlag flag) {
+		if (!flag.canBeApplied()) {
+			return this;
+		}
+
 		if (!hasFlag(flag)) {
 			flags.add(flag);
 		}
@@ -110,12 +119,15 @@ public class GameTrigger {
 		}
 
 		if (flag != null) {
-			if (!flag.isAutoTrigger()) {
+			if (!flag.canTrigger()) {
+				Log.warn("GameTrigger", "Tried to execute trigger " + name + " with non trigger reason flag " + flag.name());
 				return new TriggerResponse(this, false);
 			}
 		}
 
 		this.triggerCount++;
+
+		Log.trace("GameTrigger", "Trigger: " + name + " was triggered with flag " + (flag == null ? "null" : flag.name()) + ". Times triggered: " + triggerCount);
 
 		for (TriggerCallback callback : this.callbacks) {
 			callback.run(this, flag);
@@ -138,7 +150,7 @@ public class GameTrigger {
 	/**
 	 * Get the name of the trigger
 	 * 
-	 * @return
+	 * @return Name of the trigger
 	 */
 	public String getName() {
 		return name;
@@ -163,13 +175,57 @@ public class GameTrigger {
 	}
 
 	/**
-	 * Try to trigger all triggers in a list
+	 * Try to activate all triggers in a list
 	 * 
 	 * @param triggers The list of triggers
 	 */
 	public static void triggerMany(List<GameTrigger> triggers) {
 		for (GameTrigger trigger : triggers) {
 			trigger.trigger();
+		}
+	}
+
+	/**
+	 * Try to activate all triggers in a list
+	 * 
+	 * @param triggers The list of triggers
+	 * @param reason   The {@link TriggerFlag} that activated the trigger
+	 */
+	public static void triggerMany(List<GameTrigger> triggers, TriggerFlag reason) {
+		for (GameTrigger trigger : triggers) {
+			trigger.trigger(reason);
+		}
+	}
+
+	/**
+	 * Try to start all triggers in a list
+	 * <p>
+	 * This will ignore all triggers that is not of type
+	 * {@link ScheduledGameTrigger}
+	 * 
+	 * @param triggers The list of triggers
+	 */
+	public static void startMany(List<GameTrigger> triggers) {
+		for (GameTrigger trigger : triggers) {
+			if (trigger instanceof ScheduledGameTrigger) {
+				((ScheduledGameTrigger) trigger).start();
+			}
+		}
+	}
+
+	/**
+	 * Try to stop all triggers in a list
+	 * <p>
+	 * This will ignore all triggers that is not of type
+	 * {@link ScheduledGameTrigger}
+	 * 
+	 * @param triggers The list of triggers
+	 */
+	public static void stopMany(List<GameTrigger> triggers) {
+		for (GameTrigger trigger : triggers) {
+			if (trigger instanceof ScheduledGameTrigger) {
+				((ScheduledGameTrigger) trigger).stop();
+			}
 		}
 	}
 }

@@ -10,13 +10,14 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItem;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 
 public class GUIMapVoteMenuIcon extends CustomItem {
 	@Override
 	protected ItemStack createItemStack(Player player) {
-		return new ItemBuilder(Material.COMPASS).setName(ChatColor.GOLD + "" + ChatColor.BOLD + "Map selector").build();
+		return new ItemBuilder(Material.COMPASS).setName(ChatColor.GOLD + "" + ChatColor.BOLD + LanguageManager.getString(player, "novacore.game.map_selector.item.name")).build();
 	}
 
 	@Override

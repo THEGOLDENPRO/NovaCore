@@ -49,5 +49,5 @@ public interface Timer {
 	 * 
 	 * @return the time left
 	 */
-	public int getTimeLeft();
+	public long getTimeLeft();
 }

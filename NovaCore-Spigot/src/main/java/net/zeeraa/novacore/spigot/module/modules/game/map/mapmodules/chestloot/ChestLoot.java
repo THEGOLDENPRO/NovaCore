@@ -1,16 +1,18 @@
 package net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.chestloot;
 
-import org.bukkit.Bukkit;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.RandomGenerator;
-import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.modules.chestloot.ChestLootManager;
 import net.zeeraa.novacore.spigot.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMap;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.DelayedGameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.GameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerCallback;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerFlag;
 
 public class ChestLoot extends MapModule {
 	private String chestLootTable;
@@ -21,7 +23,7 @@ public class ChestLoot extends MapModule {
 
 	private boolean announceRefills;
 
-	private int taskId;
+	private DelayedGameTrigger trigger;
 
 	public ChestLoot(JSONObject json) {
 		super(json);
@@ -31,8 +33,7 @@ public class ChestLoot extends MapModule {
 		this.minRefillTime = -1;
 		this.maxRefillTime = -1;
 		this.announceRefills = true;
-
-		this.taskId = -1;
+		this.trigger = null;
 
 		if (json.has("ender_chest_loot")) {
 			this.enderChestLootTable = json.getString("ender_chest_loot");
@@ -59,6 +60,15 @@ public class ChestLoot extends MapModule {
 		} else if (maxRefillTime != -1 && minRefillTime == -1) {
 			minRefillTime = maxRefillTime;
 		}
+
+		this.trigger = new DelayedGameTrigger("novacore.chest.refill", minRefillTime * 20, new TriggerCallback() {
+			@Override
+			public void run(GameTrigger trigger, TriggerFlag reason) {
+				ChestLootManager.getInstance().refillChests(announceRefills);
+				startTask();
+			}
+		});
+		trigger.addFlag(TriggerFlag.STOP_ON_GAME_END);
 	}
 
 	public String getEnderChestLootTable() {
@@ -109,15 +119,13 @@ public class ChestLoot extends MapModule {
 	@Override
 	public void onGameStart(Game game) {
 		if (isRefillsEnabled()) {
+			game.addTrigger(trigger);
 			startTask();
 		}
 	}
-
-	@Override
-	public void onGameEnd(Game game) {
-		if (taskId != -1) {
-			Bukkit.getScheduler().cancelTask(taskId);
-		}
+	
+	public DelayedGameTrigger getTrigger() {
+		return trigger;
 	}
 
 	private void startTask() {
@@ -125,12 +133,8 @@ public class ChestLoot extends MapModule {
 
 		Log.debug("Next chest refill in " + delay + " seconds");
 
-		this.taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				ChestLootManager.getInstance().refillChests(announceRefills);
-				startTask();
-			}
-		}, delay * 20);
+		trigger.stop();
+		trigger.setDelay(delay * 20);
+		trigger.start();
 	}
 }

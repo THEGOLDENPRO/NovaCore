@@ -33,6 +33,7 @@ import net.zeeraa.novacore.spigot.abstraction.commons.BukkitAsyncManager;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
 import net.zeeraa.novacore.spigot.command.commands.novacore.NovaCoreCommand;
 import net.zeeraa.novacore.spigot.customcrafting.CustomCraftingManager;
+import net.zeeraa.novacore.spigot.language.LanguageReader;
 import net.zeeraa.novacore.spigot.loottable.LootTableManager;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
@@ -228,6 +229,13 @@ public class NovaCore extends JavaPlugin implements Listener {
 			PermissionRegistrator.registerPermission("novacore.loglevel.auto." + ll.name().toLowerCase(), "Sets the players log level to " + ll.name().toLowerCase() + " whan they join", PermissionDefault.FALSE);
 		}
 
+		Log.info("Loading language files...");
+		try {
+			LanguageReader.readFromJar(this.getClass(), "/lang/en-us.json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		lootTableManager = new LootTableManager();
 
 		lootTableManager.addLoader(new LootTableLoaderV1());
@@ -253,7 +261,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(NetherBoardScoreboard.class);
 		ModuleManager.loadModule(GameManager.class);
 		ModuleManager.loadModule(GameLobby.class);
-		
+
 		// Load and enable
 		ModuleManager.loadModule(CustomItemManager.class, true);
 

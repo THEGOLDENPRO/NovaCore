@@ -16,8 +16,8 @@ import net.zeeraa.novacore.spigot.NovaCore;
  */
 public class BasicTimer implements Timer {
 	private int taskId;
-	private int timeLeft;
-	private Long tickTime;
+	private long timeLeft;
+	private long tickTime;
 
 	private boolean started;
 	private boolean finished;
@@ -30,7 +30,7 @@ public class BasicTimer implements Timer {
 	 * 
 	 * @param time the amount of seconds the timer will count down from
 	 */
-	public BasicTimer(int time) {
+	public BasicTimer(long time) {
 		this(time, 20L);
 	}
 
@@ -40,7 +40,7 @@ public class BasicTimer implements Timer {
 	 * @param time     value the timer will count down from
 	 * @param tickTime how many ticks until the next step
 	 */
-	public BasicTimer(int time, Long tickTime) {
+	public BasicTimer(long time, long tickTime) {
 		this.timeLeft = time;
 		this.tickTime = tickTime;
 
@@ -167,7 +167,7 @@ public class BasicTimer implements Timer {
 	 * @return the time left
 	 */
 	@Override
-	public int getTimeLeft() {
+	public long getTimeLeft() {
 		return this.timeLeft;
 	}
 
@@ -176,7 +176,7 @@ public class BasicTimer implements Timer {
 	 * 
 	 * @param timeLeft Value
 	 */
-	public void setTimeLeft(int timeLeft) {
+	public void setTimeLeft(Long timeLeft) {
 		this.timeLeft = timeLeft;
 	}
 

@@ -19,7 +19,6 @@ import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.MapProtectionMode;
 
 public class MapProtection extends MapModule implements Listener {
 	private List<Material> breakWhitelist;

@@ -1,12 +1,12 @@
 package net.zeeraa.novacore.spigot.module.modules.game.messages.defaultmessage;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.modules.game.elimination.PlayerEliminationReason;
 import net.zeeraa.novacore.spigot.module.modules.game.messages.PlayerEliminationMessage;
 import net.zeeraa.novacore.spigot.teams.Team;
@@ -21,8 +21,6 @@ public class DefaultPlayerEliminationMessage implements PlayerEliminationMessage
 	public void showPlayerEliminatedMessage(OfflinePlayer player, Entity killer, PlayerEliminationReason reason, int placement) {
 		ChatColor playerColor = ChatColor.AQUA;
 
-		String extra = "";
-
 		if (NovaCore.getInstance().getTeamManager() != null) {
 			Team playerTeam = NovaCore.getInstance().getTeamManager().getPlayerTeam(player);
 			if (playerTeam != null) {
@@ -32,19 +30,19 @@ public class DefaultPlayerEliminationMessage implements PlayerEliminationMessage
 
 		switch (reason) {
 		case DEATH:
-			extra += "died";
-			break;
-
-		case DID_NOT_RECONNECT:
-			extra += "did not reconnect in time";
+			LanguageManager.broadcast("novacore.game.elimination.player.died", playerColor.toString(), player.getName());
 			break;
 
 		case COMBAT_LOGGING:
-			extra += "logged out during combat";
+			LanguageManager.broadcast("novacore.game.elimination.player.combat_logging", playerColor.toString(), player.getName());
 			break;
-			
-		case QUIT:
-			extra += "quit";
+
+		case DID_NOT_RECONNECT:
+			LanguageManager.broadcast("novacore.game.elimination.player.did_not_reconnect", playerColor.toString(), player.getName());
+			break;
+
+		case COMMAND:
+			LanguageManager.broadcast("novacore.game.elimination.player.command", playerColor.toString(), player.getName());
 			break;
 
 		case KILLED:
@@ -54,23 +52,27 @@ public class DefaultPlayerEliminationMessage implements PlayerEliminationMessage
 					Entity theBoiWhoFirered = (Entity) ((Projectile) killer).getShooter();
 
 					if (theBoiWhoFirered != null) {
-						killerName = "by " + theBoiWhoFirered.getName();
+						killerName = theBoiWhoFirered.getName();
 					} else {
-						killerName = "by " + killer.getName();
+						killerName = killer.getName();
 					}
 				} else {
-					killerName = "by " + killer.getName();
+					killerName = killer.getName();
 				}
 			}
+			LanguageManager.broadcast("novacore.game.elimination.player.killed", playerColor.toString(), player.getName(), killerName);
+			break;
 
-			extra += "was killed " + killerName;
+		case QUIT:
+			LanguageManager.broadcast("novacore.game.elimination.player.quit", playerColor.toString(), player.getName());
 			break;
 
 		default:
-			extra += "went out to buy some milk but never returned";
+			LanguageManager.broadcast("novacore.game.elimination.player.unknown", playerColor.toString(), player.getName());
 			break;
 		}
-
-		Bukkit.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "Player Eliminated> " + playerColor + ChatColor.BOLD + player.getName() + " " + ChatColor.GOLD + ChatColor.BOLD + extra);
+		// Bukkit.getServer().broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD +
+		// "Player Eliminated> " + playerColor + ChatColor.BOLD + player.getName() + " "
+		// + ChatColor.GOLD + ChatColor.BOLD + extra);
 	}
 }

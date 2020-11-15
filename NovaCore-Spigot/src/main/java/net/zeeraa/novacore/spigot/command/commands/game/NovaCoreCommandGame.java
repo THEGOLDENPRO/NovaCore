@@ -18,6 +18,7 @@ import net.zeeraa.novacore.spigot.command.commands.game.resetcountdown.NovaCoreS
 import net.zeeraa.novacore.spigot.command.commands.game.start.NovaCoreSubCommandForceStartGame;
 import net.zeeraa.novacore.spigot.command.commands.game.start.NovaCoreSubCommandStartGame;
 import net.zeeraa.novacore.spigot.command.commands.game.stop.NovaCoreSubCommandStopGame;
+import net.zeeraa.novacore.spigot.command.commands.game.trigger.NovaCoreSubCommandGameTrigger;
 
 /**
  * A command from NovaCore
@@ -44,6 +45,7 @@ public class NovaCoreCommandGame extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandGameAddPlayer());
 		this.addSubCommand(new NovaCoreSubCommandGameEliminatePlayer());
 		this.addSubCommand(new NovaCoreSubCommandResetCountdownGame());
+		this.addSubCommand(new NovaCoreSubCommandGameTrigger());
 
 		this.setFilterAutocomplete(true);
 	}

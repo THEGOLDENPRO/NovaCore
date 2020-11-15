@@ -15,6 +15,8 @@ import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
 
+import net.zeeraa.novacore.spigot.language.LanguageManager;
+
 /**
  * This class is the shared code between {@link NovaCommand} and
  * {@link NovaSubCommand}
@@ -458,7 +460,20 @@ public abstract class NovaCommandBase {
 	 *         permission
 	 */
 	public String getNoPermissionMessage() {
-		return ChatColor.RED + "You dont have permission to use this command";
+		return this.getNoPermissionMessage(null);
+	}
+
+	/**
+	 * Get the message that is shown to {@link CommandSender} that does not have
+	 * permission
+	 * 
+	 * @param sender The command sender, This is used for language support
+	 * 
+	 * @return a {@link String} that will be sent to {@link CommandSender} without
+	 *         permission
+	 */
+	public String getNoPermissionMessage(CommandSender sender) {
+		return ChatColor.RED + LanguageManager.getString(sender, "novacore.command.no_permission"); //"You don't have permission to use this command";
 	}
 
 	/**
@@ -506,7 +521,10 @@ public abstract class NovaCommandBase {
 	}
 
 	/**
-	 * Get the {@link NodeType} of this command<p>This can be used to check if the command is a {@link NovaCommand} or a {@link NovaSubCommand}
+	 * Get the {@link NodeType} of this command
+	 * <p>
+	 * This can be used to check if the command is a {@link NovaCommand} or a
+	 * {@link NovaSubCommand}
 	 * 
 	 * @return {@link NodeType}
 	 */
