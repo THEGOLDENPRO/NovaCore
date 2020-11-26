@@ -27,7 +27,7 @@
 		</resources>
 
 		<plugins>
-		
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -186,6 +186,15 @@
 			<groupId>net.zeeraa.novacore</groupId>
 			<artifactId>novacore-spigot_v1_12-R1</artifactId>
 			<version>v1_12-R1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>net.zeeraa.novacore</groupId>
+			<artifactId>novacore-spigot_v1_16_R3</artifactId>
+			<version>v1_16_R3-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 			<optional>true</optional>

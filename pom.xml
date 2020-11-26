@@ -73,6 +73,7 @@
         <module>NovaCore-Spigot-Abstraction</module>
         <module>NovaCore-Spigot_1.8.8-R3</module>
 		<module>NovaCore-Spigot_1_12-R1</module>
+		<module>NovaCore-Spigot_1_16_R3</module>
 		<module>NovaCore-Spigot</module>
 	</modules>
 

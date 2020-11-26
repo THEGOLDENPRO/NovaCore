@@ -263,4 +263,56 @@ public class LocationOffset {
 	public Location applyCopy(Location location) {
 		return this.apply(location.clone());
 	}
+
+	/**
+	 * Apply the offset to a {@link Location}.
+	 * <p>
+	 * This version will also change the x and z coordinates basted on the yaw value
+	 * <p>
+	 * This will change the input {@link Location}s values
+	 * <p>
+	 * To not modify the input location use
+	 * {@link LocationOffset#applyCopy(Location)}
+	 * 
+	 * @param location The location
+	 * @return The modified {@link Location}
+	 */
+	public Location applyWithRotation(Location location) {
+		double rad = Math.toRadians(Math.abs(location.getYaw()));
+
+		double nx = (z * Math.sin(rad)) + (x * Math.cos(rad));
+		double nz = (z * Math.cos(rad)) - (x * Math.sin(rad));
+
+		// System.out.println("--------------------\nx: " + x + "\nz: " + z + "\nnx: " +
+		// nx + "\nnz: " + nz + "\nrot: " + rotation + "\nrad:" + rad + "\nl yaw: " +
+		// location.getYaw() + "\nsin rad: " + Math.sin(rad) + "\ncos rad: " +
+		// Math.cos(rad));
+
+		location.add(nx, y, nz);
+		location.setYaw(location.getYaw() + yaw);
+		location.setPitch(location.getPitch() + pitch);
+
+		if (world != null) {
+			location.setWorld(world);
+		}
+
+		return location;
+	}
+
+	/**
+	 * Create a copy of a {@link Location} and apply the offset.
+	 * <p>
+	 * This version will also change the x and z coordinates basted on the yaw value
+	 * <p>
+	 * This wont change the input location.
+	 * <p>
+	 * To also modify the input location use
+	 * {@link LocationOffset#applyWithRotation(Location)}
+	 * 
+	 * @param location The location
+	 * @return The modified copy of the input {@link Location}
+	 */
+	public Location applyWithRotationAsCopy(Location location) {
+		return this.applyWithRotation(location.clone());
+	}
 }

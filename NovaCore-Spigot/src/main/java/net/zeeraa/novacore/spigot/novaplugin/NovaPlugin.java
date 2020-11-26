@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -114,5 +115,12 @@ public abstract class NovaPlugin extends JavaPlugin {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	/**
+	 * Call {@link PluginManager#disablePlugin(Plugin)} on this plugin
+	 */
+	protected void disableSelf() {
+		Bukkit.getPluginManager().disablePlugin(this);
 	}
 }

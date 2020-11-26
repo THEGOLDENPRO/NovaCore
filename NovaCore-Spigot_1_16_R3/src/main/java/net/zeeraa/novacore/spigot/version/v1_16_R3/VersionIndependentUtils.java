@@ -1,28 +1,21 @@
-package net.zeeraa.novacore.spigot.version.v1_12_R1;
+package net.zeeraa.novacore.spigot.version.v1_16_R3;
 
 import org.bukkit.Material;
-import org.bukkit.SkullType;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
-import org.bukkit.block.Skull;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import net.minecraft.server.v1_12_R1.MinecraftServer;
+import net.minecraft.server.v1_16_R3.MinecraftServer;
 
 public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
 	@Override
 	public void setBlockAsPlayerSkull(Block block) {
-		block.setType(Material.SKULL);
-		Skull skull = (Skull) block.getState();
-		skull.setSkullType(SkullType.PLAYER);
+		block.setType(Material.PLAYER_HEAD);
 
 		block.getState().update(true);
-
-		// TODO: fix
-		block.setData((byte) 1);
 	}
 
 	@Override

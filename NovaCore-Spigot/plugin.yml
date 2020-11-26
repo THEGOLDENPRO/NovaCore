@@ -2,7 +2,7 @@ name: NovaCore
 main: net.zeeraa.novacore.spigot.NovaCore
 description: A core plugin
 version: 1.0
-
+api-version: 1.13
 softdepend: [Netherboard, HolographicDisplays, ProtocolLib]
 
 permissions:
