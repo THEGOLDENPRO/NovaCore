@@ -61,6 +61,7 @@ import net.zeeraa.novacore.spigot.module.modules.scoreboard.NetherBoardScoreboar
 import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
 import net.zeeraa.novacore.spigot.tasks.abstraction.BukkitSimpleTaskCreator;
 import net.zeeraa.novacore.spigot.teams.TeamManager;
+import net.zeeraa.novacore.spigot.utils.JSONFileType;
 import net.zeeraa.novacore.spigot.utils.JSONFileUtils;
 
 public class NovaCore extends JavaPlugin implements Listener {
@@ -166,7 +167,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 			FileUtils.forceMkdir(lootTableFolder);
 
 			if (!jumpPadFile.exists()) {
-				JSONFileUtils.createEmpty(jumpPadFile);
+				JSONFileUtils.createEmpty(jumpPadFile, JSONFileType.JSONArray);
 			}
 
 			if (!logSeverityConfigFile.exists()) {
