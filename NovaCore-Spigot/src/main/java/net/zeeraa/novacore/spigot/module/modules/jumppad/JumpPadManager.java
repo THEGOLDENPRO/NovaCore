@@ -119,7 +119,7 @@ public class JumpPadManager extends NovaModule implements Listener {
 		JSONArray array = JSONFileUtils.readJSONArrayFromFile(file);
 
 		for (int i = jumpPads.size() - 1; i >= 0; i--) {
-			if (jumpPads.get(i).getOwner() == owner) {
+			if (jumpPads.get(i).getOwner().getName().equalsIgnoreCase(owner.getName())) {
 				jumpPads.remove(i);
 			}
 		}
@@ -133,7 +133,7 @@ public class JumpPadManager extends NovaModule implements Listener {
 		JSONArray array = new JSONArray();
 
 		for (JumpPad pad : jumpPads) {
-			if (pad.getOwner().equals(owner)) {
+			if (pad.getOwner().getName().equalsIgnoreCase(owner.getName())) {
 				array.put(pad.toJson());
 			}
 		}
