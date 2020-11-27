@@ -165,7 +165,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 			FileUtils.forceMkdir(this.getDataFolder());
 			FileUtils.forceMkdir(lootTableFolder);
 
-			if (jumpPadFile.exists()) {
+			if (!jumpPadFile.exists()) {
 				JSONFileUtils.createEmpty(jumpPadFile);
 			}
 
