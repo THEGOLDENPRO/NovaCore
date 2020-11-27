@@ -17,6 +17,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.json.JSONException;
 
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.ServerType;
@@ -37,6 +39,8 @@ import net.zeeraa.novacore.spigot.language.LanguageReader;
 import net.zeeraa.novacore.spigot.loottable.LootTableManager;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
+import net.zeeraa.novacore.spigot.module.event.ModuleDisabledEvent;
+import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
 import net.zeeraa.novacore.spigot.module.modules.chestloot.ChestLootManager;
 import net.zeeraa.novacore.spigot.module.modules.compass.CompassTracker;
 import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
@@ -50,12 +54,14 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.settime.Set
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.worldborder.WorldborderMapModule;
 import net.zeeraa.novacore.spigot.module.modules.gamelobby.GameLobby;
 import net.zeeraa.novacore.spigot.module.modules.gui.GUIManager;
+import net.zeeraa.novacore.spigot.module.modules.jumppad.JumpPadManager;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.module.modules.scoreboard.NetherBoardScoreboard;
 import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
 import net.zeeraa.novacore.spigot.tasks.abstraction.BukkitSimpleTaskCreator;
 import net.zeeraa.novacore.spigot.teams.TeamManager;
+import net.zeeraa.novacore.spigot.utils.JSONFileUtils;
 
 public class NovaCore extends JavaPlugin implements Listener {
 	private static NovaCore instance;
@@ -65,6 +71,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private ActionBar actionBar;
 
 	private LootTableManager lootTableManager;
+
+	private File jumpPadFile;
 
 	private File logSeverityConfigFile;
 	private FileConfiguration logSeverityConfig;
@@ -76,6 +84,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private CustomCraftingManager customCraftingManager;
 
 	private boolean hologramsSupport;
+
+	private boolean loadingDone;
 
 	/**
 	 * Get instance of the {@link NovaCore} plugin
@@ -146,12 +156,18 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		Log.setConsoleLogLevel(LogLevel.INFO);
 
+		jumpPadFile = new File(this.getDataFolder().getPath() + File.separator + "jump_pads.json");
+
 		File lootTableFolder = new File(this.getDataFolder().getPath() + File.separator + "LootTables");
 		logSeverityConfigFile = new File(this.getDataFolder(), "log_severity.yml");
 
 		try {
 			FileUtils.forceMkdir(this.getDataFolder());
 			FileUtils.forceMkdir(lootTableFolder);
+
+			if (jumpPadFile.exists()) {
+				JSONFileUtils.createEmpty(jumpPadFile);
+			}
 
 			if (!logSeverityConfigFile.exists()) {
 				Log.info("Creating log_severity.yml");
@@ -261,6 +277,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(NetherBoardScoreboard.class);
 		ModuleManager.loadModule(GameManager.class);
 		ModuleManager.loadModule(GameLobby.class);
+		ModuleManager.loadModule(JumpPadManager.class);
 
 		// Load and enable
 		ModuleManager.loadModule(CustomItemManager.class, true);
@@ -273,6 +290,13 @@ public class NovaCore extends JavaPlugin implements Listener {
 		MapModuleManager.addMapModule("novacore.settime", SetTime.class);
 
 		CommandRegistry.registerCommand(new NovaCoreCommand());
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				loadingDone = true;
+			}
+		}.runTaskLater(this, 1L);
 	}
 
 	@Override
@@ -288,6 +312,43 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		// Unregister plugin channels
 		Bukkit.getMessenger().unregisterOutgoingPluginChannel(this);
+	}
+
+	private final void loadNovaCoreJumpPads() {
+		try {
+			JumpPadManager.getInstance().loadJumpPads(jumpPadFile, this);
+		} catch (JSONException | IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onModuleEnable(ModuleEnableEvent e) {
+		if (e.isModule(JumpPadManager.class)) {
+			if (loadingDone) {
+				Log.info("NovaCore", "Loading jump pads");
+				loadNovaCoreJumpPads();
+			} else {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						Log.info("NovaCore", "Loading jump pads (Delayed)");
+						loadNovaCoreJumpPads();
+					}
+				}.runTaskLater(this, 1L);
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onModuleDisable(ModuleDisabledEvent e) {
+		if (e.isModule(JumpPadManager.class)) {
+			try {
+				JumpPadManager.getInstance().saveJumpPads(jumpPadFile, this);
+			} catch (JSONException | IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

@@ -52,7 +52,7 @@ public class LocationUtils {
 		return block;
 	}
 
-	public JSONObject toJSONObject(Location location) {
+	public static JSONObject toJSONObject(Location location) {
 		JSONObject result = new JSONObject();
 
 		result.put("x", location.getX());
@@ -62,12 +62,12 @@ public class LocationUtils {
 		result.put("yaw", location.getYaw());
 		result.put("pitch", location.getPitch());
 
-		result.put("world", location.getWorld());
+		result.put("world", location.getWorld().getName());
 
 		return result;
 	}
 
-	public Location fromJSONObject(JSONObject json) {
+	public static Location fromJSONObject(JSONObject json) {
 		World world = Bukkit.getServer().getWorld(json.getString("world"));
 
 		if (world == null) {
@@ -78,8 +78,17 @@ public class LocationUtils {
 		double y = json.getDouble("y");
 		double z = json.getDouble("z");
 
-		float yaw = json.getFloat("yaw");
-		float pitch = json.getFloat("pitch");
+		float yaw = 0;
+
+		if (json.has("yaw")) {
+			yaw = json.getFloat("yaw");
+		}
+
+		float pitch = 0;
+
+		if (json.has("pitch")) {
+			pitch = json.getFloat("pitch");
+		}
 
 		return new Location(world, x, y, z, yaw, pitch);
 	}

@@ -6,7 +6,7 @@ import net.zeeraa.novacore.spigot.module.ModuleEnableFailureReason;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 
 /**
- * Called when a module is enabled
+ * Called after a module is enabled
  * 
  * @author Zeeraa
  */

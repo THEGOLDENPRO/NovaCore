@@ -24,4 +24,14 @@ public abstract class ModuleEvent extends Event {
 	public NovaModule getModule() {
 		return module;
 	}
+
+	/**
+	 * Check if the module is of class
+	 * 
+	 * @param clazz The class to check for
+	 * @return <code>true</code> if the module and the class is matching
+	 */
+	public boolean isModule(Class<? extends NovaModule> clazz) {
+		return module.getClass().getName().equals(clazz.getName());
+	}
 }

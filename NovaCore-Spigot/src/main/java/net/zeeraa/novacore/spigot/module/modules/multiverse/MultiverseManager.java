@@ -61,7 +61,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 		World world = worldCreator.createWorld();
 
-		MultiverseWorld multiverseWorld = new MultiverseWorld(options.getName(), world, options.getUnloadOption(), options.isSaveOnUnload(), options.isLockWeather());
+		MultiverseWorld multiverseWorld = new MultiverseWorld(options.getName(), world, options.getUnloadOption(), options.getPlayerUnloadOption(), options.isSaveOnUnload(), options.isLockWeather());
 
 		worlds.put(options.getName(), multiverseWorld);
 
@@ -178,7 +178,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 		World world = Bukkit.getServer().createWorld(new WorldCreator(name));
 
-		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world, unloadOption, true, false);
+		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world, unloadOption, PlayerUnloadOption.KICK, true, false);
 
 		worlds.put(multiverseWorld.getName(), multiverseWorld);
 
@@ -192,7 +192,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 		World world2 = worldCreator.createWorld();
 
-		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world2, unloadOption, true, false);
+		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world2, unloadOption, PlayerUnloadOption.KICK, true, false);
 
 		worlds.put(name, multiverseWorld);
 
@@ -232,7 +232,31 @@ public class MultiverseManager extends NovaModule implements Listener {
 		}
 
 		for (Player player : multiverseWorld.getWorld().getPlayers()) {
-			player.kickPlayer("Unloading world"); // TODO: move player to other world instead of kicking them
+			switch (multiverseWorld.getPlayerUnloadOptions()) {
+			case KICK:
+				player.kickPlayer("Unloading world");
+				break;
+
+			case SEND_TO_FIRST:
+				boolean failed = true;
+
+				for (World world : Bukkit.getServer().getWorlds()) {
+					if (!world.getUID().toString().equalsIgnoreCase(multiverseWorld.getWorld().getUID().toString())) {
+						player.teleport(world.getSpawnLocation());
+						failed = false;
+						break;
+					}
+				}
+
+				if (failed) {
+					player.kickPlayer("Unloading world\nCould not find a fallback world");
+				}
+				break;
+
+			default:
+				player.kickPlayer("Unloading world.\nA server error has occured: ERR:BAD_PLAYER_UNLOAD_OPTION");
+				break;
+			}
 		}
 
 		Bukkit.getServer().unloadWorld(multiverseWorld.getWorld(), multiverseWorld.isSaveOnUnload());

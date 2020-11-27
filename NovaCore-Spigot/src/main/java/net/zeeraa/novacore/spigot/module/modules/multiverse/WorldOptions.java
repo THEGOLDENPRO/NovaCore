@@ -9,9 +9,10 @@ public class WorldOptions {
 	private long seed;
 	private boolean generateStructures;
 	private WorldUnloadOption unloadOption;
+	private PlayerUnloadOption playerUnloadOption;
 	private boolean saveOnUnload;
 	private boolean lockWeather;
-	
+
 	public WorldOptions(String name) {
 		this.name = name;
 		this.seed = 1L;
@@ -19,6 +20,7 @@ public class WorldOptions {
 		this.hasSeed = false;
 		this.generateStructures = true;
 		this.unloadOption = WorldUnloadOption.KEEP;
+		this.playerUnloadOption = PlayerUnloadOption.KICK;
 		this.saveOnUnload = true;
 		this.lockWeather = false;
 	}
@@ -39,26 +41,34 @@ public class WorldOptions {
 		this.generateStructures = generateStructures;
 		return this;
 	}
-	
+
 	public WorldOptions unloadOptions(WorldUnloadOption unloadOption) {
 		this.unloadOption = unloadOption;
 		return this;
+	}
+
+	public void setPlayerUnloadOption(PlayerUnloadOption playerUnloadOption) {
+		this.playerUnloadOption = playerUnloadOption;
+	}
+
+	public PlayerUnloadOption getPlayerUnloadOption() {
+		return playerUnloadOption;
 	}
 
 	public WorldOptions saveOnUnload(boolean saveOnUnload) {
 		this.saveOnUnload = saveOnUnload;
 		return this;
 	}
-	
+
 	public WorldOptions lockWeather(boolean lockWeather) {
 		this.lockWeather = lockWeather;
 		return this;
 	}
-	
+
 	public void setLockWeather(boolean lockWeather) {
 		this.lockWeather = lockWeather;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -74,19 +84,19 @@ public class WorldOptions {
 	public Environment getEnvironment() {
 		return environment;
 	}
-	
+
 	public boolean isGenerateStructures() {
 		return generateStructures;
 	}
-	
+
 	public WorldUnloadOption getUnloadOption() {
 		return unloadOption;
 	}
-	
+
 	public boolean isSaveOnUnload() {
 		return saveOnUnload;
 	}
-	
+
 	public boolean isLockWeather() {
 		return lockWeather;
 	}
