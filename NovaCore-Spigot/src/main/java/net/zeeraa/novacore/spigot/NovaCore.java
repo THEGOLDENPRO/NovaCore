@@ -24,6 +24,8 @@ import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.ServerType;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.log.LogLevel;
+import net.zeeraa.novacore.commons.utils.JSONFileType;
+import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.abstraction.ActionBar;
 import net.zeeraa.novacore.spigot.abstraction.CommandRegistrator;
 import net.zeeraa.novacore.spigot.abstraction.NovaCoreAbstraction;
@@ -61,8 +63,6 @@ import net.zeeraa.novacore.spigot.module.modules.scoreboard.NetherBoardScoreboar
 import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
 import net.zeeraa.novacore.spigot.tasks.abstraction.BukkitSimpleTaskCreator;
 import net.zeeraa.novacore.spigot.teams.TeamManager;
-import net.zeeraa.novacore.spigot.utils.JSONFileType;
-import net.zeeraa.novacore.spigot.utils.JSONFileUtils;
 
 public class NovaCore extends JavaPlugin implements Listener {
 	private static NovaCore instance;

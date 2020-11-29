@@ -15,12 +15,12 @@ import org.bukkit.plugin.Plugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 import net.zeeraa.novacore.commons.tasks.Task;
+import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.jumppad.command.JumpPadCommand;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
-import net.zeeraa.novacore.spigot.utils.JSONFileUtils;
 
 public class JumpPadManager extends NovaModule implements Listener {
 	private static JumpPadManager instance;
