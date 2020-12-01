@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
+
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.event.GameTriggerTriggerEvent;
 
 /**
  * Game triggers can be used to make certain events in games that can be
@@ -129,6 +132,9 @@ public class GameTrigger {
 
 		Log.trace("GameTrigger", "Trigger: " + name + " was triggered with flag " + (flag == null ? "null" : flag.name()) + ". Times triggered: " + triggerCount);
 
+		GameTriggerTriggerEvent event = new GameTriggerTriggerEvent(this);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		
 		for (TriggerCallback callback : this.callbacks) {
 			callback.run(this, flag);
 		}

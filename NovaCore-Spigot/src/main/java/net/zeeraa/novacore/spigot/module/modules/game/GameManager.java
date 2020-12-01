@@ -191,6 +191,30 @@ public class GameManager extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Check if a player is in the game
+	 * 
+	 * @param player The player to check
+	 * @return <code>true</code> if the player is in the game
+	 */
+	public boolean isInGame(Player player) {
+		return this.isInGame(player.getUniqueId());
+	}
+
+	/**
+	 * Check if a player is in the game
+	 * 
+	 * @param player The uuid of the player to check
+	 * @return <code>true</code> if the player is in the game
+	 */
+	public boolean isInGame(UUID player) {
+		if (hasGame()) {
+			return getActiveGame().getPlayers().contains(player);
+		}
+
+		return false;
+	}
+
+	/**
 	 * Try to load all JSON files from a directory as maps and add them to the
 	 * active {@link MapSelector} defined by {@link GameManager#getMapSelector()}
 	 * 
@@ -699,10 +723,7 @@ public class GameManager extends NovaModule implements Listener {
 							int seconds = activeGame.getPlayerEliminationDelay() % 60;
 
 							Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
-							
-							
-							
-							
+
 							break;
 
 						default:
