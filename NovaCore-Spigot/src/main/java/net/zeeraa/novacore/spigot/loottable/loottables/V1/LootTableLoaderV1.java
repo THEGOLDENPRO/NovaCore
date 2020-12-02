@@ -61,7 +61,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 
 	@Override
 	public String getLoaderName() {
-		return "EZLootTableV1";
+		return "novacore.loot_table_loader_v1";
 	}
 
 	private static LootEntryV1 readLootEntry(JSONObject itemJson) {

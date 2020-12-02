@@ -254,6 +254,9 @@ public class MultiverseManager extends NovaModule implements Listener {
 				}
 				break;
 
+			case DO_NOTHING:
+				break;
+				
 			default:
 				player.kickPlayer("Unloading world.\nA server error has occured: ERR:BAD_PLAYER_UNLOAD_OPTION");
 				break;

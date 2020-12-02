@@ -271,7 +271,7 @@ public class GameManager extends NovaModule implements Listener {
 			return false;
 		}
 
-		Log.info("Loding game " + game.getName());
+		Log.info("Loading game " + game.getName());
 
 		game.onLoad();
 		if (game instanceof Listener) {

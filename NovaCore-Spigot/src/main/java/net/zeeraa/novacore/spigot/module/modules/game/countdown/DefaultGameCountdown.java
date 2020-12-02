@@ -67,7 +67,7 @@ public class DefaultGameCountdown extends GameCountdown {
 
 				if (timeLeft <= 10) {
 					//Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Starting in " + ChatColor.AQUA + "" + ChatColor.BOLD + timeLeft);
-					LanguageManager.broadcast("novacore.game.lobby.starting_in", timeLeft);
+					LanguageManager.broadcast("novacore.game.starting_in", timeLeft);
 
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);
@@ -77,7 +77,7 @@ public class DefaultGameCountdown extends GameCountdown {
 		}, 20L, 20L);
 
 		
-		LanguageManager.broadcast("novacore.game.lobby.countdown", timeLeft);
+		LanguageManager.broadcast("novacore.game.countdown", timeLeft);
 
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);

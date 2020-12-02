@@ -40,6 +40,7 @@ import net.zeeraa.novacore.spigot.customcrafting.CustomCraftingManager;
 import net.zeeraa.novacore.spigot.language.LanguageReader;
 import net.zeeraa.novacore.spigot.loottable.LootTableManager;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1;
+import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1Legacy;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.event.ModuleDisabledEvent;
 import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
@@ -53,6 +54,7 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftin
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.mapprotection.MapProtection;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.settime.SetTime;
+import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.startmessage.StartMessage;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.worldborder.WorldborderMapModule;
 import net.zeeraa.novacore.spigot.module.modules.gamelobby.GameLobby;
 import net.zeeraa.novacore.spigot.module.modules.gui.GUIManager;
@@ -260,6 +262,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		lootTableManager = new LootTableManager();
 
 		lootTableManager.addLoader(new LootTableLoaderV1());
+		lootTableManager.addLoader(new LootTableLoaderV1Legacy());
 
 		Log.info("Loading loot tables from: " + lootTableFolder.getPath());
 		lootTableManager.loadAll(lootTableFolder);
@@ -293,6 +296,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		MapModuleManager.addMapModule("novacore.handcraftingtable", HandCraftingTable.class);
 		MapModuleManager.addMapModule("novacore.worldborder", WorldborderMapModule.class);
 		MapModuleManager.addMapModule("novacore.settime", SetTime.class);
+		MapModuleManager.addMapModule("novacore.startmessage", StartMessage.class);
 
 		CommandRegistry.registerCommand(new NovaCoreCommand());
 
