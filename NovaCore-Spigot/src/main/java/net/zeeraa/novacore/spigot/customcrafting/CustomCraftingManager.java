@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.customcrafting;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -31,8 +32,8 @@ import net.zeeraa.novacore.spigot.utils.RecipeUtils;
 public class CustomCraftingManager implements Listener {
 	private static CustomCraftingManager instance;
 
-	private HashMap<String, CustomRecipe> recipes;
-	private HashMap<UUID, HashMap<String, Integer>> craftingLimit;
+	private Map<String, CustomRecipe> recipes;
+	private Map<UUID, Map<String, Integer>> craftingLimit;
 
 	public static CustomCraftingManager getInstance() {
 		return instance;
@@ -42,14 +43,14 @@ public class CustomCraftingManager implements Listener {
 		CustomCraftingManager.instance = this;
 
 		this.recipes = new HashMap<String, CustomRecipe>();
-		this.craftingLimit = new HashMap<UUID, HashMap<String, Integer>>();
+		this.craftingLimit = new HashMap<UUID, Map<String, Integer>>();
 
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			craftingLimit.put(p.getUniqueId(), new HashMap<String, Integer>());
 		}
 	}
 
-	public HashMap<String, CustomRecipe> getRecipes() {
+	public Map<String, CustomRecipe> getRecipes() {
 		return recipes;
 	}
 

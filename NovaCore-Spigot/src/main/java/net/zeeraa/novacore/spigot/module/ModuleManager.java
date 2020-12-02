@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.module;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import net.zeeraa.novacore.commons.log.Log;
 
@@ -10,15 +11,15 @@ import net.zeeraa.novacore.commons.log.Log;
  * @author Zeeraa
  */
 public class ModuleManager {
-	private static HashMap<String, NovaModule> modules = new HashMap<>();
+	private static Map<String, NovaModule> modules = new HashMap<>();
 
 	/**
-	 * Get a {@link HashMap} containing all modules with the module class name as
+	 * Get a {@link Map} containing all modules with the module class name as
 	 * key and the module as value
 	 * 
-	 * @return {@link HashMap} containing all modules
+	 * @return {@link Map} containing all modules
 	 */
-	public static HashMap<String, NovaModule> getModules() {
+	public static Map<String, NovaModule> getModules() {
 		return modules;
 	}
 

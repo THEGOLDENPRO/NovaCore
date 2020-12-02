@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.module.modules.chestloot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -118,7 +119,7 @@ public class ChestLootManager extends NovaModule implements Listener {
 
 							inventory.clear();
 
-							ArrayList<ItemStack> loot = lootTable.generateLoot();
+							List<ItemStack> loot = lootTable.generateLoot();
 
 							inventory.clear();
 
@@ -180,7 +181,7 @@ public class ChestLootManager extends NovaModule implements Listener {
 
 					inventory.clear();
 
-					ArrayList<ItemStack> loot = lootTable.generateLoot();
+					List<ItemStack> loot = lootTable.generateLoot();
 
 					inventory.clear();
 

@@ -16,9 +16,19 @@ public class RandomGenerator {
 	 * @return A random number between min and max
 	 */
 	public static int generate(int min, int max) {
-		Random rand = new Random();
+		return RandomGenerator.generate(min, max, new Random());
+	}
 
-		int randomNum = rand.nextInt((max - min) + 1) + min;
+	/**
+	 * This is used to generate numbers in a certain range
+	 * 
+	 * @param min    The minimum number to generate
+	 * @param max    The maximum number to generate
+	 * @param random The {@link Random} instance to use
+	 * @return A random number between min and max
+	 */
+	public static int generate(int min, int max, Random random) {
+		int randomNum = random.nextInt((max - min) + 1) + min;
 
 		return randomNum;
 	}

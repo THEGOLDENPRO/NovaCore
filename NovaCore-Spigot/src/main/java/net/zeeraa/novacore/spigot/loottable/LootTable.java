@@ -1,6 +1,6 @@
 package net.zeeraa.novacore.spigot.loottable;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import org.bukkit.inventory.ItemStack;
 
@@ -69,9 +69,9 @@ public abstract class LootTable {
 	/**
 	 * Generate loot using loot table
 	 * 
-	 * @return {@link ArrayList} with {@link ItemStack}
+	 * @return {@link List} with {@link ItemStack}
 	 */
-	public ArrayList<ItemStack> generateLoot() {
+	public List<ItemStack> generateLoot() {
 		return this.generateLoot(new Random());
 	}
 
@@ -79,9 +79,9 @@ public abstract class LootTable {
 	 * Generate loot using loot table
 	 * 
 	 * @param random instance of {@link Random} to use
-	 * @return {@link ArrayList} with {@link ItemStack}
+	 * @return {@link List} with {@link ItemStack}
 	 */
-	public ArrayList<ItemStack> generateLoot(Random random) {
+	public List<ItemStack> generateLoot(Random random) {
 		int count = minItems + random.nextInt((maxItems - minItems) + 1);
 		return this.generateLoot(random, count);
 	}
@@ -90,9 +90,9 @@ public abstract class LootTable {
 	 * Generate loot using loot table
 	 * 
 	 * @param count amount of {@link ItemStack} to generate
-	 * @return {@link ArrayList} with {@link ItemStack}
+	 * @return {@link List} with {@link ItemStack}
 	 */
-	public ArrayList<ItemStack> generateLoot(int count) {
+	public List<ItemStack> generateLoot(int count) {
 		return this.generateLoot(new Random(), count);
 	}
 
@@ -101,7 +101,7 @@ public abstract class LootTable {
 	 * 
 	 * @param random instance of {@link Random} to use
 	 * @param count  amount of {@link ItemStack} to generate
-	 * @return {@link ArrayList} with {@link ItemStack}
+	 * @return {@link List} with {@link ItemStack}
 	 */
-	public abstract ArrayList<ItemStack> generateLoot(Random random, int count);
+	public abstract List<ItemStack> generateLoot(Random random, int count);
 }

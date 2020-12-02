@@ -1,18 +1,19 @@
 package net.zeeraa.novacore.spigot.module.modules.game.mapselector.selectors.guivoteselector;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
 public class MapVoteInventoryHolder implements InventoryHolder {
-	private HashMap<Integer, String> mapSlots;
+	private Map<Integer, String> mapSlots;
 
 	public MapVoteInventoryHolder() {
 		this.mapSlots = new HashMap<Integer, String>();
 	}
 
-	public HashMap<Integer, String> getMapSlots() {
+	public Map<Integer, String> getMapSlots() {
 		return mapSlots;
 	}
 

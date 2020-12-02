@@ -23,7 +23,7 @@ import net.zeeraa.novacore.spigot.utils.maps.HologramData;
  * @author Zeeraa
  */
 public class GameMapData extends AbstractMapData {
-	private ArrayList<LocationData> starterLocations;
+	private List<LocationData> starterLocations;
 	private LocationData spectatorLocation;
 
 	private List<MapModule> mapModules;

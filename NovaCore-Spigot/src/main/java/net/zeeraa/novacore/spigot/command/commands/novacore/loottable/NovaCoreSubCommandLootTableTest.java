@@ -51,7 +51,7 @@ public class NovaCoreSubCommandLootTableTest extends NovaSubCommand {
 
 		Player player = (Player) sender;
 
-		ArrayList<ItemStack> items = lootTable.generateLoot();
+		List<ItemStack> items = lootTable.generateLoot();
 
 		player.getInventory().clear();
 		while (items.size() > 0) {

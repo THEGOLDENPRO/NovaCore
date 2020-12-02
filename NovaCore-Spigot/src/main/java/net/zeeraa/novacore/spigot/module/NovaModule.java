@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.module;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -32,7 +33,7 @@ public abstract class NovaModule {
 	protected boolean enabled = false;
 	protected ModuleEnableFailureReason enableFailureReason = null;
 
-	private ArrayList<Class<? extends NovaModule>> dependencies = new ArrayList<Class<? extends NovaModule>>();
+	private List<Class<? extends NovaModule>> dependencies = new ArrayList<Class<? extends NovaModule>>();
 	
 	/**
 	 * Get the module display name. Module names can't contain spaces
@@ -51,6 +52,14 @@ public abstract class NovaModule {
 	 */
 	protected void addDependency(Class<? extends NovaModule> dependency) {
 		dependencies.add(dependency);
+	}
+	
+	/**
+	 * Get a {@link List} containing all dependencies for this module
+	 * @return List with dependencies
+	 */
+	public List<Class<? extends NovaModule>> getDependencies() {
+		return dependencies;
 	}
 
 	/**

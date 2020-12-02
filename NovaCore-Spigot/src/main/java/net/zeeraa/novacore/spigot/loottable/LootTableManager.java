@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.loottable;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -15,8 +16,8 @@ import net.zeeraa.novacore.commons.log.Log;
  * @author Zeeraa
  */
 public class LootTableManager {
-	private HashMap<String, LootTableLoader> loaders;
-	private HashMap<String, LootTable> lootTables;
+	private Map<String, LootTableLoader> loaders;
+	private Map<String, LootTable> lootTables;
 
 	public LootTableManager() {
 		this.loaders = new HashMap<String, LootTableLoader>();
@@ -99,22 +100,22 @@ public class LootTableManager {
 	}
 
 	/**
-	 * Get a {@link HashMap} with all loaders with the name as key and the
+	 * Get a {@link Map} with all loaders with the name as key and the
 	 * {@link LootTableLoader} as value
 	 * 
-	 * @return {@link HashMap} with all loot loaders
+	 * @return {@link Map} with all loot loaders
 	 */
-	public HashMap<String, LootTableLoader> getLoaders() {
+	public Map<String, LootTableLoader> getLoaders() {
 		return loaders;
 	}
 
 	/**
-	 * Get a {@link HashMap} with all loot tables with the name is key and
+	 * Get a {@link Map} with all loot tables with the name is key and
 	 * {@link LootTable} as value
 	 * 
-	 * @return {@link HashMap} with all loot tables
+	 * @return {@link Map} with all loot tables
 	 */
-	public HashMap<String, LootTable> getLootTables() {
+	public Map<String, LootTable> getLootTables() {
 		return lootTables;
 	}
 
@@ -189,5 +190,27 @@ public class LootTableManager {
 			Log.warn("Loot table json does not contain a loader");
 		}
 		return null;
+	}
+	
+	/**
+	 * Add a loot table
+	 * <p>
+	 * This will fail if a {@link LootTable} with that name already exists
+	 * 
+	 * @param lootTable The {@link LootTable} to add
+	 * @return <code>true</code> on success
+	 */
+	public boolean addLootTable(LootTable lootTable) {
+		if (lootTables.containsKey(lootTable.getName())) {
+			return false;
+		}
+		
+		if (lootTable.getName().contains(" ")) {
+			throw new InvalidLootTableNameException("Loot table names cant contain spaces. Loot table that caused the issue: " + lootTable.getName());
+		}
+
+		lootTables.put(lootTable.getName(), lootTable);
+
+		return true;
 	}
 }

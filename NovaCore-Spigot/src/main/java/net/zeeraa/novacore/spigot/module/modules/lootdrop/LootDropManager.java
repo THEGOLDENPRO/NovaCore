@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.module.modules.lootdrop;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -30,8 +31,8 @@ import net.zeeraa.novacore.spigot.utils.LocationUtils;
 public class LootDropManager extends NovaModule implements Listener {
 	private static LootDropManager instance;
 
-	private ArrayList<LootDrop> chests;
-	private ArrayList<LootDropEffect> dropEffects;
+	private List<LootDrop> chests;
+	private List<LootDropEffect> dropEffects;
 
 	private LootDropSpawnMessage spawnMessage;
 	

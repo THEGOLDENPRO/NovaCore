@@ -129,6 +129,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 		return versionIndependentUtils;
 	}
 
+	public static VersionIndependantUtils versionIndependantUtils() {
+		return NovaCore.getInstance().getVersionIndependentUtils();
+	}
+
 	public boolean hasHologramsSupport() {
 		return hologramsSupport;
 	}
@@ -305,14 +309,14 @@ public class NovaCore extends JavaPlugin implements Listener {
 		// Cancel scheduler tasks
 		Bukkit.getScheduler().cancelTasks(this);
 
-		if(ModuleManager.moduleExists(JumpPadManager.class)) {
+		if (ModuleManager.moduleExists(JumpPadManager.class)) {
 			try {
 				JumpPadManager.getInstance().saveJumpPads(jumpPadFile, this);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		// Disable modules
 		ModuleManager.disableAll();
 

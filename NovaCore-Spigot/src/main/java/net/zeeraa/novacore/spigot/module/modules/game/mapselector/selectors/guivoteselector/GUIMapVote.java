@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -37,8 +38,8 @@ import net.zeeraa.novacore.spigot.module.modules.gamelobby.events.PlayerJoinGame
 public class GUIMapVote extends MapSelector implements Listener {
 	private static GUIMapVote instance;
 
-	private HashMap<UUID, String> votes;
-	private HashMap<UUID, Inventory> playerVoteInventory;
+	private Map<UUID, String> votes;
+	private Map<UUID, Inventory> playerVoteInventory;
 
 	private String forcedMap;
 

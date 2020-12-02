@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
@@ -20,7 +21,7 @@ import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
 
 public class MultiverseManager extends NovaModule implements Listener {
-	private HashMap<String, MultiverseWorld> worlds;
+	private Map<String, MultiverseWorld> worlds;
 
 	private static MultiverseManager instance;
 
@@ -44,7 +45,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 		return "MultiverseManager";
 	}
 
-	public HashMap<String, MultiverseWorld> getWorlds() {
+	public Map<String, MultiverseWorld> getWorlds() {
 		return worlds;
 	}
 
