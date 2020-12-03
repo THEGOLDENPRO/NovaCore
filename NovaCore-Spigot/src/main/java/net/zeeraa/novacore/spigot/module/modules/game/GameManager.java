@@ -477,7 +477,7 @@ public class GameManager extends NovaModule implements Listener {
 		if (hasGame()) {
 			if (getActiveGame().hasStarted()) {
 				if (getActiveGame().eliminateIfCombatLogging()) {
-					combatTaggedPlayers.put(player.getUniqueId(), getActiveGame().combatTagDelay());
+					combatTaggedPlayers.put(player.getUniqueId(), getActiveGame().getCombatTagDelay());
 					return true;
 				}
 			}

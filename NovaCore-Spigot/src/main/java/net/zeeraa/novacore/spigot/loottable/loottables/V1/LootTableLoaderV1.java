@@ -44,13 +44,21 @@ public class LootTableLoaderV1 implements LootTableLoader {
 		for (int i = 0; i < items.length(); i++) {
 			JSONObject jsonItem = items.getJSONObject(i);
 			try {
+				if (!jsonItem.has("material")) {
+					Log.error("LootTableLoadedV1", "Entry missing material:\n " + jsonItem.toString(4));
+					continue;
+				}
 
 				LootEntryV1 entry = readLootEntry(jsonItem);
+
+				if (entry == null) {
+					continue;
+				}
 
 				lootTable.addItem(entry);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Failed to load loot table named " + json.getString("name") + " error occured while adding item " + json.getString("material"));
+				Log.error("Failed to load loot table named " + json.getString("name") + " error occured while adding item " + jsonItem.getString("material"));
 
 				return null;
 			}
@@ -67,11 +75,18 @@ public class LootTableLoaderV1 implements LootTableLoader {
 	private static LootEntryV1 readLootEntry(JSONObject itemJson) {
 		ItemStack item;
 
+		String material = itemJson.getString("material");
+
+		if (Material.getMaterial(material) == null) {
+			Log.error("LootTableLoaderV1", "Invalid material: " + material);
+			return null;
+		}
+
 		if (itemJson.has("data")) {
 			short itemData = (short) itemJson.getInt("data");
-			item = new ItemStack(Material.getMaterial(itemJson.getString("material")), 1, itemData);
+			item = new ItemStack(Material.getMaterial(material), 1, itemData);
 		} else {
-			item = new ItemStack(Material.getMaterial(itemJson.getString("material")), 1);
+			item = new ItemStack(Material.getMaterial(material), 1);
 		}
 
 		if (itemJson.has("display_name")) {

@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.module.modules.game.countdown;
 
 import java.io.IOException;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -48,7 +49,7 @@ public class DefaultGameCountdown extends GameCountdown {
 		if (this.started) {
 			return false;
 		}
-		this.started = false;
+		this.started = true;
 
 		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
 			@Override

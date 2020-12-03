@@ -405,7 +405,7 @@ public abstract class Game {
 	 * 
 	 * @return delay in seconds for combat tag to expire
 	 */
-	public int combatTagDelay() {
+	public int getCombatTagDelay() {
 		return 5;
 	}
 

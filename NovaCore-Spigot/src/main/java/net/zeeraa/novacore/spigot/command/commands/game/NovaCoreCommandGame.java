@@ -10,6 +10,7 @@ import org.bukkit.permissions.PermissionDefault;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.NovaCommand;
 import net.zeeraa.novacore.spigot.command.commands.game.addplayer.NovaCoreSubCommandGameAddPlayer;
+import net.zeeraa.novacore.spigot.command.commands.game.debug.GameDebugCommand;
 import net.zeeraa.novacore.spigot.command.commands.game.eliminateplayer.NovaCoreSubCommandGameEliminatePlayer;
 import net.zeeraa.novacore.spigot.command.commands.game.listplayers.NovaCoreSubCommandGameListplayers;
 import net.zeeraa.novacore.spigot.command.commands.game.lootdrop.NovaCoreSubCommandGameLootdrop;
@@ -46,6 +47,7 @@ public class NovaCoreCommandGame extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandGameEliminatePlayer());
 		this.addSubCommand(new NovaCoreSubCommandResetCountdownGame());
 		this.addSubCommand(new NovaCoreSubCommandGameTrigger());
+		this.addSubCommand(new GameDebugCommand());
 
 		this.setFilterAutocomplete(true);
 	}
