@@ -63,6 +63,7 @@ import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.module.modules.scoreboard.NetherBoardScoreboard;
 import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
+import net.zeeraa.novacore.spigot.platformindependent.SpigotPlatformIndependentBungeecordAPI;
 import net.zeeraa.novacore.spigot.tasks.abstraction.BukkitSimpleTaskCreator;
 import net.zeeraa.novacore.spigot.teams.TeamManager;
 
@@ -271,6 +272,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		// Register plugin channels
 		Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+		
+		// Platform independent Bungeecord API
+		NovaCommons.setPlatformIndependentBungeecordAPI(new SpigotPlatformIndependentBungeecordAPI());
 
 		// Register events
 		Bukkit.getPluginManager().registerEvents(this, this);
