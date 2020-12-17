@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.bukkit.Difficulty;
 import org.bukkit.World;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -43,8 +44,12 @@ public class GameLobbyMapData extends AbstractMapData {
 	public AbstractMap load() throws IOException {
 		Log.info("Loading lobby map " + getMapName() + " display name: " + getDisplayName());
 		MultiverseWorld multiverseWorld = MultiverseManager.getInstance().createFromFile(worldFile, WorldUnloadOption.DELETE);
-
+		
 		World world = multiverseWorld.getWorld();
+		
+		world.setDifficulty(Difficulty.PEACEFUL);
+		world.setStorm(false);
+		multiverseWorld.getLockWeather(true);
 
 		Log.info("World " + world.getName() + " has been loaded");
 

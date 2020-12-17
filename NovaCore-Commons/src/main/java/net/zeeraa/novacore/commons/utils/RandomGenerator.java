@@ -10,6 +10,8 @@ import java.util.Random;
 public class RandomGenerator {
 	/**
 	 * This is used to generate numbers in a certain range
+	 * <p>
+	 * The min and max number will be included in the possible results
 	 * 
 	 * @param min The minimum number to generate
 	 * @param max The maximum number to generate
@@ -21,6 +23,8 @@ public class RandomGenerator {
 
 	/**
 	 * This is used to generate numbers in a certain range
+	 * <p>
+	 * The min and max number will be included in the possible results
 	 * 
 	 * @param min    The minimum number to generate
 	 * @param max    The maximum number to generate

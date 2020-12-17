@@ -99,4 +99,14 @@ public class TextUtils {
 	public static String secondsToHoursMinutes(int seconds) {
 		return String.format("%02d:%02d", seconds / 60, seconds % 60);
 	}
+	
+	/**
+	 * Convert seconds to mm:ss string
+	 * 
+	 * @param seconds Seconds to convert
+	 * @return String with seconds in mm:ss format
+	 */
+	public static String secondsToHoursMinutes(long seconds) {
+		return String.format("%02d:%02d", seconds / 60, seconds % 60);
+	}
 }

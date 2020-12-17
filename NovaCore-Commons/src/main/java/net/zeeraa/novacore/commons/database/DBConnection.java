@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.async.AsyncManager;
 import net.zeeraa.novacore.commons.database.async.ExecuteQueryAsyncCallback;
@@ -70,7 +69,7 @@ public class DBConnection {
 	}
 
 	/**
-	 * Connects to the database using the com.mysql.jdbc.Driver as driver
+	 * Connects to the database using the provided {@link DBCredentials}
 	 * 
 	 * @param credentials The {@link DBCredentials} to use
 	 * @return <code>true</code> on success or <code>false</code> on failure

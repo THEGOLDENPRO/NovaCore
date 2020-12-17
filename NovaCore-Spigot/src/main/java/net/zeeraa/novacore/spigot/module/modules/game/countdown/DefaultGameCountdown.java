@@ -2,7 +2,6 @@ package net.zeeraa.novacore.spigot.module.modules.game.countdown;
 
 import java.io.IOException;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
