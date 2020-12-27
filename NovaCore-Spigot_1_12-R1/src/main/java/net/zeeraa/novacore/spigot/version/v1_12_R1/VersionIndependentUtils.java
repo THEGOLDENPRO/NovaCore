@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import net.minecraft.server.v1_12_R1.MinecraftServer;
 
 public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
+	@SuppressWarnings("deprecation")
 	@Override
 	public void setBlockAsPlayerSkull(Block block) {
 		block.setType(Material.SKULL);
@@ -60,5 +61,21 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	@Override
 	public int getPlayerPing(Player player) {
 		return ((CraftPlayer) player).getHandle().ping;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void cloneBlockData(Block source, Block target) {
+		target.setData(source.getData());
+	}
+
+	@Override
+	public void setItemInMainHand(Player player, ItemStack item) {
+		player.getInventory().setItemInMainHand(item);
+	}
+
+	@Override
+	public void setItemInOffHand(Player player, ItemStack item) {
+		player.getInventory().setItemInOffHand(item);
 	}
 }

@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.module.modules.game;
 import java.io.IOException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameEndEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameStartEvent;
@@ -13,6 +14,9 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
 /**
  * This is the same as {@link Game} but this type of game uses pre made maps for
  * games
+ * <p>
+ * If this extends {@link Listener} {@link GameManager#loadGame(Game)} will
+ * register the listener when called
  * 
  * @author Zeeraa
  */

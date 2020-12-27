@@ -16,11 +16,25 @@ public interface VersionIndependantUtils {
 	public ItemStack getItemInMainHand(Player player);
 	
 	/**
+	 * Set the item in a players main hand
+	 * @param player The player
+	 * @param item The item so place the the players hand
+	 */
+	public void setItemInMainHand(Player player, ItemStack item);
+	
+	/**
 	 * Get the item from the player off hand
 	 * @param player The player to get item from
 	 * @return {@link ItemStack} or <code>null</code> if the server version does not have a off hand
 	 */
 	public ItemStack getItemInOffHand(Player player);
+	
+	/**
+	 * Set the item in a players off hand
+	 * @param player The player
+	 * @param item The item so place the the players hand
+	 */
+	public void setItemInOffHand(Player player, ItemStack item);
 	
 	/**
 	 * Get the ping of a player
@@ -55,4 +69,6 @@ public interface VersionIndependantUtils {
 	 * @return Array with recent TPS
 	 */
 	public double[] getRecentTps();
+	
+	public void cloneBlockData(Block source, Block target);
 }

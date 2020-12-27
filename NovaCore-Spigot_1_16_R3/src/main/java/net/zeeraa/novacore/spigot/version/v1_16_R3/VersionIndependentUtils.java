@@ -54,4 +54,19 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	public int getPlayerPing(Player player) {
 		return ((CraftPlayer) player).getHandle().ping;
 	}
+	
+	@Override
+	public void cloneBlockData(Block source, Block target) {
+		target.setBlockData(source.getBlockData());
+	}
+	
+	@Override
+	public void setItemInMainHand(Player player, ItemStack item) {
+		player.getInventory().setItemInMainHand(item);
+	}
+
+	@Override
+	public void setItemInOffHand(Player player, ItemStack item) {
+		player.getInventory().setItemInOffHand(item);
+	}
 }

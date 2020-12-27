@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItem;
+import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 
 public class GUIMapVoteMenuIcon extends CustomItem {
@@ -35,6 +36,16 @@ public class GUIMapVoteMenuIcon extends CustomItem {
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			if (GameManager.getInstance().hasGame()) {
+				if (GameManager.getInstance().getActiveGame().hasStarted()) {
+					return;
+				}
+			}
+
+			if (event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+				return;
+			}
+
 			if (GUIMapVote.getInstance() != null) {
 				GUIMapVote.getInstance().showPlayer(event.getPlayer());
 			}

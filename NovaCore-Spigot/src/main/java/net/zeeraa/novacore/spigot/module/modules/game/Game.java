@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.tasks.Task;
@@ -30,6 +31,9 @@ import net.zeeraa.novacore.spigot.teams.Team;
 
 /**
  * This class represents a game that {@link GameManager} can use
+ * <p>
+ * If this extends {@link Listener} {@link GameManager#loadGame(Game)} will
+ * register the listener when called
  * 
  * @author Zeeraa
  */
