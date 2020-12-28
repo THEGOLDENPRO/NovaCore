@@ -82,7 +82,6 @@ public class ItemBuilder {
 
 	public ItemBuilder setUnbreakable(boolean unbreakable) {
 		meta.spigot().setUnbreakable(unbreakable);
-		item.setItemMeta(meta);
 		return this;
 	}
 
