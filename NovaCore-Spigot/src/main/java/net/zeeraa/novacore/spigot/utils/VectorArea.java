@@ -12,7 +12,7 @@ public class VectorArea {
 
 	public VectorArea(Vector position1, Vector position2) {
 		this.position1 = new Vector((position1.getX() < position2.getX() ? position1.getX() : position2.getX()), (position1.getY() < position2.getY() ? position1.getY() : position2.getY()), (position1.getZ() < position2.getZ() ? position1.getZ() : position2.getZ()));
-		this.position1 = new Vector((position1.getX() > position2.getX() ? position1.getX() : position2.getX()), (position1.getY() > position2.getY() ? position1.getY() : position2.getY()), (position1.getZ() > position2.getZ() ? position1.getZ() : position2.getZ()));
+		this.position2 = new Vector((position1.getX() > position2.getX() ? position1.getX() : position2.getX()), (position1.getY() > position2.getY() ? position1.getY() : position2.getY()), (position1.getZ() > position2.getZ() ? position1.getZ() : position2.getZ()));
 	}
 
 	public VectorArea(int x1, int y1, int z1, int x2, int y2, int z2) {
@@ -25,6 +25,36 @@ public class VectorArea {
 
 	public VectorArea(float x1, float y1, float z1, float x2, float y2, float z2) {
 		this(new Vector(x1, y1, z1), new Vector(x2, y2, z2));
+	}
+
+	/**
+	 * Check if a vectors block position is inside this area
+	 * 
+	 * @param vector The vector to check
+	 * @return <code>true</code> if the vectors block location is inside this area
+	 */
+	public boolean isInsideBlock(Vector vector) {
+		int x1 = position1.getBlockX();
+		int y1 = position1.getBlockY();
+		int z1 = position1.getBlockZ();
+
+		int x2 = position2.getBlockX();
+		int y2 = position2.getBlockY();
+		int z2 = position2.getBlockZ();
+
+		int x = vector.getBlockX();
+		int y = vector.getBlockY();
+		int z = vector.getBlockZ();
+
+		if (x >= x1 && x <= x2) {
+			if (y >= y1 && y <= y2) {
+				if (z >= z1 && z <= z2) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**

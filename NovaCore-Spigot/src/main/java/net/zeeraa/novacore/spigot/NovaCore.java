@@ -319,7 +319,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		if (ModuleManager.moduleExists(JumpPadManager.class)) {
 			try {
-				JumpPadManager.getInstance().saveJumpPads(jumpPadFile, this);
+				if (JumpPadManager.getInstance().hasBeenEnabled()) {
+					JumpPadManager.getInstance().saveJumpPads(jumpPadFile, this);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
