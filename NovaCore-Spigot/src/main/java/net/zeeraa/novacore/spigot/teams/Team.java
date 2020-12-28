@@ -60,6 +60,23 @@ public abstract class Team {
 	public UUID getTeamUuid() {
 		return teamUuid;
 	}
+	
+	/**
+	 * Add a player to the team
+	 * @param player The {@link OfflinePlayer} to add
+	 */
+	public void addPlayer(OfflinePlayer player) {
+		this.addPlayer(player.getUniqueId());
+	}
+	
+	
+	/**
+	 * Add a player to the team
+	 * @param uuid The {@link UUID} of the player to add
+	 */
+	public void addPlayer(UUID uuid) {
+		members.add(uuid);
+	}
 
 	/**
 	 * Send a message to all team members on this servers
@@ -103,5 +120,13 @@ public abstract class Team {
 		}
 
 		return false;
+	}
+	
+	/**
+	 * Get the size of the team
+	 * @return The number of players in the team
+	 */
+	public int size() {
+		return members.size();
 	}
 }
