@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.module.modules.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -90,6 +91,11 @@ public abstract class Game {
 	 */
 	protected World world;
 
+	/**
+	 * A {@link Random} instance that can be used in the game
+	 */
+	protected Random random;
+
 	public Game() {
 		this.players = new ArrayList<UUID>();
 		this.triggers = new ArrayList<GameTrigger>();
@@ -97,6 +103,7 @@ public abstract class Game {
 		this.endCalled = false;
 		this.startCalled = false;
 		this.autoWinnerCheckCompleted = false;
+		this.random = new Random();
 		this.winCheckTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
 			public void run() {
@@ -770,5 +777,23 @@ public abstract class Game {
 	 */
 	public GameManager getGameManager() {
 		return GameManager.getInstance();
+	}
+
+	/**
+	 * Get the random instance to the game is using
+	 * 
+	 * @return The {@link Random} instance the game is using
+	 */
+	public Random getRandom() {
+		return random;
+	}
+
+	/**
+	 * Set the {@link Random} instance to use for the game
+	 * 
+	 * @param random The {@link Random} instance to use
+	 */
+	public void setRandom(Random random) {
+		this.random = random;
 	}
 }

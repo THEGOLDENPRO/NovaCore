@@ -272,7 +272,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		// Register plugin channels
 		Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-		
+
 		// Platform independent Bungeecord API
 		NovaCommons.setPlatformIndependentBungeecordAPI(new SpigotPlatformIndependentBungeecordAPI());
 
@@ -365,7 +365,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 	public void onModuleDisable(ModuleDisabledEvent e) {
 		if (e.isModule(JumpPadManager.class)) {
 			try {
-				JumpPadManager.getInstance().saveJumpPads(jumpPadFile, this);
+				if (JumpPadManager.getInstance().hasBeenEnabled()) {
+					JumpPadManager.getInstance().saveJumpPads(jumpPadFile, this);
+				}
 			} catch (JSONException | IOException e1) {
 				e1.printStackTrace();
 			}

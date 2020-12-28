@@ -36,4 +36,33 @@ public class RandomGenerator {
 
 		return randomNum;
 	}
+	
+	/**
+	 * This is used to generate numbers in a certain range
+	 * <p>
+	 * This will generate a value between the 2 numbers
+	 * 
+	 * @param min    The minimum number to generate
+	 * @param max    The maximum number to generate
+	 * @return A random number between min and max
+	 */
+	public static double generateDouble(double min, double max) {
+		return RandomGenerator.generateDouble(min, max, new Random());
+	}
+	
+	/**
+	 * This is used to generate numbers in a certain range
+	 * <p>
+	 * This will generate a value between the 2 numbers
+	 * 
+	 * @param min    The minimum number to generate
+	 * @param max    The maximum number to generate
+	 * @param random The {@link Random} instance to use
+	 * @return A random number between min and max
+	 */
+	public static double generateDouble(double min, double max, Random random) {
+		double number = (random.nextDouble() * (max-min)) + min;
+		
+		return number;
+	}
 }

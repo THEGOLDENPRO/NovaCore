@@ -31,10 +31,11 @@ import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
  */
 public abstract class NovaModule {
 	protected boolean enabled = false;
+	private boolean hasBeenEnabled = false;
 	protected ModuleEnableFailureReason enableFailureReason = null;
 
 	private List<Class<? extends NovaModule>> dependencies = new ArrayList<Class<? extends NovaModule>>();
-	
+
 	/**
 	 * Get the module display name. Module names can't contain spaces
 	 * 
@@ -53,9 +54,10 @@ public abstract class NovaModule {
 	protected void addDependency(Class<? extends NovaModule> dependency) {
 		dependencies.add(dependency);
 	}
-	
+
 	/**
 	 * Get a {@link List} containing all dependencies for this module
+	 * 
 	 * @return List with dependencies
 	 */
 	public List<Class<? extends NovaModule>> getDependencies() {
@@ -112,17 +114,17 @@ public abstract class NovaModule {
 		Log.info("Enabling module " + this.getName());
 
 		if (dependencies != null) {
-			Log.debug("Module:"+getName(),this.getName() + " has " + dependencies.size() + " dependencies");
+			Log.debug("Module:" + getName(), this.getName() + " has " + dependencies.size() + " dependencies");
 			for (Class<? extends NovaModule> clazz : dependencies) {
 				if (!ModuleManager.moduleExists(clazz)) {
-					Log.error("Module:"+getName(),"Failed to load module " + this.getName() + ". Missing dependency" + clazz.getName());
+					Log.error("Module:" + getName(), "Failed to load module " + this.getName() + ". Missing dependency" + clazz.getName());
 					this.enableFailureReason = ModuleEnableFailureReason.MISSING_DEPENDENCY;
 					return false;
 				}
 
 				if (!ModuleManager.isEnabled(clazz)) {
 					if (!ModuleManager.enable(clazz)) {
-						Log.error("Module:"+getName(),"Failed to load module " + this.getName() + ". Failed to enable dependency" + clazz.getName());
+						Log.error("Module:" + getName(), "Failed to load module " + this.getName() + ". Failed to enable dependency" + clazz.getName());
 						this.enableFailureReason = ModuleEnableFailureReason.DEPENDENCY_ENABLE_FAILED;
 						return false;
 					}
@@ -135,11 +137,12 @@ public abstract class NovaModule {
 		try {
 			this.onEnable();
 			if (this instanceof Listener) {
-				Log.info("Module:"+getName(),"Registering listeners for module " + this.getName());
+				Log.info("Module:" + getName(), "Registering listeners for module " + this.getName());
 				Bukkit.getPluginManager().registerEvents((Listener) this, NovaCore.getInstance());
 			}
 			this.enableFailureReason = null;
 			this.enabled = true;
+			this.hasBeenEnabled = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.enableFailureReason = ModuleEnableFailureReason.EXCEPTION;
@@ -204,5 +207,16 @@ public abstract class NovaModule {
 	 */
 	public boolean isEnabled() {
 		return this.enabled;
+	}
+
+	/**
+	 * Check if the module has ever been enabled
+	 * <p>
+	 * This will be true even if the module has been enabled and disabled again
+	 * 
+	 * @return <code>true</code> if the module has ever been enabled
+	 */
+	public boolean hasBeenEnabled() {
+		return hasBeenEnabled;
 	}
 }

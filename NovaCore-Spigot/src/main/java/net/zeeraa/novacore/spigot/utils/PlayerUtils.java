@@ -1,5 +1,8 @@
 package net.zeeraa.novacore.spigot.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -76,5 +79,35 @@ public class PlayerUtils {
 	 */
 	public static double getPlayerMaxHealth(Player player) {
 		return NovaCore.getInstance().getVersionIndependentUtils().getEntityMaxHealth(player);
+	}
+
+	/**
+	 * Fully heal a player and return the new health
+	 * 
+	 * @param player The player to heal
+	 * @return The new player health
+	 */
+	public static double fullyHealPlayer(Player player) {
+		double maxHealth = PlayerUtils.getPlayerMaxHealth(player);
+
+		player.setHealth(maxHealth);
+
+		return maxHealth;
+	}
+
+	/**
+	 * Convert a list of players to a list of names
+	 * 
+	 * @param players The list of players
+	 * @return The list on names
+	 */
+	public static List<String> getNames(List<Player> players) {
+		List<String> names = new ArrayList<String>();
+
+		for (Player player : players) {
+			names.add(player.getName());
+		}
+
+		return names;
 	}
 }

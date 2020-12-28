@@ -4,7 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.util.Vector;
 import org.json.JSONObject;
+
+import net.zeeraa.novacore.commons.utils.Rotation;
+import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseWorld;
 
 /**
  * Utils to compare and modify locations
@@ -95,5 +99,101 @@ public class LocationUtils {
 
 	public static World getFirstAvaliableWorld() {
 		return Bukkit.getServer().getWorlds().get(0);
+	}
+
+	/**
+	 * Construct a location from a {@link Vector}
+	 * 
+	 * @param world  The {@link World}
+	 * @param vector The {@link Vector}
+	 * @return The {@link Location}
+	 */
+	public static Location getLocation(World world, Vector vector) {
+		return LocationUtils.getLocation(world, vector, 0, 0);
+	}
+
+	/**
+	 * Construct a location from a {@link Vector}
+	 * 
+	 * @param world  The {@link World}
+	 * @param vector The {@link Vector}
+	 * @param yaw    The yaw
+	 * @return The {@link Location}
+	 */
+	public static Location getLocation(World world, Vector vector, float yaw) {
+		return LocationUtils.getLocation(world, vector, yaw, 0);
+	}
+
+	/**
+	 * Construct a location from a {@link Vector}
+	 * 
+	 * @param world    The {@link World}
+	 * @param vector   The {@link Vector}
+	 * @param rotation The {@link Rotation}
+	 * @return The {@link Location}
+	 */
+	public static Location getLocation(World world, Vector vector, Rotation rotation) {
+		return LocationUtils.getLocation(world, vector, rotation.getYaw(), rotation.getPitch());
+	}
+
+	/**
+	 * Construct a location from a {@link Vector}
+	 * 
+	 * @param world  The {@link World}
+	 * @param vector The {@link Vector}
+	 * @param yaw    The yaw
+	 * @param pitch  The pitch
+	 * @return The {@link Location}
+	 */
+	public static Location getLocation(World world, Vector vector, float yaw, float pitch) {
+		return new Location(world, vector.getX(), vector.getY(), vector.getZ(), yaw, pitch);
+	}
+
+	/**
+	 * Construct a location from a {@link Vector}
+	 * 
+	 * @param world  The {@link MultiverseWorld}
+	 * @param vector The {@link Vector}
+	 * @return The {@link Location}
+	 */
+	public static Location getLocation(MultiverseWorld world, Vector vector) {
+		return LocationUtils.getLocation(world, vector, 0, 0);
+	}
+
+	/**
+	 * Construct a location from a {@link Vector}
+	 * 
+	 * @param world  The {@link MultiverseWorld}
+	 * @param vector The {@link Vector}
+	 * @param yaw    The yaw
+	 * @return The {@link Location}
+	 */
+	public static Location getLocation(MultiverseWorld world, Vector vector, float yaw) {
+		return LocationUtils.getLocation(world, vector, yaw, 0);
+	}
+
+	/**
+	 * Construct a location from a {@link Vector}
+	 * 
+	 * @param world    The {@link MultiverseWorld}
+	 * @param vector   The {@link Vector}
+	 * @param rotation The {@link Rotation}
+	 * @return The {@link Location}
+	 */
+	public static Location getLocation(MultiverseWorld world, Vector vector, Rotation rotation) {
+		return LocationUtils.getLocation(world, vector, rotation.getYaw(), rotation.getPitch());
+	}
+
+	/**
+	 * Construct a location from a {@link Vector}
+	 * 
+	 * @param world  The {@link MultiverseWorld}
+	 * @param vector The {@link Vector}
+	 * @param yaw    The yaw
+	 * @param pitch  The pitch
+	 * @return The {@link Location}
+	 */
+	public static Location getLocation(MultiverseWorld world, Vector vector, float yaw, float pitch) {
+		return LocationUtils.getLocation(world.getWorld(), vector, yaw, pitch);
 	}
 }
