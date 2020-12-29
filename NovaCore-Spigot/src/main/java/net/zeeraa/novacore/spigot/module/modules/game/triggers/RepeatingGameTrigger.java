@@ -14,12 +14,15 @@ public class RepeatingGameTrigger extends ScheduledGameTrigger {
 	private long delay;
 	private long period;
 
+	private long ticksLeft;
+
 	private Task task;
 
 	public RepeatingGameTrigger(String name, long delay, long period, TriggerCallback callback) {
 		super(name, callback);
 		this.delay = delay;
 		this.period = period;
+		this.ticksLeft = delay;
 		this.task = null;
 	}
 
@@ -94,10 +97,14 @@ public class RepeatingGameTrigger extends ScheduledGameTrigger {
 		task = NovaCommons.getAbstractSimpleTaskCreator().createTask(new Runnable() {
 			@Override
 			public void run() {
-				trigger(TriggerFlag.SCHEDULED_TRIGGER_ACTIVATION);
+				ticksLeft--;
+				if (ticksLeft <= 0) {
+					trigger(TriggerFlag.SCHEDULED_TRIGGER_ACTIVATION);
+					ticksLeft = period;
+				}
 			}
-		}, delay, period);
-		
+		}, 1L, 1L);
+
 		task.start();
 
 		return true;
@@ -117,9 +124,13 @@ public class RepeatingGameTrigger extends ScheduledGameTrigger {
 
 	@Override
 	public boolean isRunning() {
-		if(task != null) {
+		if (task != null) {
 			return task.isRunning();
 		}
 		return false;
+	}
+
+	public long getTicksLeft() {
+		return ticksLeft;
 	}
 }

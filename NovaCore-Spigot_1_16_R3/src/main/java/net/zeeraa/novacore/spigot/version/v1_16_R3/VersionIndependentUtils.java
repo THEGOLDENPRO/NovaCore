@@ -1,5 +1,7 @@
 package net.zeeraa.novacore.spigot.version.v1_16_R3;
 
+import java.lang.reflect.Field;
+
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -8,7 +10,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import net.minecraft.server.v1_16_R3.IChatBaseComponent;
+import net.minecraft.server.v1_16_R3.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_16_R3.MinecraftServer;
+import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerListHeaderFooter;
+import net.minecraft.server.v1_16_R3.PlayerConnection;
 
 public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
 	@Override
@@ -69,4 +75,29 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	public void setItemInOffHand(Player player, ItemStack item) {
 		player.getInventory().setItemInOffHand(item);
 	}
+	
+	@Override
+	public void sendTabList(Player player, String header, String footer) {
+		CraftPlayer craftplayer = (CraftPlayer) player;
+        PlayerConnection connection = craftplayer.getHandle().playerConnection;
+        IChatBaseComponent headerJSON = ChatSerializer.a("{\"text\": \"" + header +"\"}");
+        IChatBaseComponent footerJSON = ChatSerializer.a("{\"text\": \"" + footer +"\"}");
+        PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
+     
+        try {
+            Field headerField = packet.getClass().getDeclaredField("a");
+            headerField.setAccessible(true);
+            headerField.set(packet, headerJSON);
+            headerField.setAccessible(!headerField.isAccessible());
+         
+            Field footerField = packet.getClass().getDeclaredField("b");
+            footerField.setAccessible(true);
+            footerField.set(packet, footerJSON);
+            footerField.setAccessible(!footerField.isAccessible());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       
+        connection.sendPacket(packet);
+    }
 }
