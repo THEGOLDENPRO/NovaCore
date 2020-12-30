@@ -40,8 +40,8 @@ public class GUIManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onInventoryClick(InventoryClickEvent e) {
-		if (e.getInventory().getHolder() instanceof GUIHolder) {
-			GUIHolder holder = (GUIHolder) e.getInventory().getHolder();
+		if (e.getClickedInventory().getHolder() instanceof GUIHolder) {
+			GUIHolder holder = (GUIHolder) e.getClickedInventory().getHolder();
 
 			GUIAction action = GUIAction.CANCEL_INTERACTION;
 

@@ -105,7 +105,7 @@ public abstract class NovaCommandBase {
 		return description;
 	}
 
-	public void setUseage(String useage) {
+	protected void setUseage(String useage) {
 		this.useage = useage;
 	}
 
@@ -473,7 +473,7 @@ public abstract class NovaCommandBase {
 	 *         permission
 	 */
 	public String getNoPermissionMessage(CommandSender sender) {
-		return ChatColor.RED + LanguageManager.getString(sender, "novacore.command.no_permission"); //"You don't have permission to use this command";
+		return ChatColor.RED + LanguageManager.getString(sender, "novacore.command.no_permission"); // "You don't have permission to use this command";
 	}
 
 	/**

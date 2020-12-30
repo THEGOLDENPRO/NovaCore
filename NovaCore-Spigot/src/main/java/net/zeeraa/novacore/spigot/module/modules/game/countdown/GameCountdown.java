@@ -53,6 +53,8 @@ public abstract class GameCountdown {
 	 */
 	public abstract int getTimeLeft();
 	
+	public abstract void setTimeLeft(int timeLeft);
+	
 	/**
 	 * Check if the countdown has finished
 	 * 

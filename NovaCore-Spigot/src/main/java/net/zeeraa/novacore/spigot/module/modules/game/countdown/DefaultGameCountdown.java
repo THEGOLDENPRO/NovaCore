@@ -96,7 +96,12 @@ public class DefaultGameCountdown extends GameCountdown {
 
 		return false;
 	}
+	
+	public void setStartTime(int startTime) {
+		this.startTime = startTime;
+	}
 
+	@Override
 	public void setTimeLeft(int timeLeft) {
 		this.timeLeft = timeLeft;
 	}
