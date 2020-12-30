@@ -19,20 +19,21 @@ import net.zeeraa.novacore.spigot.module.modules.gui.holders.GUIReadOnlyHolder;
  */
 public class GUIManager extends NovaModule implements Listener {
 	private static GUIManager instance;
-	
+
 	/**
 	 * Get instance of {@link GUIManager}
+	 * 
 	 * @return Instance
 	 */
 	public static GUIManager getInstance() {
 		return instance;
 	}
-	
+
 	@Override
-		public void onLoad() {
-			instance = this;
-		}
-	
+	public void onLoad() {
+		instance = this;
+	}
+
 	@Override
 	public String getName() {
 		return "GUIManager";
@@ -40,34 +41,36 @@ public class GUIManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onInventoryClick(InventoryClickEvent e) {
-		if (e.getClickedInventory().getHolder() instanceof GUIHolder) {
-			GUIHolder holder = (GUIHolder) e.getClickedInventory().getHolder();
+		if (e.getClickedInventory().getHolder() != null) {
+			if (e.getClickedInventory().getHolder() instanceof GUIHolder) {
+				GUIHolder holder = (GUIHolder) e.getClickedInventory().getHolder();
 
-			GUIAction action = GUIAction.CANCEL_INTERACTION;
+				GUIAction action = GUIAction.CANCEL_INTERACTION;
 
-			for (GUIClickCallback gcc : holder.getClickCallbacks()) {
-				GUIAction newAction = gcc.onClick(e.getClickedInventory(), e.getInventory(), e.getWhoClicked(), e.getSlot(), e.getSlotType(), e.getAction());
-				if (!(newAction == null || newAction == GUIAction.NONE)) {
-					action = newAction;
-				}
-			}
-			
-			if(holder.getSlotClickCallbacks().containsKey(e.getSlot())) {
-				for (GUIClickCallback gcc : holder.getSlotClickCallbacks().get(e.getSlot())) {
+				for (GUIClickCallback gcc : holder.getClickCallbacks()) {
 					GUIAction newAction = gcc.onClick(e.getClickedInventory(), e.getInventory(), e.getWhoClicked(), e.getSlot(), e.getSlotType(), e.getAction());
 					if (!(newAction == null || newAction == GUIAction.NONE)) {
 						action = newAction;
 					}
 				}
-			}
 
-			if (holder instanceof GUIReadOnlyHolder) {
-				e.setCancelled(true);
-				return;
-			}
+				if (holder.getSlotClickCallbacks().containsKey(e.getSlot())) {
+					for (GUIClickCallback gcc : holder.getSlotClickCallbacks().get(e.getSlot())) {
+						GUIAction newAction = gcc.onClick(e.getClickedInventory(), e.getInventory(), e.getWhoClicked(), e.getSlot(), e.getSlotType(), e.getAction());
+						if (!(newAction == null || newAction == GUIAction.NONE)) {
+							action = newAction;
+						}
+					}
+				}
 
-			if (action == GUIAction.CANCEL_INTERACTION) {
-				e.setCancelled(true);
+				if (holder instanceof GUIReadOnlyHolder) {
+					e.setCancelled(true);
+					return;
+				}
+
+				if (action == GUIAction.CANCEL_INTERACTION) {
+					e.setCancelled(true);
+				}
 			}
 		}
 	}

@@ -26,7 +26,7 @@ import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 public class NovaCoreSubCommandLoggerSet extends NovaSubCommand {
 	public NovaCoreSubCommandLoggerSet() {
 		super("set");
-		this.setPermission("novacore.command.novacore.logger.ser");
+		this.setPermission("novacore.command.novacore.logger.set");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 
 		this.setDescription("Set your log level");
