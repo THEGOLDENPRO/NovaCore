@@ -42,7 +42,7 @@ public class DefaultGameCountdown extends GameCountdown {
 	public boolean isCountdownRunning() {
 		return taskId != -1;
 	}
-	
+
 	@Override
 	public boolean startCountdown() {
 		if (this.started) {
@@ -66,7 +66,8 @@ public class DefaultGameCountdown extends GameCountdown {
 				}
 
 				if (timeLeft <= 10) {
-					//Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Starting in " + ChatColor.AQUA + "" + ChatColor.BOLD + timeLeft);
+					// Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD +
+					// "Starting in " + ChatColor.AQUA + "" + ChatColor.BOLD + timeLeft);
 					LanguageManager.broadcast("novacore.game.starting_in", timeLeft);
 
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
@@ -76,7 +77,6 @@ public class DefaultGameCountdown extends GameCountdown {
 			}
 		}, 20L, 20L);
 
-		
 		LanguageManager.broadcast("novacore.game.countdown", timeLeft);
 
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
@@ -90,15 +90,20 @@ public class DefaultGameCountdown extends GameCountdown {
 	public boolean cancelCountdown() {
 		if (taskId != -1) {
 			Bukkit.getScheduler().cancelTask(taskId);
+			started = false;
+			timeLeft = startTime;
 			taskId = -1;
 			return true;
 		}
 
 		return false;
 	}
-	
+
 	public void setStartTime(int startTime) {
 		this.startTime = startTime;
+		if (!hasCountdownStarted()) {
+			this.timeLeft = startTime;
+		}
 	}
 
 	@Override

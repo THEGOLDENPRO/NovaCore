@@ -91,6 +91,8 @@ public class GameManager extends NovaModule implements Listener {
 
 	private Task combatTagCountdownTask;
 
+	private boolean showDeathMessaage;
+
 	/**
 	 * Get instance of {@link GameManager}
 	 * 
@@ -135,6 +137,8 @@ public class GameManager extends NovaModule implements Listener {
 				combatTaggedPlayers.entrySet().removeIf(i -> i.getValue() <= 0);
 			}
 		}, 20L, 20L);
+
+		this.showDeathMessaage = false;
 	}
 
 	/**
@@ -553,6 +557,14 @@ public class GameManager extends NovaModule implements Listener {
 		return combatTaggedPlayers.containsKey(uuid);
 	}
 
+	public boolean isShowDeathMessaage() {
+		return showDeathMessaage;
+	}
+
+	public void setShowDeathMessaage(boolean showDeathMessaage) {
+		this.showDeathMessaage = showDeathMessaage;
+	}
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		Player p = e.getEntity();
@@ -560,7 +572,9 @@ public class GameManager extends NovaModule implements Listener {
 		if (hasGame()) {
 			if (getActiveGame().hasStarted()) {
 				if (getActiveGame().getPlayers().contains(p.getUniqueId())) {
-					e.setDeathMessage(null);
+					if (!showDeathMessaage) {
+						e.setDeathMessage(null);
+					}
 
 					if (getActiveGame().eliminatePlayerOnDeath(p)) {
 						try {
