@@ -10,6 +10,6 @@ public class ActionBar implements net.zeeraa.novacore.spigot.abstraction.ActionB
 	@Override
 	public void sendMessage(Player player, String message) {
 		PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + message.replace("&", "§") + "\"}"), (byte) 2);
-	     ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 }

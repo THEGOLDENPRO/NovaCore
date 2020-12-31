@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
 
 /**
  * Functions to do things with players
@@ -93,6 +94,10 @@ public class PlayerUtils {
 		player.setHealth(maxHealth);
 
 		return maxHealth;
+	}
+
+	public void damagePlayer(Player player, PlayerDamageReason reason, float damage) {
+		NovaCore.getInstance().getVersionIndependentUtils().damagePlayer(player, reason, damage);
 	}
 
 	/**

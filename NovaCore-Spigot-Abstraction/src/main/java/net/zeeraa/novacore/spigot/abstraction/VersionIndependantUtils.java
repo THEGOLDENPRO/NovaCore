@@ -48,6 +48,8 @@ public interface VersionIndependantUtils {
 	 * @return ping
 	 */
 	public int getPlayerPing(Player player);
+	
+	public void damagePlayer(Player player, PlayerDamageReason reason, float damage);
 
 	/**
 	 * Get the max heath of a {@link LivingEntity}
