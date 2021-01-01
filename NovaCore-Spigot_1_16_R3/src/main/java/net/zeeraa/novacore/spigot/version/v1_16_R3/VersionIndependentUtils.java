@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.version.v1_16_R3;
 
 import java.lang.reflect.Field;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -17,6 +18,7 @@ import net.minecraft.server.v1_16_R3.MinecraftServer;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.ColoredBlockType;
 
 public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
 	@Override
@@ -62,12 +64,12 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	public int getPlayerPing(Player player) {
 		return ((CraftPlayer) player).getHandle().ping;
 	}
-	
+
 	@Override
 	public void cloneBlockData(Block source, Block target) {
 		target.setBlockData(source.getBlockData());
 	}
-	
+
 	@Override
 	public void setItemInMainHand(Player player, ItemStack item) {
 		player.getInventory().setItemInMainHand(item);
@@ -77,32 +79,32 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	public void setItemInOffHand(Player player, ItemStack item) {
 		player.getInventory().setItemInOffHand(item);
 	}
-	
+
 	@Override
 	public void sendTabList(Player player, String header, String footer) {
 		CraftPlayer craftplayer = (CraftPlayer) player;
-        PlayerConnection connection = craftplayer.getHandle().playerConnection;
-        IChatBaseComponent headerJSON = ChatSerializer.a("{\"text\": \"" + header +"\"}");
-        IChatBaseComponent footerJSON = ChatSerializer.a("{\"text\": \"" + footer +"\"}");
-        PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
-     
-        try {
-            Field headerField = packet.getClass().getDeclaredField("a");
-            headerField.setAccessible(true);
-            headerField.set(packet, headerJSON);
-            headerField.setAccessible(!headerField.isAccessible());
-         
-            Field footerField = packet.getClass().getDeclaredField("b");
-            footerField.setAccessible(true);
-            footerField.set(packet, footerJSON);
-            footerField.setAccessible(!footerField.isAccessible());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-       
-        connection.sendPacket(packet);
-    }
-	
+		PlayerConnection connection = craftplayer.getHandle().playerConnection;
+		IChatBaseComponent headerJSON = ChatSerializer.a("{\"text\": \"" + header + "\"}");
+		IChatBaseComponent footerJSON = ChatSerializer.a("{\"text\": \"" + footer + "\"}");
+		PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
+
+		try {
+			Field headerField = packet.getClass().getDeclaredField("a");
+			headerField.setAccessible(true);
+			headerField.set(packet, headerJSON);
+			headerField.setAccessible(!headerField.isAccessible());
+
+			Field footerField = packet.getClass().getDeclaredField("b");
+			footerField.setAccessible(true);
+			footerField.set(packet, footerJSON);
+			footerField.setAccessible(!footerField.isAccessible());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		connection.sendPacket(packet);
+	}
+
 	@Override
 	public void damagePlayer(Player player, PlayerDamageReason reason, float damage) {
 		DamageSource source;
@@ -152,5 +154,213 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 		}
 
 		((CraftPlayer) player).getHandle().damageEntity(source, damage);
+	}
+
+	@Override
+	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type) {
+		Material material;
+		if (type == ColoredBlockType.GLASS_BLOCK) {
+			switch (color) {
+			case BLACK:
+				material = Material.BLACK_STAINED_GLASS;
+				break;
+				
+			case BLUE:
+				material = Material.BLUE_STAINED_GLASS;
+				break;
+				
+			case BROWN:
+				material = Material.BROWN_STAINED_GLASS;
+				break;
+				
+			case CYAN:
+				material = Material.CYAN_STAINED_GLASS;
+				break;
+				
+			case GRAY:
+				material = Material.LIGHT_GRAY_STAINED_GLASS;
+				break;
+				
+			case GREEN:
+				material = Material.GREEN_STAINED_GLASS;
+				break;
+				
+			case LIGHT_BLUE:
+				material = Material.LIGHT_BLUE_STAINED_GLASS;
+				break;
+				
+			case LIGHT_GRAY:
+				material = Material.LIGHT_GRAY_STAINED_GLASS;
+				break;
+				
+			case LIME:
+				material = Material.LIME_STAINED_GLASS;
+				break;
+				
+			case MAGENTA:
+				material = Material.MAGENTA_STAINED_GLASS;
+				break;
+
+			case ORANGE:
+				material = Material.ORANGE_STAINED_GLASS;
+				break;
+				
+			case PINK:
+				material = Material.PINK_STAINED_GLASS;
+				break;
+				
+			case PURPLE:
+				material = Material.PURPLE_STAINED_GLASS;
+				break;
+				
+			case RED:
+				material = Material.RED_STAINED_GLASS;
+				break;
+				
+			case YELLOW:
+				material = Material.YELLOW_STAINED_GLASS;
+				break;
+
+			default:
+				material = Material.AIR;
+				break;
+			}
+		} else if (type == ColoredBlockType.GLASS_PANE) {
+			switch (color) {
+			case BLACK:
+				material = Material.BLACK_STAINED_GLASS_PANE;
+				break;
+				
+			case BLUE:
+				material = Material.BLUE_STAINED_GLASS_PANE;
+				break;
+				
+			case BROWN:
+				material = Material.BROWN_STAINED_GLASS_PANE;
+				break;
+				
+			case CYAN:
+				material = Material.CYAN_STAINED_GLASS_PANE;
+				break;
+				
+			case GRAY:
+				material = Material.LIGHT_GRAY_STAINED_GLASS_PANE;
+				break;
+				
+			case GREEN:
+				material = Material.GREEN_STAINED_GLASS_PANE;
+				break;
+				
+			case LIGHT_BLUE:
+				material = Material.LIGHT_BLUE_STAINED_GLASS_PANE;
+				break;
+				
+			case LIGHT_GRAY:
+				material = Material.LIGHT_GRAY_STAINED_GLASS_PANE;
+				break;
+				
+			case LIME:
+				material = Material.LIME_STAINED_GLASS_PANE;
+				break;
+				
+			case MAGENTA:
+				material = Material.MAGENTA_STAINED_GLASS_PANE;
+				break;
+
+			case ORANGE:
+				material = Material.ORANGE_STAINED_GLASS_PANE;
+				break;
+				
+			case PINK:
+				material = Material.PINK_STAINED_GLASS_PANE;
+				break;
+				
+			case PURPLE:
+				material = Material.PURPLE_STAINED_GLASS_PANE;
+				break;
+				
+			case RED:
+				material = Material.RED_STAINED_GLASS_PANE;
+				break;
+				
+			case YELLOW:
+				material = Material.YELLOW_STAINED_GLASS_PANE;
+				break;
+				
+			default:
+				material = Material.AIR;
+				break;
+			}
+		} else if(type == ColoredBlockType.WOOL) {
+			switch (color) {
+			case BLACK:
+				material = Material.BLACK_WOOL;
+				break;
+				
+			case BLUE:
+				material = Material.BLUE_WOOL;
+				break;
+				
+			case BROWN:
+				material = Material.BROWN_WOOL;
+				break;
+				
+			case CYAN:
+				material = Material.CYAN_WOOL;
+				break;
+				
+			case GRAY:
+				material = Material.LIGHT_GRAY_WOOL;
+				break;
+				
+			case GREEN:
+				material = Material.GREEN_WOOL;
+				break;
+				
+			case LIGHT_BLUE:
+				material = Material.LIGHT_BLUE_WOOL;
+				break;
+				
+			case LIGHT_GRAY:
+				material = Material.LIGHT_GRAY_WOOL;
+				break;
+				
+			case LIME:
+				material = Material.LIME_WOOL;
+				break;
+				
+			case MAGENTA:
+				material = Material.MAGENTA_WOOL;
+				break;
+
+			case ORANGE:
+				material = Material.ORANGE_WOOL;
+				break;
+				
+			case PINK:
+				material = Material.PINK_WOOL;
+				break;
+				
+			case PURPLE:
+				material = Material.PURPLE_WOOL;
+				break;
+				
+			case RED:
+				material = Material.RED_WOOL;
+				break;
+				
+			case YELLOW:
+				material = Material.YELLOW_WOOL;
+				break;
+				
+			default:
+				material = Material.AIR;
+				break;
+			}
+		} else {
+			material = Material.AIR;
+		}
+
+		block.setType(material);
 	}
 }

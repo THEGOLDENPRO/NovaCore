@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.abstraction;
 
+import org.bukkit.DyeColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -48,7 +49,7 @@ public interface VersionIndependantUtils {
 	 * @return ping
 	 */
 	public int getPlayerPing(Player player);
-	
+
 	public void damagePlayer(Player player, PlayerDamageReason reason, float damage);
 
 	/**
@@ -85,4 +86,6 @@ public interface VersionIndependantUtils {
 	public void cloneBlockData(Block source, Block target);
 
 	public void sendTabList(Player player, String header, String footer);
+
+	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type);
 }

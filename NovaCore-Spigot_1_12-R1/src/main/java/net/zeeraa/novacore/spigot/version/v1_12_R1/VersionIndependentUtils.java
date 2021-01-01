@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.version.v1_12_R1;
 
 import java.lang.reflect.Field;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.attribute.Attribute;
@@ -19,6 +20,7 @@ import net.minecraft.server.v1_12_R1.MinecraftServer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_12_R1.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.ColoredBlockType;
 
 public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
 	@SuppressWarnings("deprecation")
@@ -161,5 +163,33 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 		}
 
 		((CraftPlayer) player).getHandle().damageEntity(source, damage);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type) {
+		Material material;
+
+		switch (type) {
+		case GLASS_PANE:
+			material = Material.STAINED_GLASS_PANE;
+			break;
+
+		case GLASS_BLOCK:
+			material = Material.STAINED_GLASS;
+			break;
+			
+		case WOOL:
+			material = Material.WOOL;
+			break;
+			
+		default:
+			material = Material.STAINED_GLASS;
+			break;
+		}
+
+		block.setType(material);
+
+		block.setData(color.getWoolData());
 	}
 }
