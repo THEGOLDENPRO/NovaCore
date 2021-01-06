@@ -37,6 +37,8 @@ import net.zeeraa.novacore.spigot.abstraction.commons.BukkitAsyncManager;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
 import net.zeeraa.novacore.spigot.command.commands.novacore.NovaCoreCommand;
 import net.zeeraa.novacore.spigot.customcrafting.CustomCraftingManager;
+import net.zeeraa.novacore.spigot.debug.DebugCommandRegistrator;
+import net.zeeraa.novacore.spigot.debug.builtin.BuiltinDebugTriggers;
 import net.zeeraa.novacore.spigot.language.LanguageReader;
 import net.zeeraa.novacore.spigot.loottable.LootTableManager;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1;
@@ -303,6 +305,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 		MapModuleManager.addMapModule("novacore.startmessage", StartMessage.class);
 
 		CommandRegistry.registerCommand(new NovaCoreCommand());
+
+		new DebugCommandRegistrator();
+		new BuiltinDebugTriggers();
 
 		new BukkitRunnable() {
 			@Override

@@ -16,7 +16,7 @@
 		"novacore.game.modules.chestloot.refill": "§6§lChests have been refilled",
 		"novacore.game.modules.chestloot.lootdrop": "§6§lA loot drop is spawning at X:§b§l %s §6§lZ:§b§l %s",
 		
-		"novacore.game.lobby.join_spectator_no_team": "§aYou joined as spectator since you are not in a team",
+		"novacore.game.lobby.spectator_no_team": "§aYou joined as spectator since you are not in a team",
 		"novacore.game.lobby.start_exception": "§cAn uncorrectable error occurred while trying to start the game",
 		
 		"novacore.game.lobby.map_vote.vote_for_map": "Vote for map",

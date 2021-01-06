@@ -1,7 +1,9 @@
 package net.zeeraa.novacore.spigot.module.modules.lootdrop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -20,12 +22,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.loottable.LootTable;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.event.LootDropSpawnEvent;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.message.DefaultLootDropSpawnMessage;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.message.LootDropSpawnMessage;
+import net.zeeraa.novacore.spigot.module.modules.lootdrop.particles.LootdropParticleEffect;
+import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 import net.zeeraa.novacore.spigot.utils.LocationUtils;
 
 public class LootDropManager extends NovaModule implements Listener {
@@ -34,8 +39,12 @@ public class LootDropManager extends NovaModule implements Listener {
 	private List<LootDrop> chests;
 	private List<LootDropEffect> dropEffects;
 
+	private Map<UUID, LootdropParticleEffect> particleEffects;
+
 	private LootDropSpawnMessage spawnMessage;
-	
+
+	private Task particleTask;
+
 	private int taskId;
 
 	public static LootDropManager getInstance() {
@@ -47,12 +56,23 @@ public class LootDropManager extends NovaModule implements Listener {
 		return "LootDropManager";
 	}
 
-	public LootDropManager() {
+	@Override
+	public void onLoad() {
 		LootDropManager.instance = this;
 		chests = new ArrayList<LootDrop>();
 		dropEffects = new ArrayList<LootDropEffect>();
 		spawnMessage = new DefaultLootDropSpawnMessage();
+		particleEffects = new HashMap<UUID, LootdropParticleEffect>();
 		taskId = -1;
+
+		this.particleTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				for (UUID uuid : particleEffects.keySet()) {
+					particleEffects.get(uuid).update();
+				}
+			}
+		}, 2L);
 	}
 
 	@Override
@@ -67,10 +87,13 @@ public class LootDropManager extends NovaModule implements Listener {
 				}
 			}
 		}, 20L, 20L);
+
+		particleTask.start();
 	}
 
 	@Override
 	public void onDisable() {
+		Task.tryStopTask(particleTask);
 		destroy();
 	}
 
@@ -82,6 +105,8 @@ public class LootDropManager extends NovaModule implements Listener {
 		for (LootDropEffect effect : dropEffects) {
 			effect.undoBlocks();
 		}
+
+		particleEffects.clear();
 
 		for (int i = chests.size(); i > 0; i--) {
 			removeChest(chests.get(i - 1));
@@ -95,15 +120,28 @@ public class LootDropManager extends NovaModule implements Listener {
 			}
 		}
 
+		List<UUID> removeParticles = new ArrayList<UUID>();
+
+		for (UUID uuid : particleEffects.keySet()) {
+			if (particleEffects.get(uuid).getLocation().getWorld().equals(world)) {
+				removeParticles.add(uuid);
+			}
+		}
+
+		for (UUID uuid : removeParticles) {
+			particleEffects.remove(uuid);
+		}
+
 		for (int i = chests.size(); i > 0; i--) {
 			if (chests.get(i).getWorld().equals(world)) {
 				removeChest(chests.get(i - 1));
 			}
 		}
 	}
-	
+
 	/**
 	 * Set the spawn message when a loot drop spawns
+	 * 
 	 * @param spawnMessage The custom {@link LootDropSpawnMessage} to use
 	 */
 	public void setSpawnMessage(LootDropSpawnMessage spawnMessage) {
@@ -135,7 +173,7 @@ public class LootDropManager extends NovaModule implements Listener {
 		if (canSpawnAt(location)) {
 			LootDropSpawnEvent event = new LootDropSpawnEvent(location, lootTable);
 			Bukkit.getServer().getPluginManager().callEvent(event);
-			
+
 			if (!event.isCancelled()) {
 				LootDropEffect effect = new LootDropEffect(location, lootTable);
 				dropEffects.add(effect);
@@ -149,7 +187,6 @@ public class LootDropManager extends NovaModule implements Listener {
 	}
 
 	public boolean canSpawnAt(Location location) {
-
 		for (LootDropEffect effect : dropEffects) {
 			if (effect.getLocation().getBlockX() == location.getBlockX()) {
 				if (effect.getLocation().getBlockZ() == location.getBlockZ()) {
@@ -170,7 +207,12 @@ public class LootDropManager extends NovaModule implements Listener {
 	}
 
 	public void spawnChest(Location location, String lootTable) {
-		chests.add(new LootDrop(location, lootTable));
+		LootDrop drop = new LootDrop(location, lootTable);
+		chests.add(drop);
+
+		Location particleLocation = new Location(location.getWorld(), LocationUtils.blockCenter(location.getBlockX()), location.getY() + 0.8, LocationUtils.blockCenter(location.getBlockZ()));
+
+		particleEffects.put(drop.getUuid(), new LootdropParticleEffect(particleLocation));
 	}
 
 	public LootDrop getChestAtLocation(Location location) {
@@ -192,6 +234,9 @@ public class LootDropManager extends NovaModule implements Listener {
 	public void removeChest(LootDrop chest) {
 		chests.remove(chest);
 		chest.remove();
+		if (particleEffects.containsKey(chest.getUuid())) {
+			particleEffects.remove(chest.getUuid());
+		}
 	}
 
 	public LootDrop getChestByUUID(UUID uuid) {
