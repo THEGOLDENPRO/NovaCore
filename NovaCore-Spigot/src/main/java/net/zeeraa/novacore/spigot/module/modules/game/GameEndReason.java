@@ -34,6 +34,10 @@ public enum GameEndReason {
 	 */
 	OPERATOR_ENDED_GAME,
 	/**
+	 * Used when the server ends the game
+	 */
+	SERVER_ENDED_GAME,
+	/**
 	 * Used when creating a game that ends for other reasons than the ones defined
 	 * in {@link GameEndReason}
 	 * <p>
