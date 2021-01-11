@@ -61,7 +61,7 @@ public class TextUtils {
 	 * https://www.compart.com/en/unicode/U+2606
 	 */
 	public static final String ICON_WHITE_STAR = Character.toString((char) 2606);
-	
+
 	/**
 	 * Skull and Crossbones in unicode
 	 * <p>
@@ -99,7 +99,7 @@ public class TextUtils {
 	public static String secondsToHoursMinutes(int seconds) {
 		return String.format("%02d:%02d", seconds / 60, seconds % 60);
 	}
-	
+
 	/**
 	 * Convert seconds to mm:ss string
 	 * 
@@ -108,5 +108,37 @@ public class TextUtils {
 	 */
 	public static String secondsToHoursMinutes(long seconds) {
 		return String.format("%02d:%02d", seconds / 60, seconds % 60);
+	}
+
+	/**
+	 * Convert seconds to time. If the time is larger then 1 hour it will display in
+	 * HH:mm:ss format and if the time is less than 1 hour it will display in mm:ss
+	 * format
+	 * 
+	 * @param seconds Time in seconds
+	 * @return Formated time
+	 */
+	public static String secondsToTime(int seconds) {
+		return TextUtils.secondsToTime((long) seconds);
+	}
+
+	/**
+	 * Convert seconds to time. If the time is larger then 1 hour it will display in
+	 * HH:mm:ss format and if the time is less than 1 hour it will display in mm:ss
+	 * format
+	 * 
+	 * @param seconds Time in seconds
+	 * @return Formated time
+	 */
+	public static String secondsToTime(long seconds) {
+		int h = (int) (seconds / 3600);
+		int m = (int) ((seconds % 3600) / 60);
+		int s = (int) (seconds % 60);
+
+		if (h > 0) {
+			return String.format("%02d:%02d:%02d", h, m, s);
+		} else {
+			return String.format("%02d:%02d", m, s);
+		}
 	}
 }

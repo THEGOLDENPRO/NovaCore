@@ -1,5 +1,8 @@
 package net.zeeraa.novacore.spigot.utils;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.google.common.io.ByteArrayDataOutput;
@@ -26,5 +29,23 @@ public class BungeecordUtils {
 		out.writeUTF(server);
 
 		player.sendPluginMessage(NovaCore.getInstance(), "BungeeCord", out.toByteArray());
+	}
+
+	/**
+	 * Send a player to another server in a bungeecord setup.
+	 * <p>
+	 * If there is no player online with that uuid this will do nothing
+	 * 
+	 * @param uuid   {@link UUID} of the player to send
+	 * @param server Name of the server to send the player to
+	 */
+	public static void sendToServer(UUID uuid, String server) {
+		Player player = Bukkit.getServer().getPlayer(uuid);
+
+		if (player != null) {
+			if (player.isOnline()) {
+				BungeecordUtils.sendToServer(player, server);
+			}
+		}
 	}
 }
