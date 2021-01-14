@@ -37,6 +37,10 @@ public enum GameEndReason {
 	 * Used when the server ends the game
 	 */
 	SERVER_ENDED_GAME,
+	/*
+	 * Used when there is no players left
+	 */
+	NO_PLAYERS_LEFT,
 	/**
 	 * Used when creating a game that ends for other reasons than the ones defined
 	 * in {@link GameEndReason}
