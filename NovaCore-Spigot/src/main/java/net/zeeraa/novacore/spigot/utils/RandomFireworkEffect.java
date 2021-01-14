@@ -8,8 +8,8 @@ import org.bukkit.FireworkEffect.Type;
 
 /**
  * Util for creating random {@link FireworkEffect}s
+ * 
  * @author Zeeraa
- *
  */
 public class RandomFireworkEffect {
 	/**
@@ -18,12 +18,22 @@ public class RandomFireworkEffect {
 	 * @return A random {@link FireworkEffect}
 	 */
 	public static FireworkEffect randomFireworkEffect() {
-		Random random = new Random();
+		return randomFireworkEffect(new Random());
+	}
+
+	/**
+	 * Generate a random {@link FireworkEffect}
+	 * 
+	 * @param random The random instance to use
+	 * 
+	 * @return A random {@link FireworkEffect}
+	 */
+	public static FireworkEffect randomFireworkEffect(Random random) {
 		FireworkEffect effect = FireworkEffect.builder().flicker(random.nextBoolean()).withColor(getColor(random.nextInt(17) + 1)).withFade(getColor(random.nextInt(17) + 1)).with(Type.values()[random.nextInt(Type.values().length)]).trail(random.nextBoolean()).build();
 		return effect;
 	}
 
-	private static Color getColor(final int i) {
+	public static Color getColor(final int i) {
 		switch (i) {
 		case 1:
 			return Color.AQUA;
