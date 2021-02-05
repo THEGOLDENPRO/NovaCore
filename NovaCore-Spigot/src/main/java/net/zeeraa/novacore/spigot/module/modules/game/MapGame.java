@@ -17,6 +17,9 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
  * <p>
  * If this extends {@link Listener} {@link GameManager#loadGame(Game)} will
  * register the listener when called
+ * <p>
+ * When creating games remember to call {@link Game#sendBeginEvent()} as soon as
+ * the game begins and the count downs have finished
  * 
  * @author Zeeraa
  */

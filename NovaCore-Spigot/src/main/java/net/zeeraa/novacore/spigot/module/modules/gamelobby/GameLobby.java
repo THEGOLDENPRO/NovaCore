@@ -94,7 +94,7 @@ public class GameLobby extends NovaModule implements Listener {
 		GameLobbyMapData map = mapSelector.getMapToUse();
 
 		if (map == null) {
-			Log.fatal("The lobby map selector returned no map");
+			Log.fatal("GameLobby", "The lobby map selector returned no map");
 			this.disable();
 			return;
 		}
@@ -103,7 +103,7 @@ public class GameLobby extends NovaModule implements Listener {
 			this.activeMap = (GameLobbyMap) map.load();
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.fatal("Failed to load the map to use for game lobby");
+			Log.fatal("GameLobby", "Failed to load the map to use for game lobby");
 			this.disable();
 			return;
 		}

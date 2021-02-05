@@ -138,10 +138,12 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 			playerLines.put(player.getUniqueId(), pLines);
 
 			for (ChatColor chatColor : ChatColor.values()) {
-				Team team = board.getScoreboard().registerNewTeam("C_" + chatColor.name());
+				if (board.getScoreboard().getTeam("C_" + chatColor.name()) == null) {
+					Team team = board.getScoreboard().registerNewTeam("C_" + chatColor.name());
 
-				team.setPrefix(chatColor + "");
-				team.setNameTagVisibility(NameTagVisibility.ALWAYS);
+					team.setPrefix(chatColor + "");
+					team.setNameTagVisibility(NameTagVisibility.ALWAYS);
+				}
 			}
 
 			for (UUID uuid : playerNameColor.keySet()) {

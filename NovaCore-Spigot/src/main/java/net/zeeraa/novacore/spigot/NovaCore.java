@@ -52,6 +52,7 @@ import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
 import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModuleManager;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.chestloot.ChestLoot;
+import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.graceperiod.GracePeriodMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.mapprotection.MapProtection;
@@ -303,6 +304,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		MapModuleManager.addMapModule("novacore.worldborder", WorldborderMapModule.class);
 		MapModuleManager.addMapModule("novacore.settime", SetTime.class);
 		MapModuleManager.addMapModule("novacore.startmessage", StartMessage.class);
+		MapModuleManager.addMapModule("novacore.graceperiod", GracePeriodMapModule.class);
 
 		CommandRegistry.registerCommand(new NovaCoreCommand());
 

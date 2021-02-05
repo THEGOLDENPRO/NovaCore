@@ -18,6 +18,7 @@ import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.modules.game.elimination.PlayerEliminationReason;
 import net.zeeraa.novacore.spigot.module.modules.game.elimination.PlayerQuitEliminationAction;
+import net.zeeraa.novacore.spigot.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameEndEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameStartEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.events.PlayerEliminatedEvent;
@@ -35,6 +36,9 @@ import net.zeeraa.novacore.spigot.teams.Team;
  * <p>
  * If this extends {@link Listener} {@link GameManager#loadGame(Game)} will
  * register the listener when called
+ * <p>
+ * When creating games remember to call {@link Game#sendBeginEvent()} as soon as
+ * the game begins and the count downs have finished
  * 
  * @author Zeeraa
  */
@@ -96,6 +100,8 @@ public abstract class Game {
 	 */
 	protected Random random;
 
+	private boolean beginEventCalled;
+
 	public Game() {
 		this.players = new ArrayList<UUID>();
 		this.triggers = new ArrayList<GameTrigger>();
@@ -104,6 +110,7 @@ public abstract class Game {
 		this.startCalled = false;
 		this.autoWinnerCheckCompleted = false;
 		this.random = new Random();
+		this.beginEventCalled = false;
 		this.winCheckTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
 			public void run() {
@@ -114,6 +121,21 @@ public abstract class Game {
 				}
 			}
 		}, 5L);
+	}
+
+	/**
+	 * This will call the {@link GameBeginEvent}
+	 * <p>
+	 * This should be implemented when the game has started and any countdowns have
+	 * finished
+	 */
+	protected void sendBeginEvent() {
+		if (beginEventCalled) {
+			return;
+		}
+		beginEventCalled = true;
+		GameBeginEvent event = new GameBeginEvent(this);
+		Bukkit.getServer().getPluginManager().callEvent(event);
 	}
 
 	/**
@@ -516,6 +538,10 @@ public abstract class Game {
 			return false;
 		}
 		endCalled = true;
+
+		if (!beginEventCalled) {
+			Log.warn("Game", "Game#sendBeginEvent() was never called before Game#endGame() was called. If the game progressed as intended this might mean that you forgot to call Game#sendBeginEvent() in your game code");
+		}
 
 		winCheckTask.stop();
 
