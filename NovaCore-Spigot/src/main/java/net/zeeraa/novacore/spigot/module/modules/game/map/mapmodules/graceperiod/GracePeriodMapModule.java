@@ -46,8 +46,6 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 				Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Grace period is over");
 			}
 		});
-
-		Log.info("GracePeriodMapModule", "Grace period will be " + seconds + " seconds long");
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -63,12 +61,17 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 	public void onGameBegin(GameBeginEvent e) {
 		Log.info("GracePeriodMapModule", "Received GameBeginEvent");
 		isActive = true;
-		Bukkit.getServer().getPluginManager().registerEvents(this, NovaCore.getInstance());
 		// TODO: language file
 		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Grace period will end in " + seconds + " seconds");
 		endTimer.start();
 	}
 
+	@Override
+	public void onGameStart(Game game) {
+		Log.info("GracePeriodMapModule", "Grace period will be " + seconds + " seconds long");
+		Bukkit.getServer().getPluginManager().registerEvents(this, NovaCore.getInstance());
+	}
+	
 	@Override
 	public void onGameEnd(Game game) {
 		isActive = false;
