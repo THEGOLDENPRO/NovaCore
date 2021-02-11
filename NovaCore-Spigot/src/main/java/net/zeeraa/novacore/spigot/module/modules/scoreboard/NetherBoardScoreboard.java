@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -285,6 +287,15 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	public void setGlobalLine(int line, String content) {
 		globalLines.put(line, content);
 	}
+	
+	/**
+	 * Get the content of a global line
+	 * @param line The line to get
+	 * @return The content of that line
+	 */
+	public String getGlobalLine(int line) {
+		return globalLines.get(line);
+	}
 
 	/**
 	 * Remove a global line from the scoreboard
@@ -318,6 +329,24 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	 */
 	public void clearPlayerLine(int line, Player player) {
 		this.setPlayerLine(line, player, " ");
+	}
+
+	/**
+	 * Get the line for a specified player.
+	 * <p>
+	 * This will return <code>null</code> if global lines are used instead
+	 * 
+	 * @param line   The line number to get
+	 * @param player The player to get
+	 * @return The content of that line or <code>null</code> if not found
+	 */
+	@Nullable
+	public String getPlayerLine(int line, Player player) {
+		if (playerLines.containsKey(player.getUniqueId())) {
+			return playerLines.get(player.getUniqueId()).get(line);
+		}
+
+		return null;
 	}
 
 	/**
