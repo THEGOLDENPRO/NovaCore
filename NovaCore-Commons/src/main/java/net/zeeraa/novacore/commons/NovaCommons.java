@@ -5,14 +5,16 @@ import net.zeeraa.novacore.commons.log.AbstractConsoleSender;
 import net.zeeraa.novacore.commons.log.AbstractPlayerMessageSender;
 import net.zeeraa.novacore.commons.platformindependent.PlatformIndependentBungeecordAPI;
 import net.zeeraa.novacore.commons.tasks.AbstractSimpleTaskCreator;
+import net.zeeraa.novacore.commons.utils.platformindependent.PlatformIndependentPlayerAPI;
 
 public class NovaCommons {
-	private static AbstractPlayerMessageSender abstractPlayerMessageSender;
-	private static AbstractConsoleSender abstractConsoleSender;
-	private static AbstractSimpleTaskCreator abstractSimpleTaskCreator;
-	private static AbstractAsyncManager abstractAsyncManager;
-	private static PlatformIndependentBungeecordAPI platformIndependentBungeecordAPI;
-	private static ServerType serverType;
+	private static AbstractPlayerMessageSender abstractPlayerMessageSender = null;
+	private static AbstractConsoleSender abstractConsoleSender = null;
+	private static AbstractSimpleTaskCreator abstractSimpleTaskCreator = null;
+	private static AbstractAsyncManager abstractAsyncManager = null;
+	private static PlatformIndependentBungeecordAPI platformIndependentBungeecordAPI = null;
+	private static PlatformIndependentPlayerAPI platformIndependentPlayerAPI = null;
+	private static ServerType serverType = null;
 
 	public static AbstractPlayerMessageSender getAbstractPlayerMessageSender() {
 		return abstractPlayerMessageSender;
@@ -60,5 +62,13 @@ public class NovaCommons {
 
 	public static ServerType getServerType() {
 		return serverType;
+	}
+	
+	public static PlatformIndependentPlayerAPI getPlatformIndependentPlayerAPI() {
+		return platformIndependentPlayerAPI;
+	}
+	
+	public static void setPlatformIndependentPlayerAPI(PlatformIndependentPlayerAPI platformIndependentPlayerAPI) {
+		NovaCommons.platformIndependentPlayerAPI = platformIndependentPlayerAPI;
 	}
 }

@@ -15,6 +15,7 @@ import net.zeeraa.novacore.bungeecord.abstraction.AbstractBungeecordPlayerMessag
 import net.zeeraa.novacore.bungeecord.abstraction.BungeecordAsyncManager;
 import net.zeeraa.novacore.bungeecord.abstraction.BungeecordSimpleTaskCreator;
 import net.zeeraa.novacore.bungeecord.platformindependent.BungeePlatformIndependentBungeecordAPI;
+import net.zeeraa.novacore.bungeecord.platformindependent.BungeecordPlatformIndependentPlayerAPI;
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.ServerType;
 import net.zeeraa.novacore.commons.log.Log;
@@ -50,6 +51,7 @@ public class NovaCore extends Plugin {
 		NovaCommons.setAbstractPlayerMessageSender(new AbstractBungeecordPlayerMessageSender());
 		NovaCommons.setAbstractAsyncManager(new BungeecordAsyncManager(this));
 		NovaCommons.setPlatformIndependentBungeecordAPI(new BungeePlatformIndependentBungeecordAPI());
+		NovaCommons.setPlatformIndependentPlayerAPI(new BungeecordPlatformIndependentPlayerAPI());
 		NovaCommons.setServerType(ServerType.BUNGEECORD);
 		
 		try {

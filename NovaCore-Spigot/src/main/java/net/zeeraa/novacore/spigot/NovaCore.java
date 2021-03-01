@@ -67,6 +67,7 @@ import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.module.modules.scoreboard.NetherBoardScoreboard;
 import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
 import net.zeeraa.novacore.spigot.platformindependent.SpigotPlatformIndependentBungeecordAPI;
+import net.zeeraa.novacore.spigot.platformindependent.SpigotPlatformIndependentPlayerAPI;
 import net.zeeraa.novacore.spigot.tasks.abstraction.BukkitSimpleTaskCreator;
 import net.zeeraa.novacore.spigot.teams.TeamManager;
 
@@ -163,6 +164,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		NovaCommons.setAbstractPlayerMessageSender(new AbstractBukkitPlayerMessageSender());
 		NovaCommons.setAbstractSimpleTaskCreator(new BukkitSimpleTaskCreator());
 		NovaCommons.setAbstractAsyncManager(new BukkitAsyncManager(this));
+		NovaCommons.setPlatformIndependentPlayerAPI(new SpigotPlatformIndependentPlayerAPI());
 		NovaCommons.setServerType(ServerType.SPIGOT);
 
 		Log.setConsoleLogLevel(LogLevel.INFO);
