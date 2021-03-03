@@ -93,6 +93,9 @@ public class GameManager extends NovaModule implements Listener {
 
 	private boolean showDeathMessaage;
 
+	private boolean useCombatTagging;
+	private int combatTaggingTime;
+
 	/**
 	 * Get instance of {@link GameManager}
 	 * 
@@ -126,6 +129,9 @@ public class GameManager extends NovaModule implements Listener {
 		this.commandAdded = false;
 
 		this.combatTaggedPlayers = new HashMap<UUID, Integer>();
+
+		this.useCombatTagging = false;
+		this.combatTaggingTime = 5;
 
 		this.combatTagCountdownTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
@@ -395,6 +401,39 @@ public class GameManager extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Set to <code>true</code> to use the combat tagging system
+	 * 
+	 * @param useCombatTagging <code>true</code> to enable combat tagging
+	 */
+	public void setUseCombatTagging(boolean useCombatTagging) {
+		this.useCombatTagging = useCombatTagging;
+	}
+
+	/**
+	 * Check it the combat tagging system is enabled
+	 * @return <code>true</code> if the combat tagging system is used
+	 */
+	public boolean isUseCombatTagging() {
+		return useCombatTagging;
+	}
+
+	/**
+	 * Get the time in seconds to combat tag players for
+	 * @return Time in seconds to combat tag players for
+	 */
+	public int getCombatTaggingTime() {
+		return combatTaggingTime;
+	}
+
+	/**
+	 * Set the time in seconds that players will be combat tagged for
+	 * @param combatTaggingTime Time to set
+	 */
+	public void setCombatTaggingTime(int combatTaggingTime) {
+		this.combatTaggingTime = combatTaggingTime;
+	}
+
+	/**
 	 * Set the countdown time in seconds
 	 * 
 	 * @param countdown The count down time
@@ -464,12 +503,6 @@ public class GameManager extends NovaModule implements Listener {
 	/**
 	 * Call this to combat tag a player.
 	 * <p>
-	 * If {@link Game#eliminateIfCombatLogging()} is disabled this will not tag the
-	 * player
-	 * <p>
-	 * When combat tagged and {@link Game#eliminateIfCombatLogging()} is enabled
-	 * players will be eliminated on logout
-	 * <p>
 	 * Combat tagged players will always be eliminated even if the
 	 * {@link Game#getPlayerQuitEliminationAction()} is set
 	 * {@link PlayerQuitEliminationAction#NONE}
@@ -480,10 +513,8 @@ public class GameManager extends NovaModule implements Listener {
 	public boolean combatTagPlayer(Player player) {
 		if (hasGame()) {
 			if (getActiveGame().hasStarted()) {
-				if (getActiveGame().eliminateIfCombatLogging()) {
-					combatTaggedPlayers.put(player.getUniqueId(), getActiveGame().getCombatTagDelay());
-					return true;
-				}
+				combatTaggedPlayers.put(player.getUniqueId(), combatTaggingTime);
+				return true;
 			}
 		}
 		return false;
@@ -677,9 +708,13 @@ public class GameManager extends NovaModule implements Listener {
 								}
 							}
 							// Wont be called if players are in the same team due to the return; above
-							combatTagPlayer((Player) e.getEntity());
+							if (useCombatTagging) {
+								combatTagPlayer((Player) e.getEntity());
+							}
 						} else {
-							combatTagPlayer((Player) e.getEntity());
+							if (useCombatTagging) {
+								combatTagPlayer((Player) e.getEntity());
+							}
 						}
 					}
 				}
