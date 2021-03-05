@@ -96,6 +96,8 @@ public class GameManager extends NovaModule implements Listener {
 	private boolean useCombatTagging;
 	private int combatTaggingTime;
 
+	private List<CombatTagMessage> combatTagMessages;
+
 	/**
 	 * Get instance of {@link GameManager}
 	 * 
@@ -133,6 +135,8 @@ public class GameManager extends NovaModule implements Listener {
 		this.useCombatTagging = false;
 		this.combatTaggingTime = 5;
 
+		this.combatTagMessages = new ArrayList<CombatTagMessage>();
+
 		this.combatTagCountdownTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
 			public void run() {
@@ -145,6 +149,61 @@ public class GameManager extends NovaModule implements Listener {
 		}, 20L, 20L);
 
 		this.showDeathMessaage = false;
+	}
+
+	/**
+	 * Get a {@link List} with all {@link CombatTagMessage}s the game is using.
+	 * <p>
+	 * You can add and remove objects from this list and they will also get added or
+	 * removed from the {@link GameManager}
+	 * 
+	 * @return {@link List} with {@link CombatTagMessage}
+	 */
+	public List<CombatTagMessage> getCombatTagMessages() {
+		return combatTagMessages;
+	}
+
+	/**
+	 * Add a {@link CombatTagMessage} to the list of combat tag messages used by
+	 * {@link GameManager}
+	 * 
+	 * @param message The {@link CombatTagMessage} to add
+	 */
+	public void addCombatTagMessage(CombatTagMessage message) {
+		combatTagMessages.add(message);
+	}
+
+	/**
+	 * Run all {@link CombatTagMessage#showTaggedMessage(Player)} for a player
+	 * 
+	 * @param player The player to message
+	 */
+	public void showCombatTaggedMessage(Player player) {
+		try {
+			for (CombatTagMessage message : combatTagMessages) {
+				message.showTaggedMessage(player);
+			}
+		} catch (Exception e) {
+			Log.error("Error while showing combat tagged message fro a player: " + e.getClass().getName() + " " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Run all {@link CombatTagMessage#showNoLongerTaggedMessage(Player)} for a
+	 * player
+	 * 
+	 * @param player The player to message
+	 */
+	public void showNoLongerCombatTaggedMessage(Player player) {
+		try {
+			for (CombatTagMessage message : combatTagMessages) {
+				message.showNoLongerTaggedMessage(player);
+			}
+		} catch (Exception e) {
+			Log.error("Error while showing no longer combat tagged message fro a player: " + e.getClass().getName() + " " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -411,6 +470,7 @@ public class GameManager extends NovaModule implements Listener {
 
 	/**
 	 * Check it the combat tagging system is enabled
+	 * 
 	 * @return <code>true</code> if the combat tagging system is used
 	 */
 	public boolean isUseCombatTagging() {
@@ -419,6 +479,7 @@ public class GameManager extends NovaModule implements Listener {
 
 	/**
 	 * Get the time in seconds to combat tag players for
+	 * 
 	 * @return Time in seconds to combat tag players for
 	 */
 	public int getCombatTaggingTime() {
@@ -427,6 +488,7 @@ public class GameManager extends NovaModule implements Listener {
 
 	/**
 	 * Set the time in seconds that players will be combat tagged for
+	 * 
 	 * @param combatTaggingTime Time to set
 	 */
 	public void setCombatTaggingTime(int combatTaggingTime) {
@@ -511,9 +573,28 @@ public class GameManager extends NovaModule implements Listener {
 	 * @return <code>true</code> if the player was tagged
 	 */
 	public boolean combatTagPlayer(Player player) {
+		return this.combatTagPlayer(player, true);
+	}
+
+	/**
+	 * Call this to combat tag a player.
+	 * <p>
+	 * Combat tagged players will always be eliminated even if the
+	 * {@link Game#getPlayerQuitEliminationAction()} is set
+	 * {@link PlayerQuitEliminationAction#NONE}
+	 * 
+	 * @param player      The {@link Player} to combat tag
+	 * @param showMessage Set to <code>false</code> to disable the combat tag
+	 *                    message
+	 * @return <code>true</code> if the player was tagged
+	 */
+	public boolean combatTagPlayer(Player player, boolean showMessage) {
 		if (hasGame()) {
 			if (getActiveGame().hasStarted()) {
 				combatTaggedPlayers.put(player.getUniqueId(), combatTaggingTime);
+				if (showMessage) {
+					showCombatTaggedMessage(player);
+				}
 				return true;
 			}
 		}
@@ -530,7 +611,24 @@ public class GameManager extends NovaModule implements Listener {
 	 * @param player The {@link Player} to remove the combat tag from
 	 */
 	public void removeCombatTag(Player player) {
+		this.removeCombatTag(player, true);
+	}
+
+	/**
+	 * Remove the combat tag from a player
+	 * <p>
+	 * Combat tagged players will always be eliminated even if the
+	 * {@link Game#getPlayerQuitEliminationAction()} is set
+	 * {@link PlayerQuitEliminationAction#NONE}
+	 * 
+	 * @param player      The {@link Player} to remove the combat tag from
+	 * @param showMessage Set to <code>false</code> to disable the combat tag
+	 */
+	public void removeCombatTag(Player player, boolean showMessage) {
 		removeCombatTag(player.getUniqueId());
+		if (showMessage) {
+			showNoLongerCombatTaggedMessage(player);
+		}
 	}
 
 	/**
@@ -543,7 +641,30 @@ public class GameManager extends NovaModule implements Listener {
 	 * @param uuid The {@link UUID} of the player to remove the combat tag from
 	 */
 	public void removeCombatTag(UUID uuid) {
+		this.removeCombatTag(uuid, true);
+	}
+
+	/**
+	 * Remove the combat tag from a player
+	 * <p>
+	 * Combat tagged players will always be eliminated even if the
+	 * {@link Game#getPlayerQuitEliminationAction()} is set
+	 * {@link PlayerQuitEliminationAction#NONE}
+	 * 
+	 * @param uuid        The {@link UUID} of the player to remove the combat tag
+	 *                    from
+	 * @param showMessage Set to <code>false</code> to disable the combat tag
+	 */
+	public void removeCombatTag(UUID uuid, boolean showMessage) {
 		combatTaggedPlayers.remove(uuid);
+		if (showMessage) {
+			Player player = Bukkit.getServer().getPlayer(uuid);
+			if (player != null) {
+				if (player.isOnline()) {
+					showNoLongerCombatTaggedMessage(player);
+				}
+			}
+		}
 	}
 
 	/**
