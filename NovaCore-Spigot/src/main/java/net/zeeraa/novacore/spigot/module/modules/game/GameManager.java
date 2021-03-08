@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -828,13 +829,55 @@ public class GameManager extends NovaModule implements Listener {
 									}
 								}
 							}
-							// Wont be called if players are in the same team due to the return; above
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onEntityDamageByEntityMonitor(EntityDamageByEntityEvent e) {
+		if (hasGame()) {
+			if (activeGame.hasStarted()) {
+				if (e.getEntity() instanceof Player) {
+					UUID damagerUuid = null;
+
+					if (e.getDamager() instanceof Player) {
+						damagerUuid = e.getDamager().getUniqueId();
+					} else if (e.getDamager() instanceof Arrow) {
+						Projectile projectile = (Projectile) e.getDamager();
+						if (projectile.getShooter() != null) {
+							if (projectile.getShooter() instanceof Player) {
+								damagerUuid = ((Player) ((Projectile) e.getDamager()).getShooter()).getUniqueId();
+							}
+						}
+					} else if (e.getDamager() instanceof Tameable) {
+						Tameable tameable = (Tameable) e.getDamager();
+
+						if (tameable.getOwner() instanceof HumanEntity) {
+							damagerUuid = ((HumanEntity) tameable.getOwner()).getUniqueId();
+						}
+					}
+
+					if (damagerUuid != null) {
+						if (!activeGame.isPVPEnabled()) {
+							return;
+						}
+
+						if (useTeams) {
+							if (NovaCore.getInstance().hasTeamManager()) {
+								if (NovaCore.getInstance().getTeamManager().isInSameTeam(((OfflinePlayer) e.getEntity()).getUniqueId(), damagerUuid)) {
+									return;
+								}
+							}
+
 							if (useCombatTagging) {
-								combatTagPlayer((Player) e.getEntity());
+								combatTagPlayer((Player) e.getEntity(), !isCombatTagged((Player) e.getEntity()));
 							}
 						} else {
 							if (useCombatTagging) {
-								combatTagPlayer((Player) e.getEntity());
+								combatTagPlayer((Player) e.getEntity(), !isCombatTagged((Player) e.getEntity()));
 							}
 						}
 					}
