@@ -53,7 +53,7 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 		livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "resource" })
 	@Override
 	public double[] getRecentTps() {
 		// Deprecated but still the way spigot does it in the /tps command
