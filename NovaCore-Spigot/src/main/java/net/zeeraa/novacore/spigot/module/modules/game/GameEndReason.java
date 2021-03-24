@@ -68,5 +68,9 @@ public enum GameEndReason {
 	 * <p>
 	 * This is never used by any functions in the default NovaCore code
 	 */
-	SPECIAL_4;
+	SPECIAL_4,
+	/**
+	 * Used when the game ends due to an error
+	 */
+	ERROR;
 }
