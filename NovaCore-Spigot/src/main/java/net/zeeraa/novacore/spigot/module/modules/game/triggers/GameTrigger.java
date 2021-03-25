@@ -134,9 +134,15 @@ public class GameTrigger {
 
 		GameTriggerTriggerEvent event = new GameTriggerTriggerEvent(this);
 		Bukkit.getServer().getPluginManager().callEvent(event);
-		
+
 		for (TriggerCallback callback : this.callbacks) {
 			callback.run(this, flag);
+		}
+
+		if (this instanceof ScheduledGameTrigger) {
+			if (this.hasFlag(TriggerFlag.RUN_ONLY_ONCE)) {
+				((ScheduledGameTrigger) this).stop();
+			}
 		}
 
 		return new TriggerResponse(this, true);
