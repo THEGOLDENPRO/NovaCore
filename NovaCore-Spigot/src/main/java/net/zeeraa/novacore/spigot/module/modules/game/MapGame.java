@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
-import net.zeeraa.novacore.spigot.module.modules.game.events.GameEndEvent;
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameStartEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMap;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMapData;
@@ -82,6 +82,7 @@ public abstract class MapGame extends Game {
 	 * 
 	 * @return <code>false</code> if this has already been called
 	 */
+	@Override
 	public boolean startGame() {
 		if (startCalled) {
 			return false;
@@ -91,6 +92,7 @@ public abstract class MapGame extends Game {
 		Bukkit.getServer().getPluginManager().callEvent(new GameStartEvent(this));
 
 		for (MapModule module : activeMap.getMapData().getMapModules()) {
+			Log.trace("MapGame", "Calling onGameStart() for map module " + module.getName());
 			module.onGameStart(this);
 		}
 
@@ -99,28 +101,6 @@ public abstract class MapGame extends Game {
 		}
 
 		this.onStart();
-
-		return true;
-	}
-
-	/**
-	 * End the game.
-	 * <p>
-	 * This should also send all players to the lobby and reset the server
-	 * 
-	 * @param reason The {@link GameEndReason} why the game ended
-	 * @return <code>false</code> if this has already been called
-	 */
-	public boolean endGame(GameEndReason reason) {
-		if (endCalled) {
-			return false;
-		}
-		endCalled = true;
-
-		winCheckTask.stop();
-
-		Bukkit.getServer().getPluginManager().callEvent(new GameEndEvent(this, reason));
-		this.onEnd(reason);
 
 		return true;
 	}
