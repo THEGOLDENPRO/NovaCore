@@ -128,9 +128,30 @@ public class ItemBuilder {
 	/**
 	 * Get a empty {@link List}
 	 * 
-	 * @return An epty {@link List}
+	 * @return An empty {@link List}
 	 */
 	public static List<String> generateLoreList() {
 		return new ArrayList<String>();
+	}
+
+	/**
+	 * Create an item stack of the provided {@link Material} with 1 item
+	 * 
+	 * @param material The {@link Material} of the item stack
+	 * @return {@link ItemStack} of the provided material
+	 */
+	public static ItemStack materialToItemStack(Material material) {
+		return ItemBuilder.materialToItemStack(material, 1);
+	}
+
+	/**
+	 * Create an item stack of the provided {@link Material} and size
+	 * 
+	 * @param material The {@link Material} of the item stack
+	 * @param size     The size of the item stack
+	 * @return {@link ItemStack} of the provided material and size
+	 */
+	public static ItemStack materialToItemStack(Material material, int size) {
+		return new ItemBuilder(material).setAmount(size).build();
 	}
 }
