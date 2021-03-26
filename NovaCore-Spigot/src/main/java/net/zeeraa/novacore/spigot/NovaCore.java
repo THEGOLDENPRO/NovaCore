@@ -48,17 +48,6 @@ import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
 import net.zeeraa.novacore.spigot.module.modules.chestloot.ChestLootManager;
 import net.zeeraa.novacore.spigot.module.modules.compass.CompassTracker;
 import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
-import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModuleManager;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.chestloot.ChestLoot;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.graceperiod.GracePeriodMapModule;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.mapprotection.MapProtection;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.settime.SetTime;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.startmessage.StartMessage;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.worldborder.WorldborderMapModule;
-import net.zeeraa.novacore.spigot.module.modules.gamelobby.GameLobby;
 import net.zeeraa.novacore.spigot.module.modules.gui.GUIManager;
 import net.zeeraa.novacore.spigot.module.modules.jumppad.JumpPadManager;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
@@ -93,6 +82,14 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private boolean hologramsSupport;
 
 	private boolean loadingDone;
+	
+	/**
+	 * Check if the NovaCoreGameEngine plugin is enabled
+	 * @return <code>true</code> if the game engine is enabled
+	 */
+	public static boolean isNovaGameEngineEnabled() {
+		return Bukkit.getServer().getPluginManager().getPlugin("NovaCoreGameEngine") != null;
+	}
 
 	/**
 	 * Get instance of the {@link NovaCore} plugin
@@ -291,21 +288,12 @@ public class NovaCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(MultiverseManager.class);
 		ModuleManager.loadModule(CompassTracker.class);
 		ModuleManager.loadModule(NetherBoardScoreboard.class);
-		ModuleManager.loadModule(GameManager.class);
-		ModuleManager.loadModule(GameLobby.class);
 		ModuleManager.loadModule(JumpPadManager.class);
 
 		// Load and enable
 		ModuleManager.loadModule(CustomItemManager.class, true);
 
-		MapModuleManager.addMapModule("novacore.chestloot", ChestLoot.class);
-		MapModuleManager.addMapModule("novacore.lootdrop", LootDropMapModule.class);
-		MapModuleManager.addMapModule("novacore.mapprotection", MapProtection.class);
-		MapModuleManager.addMapModule("novacore.handcraftingtable", HandCraftingTable.class);
-		MapModuleManager.addMapModule("novacore.worldborder", WorldborderMapModule.class);
-		MapModuleManager.addMapModule("novacore.settime", SetTime.class);
-		MapModuleManager.addMapModule("novacore.startmessage", StartMessage.class);
-		MapModuleManager.addMapModule("novacore.graceperiod", GracePeriodMapModule.class);
+		
 
 		CommandRegistry.registerCommand(new NovaCoreCommand());
 

@@ -1,0 +1,11 @@
+name: NovaCoreGameEngine
+main: net.zeeraa.novacore.spigot.gameengine.NovaCoreGameEngine
+description: Novacores basic game engine
+version: 1.0
+api-version: 1.13
+depend: [NovaCore]
+
+permissions:
+  novacore.gamelobby.forcemap:
+    description: Allow force selecting maps
+    default: op
