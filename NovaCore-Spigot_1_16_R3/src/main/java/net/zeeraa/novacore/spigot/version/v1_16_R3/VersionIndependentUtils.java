@@ -19,8 +19,20 @@ import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.ColoredBlockType;
+import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 
 public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
+	private ItemBuilderRecordList itemBuilderRecordList;
+
+	public VersionIndependentUtils() {
+		itemBuilderRecordList = new ItemBuilderRecordList1_16();
+	}
+
+	@Override
+	public ItemBuilderRecordList getItembBuilderRecordList() {
+		return itemBuilderRecordList;
+	}
+	
 	@Override
 	public void setBlockAsPlayerSkull(Block block) {
 		block.setType(Material.PLAYER_HEAD);

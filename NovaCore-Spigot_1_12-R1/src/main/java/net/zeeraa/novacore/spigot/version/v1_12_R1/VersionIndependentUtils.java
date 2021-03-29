@@ -21,8 +21,20 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_12_R1.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.ColoredBlockType;
+import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 
 public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
+	private ItemBuilderRecordList itemBuilderRecordList;
+
+	public VersionIndependentUtils() {
+		itemBuilderRecordList = new ItemBuilderRecordList1_12();
+	}
+
+	@Override
+	public ItemBuilderRecordList getItembBuilderRecordList() {
+		return itemBuilderRecordList;
+	}
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void setBlockAsPlayerSkull(Block block) {
@@ -178,11 +190,11 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 		case GLASS_BLOCK:
 			material = Material.STAINED_GLASS;
 			break;
-			
+
 		case WOOL:
 			material = Material.WOOL;
 			break;
-			
+
 		default:
 			material = Material.STAINED_GLASS;
 			break;

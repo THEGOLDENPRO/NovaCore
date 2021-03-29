@@ -88,4 +88,6 @@ public interface VersionIndependantUtils {
 	public void sendTabList(Player player, String header, String footer);
 
 	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type);
+	
+	public ItemBuilderRecordList getItembBuilderRecordList();
 }

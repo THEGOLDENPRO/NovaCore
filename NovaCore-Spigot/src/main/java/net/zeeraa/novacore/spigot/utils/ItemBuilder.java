@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import net.zeeraa.novacore.spigot.NovaCore;
+
 /**
  * Useful tool to create item stacks with custom names and data using a single
  * line of code
@@ -153,5 +155,57 @@ public class ItemBuilder {
 	 */
 	public static ItemStack materialToItemStack(Material material, int size) {
 		return new ItemBuilder(material).setAmount(size).build();
+	}
+
+	/**
+	 * Get a {@link List} with all available record names
+	 * 
+	 * @return List with all available record names
+	 */
+	public static List<String> getAvailableRecordNames() {
+		return new ArrayList<>(NovaCore.getInstance().getVersionIndependentUtils().getItembBuilderRecordList().getRecordMap().keySet());
+	}
+
+	/**
+	 * Check if a record with the provided name exists
+	 * 
+	 * @param name The name of the record
+	 * @return <code>true</code> if the record exits
+	 */
+	public static boolean hasRecordName(String name) {
+		for (String s : NovaCore.getInstance().getVersionIndependentUtils().getItembBuilderRecordList().getRecordMap().keySet()) {
+			if (s.equalsIgnoreCase(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Get an instance of a {@link ItemBuilder} containing a record with the
+	 * provided name
+	 * <p>
+	 * This will return null if an invalid name is provided, you can check if the
+	 * name is valid by using {@link ItemBuilder#hasRecordName(String)}
+	 * 
+	 * @param recordName The name of the record
+	 * @return {@link ItemBuilder} with the provided record or <code>null</code> if
+	 *         the record name could not be found
+	 */
+	public static ItemBuilder getRecordItemBuilder(String recordName) {
+		Material material = null;
+
+		for (String key : NovaCore.getInstance().getVersionIndependentUtils().getItembBuilderRecordList().getRecordMap().keySet()) {
+			if (key.equalsIgnoreCase(recordName)) {
+				material = NovaCore.getInstance().getVersionIndependentUtils().getItembBuilderRecordList().getRecordMap().get(key);
+				break;
+			}
+		}
+
+		if (material == null) {
+			return null;
+		}
+
+		return new ItemBuilder(material);
 	}
 }

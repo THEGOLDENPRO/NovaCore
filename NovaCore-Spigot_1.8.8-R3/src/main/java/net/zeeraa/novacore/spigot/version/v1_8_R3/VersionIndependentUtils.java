@@ -20,8 +20,20 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.ColoredBlockType;
+import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 
 public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
+	private ItemBuilderRecordList itemBuilderRecordList;
+
+	public VersionIndependentUtils() {
+		itemBuilderRecordList = new ItemBuilderRecordList1_8();
+	}
+
+	@Override
+	public ItemBuilderRecordList getItembBuilderRecordList() {
+		return itemBuilderRecordList;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public void setBlockAsPlayerSkull(Block block) {
