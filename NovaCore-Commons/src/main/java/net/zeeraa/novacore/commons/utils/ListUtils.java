@@ -21,4 +21,20 @@ public class ListUtils {
 
 		return result;
 	}
+
+	/**
+	 * Create a list with the provided elements in it
+	 * @param <T> The data type
+	 * @param elements The elements to add
+	 * @return {@link List} aith the provided elements
+	 */
+	public static <T> List<T> createList(@SuppressWarnings("unchecked") T... elements) {
+		List<T> result = new ArrayList<>();
+
+		for (T element : elements) {
+			result.add(element);
+		}
+
+		return result;
+	}
 }

@@ -41,6 +41,7 @@
 		<module>NovaCore-Spigot_1_16_R3</module>
 		<module>NovaCore-Spigot</module>
 		<module>NovaCore-GameEngine</module>
+		<module>NovaUtils</module>
 	</modules>
 
 	<repositories>

@@ -1,0 +1,7 @@
+name: NovaUtils
+main: net.zeeraa.novautils.NovaUtils
+description: Some utils for minecraft servers
+version: 1.0
+api-version: 1.13
+
+depend: [NovaCore]

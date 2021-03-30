@@ -107,10 +107,10 @@
 			<id>CodeMC</id>
 			<url>https://repo.codemc.org/repository/maven-public</url>
 		</repository>
-
+		
 		<repository>
-			<id>codemc-repo</id>
-			<url>https://repo.codemc.io/repository/maven-public/</url>
+			<id>zeeraas-repo</id>
+			<url>https://nexus.zeeraa.net/repository/maven-group/</url>
 		</repository>
 	</repositories>
 

@@ -88,6 +88,11 @@
 			<id>bungeecord-repo</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
+		
+		<repository>
+			<id>zeeraas-repo</id>
+			<url>https://nexus.zeeraa.net/repository/maven-group/</url>
+		</repository>
 	</repositories>
 
 	<dependencyManagement>
