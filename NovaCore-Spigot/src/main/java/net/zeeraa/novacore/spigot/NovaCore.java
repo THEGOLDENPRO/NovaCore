@@ -58,6 +58,7 @@ import net.zeeraa.novacore.spigot.platformindependent.SpigotPlatformIndependentB
 import net.zeeraa.novacore.spigot.platformindependent.SpigotPlatformIndependentPlayerAPI;
 import net.zeeraa.novacore.spigot.tasks.abstraction.BukkitSimpleTaskCreator;
 import net.zeeraa.novacore.spigot.teams.TeamManager;
+import net.zeeraa.novacore.spigot.utils.CitizensUtils;
 
 public class NovaCore extends JavaPlugin implements Listener {
 	private static NovaCore instance;
@@ -79,12 +80,15 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	private CustomCraftingManager customCraftingManager;
 
+	private CitizensUtils citizensUtils;
+
 	private boolean hologramsSupport;
 
 	private boolean loadingDone;
-	
+
 	/**
 	 * Check if the NovaCoreGameEngine plugin is enabled
+	 * 
 	 * @return <code>true</code> if the game engine is enabled
 	 */
 	public static boolean isNovaGameEngineEnabled() {
@@ -151,10 +155,25 @@ public class NovaCore extends JavaPlugin implements Listener {
 		}
 	}
 
+	public CitizensUtils getCitizensUtils() {
+		return citizensUtils;
+	}
+
+	/**
+	 * Check if citizens utils is available
+	 * 
+	 * @return <code>true</code> if citizens is installed and citizens utils is
+	 *         available
+	 */
+	public boolean hasCitizensUtils() {
+		return citizensUtils != null;
+	}
+
 	@Override
 	public void onEnable() {
-		instance = this;
+		NovaCore.instance = this;
 		this.teamManager = null;
+		this.citizensUtils = null;
 
 		NovaCommons.setAbstractConsoleSender(new AbstractBukkitConsoleSender());
 		NovaCommons.setAbstractPlayerMessageSender(new AbstractBukkitPlayerMessageSender());
@@ -293,7 +312,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 		// Load and enable
 		ModuleManager.loadModule(CustomItemManager.class, true);
 
-		
+		// Check if Citizens is enabled
+		if (Bukkit.getServer().getPluginManager().getPlugin("Citizens") != null) {
+			citizensUtils = new CitizensUtils();
+		}
 
 		CommandRegistry.registerCommand(new NovaCoreCommand());
 

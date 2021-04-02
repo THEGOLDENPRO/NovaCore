@@ -101,6 +101,24 @@ public class PlayerUtils {
 	}
 
 	/**
+	 * Check if a player is online and exists
+	 * <p>
+	 * This also accepts null but will return <code>false</code>
+	 * 
+	 * @param player The player to check
+	 * @return <code>true</code> if the player is online and exists, this will also
+	 *         return <code>false</code> if the player is <code>null</code>
+	 */
+	public boolean existsAndIsOnline(Player player) {
+		if (player != null) {
+			if (player.isOnline()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Convert a list of players to a list of names
 	 * 
 	 * @param players The list of players

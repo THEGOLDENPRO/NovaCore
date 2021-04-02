@@ -92,6 +92,10 @@
       <id>zeeraas-repo</id>
       <url>https://nexus.zeeraa.net/repository/maven-group/</url>
     </repository>
+    <repository>
+      <id>citizens</id>
+      <url>https://repo.citizensnpcs.co/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -111,6 +115,12 @@
           <groupId>org.hamcrest</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>net.citizensnpcs</groupId>
+      <artifactId>citizens-main</artifactId>
+      <version>2.0.27-SNAPSHOT</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.gmail.filoghost.holographicdisplays</groupId>

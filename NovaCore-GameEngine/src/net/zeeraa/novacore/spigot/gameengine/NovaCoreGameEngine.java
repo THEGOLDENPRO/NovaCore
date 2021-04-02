@@ -7,6 +7,7 @@ import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModuleManager;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.chestloot.ChestLoot;
+import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.falldamagegraceperiod.FallDamageGracePeriodMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.graceperiod.GracePeriodMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
@@ -53,5 +54,6 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.settime", SetTime.class);
 		MapModuleManager.addMapModule("novacore.startmessage", StartMessage.class);
 		MapModuleManager.addMapModule("novacore.graceperiod", GracePeriodMapModule.class);
+		MapModuleManager.addMapModule("novacore.falldamagegraceperiod", FallDamageGracePeriodMapModule.class);
 	}
 }
