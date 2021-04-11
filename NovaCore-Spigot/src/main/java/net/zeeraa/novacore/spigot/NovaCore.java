@@ -42,6 +42,8 @@ import net.zeeraa.novacore.spigot.language.LanguageReader;
 import net.zeeraa.novacore.spigot.loottable.LootTableManager;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1Legacy;
+import net.zeeraa.novacore.spigot.mapdisplay.command.MapDisplayCommand;
+import net.zeeraa.novacore.spigot.mapdisplay.command.MapDisplayManager;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.event.ModuleDisabledEvent;
 import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
@@ -311,6 +313,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		// Load and enable
 		ModuleManager.loadModule(CustomItemManager.class, true);
+		ModuleManager.loadModule(MapDisplayManager.class, true);
 
 		// Check if Citizens is enabled
 		if (Bukkit.getServer().getPluginManager().getPlugin("Citizens") != null) {
@@ -318,6 +321,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		}
 
 		CommandRegistry.registerCommand(new NovaCoreCommand());
+		CommandRegistry.registerCommand(new MapDisplayCommand());
 
 		new DebugCommandRegistrator();
 		new BuiltinDebugTriggers();

@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.map.MapView;
 
 public interface VersionIndependantUtils {
 	public void setBlockAsPlayerSkull(Block block);
@@ -90,4 +91,11 @@ public interface VersionIndependantUtils {
 	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type);
 	
 	public ItemBuilderRecordList getItembBuilderRecordList();
+	
+	/**
+	 * Set the {@link MapView} of a map {@link ItemStack}
+	 * @param item The {@link ItemStack} to set the map view of
+	 * @param mapView The {@link MapView} to apply
+	 */
+	public void attachMapView(ItemStack item, MapView mapView);
 }

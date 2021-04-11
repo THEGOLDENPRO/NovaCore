@@ -11,6 +11,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.map.MapView;
 
 import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
@@ -199,5 +200,11 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 		block.setType(material);
 		
 		block.setData(color.getWoolData());
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void attachMapView(ItemStack item, MapView mapView) {
+		item.setDurability(mapView.getId());
 	}
 }

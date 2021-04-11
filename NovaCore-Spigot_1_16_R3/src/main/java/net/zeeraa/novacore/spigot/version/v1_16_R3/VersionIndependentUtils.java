@@ -10,6 +10,8 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapView;
 
 import net.minecraft.server.v1_16_R3.DamageSource;
 import net.minecraft.server.v1_16_R3.IChatBaseComponent;
@@ -374,5 +376,14 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 		}
 
 		block.setType(material);
+	}
+
+	@Override
+	public void attachMapView(ItemStack item, MapView mapView) {
+		MapMeta meta = (MapMeta) item.getItemMeta();
+		
+		meta.setMapView(mapView);
+		
+		item.setItemMeta(meta);
 	}
 }
