@@ -18,6 +18,8 @@ import net.zeeraa.novacore.spigot.NovaCore;
  * @author Zeeraa
  */
 public class ItemBuilder {
+	public static final ItemStack AIR = new ItemBuilder(Material.AIR).build();
+
 	protected ItemStack item;
 	protected ItemMeta meta;
 

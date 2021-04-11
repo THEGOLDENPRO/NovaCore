@@ -12,7 +12,6 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 
 public class DisplayRenderer extends MapRenderer {
@@ -28,6 +27,10 @@ public class DisplayRenderer extends MapRenderer {
 	
 	public void removePlayerFromCache(Player player) {
 		hasRendered.remove(player.getUniqueId());	
+	}
+	
+	public void clearPlayerCache() {
+		hasRendered.clear();
 	}
 	
 	private List<UUID> hasRendered = new ArrayList<UUID>(); 

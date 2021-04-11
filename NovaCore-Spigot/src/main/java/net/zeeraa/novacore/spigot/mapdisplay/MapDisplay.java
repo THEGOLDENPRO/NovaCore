@@ -1,19 +1,19 @@
 package net.zeeraa.novacore.spigot.mapdisplay;
 
-import java.awt.AlphaComposite;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Rotation;
 import org.bukkit.World;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.inventory.ItemStack;
@@ -25,10 +25,13 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.mapdisplay.renderer.DisplayRenderer;
+import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 import world.WorldUtils;
 
 public class MapDisplay {
 	private World world;
+
+	private UUID uuid;
 
 	private Dimension dimensions;
 	private Dimension resolution;
@@ -38,7 +41,17 @@ public class MapDisplay {
 
 	private DisplayRenderer[][] renderers;
 
+	private boolean persistent;
+
+	private String name;
+
+	private File cacheFile;
+
 	public void setImage(BufferedImage image) throws Exception {
+		this.setImage(image, true);
+	}
+
+	public void setImage(BufferedImage image, boolean cache) throws Exception {
 		if (image == null) {
 			for (int i = 0; i < itemFrames.length; i++) {
 				for (int j = 0; j < itemFrames[i].length; j++) {
@@ -48,6 +61,11 @@ public class MapDisplay {
 					renderers[i][j].setImage(null);
 				}
 			}
+
+			if (persistent) {
+
+			}
+
 			return;
 		}
 
@@ -69,17 +87,36 @@ public class MapDisplay {
 			}
 		}
 
+		this.clearPlayerCache();
+		
+		if (persistent) {
+			if (cache) {
+				try {
+					cacheFile.getParentFile().mkdirs();
+					ImageIO.write(realImage, "png", cacheFile);
+				} catch (Exception e) {
+					Log.error("Failed to save persistent data for MapDisplay " + name + ". " + e.getClass().getName() + " " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
 	 * Create a MapDisplay
 	 * 
-	 * @param world          The {@link World} that tme display is located in
+	 * @param world          The {@link World} that the display is located in
 	 * @param itemFrameUuids Array of item frames
+	 * @throws MissingItemFrameException if there is an item frame missing
 	 */
-	public MapDisplay(World world, UUID[][] itemFrameUuids) {
+	public MapDisplay(World world, UUID[][] itemFrameUuids, boolean persistent, String name) {
 		this.world = world;
 		this.itemFrameUuids = itemFrameUuids;
+		this.persistent = persistent;
+		this.name = name;
+		this.uuid = UUID.randomUUID();
+
+		this.cacheFile = new File(world.getWorldFolder().getPath() + File.separator + "novacore" + File.separator + "mapdisplays" + File.separator + "cache" + File.separator + name + ".png");
 
 		dimensions = new Dimension(itemFrameUuids[0].length, itemFrameUuids.length);
 		resolution = new Dimension((int) dimensions.getWidth() * 128, (int) dimensions.getHeight() * 128);
@@ -90,13 +127,49 @@ public class MapDisplay {
 			for (int j = 0; j < itemFrameUuids[i].length; j++) {
 				ItemFrame itemFrame = (ItemFrame) WorldUtils.getEntityByUUID(world, itemFrameUuids[i][j]);
 
+				if (itemFrame == null) {
+					throw new MissingItemFrameException("Could not find item frame with uuid " + itemFrameUuids[i][j].toString());
+				}
+
 				itemFrames[i][j] = itemFrame;
 			}
 		}
 
 		renderers = new DisplayRenderer[itemFrameUuids.length][itemFrameUuids[0].length];
 
-		Log.debug("MapDisplay", "Map diplay initiated with a resolution of " + resolution.getWidth() + "x" + resolution.getHeight() + ". grid size is " + dimensions.getWidth() + "x" + dimensions.getHeight());
+		Log.debug("MapDisplay", "Map diplay initiated with a resolution of " + resolution.width + "x" + resolution.height + ". grid size is " + dimensions.width + "x" + dimensions.height);
+	}
+
+	public void delete() {
+		if (persistent) {
+			if(MapDisplayManager.getInstance().getDataFile(world, name).exists()) {
+				MapDisplayManager.getInstance().getDataFile(world, name).delete();
+			}
+			
+			if(cacheFile.exists()) {
+				cacheFile.delete();
+			}
+		}
+
+		for (int i = 0; i < itemFrames.length; i++) {
+			for (int j = 0; j < itemFrames[i].length; j++) {
+				itemFrames[i][j].setItem(ItemBuilder.AIR);
+			}
+		}
+		
+		MapDisplayManager.getInstance().getMapDisplays().remove(this);
+	}
+
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public boolean isPersistent() {
+		return persistent;
 	}
 
 	public UUID[][] getItemFrameUuids() {
@@ -126,32 +199,64 @@ public class MapDisplay {
 	public void setupMaps() {
 		for (int i = 0; i < itemFrames.length; i++) {
 			for (int j = 0; j < itemFrames[i].length; j++) {
+				ItemStack item = itemFrames[i][j].getItem();
+
+				MapView view = null;
+				if (item != null) {
+					if (item.getType() == Material.MAP) {
+						view = NovaCore.getInstance().getVersionIndependentUtils().getAttachedMapView(item);
+					}
+				}
+
 				ItemFrame frame = itemFrames[i][j];
 
-				ItemStack item = new ItemStack(Material.MAP);
-
-				MapView view = Bukkit.createMap(world);
-
-				view.setScale(Scale.FARTHEST);
-
-				for (MapRenderer renderer : view.getRenderers()) {
-					view.removeRenderer(renderer);
+				if (view == null) {
+					item = new ItemStack(Material.MAP);
+					view = Bukkit.createMap(world);
+					view.setScale(Scale.FARTHEST);
+					frame.setItem(item);
 				}
 
 				DisplayRenderer renderer = new DisplayRenderer();
 
+				for (MapRenderer old : view.getRenderers()) {
+					view.removeRenderer(old);
+				}
 				view.addRenderer(renderer);
-
 				renderers[i][j] = renderer;
 
 				NovaCore.getInstance().getVersionIndependentUtils().attachMapView(item, view);
 
-				frame.setItem(item);
+				frame.setRotation(Rotation.NONE);
 			}
 		}
 	}
 
-	public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws Exception {
+	public void clearPlayerCache() {
+		for (int i = 0; i < renderers.length; i++) {
+			for (int j = 0; j < renderers[i].length; j++) {
+				renderers[i][j].clearPlayerCache();
+			}
+		}
+	}
+
+	public void tryLoadFromCache() {
+		try {
+			cacheFile.getParentFile().mkdirs();
+
+			if (cacheFile.exists()) {
+				Log.trace("MapDisplay", "Reading cache file " + cacheFile.getPath());
+				BufferedImage image = ImageIO.read(cacheFile);
+
+				setImage(image, false);
+			}
+		} catch (Exception e) {
+			Log.error("Failed to load persistent data for MapDisplay " + name + ". " + e.getClass().getName() + " " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	private static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws Exception {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		Thumbnails.of(originalImage).size(targetWidth, targetHeight).outputFormat("JPEG").outputQuality(1).toOutputStream(outputStream);
 		byte[] data = outputStream.toByteArray();
@@ -159,49 +264,34 @@ public class MapDisplay {
 		return ImageIO.read(inputStream);
 	}
 
-	public static BufferedImage cropImage(BufferedImage src, Rectangle rect) {
+	private static BufferedImage cropImage(BufferedImage src, Rectangle rect) {
 		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
 		return dest;
 	}
 
-	/*public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
-		int original_width = imgSize.width;
-		int original_height = imgSize.height;
-		int bound_width = boundary.width;
-		int bound_height = boundary.height;
-		int new_width = original_width;
-		int new_height = original_height;
+	private static Dimension getScaledDimension(Dimension imageSize, Dimension boundary) {
 
-		// first check if we need to scale width
-		if (original_width > bound_width) {
-			// scale width to fit
-			new_width = bound_width;
-			// scale height to maintain aspect ratio
-			new_height = (new_width * original_height) / original_width;
-		}
+		double widthRatio = boundary.getWidth() / imageSize.getWidth();
+		double heightRatio = boundary.getHeight() / imageSize.getHeight();
+		double ratio = Math.min(widthRatio, heightRatio);
 
-		// then check if we need to scale even with the new height
-		if (new_height > bound_height) {
-			// scale height to fit instead
-			new_height = bound_height;
-			// scale width to maintain aspect ratio
-			new_width = (new_height * original_width) / original_height;
-		}
-
-		return new Dimension(new_width, new_height);
-	}*/
-	
-	public static Dimension getScaledDimension(Dimension imageSize, Dimension boundary) {
-
-	    double widthRatio = boundary.getWidth() / imageSize.getWidth();
-	    double heightRatio = boundary.getHeight() / imageSize.getHeight();
-	    double ratio = Math.min(widthRatio, heightRatio);
-
-	    return new Dimension((int) (imageSize.width  * ratio),
-	                         (int) (imageSize.height * ratio));
+		return new Dimension((int) (imageSize.width * ratio), (int) (imageSize.height * ratio));
 	}
 
-	public static void drawImageOnImage(BufferedImage smaller, BufferedImage larger, int x, int y) {
+	private static void drawImageOnImage(BufferedImage smaller, BufferedImage larger, int x, int y) {
 		larger.getGraphics().drawImage(smaller, x, y, null);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof UUID) {
+			return this.getUuid() == (UUID) obj;
+		}
+
+		if (obj instanceof MapDisplay) {
+			return this.getUuid() == ((MapDisplay) obj).getUuid();
+		}
+
+		return false;
 	}
 }

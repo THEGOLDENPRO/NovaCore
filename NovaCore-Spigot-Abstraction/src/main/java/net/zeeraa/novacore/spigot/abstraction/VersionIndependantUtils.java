@@ -98,4 +98,13 @@ public interface VersionIndependantUtils {
 	 * @param mapView The {@link MapView} to apply
 	 */
 	public void attachMapView(ItemStack item, MapView mapView);
+	
+	/**
+	 * Get the {@link MapView} of a map {@link ItemStack}
+	 * @param item The {@link ItemStack} to get the map view of
+	 * @return mapView The {@link MapView} used for that item
+	 */
+	public MapView getAttachedMapView(ItemStack item);
+	
+	public int getMapViewId(MapView mapView);
 }

@@ -19,6 +19,11 @@ import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.AllowedSenders;
 import net.zeeraa.novacore.spigot.command.NovaCommand;
 import net.zeeraa.novacore.spigot.mapdisplay.MapDisplay;
+import net.zeeraa.novacore.spigot.mapdisplay.MapDisplayManager;
+import net.zeeraa.novacore.spigot.mapdisplay.command.subcommand.MDCreateSubCommand;
+import net.zeeraa.novacore.spigot.mapdisplay.command.subcommand.MDDeleteSubCommand;
+import net.zeeraa.novacore.spigot.mapdisplay.command.subcommand.MDListSubCommand;
+import net.zeeraa.novacore.spigot.mapdisplay.command.subcommand.MDSetImageSubCommand;
 
 public class MapDisplayCommand extends NovaCommand {
 
@@ -30,6 +35,12 @@ public class MapDisplayCommand extends NovaCommand {
 		setPermissionDefaultValue(PermissionDefault.OP);
 		setEmptyTabMode(true);
 		setFilterAutocomplete(true);
+
+		addSubCommand(new MDListSubCommand());
+		addSubCommand(new MDCreateSubCommand());
+		addSubCommand(new MDDeleteSubCommand());
+		addSubCommand(new MDSetImageSubCommand());
+
 		addHelpSubCommand();
 	}
 
@@ -58,10 +69,10 @@ public class MapDisplayCommand extends NovaCommand {
 			ItemFrame frame = MapDisplayManager.getInstance().getItemFrameAtLocation(location);
 
 			if (frame != null) {
-				MapDisplay display = MapDisplayManager.getInstance().createMapDisplay(frame);
+				MapDisplay display = MapDisplayManager.getInstance().createMapDisplay(frame, true, args[0]);
 
 				try {
-					URL url = new URL(args[0]);
+					URL url = new URL(args[1]);
 					BufferedImage image = ImageIO.read(url);
 
 					try {

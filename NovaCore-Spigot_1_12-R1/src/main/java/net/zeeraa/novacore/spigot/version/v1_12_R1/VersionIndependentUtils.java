@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.version.v1_12_R1;
 
 import java.lang.reflect.Field;
 
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -205,10 +206,22 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 
 		block.setData(color.getWoolData());
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void attachMapView(ItemStack item, MapView mapView) {
 		item.setDurability(mapView.getId());
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public MapView getAttachedMapView(ItemStack item) {
+		return Bukkit.getMap(item.getDurability());
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public int getMapViewId(MapView mapView) {
+		return (int) mapView.getId();
 	}
 }

@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.version.v1_8_R3;
 
 import java.lang.reflect.Field;
 
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -34,7 +35,7 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	public ItemBuilderRecordList getItembBuilderRecordList() {
 		return itemBuilderRecordList;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void setBlockAsPlayerSkull(Block block) {
@@ -97,32 +98,32 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	public void setItemInOffHand(Player player, ItemStack item) {
 		// nothing to do here
 	}
-	
+
 	@Override
 	public void sendTabList(Player player, String header, String footer) {
 		CraftPlayer craftplayer = (CraftPlayer) player;
-        PlayerConnection connection = craftplayer.getHandle().playerConnection;
-        IChatBaseComponent headerJSON = ChatSerializer.a("{\"text\": \"" + header +"\"}");
-        IChatBaseComponent footerJSON = ChatSerializer.a("{\"text\": \"" + footer +"\"}");
-        PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
-     
-        try {
-            Field headerField = packet.getClass().getDeclaredField("a");
-            headerField.setAccessible(true);
-            headerField.set(packet, headerJSON);
-            headerField.setAccessible(!headerField.isAccessible());
-         
-            Field footerField = packet.getClass().getDeclaredField("b");
-            footerField.setAccessible(true);
-            footerField.set(packet, footerJSON);
-            footerField.setAccessible(!footerField.isAccessible());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-       
-        connection.sendPacket(packet);
-    }
-	
+		PlayerConnection connection = craftplayer.getHandle().playerConnection;
+		IChatBaseComponent headerJSON = ChatSerializer.a("{\"text\": \"" + header + "\"}");
+		IChatBaseComponent footerJSON = ChatSerializer.a("{\"text\": \"" + footer + "\"}");
+		PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
+
+		try {
+			Field headerField = packet.getClass().getDeclaredField("a");
+			headerField.setAccessible(true);
+			headerField.set(packet, headerJSON);
+			headerField.setAccessible(!headerField.isAccessible());
+
+			Field footerField = packet.getClass().getDeclaredField("b");
+			footerField.setAccessible(true);
+			footerField.set(packet, footerJSON);
+			footerField.setAccessible(!footerField.isAccessible());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		connection.sendPacket(packet);
+	}
+
 	@Override
 	public void damagePlayer(Player player, PlayerDamageReason reason, float damage) {
 		DamageSource source;
@@ -178,16 +179,16 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	@Override
 	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type) {
 		Material material;
-		
+
 		switch (type) {
 		case GLASS_PANE:
 			material = Material.STAINED_GLASS_PANE;
 			break;
-			
+
 		case GLASS_BLOCK:
 			material = Material.STAINED_GLASS;
 			break;
-			
+
 		case WOOL:
 			material = Material.WOOL;
 			break;
@@ -196,9 +197,9 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 			material = Material.STAINED_GLASS;
 			break;
 		}
-		
+
 		block.setType(material);
-		
+
 		block.setData(color.getWoolData());
 	}
 
@@ -206,5 +207,17 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	@Override
 	public void attachMapView(ItemStack item, MapView mapView) {
 		item.setDurability(mapView.getId());
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public MapView getAttachedMapView(ItemStack item) {
+		return Bukkit.getMap(item.getDurability());
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public int getMapViewId(MapView mapView) {
+		return (int) mapView.getId();
 	}
 }
