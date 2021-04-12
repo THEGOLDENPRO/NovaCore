@@ -210,23 +210,23 @@ public class MapDisplay {
 
 				ItemFrame frame = itemFrames[i][j];
 
+				item = new ItemStack(Material.MAP);
+				
 				if (view == null) {
-					item = new ItemStack(Material.MAP);
 					view = Bukkit.createMap(world);
 					view.setScale(Scale.FARTHEST);
-					frame.setItem(item);
 				}
-
-				DisplayRenderer renderer = new DisplayRenderer();
 
 				for (MapRenderer old : view.getRenderers()) {
 					view.removeRenderer(old);
 				}
+				DisplayRenderer renderer = new DisplayRenderer();
 				view.addRenderer(renderer);
 				renderers[i][j] = renderer;
 
 				NovaCore.getInstance().getVersionIndependentUtils().attachMapView(item, view);
 
+				frame.setItem(item);
 				frame.setRotation(Rotation.NONE);
 			}
 		}

@@ -33,7 +33,11 @@ public class DisplayRenderer extends MapRenderer {
 		hasRendered.clear();
 	}
 	
-	private List<UUID> hasRendered = new ArrayList<UUID>(); 
+	private List<UUID> hasRendered; 
+	
+	public DisplayRenderer() {
+		hasRendered = new ArrayList<UUID>();
+	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
