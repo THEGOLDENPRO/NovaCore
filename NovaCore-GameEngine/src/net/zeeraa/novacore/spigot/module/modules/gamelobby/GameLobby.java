@@ -63,11 +63,36 @@ public class GameLobby extends NovaModule implements Listener {
 		return instance;
 	}
 
+	private boolean ignoreNoTeam;
+
+	/**
+	 * Set if players without teams should be added to the game or not. Default is
+	 * <code>false</code>
+	 * 
+	 * @param ignoreNoTeam <code>true</code> to enable players without team to get
+	 *                     added to the game
+	 */
+	public void setIgnoreNoTeam(boolean ignoreNoTeam) {
+		this.ignoreNoTeam = ignoreNoTeam;
+	}
+
+	/**
+	 * Check if players without teams should be added to the game or not. Default is
+	 * <code>false</code>
+	 * 
+	 * @return <code>true</code> if players without team to get added to the game
+	 */
+	public boolean isIgnoreNoTeam() {
+		return ignoreNoTeam;
+	}
+
 	@Override
 	public void onLoad() {
 		GameLobby.instance = this;
 
 		this.activeMap = null;
+
+		this.ignoreNoTeam = false;
 
 		this.mapReader = new DefaultLobbyMapReader();
 		this.mapSelector = new RandomLobbyMapSelector();
@@ -181,11 +206,13 @@ public class GameLobby extends NovaModule implements Listener {
 					if (player.isOnline()) {
 						// Prevent players from joining if teams are enabled and the player does not
 						// have a team
-						if (NovaCore.getInstance().hasTeamManager()) {
-							Team team = NovaCore.getInstance().getTeamManager().getPlayerTeam(player);
-							if (team == null) {
-								player.sendMessage(LanguageManager.getString(player, "novacore.game.lobby.spectator_no_team"));
-								continue;
+						if (!ignoreNoTeam) {
+							if (NovaCore.getInstance().hasTeamManager()) {
+								Team team = NovaCore.getInstance().getTeamManager().getPlayerTeam(player);
+								if (team == null) {
+									player.sendMessage(LanguageManager.getString(player, "novacore.game.lobby.spectator_no_team"));
+									continue;
+								}
 							}
 						}
 
@@ -265,7 +292,7 @@ public class GameLobby extends NovaModule implements Listener {
 	public void onPlayerRespawn(PlayerRespawnEvent e) {
 		if (waitingPlayers.contains(e.getPlayer().getUniqueId())) {
 			e.setRespawnLocation(activeMap.getSpawnLocation());
-			
+
 			tpToLobby(e.getPlayer());
 		}
 	}

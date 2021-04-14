@@ -62,10 +62,6 @@ public class MapDisplay {
 				}
 			}
 
-			if (persistent) {
-
-			}
-
 			return;
 		}
 
