@@ -249,6 +249,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 				versionIndependentUtils = versionIndependantLoader.getVersionIndependentUtils();
 				if (versionIndependentUtils == null) {
 					Log.warn("VersionIndependentUtils is not supported for this version");
+				} else {
+					VersionIndependantUtils.setInstance(versionIndependentUtils);
 				}
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);

@@ -1,9 +1,9 @@
 package net.zeeraa.novacore.spigot.version.v1_16_R3;
 
-import java.lang.reflect.Field;
-
 import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
@@ -13,17 +13,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 
+import net.minecraft.server.v1_16_R3.ChatComponentText;
 import net.minecraft.server.v1_16_R3.DamageSource;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_16_R3.MinecraftServer;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.abstraction.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 
-public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
+public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
 
 	public VersionIndependentUtils() {
@@ -98,23 +98,10 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	public void sendTabList(Player player, String header, String footer) {
 		CraftPlayer craftplayer = (CraftPlayer) player;
 		PlayerConnection connection = craftplayer.getHandle().playerConnection;
-		IChatBaseComponent headerJSON = ChatSerializer.a("{\"text\": \"" + header + "\"}");
-		IChatBaseComponent footerJSON = ChatSerializer.a("{\"text\": \"" + footer + "\"}");
 		PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
 
-		try {
-			Field headerField = packet.getClass().getDeclaredField("a");
-			headerField.setAccessible(true);
-			headerField.set(packet, headerJSON);
-			headerField.setAccessible(!headerField.isAccessible());
-
-			Field footerField = packet.getClass().getDeclaredField("b");
-			footerField.setAccessible(true);
-			footerField.set(packet, footerJSON);
-			footerField.setAccessible(!footerField.isAccessible());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		packet.header = new ChatComponentText(header);
+		packet.footer = new ChatComponentText(footer);
 
 		connection.sendPacket(packet);
 	}
@@ -397,5 +384,30 @@ public class VersionIndependentUtils implements net.zeeraa.novacore.spigot.abstr
 	@Override
 	public int getMapViewId(MapView mapView) {
 		return mapView.getId();
+	}
+
+	@Override
+	public void playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch) {
+		Sound realSound = null;
+
+		switch (sound) {
+		case NOTE_PLING:
+			realSound = Sound.BLOCK_NOTE_BLOCK_PLING;
+			break;
+
+		case WITHER_DEATH:
+			realSound = Sound.ENTITY_WITHER_DEATH;
+			break;
+
+		case WITHER_HURT:
+			realSound = Sound.ENTITY_WITHER_HURT;
+			break;
+
+		default:
+			System.err.println("[VersionIndependentUtils] VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
+			return;
+		}
+
+		player.playSound(location, realSound, volume, pitch);
 	}
 }

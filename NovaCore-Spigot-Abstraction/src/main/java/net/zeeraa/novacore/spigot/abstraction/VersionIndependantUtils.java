@@ -1,14 +1,31 @@
 package net.zeeraa.novacore.spigot.abstraction;
 
 import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
 
-public interface VersionIndependantUtils {
-	public void setBlockAsPlayerSkull(Block block);
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+
+public abstract class VersionIndependantUtils {
+	private static VersionIndependantUtils instance;
+	
+	public static VersionIndependantUtils get() {
+		return VersionIndependantUtils.getInstance();
+	}
+	
+	public static VersionIndependantUtils getInstance() {
+		return instance;
+	}
+	
+	public static void setInstance(VersionIndependantUtils instance) {
+		VersionIndependantUtils.instance = instance;
+	}
+	
+	public abstract void setBlockAsPlayerSkull(Block block);
 
 	/**
 	 * Get the item from the player main hand
@@ -16,7 +33,7 @@ public interface VersionIndependantUtils {
 	 * @param player The player to get item from
 	 * @return {@link ItemStack} from the players main hand
 	 */
-	public ItemStack getItemInMainHand(Player player);
+	public abstract ItemStack getItemInMainHand(Player player);
 
 	/**
 	 * Set the item in a players main hand
@@ -24,7 +41,7 @@ public interface VersionIndependantUtils {
 	 * @param player The player
 	 * @param item   The item so place the the players hand
 	 */
-	public void setItemInMainHand(Player player, ItemStack item);
+	public abstract void setItemInMainHand(Player player, ItemStack item);
 
 	/**
 	 * Get the item from the player off hand
@@ -33,7 +50,7 @@ public interface VersionIndependantUtils {
 	 * @return {@link ItemStack} or <code>null</code> if the server version does not
 	 *         have a off hand
 	 */
-	public ItemStack getItemInOffHand(Player player);
+	public abstract ItemStack getItemInOffHand(Player player);
 
 	/**
 	 * Set the item in a players off hand
@@ -41,7 +58,7 @@ public interface VersionIndependantUtils {
 	 * @param player The player
 	 * @param item   The item so place the the players hand
 	 */
-	public void setItemInOffHand(Player player, ItemStack item);
+	public abstract void setItemInOffHand(Player player, ItemStack item);
 
 	/**
 	 * Get the ping of a player
@@ -49,9 +66,9 @@ public interface VersionIndependantUtils {
 	 * @param player The player to get the ping of
 	 * @return ping
 	 */
-	public int getPlayerPing(Player player);
+	public abstract int getPlayerPing(Player player);
 
-	public void damagePlayer(Player player, PlayerDamageReason reason, float damage);
+	public abstract void damagePlayer(Player player, PlayerDamageReason reason, float damage);
 
 	/**
 	 * Get the max heath of a {@link LivingEntity}
@@ -60,7 +77,7 @@ public interface VersionIndependantUtils {
 	 * 
 	 * @return The max health of the player
 	 */
-	public double getEntityMaxHealth(LivingEntity livingEntity);
+	public abstract double getEntityMaxHealth(LivingEntity livingEntity);
 
 	/**
 	 * Set the max heath of a {@link LivingEntity}
@@ -68,43 +85,67 @@ public interface VersionIndependantUtils {
 	 * @param livingEntity The entity to reset the set health of
 	 * @param health       The new health value
 	 */
-	public void setEntityMaxHealth(LivingEntity livingEntity, double health);
+	public abstract void setEntityMaxHealth(LivingEntity livingEntity, double health);
 
 	/**
 	 * Reset the max heath of a {@link LivingEntity}
 	 * 
 	 * @param livingEntity The entity to reset the max health of
 	 */
-	public void resetEntityMaxHealth(LivingEntity livingEntity);
+	public abstract void resetEntityMaxHealth(LivingEntity livingEntity);
 
 	/**
 	 * Get the recent server TPS
 	 * 
 	 * @return Array with recent TPS
 	 */
-	public double[] getRecentTps();
+	public abstract double[] getRecentTps();
 
-	public void cloneBlockData(Block source, Block target);
+	public abstract void cloneBlockData(Block source, Block target);
 
-	public void sendTabList(Player player, String header, String footer);
+	public abstract void sendTabList(Player player, String header, String footer);
 
-	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type);
-	
-	public ItemBuilderRecordList getItembBuilderRecordList();
-	
+	public abstract void setColoredBlock(Block block, DyeColor color, ColoredBlockType type);
+
+	public abstract ItemBuilderRecordList getItembBuilderRecordList();
+
 	/**
 	 * Set the {@link MapView} of a map {@link ItemStack}
-	 * @param item The {@link ItemStack} to set the map view of
+	 * 
+	 * @param item    The {@link ItemStack} to set the map view of
 	 * @param mapView The {@link MapView} to apply
 	 */
-	public void attachMapView(ItemStack item, MapView mapView);
-	
+	public abstract void attachMapView(ItemStack item, MapView mapView);
+
 	/**
 	 * Get the {@link MapView} of a map {@link ItemStack}
+	 * 
 	 * @param item The {@link ItemStack} to get the map view of
 	 * @return mapView The {@link MapView} used for that item
 	 */
-	public MapView getAttachedMapView(ItemStack item);
-	
-	public int getMapViewId(MapView mapView);
+	public abstract MapView getAttachedMapView(ItemStack item);
+
+	public abstract int getMapViewId(MapView mapView);
+
+	/**
+	 * Play a sound for a player
+	 * 
+	 * @param player   The player to play the sound for
+	 * @param location The location of the sound
+	 * @param sound    The {@link VersionIndependantSound} to play
+	 */
+	public void playSound(Player player, Location location, VersionIndependantSound sound) {
+		this.playSound(player, location, sound, 1F, 1F);
+	}
+
+	/**
+	 * Play a sound for a player
+	 * 
+	 * @param player   The player to play the sound for
+	 * @param location The location of the sound
+	 * @param sound    The {@link VersionIndependantSound} to play
+	 * @param volume   The volume of the sound
+	 * @param pitch    The pitck of the sound
+	 */
+	public abstract void playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch);
 }
