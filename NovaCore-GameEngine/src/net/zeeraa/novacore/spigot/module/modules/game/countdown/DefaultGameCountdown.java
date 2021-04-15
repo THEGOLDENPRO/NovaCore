@@ -2,10 +2,11 @@ package net.zeeraa.novacore.spigot.module.modules.game.countdown;
 
 import java.io.IOException;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.language.LanguageManager;
 
 public class DefaultGameCountdown extends GameCountdown {
@@ -71,7 +72,7 @@ public class DefaultGameCountdown extends GameCountdown {
 					LanguageManager.broadcast("novacore.game.starting_in", timeLeft);
 					
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);
+						VersionIndependantUtils.get().playSound(p, p.getLocation(), VersionIndependantSound.NOTE_PLING, 1F, 1F);
 					}
 				}
 			}
@@ -80,7 +81,7 @@ public class DefaultGameCountdown extends GameCountdown {
 		LanguageManager.broadcast("novacore.game.countdown", timeLeft);
 
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-			p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);
+			VersionIndependantUtils.get().playSound(p, p.getLocation(), VersionIndependantSound.NOTE_PLING, 1F, 1F);
 		}
 
 		return true;
