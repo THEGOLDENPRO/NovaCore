@@ -8,13 +8,13 @@ import java.util.List;
 import org.bukkit.World;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.gameengine.utils.AbstractMapData;
+import net.zeeraa.novacore.spigot.gameengine.utils.HologramData;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseWorld;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.WorldUnloadOption;
 import net.zeeraa.novacore.spigot.utils.LocationData;
-import net.zeeraa.novacore.spigot.utils.maps.AbstractMapData;
-import net.zeeraa.novacore.spigot.utils.maps.HologramData;
 
 /**
  * Represents the data for a map before it has been loaded. You can load it with

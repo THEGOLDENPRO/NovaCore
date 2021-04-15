@@ -5,8 +5,8 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import net.zeeraa.novacore.spigot.utils.maps.AbstractMap;
-import net.zeeraa.novacore.spigot.utils.maps.AbstractMapData;
+import net.zeeraa.novacore.spigot.gameengine.utils.AbstractMap;
+import net.zeeraa.novacore.spigot.gameengine.utils.AbstractMapData;
 
 /**
  * Represents the data for a map after it has been loaded. You can access all

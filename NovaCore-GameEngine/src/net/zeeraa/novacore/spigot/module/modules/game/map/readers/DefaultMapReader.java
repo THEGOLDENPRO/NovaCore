@@ -10,12 +10,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.gameengine.utils.HologramData;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.spigot.module.modules.game.map.MapReader;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModuleManager;
 import net.zeeraa.novacore.spigot.utils.LocationData;
-import net.zeeraa.novacore.spigot.utils.maps.HologramData;
 
 public class DefaultMapReader extends MapReader {
 

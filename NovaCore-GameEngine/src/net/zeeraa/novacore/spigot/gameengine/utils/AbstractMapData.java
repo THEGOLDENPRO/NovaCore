@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.utils.maps;
+package net.zeeraa.novacore.spigot.gameengine.utils;
 
 import java.io.File;
 import java.io.IOException;
