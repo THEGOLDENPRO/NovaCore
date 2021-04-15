@@ -3,8 +3,10 @@ package net.zeeraa.novacore.spigot.module.modules.gamelobby.map;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import net.zeeraa.novacore.spigot.utils.maps.AbstractMap;
-import net.zeeraa.novacore.spigot.utils.maps.AbstractMapData;
+import net.zeeraa.novacore.spigot.gameengine.utils.AbstractMap;
+import net.zeeraa.novacore.spigot.gameengine.utils.AbstractMapData;
+
+
 
 public class GameLobbyMap extends AbstractMap {
 	private Location spawnLocation;

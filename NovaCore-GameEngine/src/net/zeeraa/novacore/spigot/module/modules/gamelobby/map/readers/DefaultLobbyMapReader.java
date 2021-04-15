@@ -7,10 +7,10 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import net.zeeraa.novacore.spigot.gameengine.utils.HologramData;
 import net.zeeraa.novacore.spigot.module.modules.gamelobby.map.GameLobbyMapData;
 import net.zeeraa.novacore.spigot.module.modules.gamelobby.map.GameLobbyReader;
 import net.zeeraa.novacore.spigot.utils.LocationData;
-import net.zeeraa.novacore.spigot.utils.maps.HologramData;
 
 public class DefaultLobbyMapReader extends GameLobbyReader {
 	@Override

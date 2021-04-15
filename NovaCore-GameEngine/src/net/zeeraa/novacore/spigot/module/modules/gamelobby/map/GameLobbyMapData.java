@@ -8,13 +8,13 @@ import org.bukkit.Difficulty;
 import org.bukkit.World;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.gameengine.utils.AbstractMap;
+import net.zeeraa.novacore.spigot.gameengine.utils.AbstractMapData;
+import net.zeeraa.novacore.spigot.gameengine.utils.HologramData;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseWorld;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.WorldUnloadOption;
 import net.zeeraa.novacore.spigot.utils.LocationData;
-import net.zeeraa.novacore.spigot.utils.maps.AbstractMap;
-import net.zeeraa.novacore.spigot.utils.maps.AbstractMapData;
-import net.zeeraa.novacore.spigot.utils.maps.HologramData;
 
 public class GameLobbyMapData extends AbstractMapData {
 	private LocationData spawnLocation;
