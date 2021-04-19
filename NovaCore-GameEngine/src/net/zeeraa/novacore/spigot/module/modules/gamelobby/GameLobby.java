@@ -284,7 +284,9 @@ public class GameLobby extends NovaModule implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		if (waitingPlayers.contains(e.getEntity().getUniqueId())) {
-			e.getEntity().spigot().respawn();
+			if (!GameManager.getInstance().getActiveGame().hasStarted()) {
+				e.getEntity().spigot().respawn();
+			}
 		}
 	}
 

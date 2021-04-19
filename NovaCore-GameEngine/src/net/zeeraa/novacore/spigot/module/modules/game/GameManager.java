@@ -97,6 +97,8 @@ public class GameManager extends NovaModule implements Listener {
 	private boolean useCombatTagging;
 	private int combatTaggingTime;
 
+	private boolean autoRespawn;
+
 	private List<CombatTagMessage> combatTagMessages;
 
 	/**
@@ -205,6 +207,25 @@ public class GameManager extends NovaModule implements Listener {
 			Log.error("Error while showing no longer combat tagged message fro a player: " + e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Check if auto respawn is enabled. This is enabled by default
+	 * 
+	 * @return <code>true</code> if auto respawn is enabled
+	 */
+	public boolean isAutoRespawn() {
+		return autoRespawn;
+	}
+
+	/**
+	 * Enable or disable auto respawning
+	 * 
+	 * @param autoRespawn <code>true</code> to auto respawn players,
+	 *                    <code>false</code> to disable auto respawn
+	 */
+	public void setAutoRespawn(boolean autoRespawn) {
+		this.autoRespawn = autoRespawn;
 	}
 
 	/**
@@ -758,7 +779,7 @@ public class GameManager extends NovaModule implements Listener {
 							e2.printStackTrace();
 						}
 
-						e.setKeepInventory(true);
+						// e.setKeepInventory(true); i dont think this should be here
 
 						PlayerUtils.clearPlayerInventory(e.getEntity());
 
@@ -772,7 +793,9 @@ public class GameManager extends NovaModule implements Listener {
 						callOnRespawn.add(p.getUniqueId());
 					}
 
-					p.spigot().respawn();
+					if (autoRespawn) {
+						p.spigot().respawn();
+					}
 				}
 			}
 		}

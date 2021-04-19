@@ -145,7 +145,7 @@ public abstract class VersionIndependantUtils {
 	 * @param location The location of the sound
 	 * @param sound    The {@link VersionIndependantSound} to play
 	 * @param volume   The volume of the sound
-	 * @param pitch    The pitck of the sound
+	 * @param pitch    The pitch of the sound
 	 */
 	public abstract void playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch);
 }

@@ -67,8 +67,6 @@ public class DefaultGameCountdown extends GameCountdown {
 				}
 
 				if (timeLeft <= 10) {
-					// Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD +
-					// "Starting in " + ChatColor.AQUA + "" + ChatColor.BOLD + timeLeft);
 					LanguageManager.broadcast("novacore.game.starting_in", timeLeft);
 					
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {

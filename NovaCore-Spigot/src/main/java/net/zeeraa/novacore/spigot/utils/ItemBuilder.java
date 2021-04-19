@@ -210,4 +210,13 @@ public class ItemBuilder {
 
 		return new ItemBuilder(material);
 	}
+	
+	/**
+	 * Get the display name of an item
+	 * @param stack The item to check
+	 * @return The display name of the item
+	 */
+	public static String getItemDisplayName(ItemStack stack) {
+		return stack.getItemMeta().getDisplayName();
+	}
 }
