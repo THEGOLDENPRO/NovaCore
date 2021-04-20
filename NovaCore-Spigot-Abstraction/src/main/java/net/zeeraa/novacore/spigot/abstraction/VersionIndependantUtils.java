@@ -148,4 +148,6 @@ public abstract class VersionIndependantUtils {
 	 * @param pitch    The pitch of the sound
 	 */
 	public abstract void playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch);
+	
+	public abstract void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut);
 }

@@ -28,6 +28,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.tasks.Task;
@@ -794,7 +795,13 @@ public class GameManager extends NovaModule implements Listener {
 					}
 
 					if (autoRespawn) {
-						p.spigot().respawn();
+						new BukkitRunnable() {
+							
+							@Override
+							public void run() {
+								p.spigot().respawn();								
+							}
+						}.runTaskLater(NovaCore.getInstance(), 5L);
 					}
 				}
 			}

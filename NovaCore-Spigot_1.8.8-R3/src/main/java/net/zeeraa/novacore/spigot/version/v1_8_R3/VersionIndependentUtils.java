@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.version.v1_8_R3;
 import java.lang.reflect.Field;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,8 +20,10 @@ import org.bukkit.map.MapView;
 import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
+import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
@@ -247,5 +250,19 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		}
 
 		player.playSound(location, realSound, volume, pitch);
+	}
+
+	@Override
+	public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+		IChatBaseComponent chatTitle = ChatSerializer.a("{\"text\": \"" + title + "\",color:" + ChatColor.WHITE.name().toLowerCase() + "}");
+		IChatBaseComponent chatSubtitle = ChatSerializer.a("{\"text\": \"" + subtitle + "\",color:" + ChatColor.WHITE.name().toLowerCase() + "}");
+		
+		PacketPlayOutTitle titlePacket = new PacketPlayOutTitle(EnumTitleAction.TITLE, chatTitle);
+		PacketPlayOutTitle subtitlePacket = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, chatSubtitle);
+		PacketPlayOutTitle timePacket = new PacketPlayOutTitle(fadeIn, stay, fadeOut);
+		
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(titlePacket);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(subtitlePacket);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(timePacket);
 	}
 }

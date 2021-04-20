@@ -410,4 +410,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		player.playSound(location, realSound, volume, pitch);
 	}
+
+	@Override
+	public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+		player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+	}
 }
