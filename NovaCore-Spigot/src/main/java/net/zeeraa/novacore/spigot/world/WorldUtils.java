@@ -1,4 +1,4 @@
-package world;
+package net.zeeraa.novacore.spigot.world;
 
 import java.util.UUID;
 

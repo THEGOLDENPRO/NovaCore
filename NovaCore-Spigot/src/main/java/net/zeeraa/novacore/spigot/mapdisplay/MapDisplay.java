@@ -27,7 +27,7 @@ import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.mapdisplay.renderer.DisplayRenderer;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
-import world.WorldUtils;
+import net.zeeraa.novacore.spigot.world.WorldUtils;
 
 public class MapDisplay {
 	private World world;
