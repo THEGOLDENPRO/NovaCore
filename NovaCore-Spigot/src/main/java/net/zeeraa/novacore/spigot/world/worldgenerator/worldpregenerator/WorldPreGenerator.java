@@ -275,7 +275,8 @@ public class WorldPreGenerator {
 
 		gz = cz + centerZ;
 
-		Log.trace("Generating world at chunk x: " + gx + " z: " + gz + ". Total generated chunks: " + generatedChunks);
+		Log.trace("Generating chunk in world " + world.getName() + " at x: " + gx + " z: " + gz + ". Total generated chunks: " + generatedChunks);
+
 		if (!world.isChunkLoaded(gx, gz)) {
 			world.loadChunk(gx, gz, true);
 			world.unloadChunk(gx, gz, true);

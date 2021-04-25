@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapRenderer;
@@ -84,7 +85,7 @@ public class MapDisplay {
 		}
 
 		this.clearPlayerCache();
-		
+
 		if (persistent) {
 			if (cache) {
 				try {
@@ -138,11 +139,11 @@ public class MapDisplay {
 
 	public void delete() {
 		if (persistent) {
-			if(MapDisplayManager.getInstance().getDataFile(world, name).exists()) {
+			if (MapDisplayManager.getInstance().getDataFile(world, name).exists()) {
 				MapDisplayManager.getInstance().getDataFile(world, name).delete();
 			}
-			
-			if(cacheFile.exists()) {
+
+			if (cacheFile.exists()) {
 				cacheFile.delete();
 			}
 		}
@@ -152,7 +153,7 @@ public class MapDisplay {
 				itemFrames[i][j].setItem(ItemBuilder.AIR);
 			}
 		}
-		
+
 		MapDisplayManager.getInstance().getMapDisplays().remove(this);
 	}
 
@@ -207,7 +208,7 @@ public class MapDisplay {
 				ItemFrame frame = itemFrames[i][j];
 
 				item = new ItemStack(Material.MAP);
-				
+
 				if (view == null) {
 					view = Bukkit.createMap(world);
 					view.setScale(Scale.FARTHEST);
@@ -288,6 +289,17 @@ public class MapDisplay {
 			return this.getUuid() == ((MapDisplay) obj).getUuid();
 		}
 
+		return false;
+	}
+
+	public boolean isEntityPartOfDisplay(Entity entity) {
+		for (int i = 0; i < itemFrames.length; i++) {
+			for (int j = 0; j < itemFrames[i].length; j++) {
+				if(entity.getUniqueId() == itemFrames[i][j].getUniqueId()) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 }

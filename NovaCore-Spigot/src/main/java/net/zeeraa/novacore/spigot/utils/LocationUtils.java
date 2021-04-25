@@ -197,4 +197,19 @@ public class LocationUtils {
 	public static Location getLocation(MultiverseWorld world, Vector vector, float yaw, float pitch) {
 		return LocationUtils.getLocation(world.getWorld(), vector, yaw, pitch);
 	}
+
+	/**
+	 * Get a copy of the provided location with its x and z centered
+	 * 
+	 * @param location The location to get a centered copy of
+	 * @return New location with centered x and z
+	 */
+	public static Location centerLocation(Location location) {
+		Location newLocation = location.clone();
+
+		newLocation.setX(LocationUtils.blockCenter(newLocation.getBlockX()));
+		newLocation.setZ(LocationUtils.blockCenter(newLocation.getBlockZ()));
+
+		return newLocation;
+	}
 }

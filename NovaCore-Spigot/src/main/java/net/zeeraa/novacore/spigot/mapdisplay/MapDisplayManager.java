@@ -14,10 +14,14 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -122,7 +126,8 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 				ItemFrame frameToStore = getItemFrameAtLocation(col);
 
-				//Log.trace("Scanning at X: " + col.getBlockX() + " Y: " + col.getBlockY() + " Z: " + col.getBlockZ());
+				// Log.trace("Scanning at X: " + col.getBlockX() + " Y: " + col.getBlockY() + "
+				// Z: " + col.getBlockZ());
 
 				col.add(scanDirection);
 				if (frameToStore == null) {
@@ -140,7 +145,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 			row.add(0, -1, 0);
 		}
-		
+
 		UUID[][] frameUuids = new UUID[frames.size()][width];
 
 		for (int i = 0; i < frames.size(); i++) {
@@ -205,14 +210,13 @@ public class MapDisplayManager extends NovaModule implements Listener {
 					JSONObject json = JSONFileUtils.readJSONObjectFromFile(file);
 
 					name = json.getString("name");
-					
+
 					Log.trace(getName(), "Found display named " + name + " in world " + world.getName());
 
 					JSONArray row = json.getJSONArray("row");
 
 					UUID[][] uuids = new UUID[row.length()][row.getJSONArray(0).length()];
 
-					
 					for (int i = 0; i < row.length(); i++) {
 						JSONArray col = row.getJSONArray(i);
 						for (int j = 0; j < col.length(); j++) {
@@ -223,7 +227,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 					MapDisplay display = new MapDisplay(world, uuids, true, name);
 
 					mapDisplays.add(display);
-					
+
 					display.setupMaps();
 					display.tryLoadFromCache();
 				} catch (JSONException | IOException | MapDisplayNameAlreadyExistsException | MissingItemFrameException e) {
@@ -231,7 +235,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 						Log.error(getName(), "Failed to load map display named " + name + " in world " + world + ". " + e.getClass().getName() + " " + e.getMessage());
 						continue;
 					}
-					
+
 					if (e instanceof MissingItemFrameException) {
 						Log.error(getName(), "Failed to load map display named " + name + " in world " + world + ". " + e.getClass().getName() + " " + e.getMessage());
 						file.delete();
@@ -259,7 +263,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 			if (entity instanceof ItemFrame) {
 				if (LocationUtils.isSameBlock(location, entity.getLocation())) {
 					frame = (ItemFrame) entity;
-					//Log.debug("MapDisplayCommand", "Found ItemFrame " + frame.getUniqueId());
+					// Log.debug("MapDisplayCommand", "Found ItemFrame " + frame.getUniqueId());
 				}
 			}
 		}
@@ -275,6 +279,39 @@ public class MapDisplayManager extends NovaModule implements Listener {
 				readAllFromWorld(e.getWorld());
 			}
 		}.runTaskLater(NovaCore.getInstance(), 1L);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onHangingBreak(HangingBreakEvent e) {
+		if(e.getEntity().getType() == EntityType.ITEM_FRAME) {
+			for(MapDisplay display : mapDisplays) {
+				if(display.isEntityPartOfDisplay(e.getEntity())) {
+					e.setCancelled(true);
+				}
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
+		if(e.getRightClicked().getType() == EntityType.ITEM_FRAME) {
+			for(MapDisplay display : mapDisplays) {
+				if(display.isEntityPartOfDisplay(e.getRightClicked())) {
+					e.setCancelled(true);
+				}
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onEntityDamage(EntityDamageEvent e) {
+		if(e.getEntity().getType() == EntityType.ITEM_FRAME) {
+			for(MapDisplay display : mapDisplays) {
+				if(display.isEntityPartOfDisplay(e.getEntity())) {
+					e.setCancelled(true);
+				}
+			}
+		}
 	}
 
 	@Override
