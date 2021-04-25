@@ -1,5 +1,9 @@
 package net.zeeraa.novacore.spigot.module.modules.game.triggers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.zeeraa.novacore.commons.timers.TickCallback;
 import net.zeeraa.novacore.commons.utils.Callback;
 import net.zeeraa.novacore.spigot.timers.BasicTimer;
 
@@ -15,10 +19,13 @@ public class DelayedGameTrigger extends ScheduledGameTrigger {
 
 	private BasicTimer timer;
 
+	private List<TickCallback> tickCallbacks;
+
 	public DelayedGameTrigger(String name, long delay, TriggerCallback callback) {
 		super(name, callback);
 		this.delay = delay;
 		this.timer = null;
+		this.tickCallbacks = new ArrayList<>();
 	}
 
 	public DelayedGameTrigger(String name, long delay) {
@@ -48,11 +55,24 @@ public class DelayedGameTrigger extends ScheduledGameTrigger {
 		return this;
 	}
 
+	/**
+	 * Add a callback that is called when ever the timer counts down
+	 * 
+	 * @param tickCallback The {@link TickCallback} to add
+	 */
+	public void addTickCallback(TickCallback callback) {
+		tickCallbacks.add(callback);
+
+		if (isRunning()) {
+			timer.addTickCallback(callback);
+		}
+	}
+
 	@Override
 	public boolean start() {
 		if (timer != null) {
-			if(timer.isRunning()) {
-			return false;
+			if (timer.isRunning()) {
+				return false;
 			} else {
 				timer = null;
 			}
@@ -66,6 +86,10 @@ public class DelayedGameTrigger extends ScheduledGameTrigger {
 				trigger(TriggerFlag.SCHEDULED_TRIGGER_ACTIVATION);
 			}
 		});
+
+		for (TickCallback callback : tickCallbacks) {
+			timer.addTickCallback(callback);
+		}
 
 		timer.start();
 
