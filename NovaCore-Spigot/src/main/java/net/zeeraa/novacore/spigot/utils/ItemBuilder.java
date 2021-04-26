@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 
 /**
  * Useful tool to create item stacks with custom names and data using a single
@@ -210,9 +211,14 @@ public class ItemBuilder {
 
 		return new ItemBuilder(material);
 	}
-	
+
+	public static ItemStack getPlayerSkullWithBase64Texture(String b64stringtexture) {
+		return VersionIndependantUtils.get().getPlayerSkullWithBase64Texture(b64stringtexture);
+	}
+
 	/**
 	 * Get the display name of an item
+	 * 
 	 * @param stack The item to check
 	 * @return The display name of the item
 	 */

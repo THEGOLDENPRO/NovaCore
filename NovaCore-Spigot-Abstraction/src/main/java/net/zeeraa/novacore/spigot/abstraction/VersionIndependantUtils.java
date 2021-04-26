@@ -1,5 +1,7 @@
 package net.zeeraa.novacore.spigot.abstraction;
 
+import java.lang.reflect.Field;
+
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -12,19 +14,19 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 
 public abstract class VersionIndependantUtils {
 	private static VersionIndependantUtils instance;
-	
+
 	public static VersionIndependantUtils get() {
 		return VersionIndependantUtils.getInstance();
 	}
-	
+
 	public static VersionIndependantUtils getInstance() {
 		return instance;
 	}
-	
+
 	public static void setInstance(VersionIndependantUtils instance) {
 		VersionIndependantUtils.instance = instance;
 	}
-	
+
 	public abstract void setBlockAsPlayerSkull(Block block);
 
 	/**
@@ -148,6 +150,22 @@ public abstract class VersionIndependantUtils {
 	 * @param pitch    The pitch of the sound
 	 */
 	public abstract void playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch);
-	
+
 	public abstract void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut);
+
+	public abstract ItemStack getPlayerSkullWithBase64Texture(String b64stringtexture);
+
+	public static <T> Field getField(Class<?> target, String name, Class<T> fieldType, int index) {
+		for (final Field field : target.getDeclaredFields()) {
+			if ((name == null || field.getName().equals(name)) && fieldType.isAssignableFrom(field.getType()) && index-- <= 0) {
+				field.setAccessible(true);
+				return field;
+			}
+		}
+
+		// Search in parent classes
+		if (target.getSuperclass() != null)
+			return getField(target.getSuperclass(), name, fieldType, index);
+		throw new IllegalArgumentException("Cannot find field with type " + fieldType);
+	}
 }

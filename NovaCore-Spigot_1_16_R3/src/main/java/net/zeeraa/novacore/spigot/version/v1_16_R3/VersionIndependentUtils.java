@@ -1,5 +1,7 @@
 package net.zeeraa.novacore.spigot.version.v1_16_R3;
 
+import java.util.UUID;
+
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,8 +12,13 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
+
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
 
 import net.minecraft.server.v1_16_R3.ChatComponentText;
 import net.minecraft.server.v1_16_R3.DamageSource;
@@ -414,5 +421,27 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
 		player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+	}
+
+	@Override
+	public ItemStack getPlayerSkullWithBase64Texture(String b64stringtexture) {
+		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+		PropertyMap propertyMap = profile.getProperties();
+		if (propertyMap == null) {
+			throw new IllegalStateException("Profile doesn't contain a property map");
+		}
+		propertyMap.put("textures", new Property("textures", b64stringtexture));
+		ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
+		ItemMeta headMeta = head.getItemMeta();
+		Class<?> headMetaClass = headMeta.getClass();
+		try {
+			getField(headMetaClass, "profile", GameProfile.class, 0).set(headMeta, profile);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		head.setItemMeta(headMeta);
+		return head;
 	}
 }
