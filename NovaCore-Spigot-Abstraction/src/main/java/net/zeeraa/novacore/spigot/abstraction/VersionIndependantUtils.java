@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.map.MapView;
 
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
@@ -170,4 +171,6 @@ public abstract class VersionIndependantUtils {
 	}
 	
 	public abstract VersionIndependantItems getVersionIndependantItems();
+	
+	public abstract void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient);
 }

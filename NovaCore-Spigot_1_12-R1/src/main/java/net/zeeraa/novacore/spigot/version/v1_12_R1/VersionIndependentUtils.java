@@ -16,8 +16,10 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.material.MaterialData;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
@@ -290,5 +292,15 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public VersionIndependantItems getVersionIndependantItems() {
 		return new net.zeeraa.novacore.spigot.version.v1_12_R1.VersionIndependantItems();
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient) {
+		MaterialData skull = new MaterialData(Material.SKULL_ITEM);
+
+		skull.setData((byte) 3);
+		
+		recipe.setIngredient(ingredient, skull);
 	}
 }
