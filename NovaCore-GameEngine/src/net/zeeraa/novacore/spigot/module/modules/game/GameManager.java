@@ -100,6 +100,8 @@ public class GameManager extends NovaModule implements Listener {
 
 	private boolean autoRespawn;
 
+	private boolean dropItemsOnDeath;
+
 	private List<CombatTagMessage> combatTagMessages;
 
 	/**
@@ -153,6 +155,31 @@ public class GameManager extends NovaModule implements Listener {
 		}, 20L, 20L);
 
 		this.showDeathMessaage = false;
+		this.dropItemsOnDeath = false;
+	}
+
+	/**
+	 * Check if the {@link GameManager} should drop player items on death instead
+	 * (disabled by default).
+	 * <p>
+	 * This might cause items to be duped
+	 * 
+	 * @return <code>true</code> if enabled
+	 */
+	public boolean isDropItemsOnDeath() {
+		return dropItemsOnDeath;
+	}
+
+	/**
+	 * Set if the {@link GameManager} should drop player items on death instead
+	 * (disabled by default).
+	 * <p>
+	 * This might cause items to be duped
+	 * 
+	 * @param dropItemsOnDeath <code>true</code> to enable
+	 */
+	public void setDropItemsOnDeath(boolean dropItemsOnDeath) {
+		this.dropItemsOnDeath = dropItemsOnDeath;
 	}
 
 	/**
@@ -753,29 +780,30 @@ public class GameManager extends NovaModule implements Listener {
 
 					if (getActiveGame().eliminatePlayerOnDeath(p)) {
 						try {
-							Location lootLocation = e.getEntity().getLocation().clone();
+							if (dropItemsOnDeath) {
+								Location lootLocation = e.getEntity().getLocation().clone();
+								
+								try {
+									ItemStack[] armor = e.getEntity().getInventory().getArmorContents();
+									for (ItemStack item : armor) {
+										if (item != null) {
+											if (item.getType() != Material.AIR) {
+												e.getEntity().getWorld().dropItem(lootLocation, item.clone());
+											}
+										}
+									}
+								} catch (Exception e2) {
+									e2.printStackTrace();
+								}
 
-							try {
-								ItemStack[] armor = e.getEntity().getInventory().getArmorContents();
-								for (ItemStack item : armor) {
+								for (ItemStack item : e.getEntity().getInventory().getContents()) {
 									if (item != null) {
 										if (item.getType() != Material.AIR) {
 											e.getEntity().getWorld().dropItem(lootLocation, item.clone());
 										}
 									}
 								}
-							} catch (Exception e2) {
-								e2.printStackTrace();
 							}
-
-							for (ItemStack item : e.getEntity().getInventory().getContents()) {
-								if (item != null) {
-									if (item.getType() != Material.AIR) {
-										e.getEntity().getWorld().dropItem(lootLocation, item.clone());
-									}
-								}
-							}
-
 						} catch (Exception e2) {
 							e2.printStackTrace();
 						}
@@ -796,10 +824,10 @@ public class GameManager extends NovaModule implements Listener {
 
 					if (autoRespawn) {
 						new BukkitRunnable() {
-							
+
 							@Override
 							public void run() {
-								p.spigot().respawn();								
+								p.spigot().respawn();
 							}
 						}.runTaskLater(NovaCore.getInstance(), 5L);
 					}

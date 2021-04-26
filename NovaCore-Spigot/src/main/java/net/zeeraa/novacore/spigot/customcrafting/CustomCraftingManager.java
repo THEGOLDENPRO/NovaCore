@@ -126,6 +126,7 @@ public class CustomCraftingManager implements Listener {
 		}
 
 		if (e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || e.getClick() == ClickType.SHIFT_RIGHT || e.getClick() == ClickType.SHIFT_LEFT) {
+			((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ITEM_BREAK, 1F, 1F);
 			e.getWhoClicked().sendMessage(ChatColor.RED + "You cant use shift while crafting this custom recipe");
 			e.setCancelled(true);
 			return;
@@ -150,7 +151,7 @@ public class CustomCraftingManager implements Listener {
 
 		if (crafted >= limit) {
 			e.setCancelled(true);
-			p.playSound(p.getLocation(), Sound.WITHER_HURT, 1F, 1F);
+			p.playSound(p.getLocation(), Sound.ITEM_BREAK, 1F, 1F);
 			p.sendMessage(ChatColor.RED + "You can only craft this item " + limit + " time" + (limit == 1 ? "" : "s"));
 			return;
 		}

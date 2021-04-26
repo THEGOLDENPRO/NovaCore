@@ -225,4 +225,8 @@ public class ItemBuilder {
 	public static String getItemDisplayName(ItemStack stack) {
 		return stack.getItemMeta().getDisplayName();
 	}
+
+	public static ItemBuilder newInstance(Material material) {
+		return new ItemBuilder(material);
+	}
 }
