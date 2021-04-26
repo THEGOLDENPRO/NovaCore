@@ -30,6 +30,7 @@ import net.minecraft.server.v1_12_R1.MinecraftServer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_12_R1.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.abstraction.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
@@ -233,8 +234,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public int getMapViewId(MapView mapView) {
 		return (int) mapView.getId();
 	}
-	
-	
+
 	@Override
 	public void playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch) {
 		Sound realSound = null;
@@ -285,5 +285,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		}
 		head.setItemMeta(headMeta);
 		return head;
+	}
+
+	@Override
+	public VersionIndependantItems getVersionIndependantItems() {
+		return new net.zeeraa.novacore.spigot.version.v1_12_R1.VersionIndependantItems();
 	}
 }
