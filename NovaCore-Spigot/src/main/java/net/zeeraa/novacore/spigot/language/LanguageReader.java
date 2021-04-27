@@ -10,7 +10,7 @@ import org.json.JSONObject;
 public class LanguageReader {
 	public static void readFromJar(Class<? extends Object> clazz, String name) throws IOException {
 		InputStream in = clazz.getResourceAsStream(name);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 
 		String line;
 		String lines = "";

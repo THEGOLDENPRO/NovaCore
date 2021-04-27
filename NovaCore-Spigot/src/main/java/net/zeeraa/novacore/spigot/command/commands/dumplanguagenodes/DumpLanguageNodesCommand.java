@@ -22,6 +22,10 @@ public class DumpLanguageNodesCommand extends NovaCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+		String colorChar = "§";
+
+		System.out.println("Color char: " + colorChar);
+
 		for (String key : LanguageManager.getLanguages().keySet()) {
 			Language language = LanguageManager.getLanguages().get(key);
 			System.out.println("----- Language: " + language.getDisplayName() + " (" + language.getLanguageCode() + ") -----");
