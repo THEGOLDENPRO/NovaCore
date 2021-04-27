@@ -2,12 +2,12 @@
 	"language_code": "en-us",
 	"language_name": "English",
 	"content": {
-		"novacore.command.allowed_senders.players_only": "§cOnly players can use this command",
-		"novacore.command.allowed_senders.console_only": "§cOnly the console can use this command",
-		"novacore.command.allowed_senders.commandblock_only": "§cOnly command blocks can use this command",
-		"novacore.command.allowed_senders.entity_only": "§cOnly entities can use this command",
-		"novacore.command.allowed_senders.living_entity_only": "§cOnly living entities can use this command",
-		"novacore.command.allowed_senders.bad_value": "§cBad value for AllowedSenders",
-		"novacore.command.no_permission": "§cYou don't have permission to use this command"
+		"novacore.command.allowed_senders.players_only": "Â§cOnly players can use this command",
+		"novacore.command.allowed_senders.console_only": "Â§cOnly the console can use this command",
+		"novacore.command.allowed_senders.commandblock_only": "Â§cOnly command blocks can use this command",
+		"novacore.command.allowed_senders.entity_only": "Â§cOnly entities can use this command",
+		"novacore.command.allowed_senders.living_entity_only": "Â§cOnly living entities can use this command",
+		"novacore.command.allowed_senders.bad_value": "Â§cBad value for AllowedSenders",
+		"novacore.command.no_permission": "Â§cYou don't have permission to use this command"
 	}
 }

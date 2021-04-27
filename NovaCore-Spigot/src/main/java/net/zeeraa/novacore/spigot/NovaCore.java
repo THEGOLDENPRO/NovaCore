@@ -34,6 +34,7 @@ import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitConsoleSende
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitPlayerMessageSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.BukkitAsyncManager;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
+import net.zeeraa.novacore.spigot.command.commands.dumplanguagenodes.DumpLanguageNodesCommand;
 import net.zeeraa.novacore.spigot.command.commands.novacore.NovaCoreCommand;
 import net.zeeraa.novacore.spigot.customcrafting.CustomCraftingManager;
 import net.zeeraa.novacore.spigot.debug.DebugCommandRegistrator;
@@ -324,6 +325,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		CommandRegistry.registerCommand(new NovaCoreCommand());
 		CommandRegistry.registerCommand(new MapDisplayCommand());
+		CommandRegistry.registerCommand(new DumpLanguageNodesCommand());
 
 		new DebugCommandRegistrator();
 		new BuiltinDebugTriggers();

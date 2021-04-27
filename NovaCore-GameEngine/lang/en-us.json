@@ -2,14 +2,14 @@
 	"language_code": "en-us",
 	"language_name": "English",
 	"content": {
-		"novacore.game.starting_in": "§6§lStarting in§b§l %s",
-		"novacore.game.countdown": "§6§lThe game will start in§b§l %s §6§lseconds!",
+		"novacore.game.starting_in": "Â§6Â§lStarting inÂ§bÂ§l %s",
+		"novacore.game.countdown": "Â§6Â§lThe game will start inÂ§bÂ§l %s Â§6Â§lseconds!",
 		
-		"novacore.game.modules.chestloot.refill": "§6§lChests have been refilled",
-		"novacore.game.modules.chestloot.lootdrop": "§6§lA loot drop is spawning at X:§b§l %s §6§lZ:§b§l %s",
+		"novacore.game.modules.chestloot.refill": "Â§6Â§lChests have been refilled",
+		"novacore.game.modules.chestloot.lootdrop": "Â§6Â§lA loot drop is spawning at X:Â§bÂ§l %s Â§6Â§lZ:Â§bÂ§l %s",
 		
-		"novacore.game.lobby.spectator_no_team": "§aYou joined as spectator since you are not in a team",
-		"novacore.game.lobby.start_exception": "§cAn uncorrectable error occurred while trying to start the game",
+		"novacore.game.lobby.spectator_no_team": "Â§aYou joined as spectator since you are not in a team",
+		"novacore.game.lobby.start_exception": "Â§cAn uncorrectable error occurred while trying to start the game",
 		
 		"novacore.game.lobby.map_vote.vote_for_map": "Vote for map",
 		"novacore.game.lobby.map_vote.disabled": "Disabled",
@@ -18,20 +18,20 @@
 		
 		"novacore.game.map_selector.item.name": "Map selector",
 		
-		"novacore.game.elimination.player.1minute": "§b§l%s §c§lwill be eliminated in 1 minute!",
-		"novacore.game.elimination.player.30seconds": "§b§l%s §c§lwill be eliminated in 30 seconds!",
-		"novacore.game.elimination.player.reconnected": "§b§l%s §a§lreconnected in time",
-		"novacore.game.elimination.player.died": "§c§lPlayer Eliminated> %s§l%s §c§ldied",
-		"novacore.game.elimination.player.command": "§c§lPlayer Eliminated> %s§l%s §c§lwas removed from the game",
-		"novacore.game.elimination.player.did_not_reconnect": "§c§lPlayer Eliminated> %s§l%s §c§ldid not reconnect in time",
-		"novacore.game.elimination.player.combat_logging": "§c§lPlayer Eliminated> %s§l%s §c§llogged out during combat",
-		"novacore.game.elimination.player.quit": "§c§lPlayer Eliminated> %s§l%s §c§lquit",
-		"novacore.game.elimination.player.killed": "§c§lPlayer Eliminated> %s§l%s §c§lwas killed by %s",
-		"novacore.game.elimination.player.unknown": "§c§lPlayer Eliminated> %s§l%s §c§lwent out to buy some milk but never returned",
+		"novacore.game.elimination.player.1minute": "Â§bÂ§l%s Â§cÂ§lwill be eliminated in 1 minute!",
+		"novacore.game.elimination.player.30seconds": "Â§bÂ§l%s Â§cÂ§lwill be eliminated in 30 seconds!",
+		"novacore.game.elimination.player.reconnected": "Â§bÂ§l%s Â§aÂ§lreconnected in time",
+		"novacore.game.elimination.player.died": "Â§cÂ§lPlayer Eliminated> %sÂ§l%s Â§cÂ§ldied",
+		"novacore.game.elimination.player.command": "Â§cÂ§lPlayer Eliminated> %sÂ§l%s Â§cÂ§lwas removed from the game",
+		"novacore.game.elimination.player.did_not_reconnect": "Â§cÂ§lPlayer Eliminated> %sÂ§l%s Â§cÂ§ldid not reconnect in time",
+		"novacore.game.elimination.player.combat_logging": "Â§cÂ§lPlayer Eliminated> %sÂ§l%s Â§cÂ§llogged out during combat",
+		"novacore.game.elimination.player.quit": "Â§cÂ§lPlayer Eliminated> %sÂ§l%s Â§cÂ§lquit",
+		"novacore.game.elimination.player.killed": "Â§cÂ§lPlayer Eliminated> %sÂ§l%s Â§cÂ§lwas killed by %s",
+		"novacore.game.elimination.player.unknown": "Â§cÂ§lPlayer Eliminated> %sÂ§l%s Â§cÂ§lwent out to buy some milk but never returned",
 		
-		"novacore.game.wordborder.start": "§6§lThe world border is starting to shrink",
+		"novacore.game.wordborder.start": "Â§6Â§lThe world border is starting to shrink",
 		
-		"novacore.game.tracker.no_target": "§cNo target to track",
-		"novacore.game.tracker.tracking_player": "§aTracking player %s"
+		"novacore.game.tracker.no_target": "Â§cNo target to track",
+		"novacore.game.tracker.tracking_player": "Â§aTracking player %s"
 	}
 }
