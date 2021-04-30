@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import net.zeeraa.novacore.spigot.NovaCore;
-import net.zeeraa.novacore.spigot.abstraction.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 
 /**
  * Functions to do things with players

@@ -4,7 +4,8 @@ import org.bukkit.Sound;
 
 /**
  * This class contains some of the in game sounds that can be used instead of
- * the built in {@link Sound} enum since some of those sounds changed in 1.16
+ * the built in {@link Sound} enum since some of those sounds changed in later
+ * versions of the game
  * 
  * @author Zeeraa
  *
