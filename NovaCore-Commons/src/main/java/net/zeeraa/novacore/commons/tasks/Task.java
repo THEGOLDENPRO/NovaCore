@@ -73,4 +73,23 @@ public abstract class Task {
 		}
 		return false;
 	}
+
+	/**
+	 * Try to start a task
+	 * <p>
+	 * This will try to call {@link Task#start()} if the task is not already running
+	 * and the task is not <code>null</code>
+	 * 
+	 * @param task The task to try to start
+	 * @return <code>true</code> if the task was started and the task is not
+	 *         <code>null</code>
+	 */
+	public static boolean tryStartTask(Task task) {
+		if (task != null) {
+			if (!task.isRunning()) {
+				return task.start();
+			}
+		}
+		return false;
+	}
 }
