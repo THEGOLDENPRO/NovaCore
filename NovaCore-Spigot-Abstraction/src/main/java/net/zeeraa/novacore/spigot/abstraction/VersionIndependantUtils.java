@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.map.MapView;
 
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
@@ -112,6 +113,12 @@ public abstract class VersionIndependantUtils {
 
 	public abstract void setColoredBlock(Block block, DyeColor color, ColoredBlockType type);
 
+	public abstract void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color);
+
+	public abstract void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color);
+
+	public abstract ItemStack getColoredItem(DyeColor color, ColoredBlockType type);
+
 	public abstract ItemBuilderRecordList getItembBuilderRecordList();
 
 	/**
@@ -171,8 +178,8 @@ public abstract class VersionIndependantUtils {
 			return getField(target.getSuperclass(), name, fieldType, index);
 		throw new IllegalArgumentException("Cannot find field with type " + fieldType);
 	}
-	
+
 	public abstract VersionIndependantItems getVersionIndependantItems();
-	
+
 	public abstract void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient);
 }

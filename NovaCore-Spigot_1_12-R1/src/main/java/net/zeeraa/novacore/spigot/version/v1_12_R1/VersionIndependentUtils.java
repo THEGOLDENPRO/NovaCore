@@ -17,6 +17,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
@@ -194,7 +195,16 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@SuppressWarnings("deprecation")
 	@Override
 	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type) {
-		Material material;
+		MaterialData data = getColoredBlockMaterialData(color, type);
+
+		block.setType(data.getItemType());
+
+		block.setData(data.getData());
+	}
+
+	@SuppressWarnings("deprecation")
+	private MaterialData getColoredBlockMaterialData(DyeColor color, ColoredBlockType type) {
+		Material material = null;
 
 		switch (type) {
 		case GLASS_PANE:
@@ -214,9 +224,34 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			break;
 		}
 
-		block.setType(material);
+		MaterialData data = new MaterialData(material, color.getWoolData());
 
-		block.setData(color.getWoolData());
+		return data;
+	}
+
+	@Override
+	public void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
+		MaterialData data = getColoredBlockMaterialData(color, type);
+
+		recipe.setIngredient(ingredient, data);
+	}
+
+	@Override
+	public void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
+		MaterialData data = getColoredBlockMaterialData(color, type);
+
+		recipe.addIngredient(ingredient, data);
+	}
+
+	@Override
+	public ItemStack getColoredItem(DyeColor color, ColoredBlockType type) {
+		MaterialData data = getColoredBlockMaterialData(color, type);
+
+		ItemStack stack = new ItemStack(data.getItemType());
+
+		stack.setData(data);
+
+		return stack;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -293,14 +328,14 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public VersionIndependantItems getVersionIndependantItems() {
 		return new net.zeeraa.novacore.spigot.version.v1_12_R1.VersionIndependantItems();
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient) {
 		MaterialData skull = new MaterialData(Material.SKULL_ITEM);
 
 		skull.setData((byte) 3);
-		
+
 		recipe.setIngredient(ingredient, skull);
 	}
 }

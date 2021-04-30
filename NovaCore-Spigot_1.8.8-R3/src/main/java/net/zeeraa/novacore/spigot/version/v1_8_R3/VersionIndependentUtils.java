@@ -17,6 +17,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
@@ -193,6 +194,36 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@SuppressWarnings("deprecation")
 	@Override
 	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type) {
+		MaterialData data = getColoredBlockMaterialData(color, type);
+
+		block.setType(data.getItemType());
+
+		block.setData(data.getData());
+	}
+
+	@Override
+	public void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
+		MaterialData data = getColoredBlockMaterialData(color, type);
+		
+		recipe.setIngredient(ingredient, data);
+	}
+	
+	@Override
+	public void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
+		MaterialData data = getColoredBlockMaterialData(color, type);
+		
+		recipe.addIngredient(ingredient, data);
+	}
+	
+	@Override
+	public ItemStack getColoredItem(DyeColor color, ColoredBlockType type) {
+		MaterialData data = getColoredBlockMaterialData(color, type);
+		
+		return data.toItemStack();
+	}
+
+	@SuppressWarnings("deprecation")
+	private MaterialData getColoredBlockMaterialData(DyeColor color, ColoredBlockType type) {
 		Material material;
 
 		switch (type) {
@@ -213,9 +244,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			break;
 		}
 
-		block.setType(material);
+		MaterialData data = new MaterialData(material, color.getWoolData());
 
-		block.setData(color.getWoolData());
+		return data;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -308,7 +339,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		MaterialData skull = new MaterialData(Material.SKULL_ITEM);
 
 		skull.setData((byte) 3);
-		
+
 		recipe.setIngredient(ingredient, skull);
 	}
 }

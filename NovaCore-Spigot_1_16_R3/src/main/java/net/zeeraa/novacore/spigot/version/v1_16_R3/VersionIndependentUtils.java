@@ -13,6 +13,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
@@ -168,7 +169,29 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void setColoredBlock(Block block, DyeColor color, ColoredBlockType type) {
+		Material material = getColoredMaterial(color, type);
+
+		block.setType(material);
+	}
+
+	@Override
+	public ItemStack getColoredItem(DyeColor color, ColoredBlockType type) {
+		return new ItemStack(getColoredItem(color, type));
+	}
+
+	@Override
+	public void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
+		recipe.setIngredient(ingredient, getColoredMaterial(color, type));
+	}
+
+	@Override
+	public void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
+		recipe.addIngredient(getColoredMaterial(color, type));
+	}
+
+	private Material getColoredMaterial(DyeColor color, ColoredBlockType type) {
 		Material material;
+
 		if (type == ColoredBlockType.GLASS_BLOCK) {
 			switch (color) {
 			case BLACK:
@@ -371,7 +394,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			material = Material.AIR;
 		}
 
-		block.setType(material);
+		return material;
 	}
 
 	@Override
@@ -454,7 +477,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient) {
-		recipe.setIngredient(ingredient,Material.PLAYER_HEAD);
-		
+		recipe.setIngredient(ingredient, Material.PLAYER_HEAD);
+
 	}
 }
