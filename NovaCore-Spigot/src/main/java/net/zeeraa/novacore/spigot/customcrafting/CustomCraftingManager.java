@@ -156,7 +156,9 @@ public class CustomCraftingManager implements Listener {
 			return;
 		}
 
-		craftingLimit.get(p.getUniqueId()).put(recipe.getClass().getName(), crafted + 1);
+		if (e.getAction() != InventoryAction.NOTHING) {
+			craftingLimit.get(p.getUniqueId()).put(recipe.getClass().getName(), crafted + 1);
+		}
 	}
 
 	@EventHandler
