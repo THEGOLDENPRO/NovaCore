@@ -7,35 +7,70 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 
 /**
  * Useful tool to create item stacks with custom names and data using a single
- * line of code
+ * line of code. This also provides ways to do some certain things that normally
+ * would make your plugin only work on a single version of minecraft
  * 
  * @author Zeeraa
  */
 public class ItemBuilder {
+	/**
+	 * An {@link ItemStack} of air
+	 */
 	public static final ItemStack AIR = new ItemBuilder(Material.AIR).build();
 
+	/**
+	 * Item being built
+	 */
 	protected ItemStack item;
+
+	/**
+	 * Meta of the item being built
+	 */
 	protected ItemMeta meta;
 
+	/**
+	 * Init by material
+	 * 
+	 * @param material The material
+	 */
 	public ItemBuilder(Material material) {
 		this(material, 1);
 	}
 
+	/**
+	 * Initiate by material and amount
+	 * 
+	 * @param material The material
+	 * @param ammount  The amount
+	 */
 	public ItemBuilder(Material material, int ammount) {
 		this(new ItemStack(material, ammount), false);
 	}
 
+	/**
+	 * Initiate from an existing item stack
+	 * 
+	 * @param itemStack The item stack
+	 */
 	public ItemBuilder(ItemStack itemStack) {
 		this(itemStack, false);
 	}
 
+	/**
+	 * Initiate from an item stack
+	 * 
+	 * @param itemStack The item stack
+	 * @param clone     True if the stack should be cloned
+	 */
 	public ItemBuilder(ItemStack itemStack, boolean clone) {
 		if (clone) {
 			this.item = itemStack.clone();
@@ -45,51 +80,114 @@ public class ItemBuilder {
 		this.meta = this.item.getItemMeta();
 	}
 
+	/**
+	 * Set the display name of the item
+	 * 
+	 * @param name The name of the item
+	 * @return The item builder instance
+	 */
 	public ItemBuilder setName(String name) {
 		meta.setDisplayName(name);
 		return this;
 	}
 
+	/**
+	 * Add an enchantment to the item
+	 * 
+	 * @param ench  The {@link Enchantment} to add
+	 * @param level The level
+	 * @return The item builder instance
+	 */
 	public ItemBuilder addEnchant(Enchantment ench, int level) {
 		return this.addEnchant(ench, level, false);
 	}
 
+	/**
+	 * Add an enchantment to the item
+	 * 
+	 * @param ench                   The {@link Enchantment} to add
+	 * @param level                  The level
+	 * @param ignoreLevelRestriction <code>true</code> to ignore level restriction
+	 * @return The item builder instance
+	 */
 	public ItemBuilder addEnchant(Enchantment ench, int level, boolean ignoreLevelRestriction) {
 		meta.addEnchant(ench, level, ignoreLevelRestriction);
 		return this;
 	}
 
+	/**
+	 * Remove an enchantment
+	 * 
+	 * @param ench The {@link Enchantment} to remove
+	 * @return The item builder instance
+	 */
 	public ItemBuilder removeEnchant(Enchantment ench) {
 		meta.removeEnchant(ench);
 		return this;
 	}
 
+	/**
+	 * Add an item flag
+	 * 
+	 * @param itemFlag The {@link ItemFlag} to add
+	 * @return The item builder instance
+	 */
 	public ItemBuilder addItemFlags(ItemFlag itemFlag) {
 		meta.addItemFlags(itemFlag);
 		return this;
 	}
 
+	/**
+	 * Remove an item flag
+	 * 
+	 * @param itemFlag The {@link ItemFlag} to remove
+	 * @return The item builder instance
+	 */
 	public ItemBuilder removeItemFlags(ItemFlag itemFlag) {
 		meta.removeItemFlags(itemFlag);
 		return this;
 	}
 
+	/**
+	 * Set the amount of items in the stack
+	 * 
+	 * @param amount The amount
+	 * @return The item builder instance
+	 */
 	public ItemBuilder setAmount(int amount) {
 		item.setAmount(amount);
 		return this;
 	}
 
+	/**
+	 * Set the item meta of the builder
+	 * 
+	 * @param meta The new item meta to use
+	 * @return The item builder instance
+	 */
 	public ItemBuilder setItemMeta(ItemMeta meta) {
 		item.setItemMeta(meta);
 		this.meta = meta;
 		return this;
 	}
 
+	/**
+	 * Set the item as unbreakable
+	 * 
+	 * @param unbreakable <code>true</code> if the item should be unbreakable
+	 * @return The item builder instance
+	 */
 	public ItemBuilder setUnbreakable(boolean unbreakable) {
 		meta.spigot().setUnbreakable(unbreakable);
 		return this;
 	}
 
+	/**
+	 * Add a line to the lore of the item
+	 * 
+	 * @param string The text that should be added
+	 * @return The item builder instance
+	 */
 	public ItemBuilder addLore(String string) {
 		List<String> lore;
 		if (meta.hasLore()) {
@@ -103,14 +201,54 @@ public class ItemBuilder {
 		return this;
 	}
 
+	/**
+	 * Set the durability of the item
+	 * 
+	 * @param durability New durability
+	 * @return The item builder instance
+	 */
 	public ItemBuilder setDurability(short durability) {
 		item.setDurability(durability);
 		return this;
 	}
 
+	/**
+	 * Create an item stack from the builder
+	 * 
+	 * @return The item stack
+	 */
 	public ItemStack build() {
 		this.item.setItemMeta(meta);
 		return this.item;
+	}
+
+	/**
+	 * Add a stored enchantment to the item. This is used in enchanted books
+	 * 
+	 * @param enchantment The {@link Enchantment} to add
+	 * @param level       The level
+	 * @return The item builder instance
+	 */
+	public ItemBuilder addStoredEnchant(Enchantment enchantment, int level) {
+		return this.addStoredEnchant(enchantment, level, false);
+	}
+
+	/**
+	 * Add a stored enchantment to the item. This is used in enchanted books
+	 * 
+	 * @param enchantment            The {@link Enchantment} to add
+	 * @param level                  The level
+	 * @param ignoreLevelRestriction <code>true</code> to ignore level restriction
+	 * @return The item builder instance
+	 */
+	public ItemBuilder addStoredEnchant(Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+		if (meta instanceof EnchantmentStorageMeta) {
+			((EnchantmentStorageMeta) meta).addStoredEnchant(enchantment, level, ignoreLevelRestriction);
+		} else {
+			Log.warn("ItemBuilder", "Could not add stored enchant to item of type " + item.getType().name() + " since it does not have a meta of type EnchantmentStorageMeta");
+		}
+
+		return this;
 	}
 
 	/**
@@ -212,6 +350,12 @@ public class ItemBuilder {
 		return new ItemBuilder(material);
 	}
 
+	/**
+	 * Get a player skull with the provided texture
+	 * 
+	 * @param b64stringtexture The texture
+	 * @return {@link ItemStack} with a player skull
+	 */
 	public static ItemStack getPlayerSkullWithBase64Texture(String b64stringtexture) {
 		return VersionIndependantUtils.get().getPlayerSkullWithBase64Texture(b64stringtexture);
 	}
@@ -226,6 +370,12 @@ public class ItemBuilder {
 		return stack.getItemMeta().getDisplayName();
 	}
 
+	/**
+	 * Create an instance from a material
+	 * 
+	 * @param material The {@link Material} to use
+	 * @return {@link ItemBuilder} instance with the provided material
+	 */
 	public static ItemBuilder newInstance(Material material) {
 		return new ItemBuilder(material);
 	}
