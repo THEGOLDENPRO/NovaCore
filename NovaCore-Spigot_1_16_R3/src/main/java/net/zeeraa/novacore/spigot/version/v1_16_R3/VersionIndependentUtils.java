@@ -30,6 +30,7 @@ import net.minecraft.server.v1_16_R3.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 
@@ -478,6 +479,17 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient) {
 		recipe.setIngredient(ingredient, Material.PLAYER_HEAD);
+	}
+	
+	@Override
+	public ItemStack getItemStack(VersionIndependantMetarial material) {
+		switch (material) {
+		case FILLED_MAP:
+			ItemStack stack = new ItemStack(Material.FILLED_MAP);
+			return stack;
 
+		default:
+			return null;
+		}
 	}
 }

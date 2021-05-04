@@ -14,6 +14,7 @@ import org.bukkit.map.MapView;
 
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 
 public abstract class VersionIndependantUtils {
@@ -182,4 +183,6 @@ public abstract class VersionIndependantUtils {
 	public abstract VersionIndependantItems getVersionIndependantItems();
 
 	public abstract void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient);
+	
+	public abstract ItemStack getItemStack(VersionIndependantMetarial material);
 }

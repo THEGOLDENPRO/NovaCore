@@ -25,6 +25,8 @@ import org.bukkit.map.MapView.Scale;
 import net.coobird.thumbnailator.Thumbnails;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.mapdisplay.renderer.DisplayRenderer;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 import net.zeeraa.novacore.spigot.world.WorldUtils;
@@ -200,14 +202,14 @@ public class MapDisplay {
 
 				MapView view = null;
 				if (item != null) {
-					if (item.getType() == Material.MAP) {
+					if (item.getType() == VersionIndependantUtils.get().getItemStack(VersionIndependantMetarial.FILLED_MAP).getType()) {
 						view = NovaCore.getInstance().getVersionIndependentUtils().getAttachedMapView(item);
 					}
 				}
 
 				ItemFrame frame = itemFrames[i][j];
 
-				item = new ItemStack(Material.MAP);
+				item = VersionIndependantUtils.get().getItemStack(VersionIndependantMetarial.FILLED_MAP);
 
 				if (view == null) {
 					view = Bukkit.createMap(world);
@@ -295,7 +297,7 @@ public class MapDisplay {
 	public boolean isEntityPartOfDisplay(Entity entity) {
 		for (int i = 0; i < itemFrames.length; i++) {
 			for (int j = 0; j < itemFrames[i].length; j++) {
-				if(entity.getUniqueId() == itemFrames[i][j].getUniqueId()) {
+				if (entity.getUniqueId() == itemFrames[i][j].getUniqueId()) {
 					return true;
 				}
 			}

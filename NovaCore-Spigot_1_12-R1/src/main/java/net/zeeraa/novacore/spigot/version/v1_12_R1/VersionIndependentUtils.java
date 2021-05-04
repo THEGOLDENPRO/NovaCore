@@ -35,6 +35,7 @@ import net.minecraft.server.v1_12_R1.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 
@@ -337,5 +338,17 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		skull.setData((byte) 3);
 
 		recipe.setIngredient(ingredient, skull);
+	}
+	
+	@Override
+	public ItemStack getItemStack(VersionIndependantMetarial material) {
+		switch (material) {
+		case FILLED_MAP:
+			ItemStack stack = new ItemStack(Material.MAP);
+			return stack;
+
+		default:
+			return null;
+		}
 	}
 }
