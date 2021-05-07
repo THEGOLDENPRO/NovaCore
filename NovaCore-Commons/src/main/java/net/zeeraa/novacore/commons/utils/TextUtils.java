@@ -1,5 +1,7 @@
 package net.zeeraa.novacore.commons.utils;
 
+import java.util.Random;
+
 /**
  * This class contains some unicode characters and utils to convert data to text
  * 
@@ -177,5 +179,32 @@ public class TextUtils {
 		} else {
 			return String.format("%02d:%02d", m, s);
 		}
+	}
+
+	/**
+	 * Returns one of the provided strings
+	 * 
+	 * @param strings The strings to use
+	 * @return One random of the provided strings or <code>null</code> if there was
+	 *         no strings provided
+	 */
+	public static String randomProvidedString(String... strings) {
+		return TextUtils.randomProvidedString(new Random(), strings);
+	}
+
+	/**
+	 * Returns one of the provided strings
+	 * 
+	 * @param random  The random instance to use
+	 * @param strings The strings to use
+	 * @return One random of the provided strings or <code>null</code> if there was
+	 *         no strings provided
+	 */
+	public static String randomProvidedString(Random random, String... strings) {
+		if (strings.length == 0) {
+			return null;
+		}
+
+		return strings[random.nextInt(strings.length)];
 	}
 }
