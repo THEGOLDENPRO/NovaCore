@@ -15,33 +15,33 @@ import net.zeeraa.novacore.spigot.NovaCore;
  */
 public class WorldPreGenerator {
 	// ----- Settings -----
-	private World world;
+	protected World world;
 
-	private Callback finishCallback;
+	protected Callback finishCallback;
 
-	private int chunksPerGenerationTick;
-	private int ticksPerGenerationTick;
+	protected int chunksPerGenerationTick;
+	protected int ticksPerGenerationTick;
 
-	private int size;
+	protected int size;
 
-	private int centerX;
-	private int centerZ;
+	protected int centerX;
+	protected int centerZ;
 
 	// ----- Variables -----
-	private int generatedChunks;
+	protected int generatedChunks;
 
-	private int taskID;
+	protected int taskID;
 
-	private boolean finished;
+	protected boolean finished;
 
 	/**
 	 * X of the chunk in the generation loop
 	 */
-	private int cx;
+	protected int cx;
 	/**
 	 * Z of the chunk in the generation loop
 	 */
-	private int cz;
+	protected int cz;
 
 	/**
 	 * Pre generate chunks in a world

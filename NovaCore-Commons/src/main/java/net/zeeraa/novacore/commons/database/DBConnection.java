@@ -18,11 +18,11 @@ import net.zeeraa.novacore.commons.tasks.Task;
  * @author Zeeraa
  */
 public class DBConnection {
-	private Connection connection;
+	protected Connection connection;
 
-	private DBCredentials credentials;
+	protected DBCredentials credentials;
 
-	private Task keepAliveTask;
+	protected Task keepAliveTask;
 
 	public DBConnection() {
 		this.connection = null;

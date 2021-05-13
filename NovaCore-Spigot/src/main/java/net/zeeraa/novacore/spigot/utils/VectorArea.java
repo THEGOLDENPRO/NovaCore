@@ -7,8 +7,8 @@ import org.bukkit.util.Vector;
 import net.zeeraa.novacore.commons.utils.RandomGenerator;
 
 public class VectorArea {
-	private Vector position1;
-	private Vector position2;
+	protected Vector position1;
+	protected Vector position2;
 
 	public VectorArea(Vector position1, Vector position2) {
 		this.position1 = new Vector((position1.getX() < position2.getX() ? position1.getX() : position2.getX()), (position1.getY() < position2.getY() ? position1.getY() : position2.getY()), (position1.getZ() < position2.getZ() ? position1.getZ() : position2.getZ()));

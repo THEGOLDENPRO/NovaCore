@@ -17,12 +17,12 @@ import org.json.JSONObject;
  * @author Zeeraa
  */
 public class LocationData {
-	private double x;
-	private double y;
-	private double z;
+	protected double x;
+	protected double y;
+	protected double z;
 
-	private float yaw;
-	private float pitch;
+	protected float yaw;
+	protected float pitch;
 
 	public LocationData(JSONObject jsonObject) {
 		this(0, 0, 0, 0F, 0F);

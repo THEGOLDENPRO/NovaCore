@@ -33,21 +33,21 @@ import net.zeeraa.novacore.spigot.world.WorldUtils;
 public class MapDisplay {
 	private World world;
 
-	private UUID uuid;
+	protected UUID uuid;
 
-	private Dimension dimensions;
-	private Dimension resolution;
+	protected Dimension dimensions;
+	protected Dimension resolution;
 
-	private UUID[][] itemFrameUuids;
-	private ItemFrame[][] itemFrames;
+	protected UUID[][] itemFrameUuids;
+	protected ItemFrame[][] itemFrames;
 
-	private DisplayRenderer[][] renderers;
+	protected DisplayRenderer[][] renderers;
 
-	private boolean persistent;
+	protected boolean persistent;
 
-	private String name;
+	protected String name;
 
-	private File cacheFile;
+	protected File cacheFile;
 
 	public void setImage(BufferedImage image) throws Exception {
 		this.setImage(image, true);

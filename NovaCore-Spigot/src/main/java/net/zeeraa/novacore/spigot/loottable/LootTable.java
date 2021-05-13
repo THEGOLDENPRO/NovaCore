@@ -10,10 +10,10 @@ import org.bukkit.inventory.ItemStack;
  * @author Zeeraa
  */
 public abstract class LootTable {
-	private String name;
-	private String displayName;
-	private int minItems;
-	private int maxItems;
+	protected String name;
+	protected String displayName;
+	protected int minItems;
+	protected int maxItems;
 
 	public LootTable(String name, int minItems, int maxItems) {
 		this(name, name, minItems, maxItems);
