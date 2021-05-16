@@ -371,6 +371,17 @@ public class ItemBuilder {
 	}
 
 	/**
+	 * Check if an item has a display name
+	 * 
+	 * @param stack The item to check
+	 * @return <code>true</code> if the item has a display name
+	 * @since 1.1
+	 */
+	public static boolean hasItemDisplayName(ItemStack stack) {
+		return stack.getItemMeta().hasDisplayName();
+	}
+
+	/**
 	 * Create an instance from a material
 	 * 
 	 * @param material The {@link Material} to use
