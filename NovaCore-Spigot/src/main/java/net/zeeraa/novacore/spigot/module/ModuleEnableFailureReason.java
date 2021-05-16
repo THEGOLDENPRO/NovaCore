@@ -15,6 +15,10 @@ public enum ModuleEnableFailureReason {
 	 */
 	MISSING_DEPENDENCY,
 	/**
+	 * A plugin that this module depends on has not been loaded
+	 */
+	MISSING_PLUGIN_DEPENDENCY,
+	/**
 	 * Failed to enable one of this modules dependencies
 	 */
 	DEPENDENCY_ENABLE_FAILED,

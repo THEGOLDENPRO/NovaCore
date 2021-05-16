@@ -36,6 +36,8 @@ public abstract class NovaModule {
 
 	private List<Class<? extends NovaModule>> dependencies = new ArrayList<Class<? extends NovaModule>>();
 
+	private String missingPluginName;
+
 	/**
 	 * Get the module display name. Module names can't contain spaces
 	 * 
@@ -111,6 +113,8 @@ public abstract class NovaModule {
 			return false;
 		}
 
+		missingPluginName = null;
+
 		Log.info("Enabling module " + this.getName());
 
 		if (dependencies != null) {
@@ -143,6 +147,11 @@ public abstract class NovaModule {
 			this.enableFailureReason = null;
 			this.enabled = true;
 			this.hasBeenEnabled = true;
+		} catch (MissingPluginDependencyException e) {
+			this.enableFailureReason = ModuleEnableFailureReason.MISSING_PLUGIN_DEPENDENCY;
+			returnValue = false;
+			missingPluginName = e.getPluginName();
+			Log.warn(getName(), "Failed to enable module. Reason: " + e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.enableFailureReason = ModuleEnableFailureReason.EXCEPTION;
@@ -218,5 +227,17 @@ public abstract class NovaModule {
 	 */
 	public boolean hasBeenEnabled() {
 		return hasBeenEnabled;
+	}
+
+	/**
+	 * Get the name of the missing plugin that caused the module to not be enabled.
+	 * This will be <code>null</code> unless the module failed with
+	 * {@link ModuleEnableFailureReason#MISSING_PLUGIN_DEPENDENCY}
+	 * 
+	 * @return The name of the missing plugin
+	 * @since 1.1
+	 */
+	public String getMissingPluginName() {
+		return missingPluginName;
 	}
 }

@@ -46,8 +46,27 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 	private static MapDisplayManager instance;
 
+	private boolean worldDataLoadingEnabled;
+	private boolean worldDataSavingDisabled;
+
 	public static MapDisplayManager getInstance() {
 		return instance;
+	}
+
+	public void setWorldDataLoadingEnabled(boolean worldDataLoadingEnabled) {
+		this.worldDataLoadingEnabled = worldDataLoadingEnabled;
+	}
+
+	public boolean isWorldDataLoadingEnabled() {
+		return worldDataLoadingEnabled;
+	}
+	
+	public void setWorldDataSavingDisabled(boolean worldDataSavingDisabled) {
+		this.worldDataSavingDisabled = worldDataSavingDisabled;
+	}
+	
+	public boolean isWorldDataSavingDisabled() {
+		return worldDataSavingDisabled;
 	}
 
 	private List<MapDisplay> mapDisplays;
@@ -55,19 +74,23 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	@Override
 	public void onLoad() {
 		MapDisplayManager.instance = this;
+		worldDataLoadingEnabled = true;
+		worldDataSavingDisabled = false;
 		mapDisplays = new ArrayList<>();
 	}
 
 	@Override
 	public void onEnable() throws Exception {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (World world : Bukkit.getServer().getWorlds()) {
-					readAllFromWorld(world);
+		if (worldDataLoadingEnabled) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					for (World world : Bukkit.getServer().getWorlds()) {
+						readAllFromWorld(world);
+					}
 				}
-			}
-		}.runTaskLater(NovaCore.getInstance(), 1L);
+			}.runTaskLater(NovaCore.getInstance(), 1L);
+		}
 	}
 
 	@Override
@@ -162,7 +185,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 		display.setupMaps();
 
-		if (persistent) {
+		if (persistent && !worldDataSavingDisabled) {
 			try {
 				File dataFile = getDataFile(frame.getLocation().getWorld(), name);
 				dataFile.getParentFile().mkdirs();
@@ -273,19 +296,21 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onWorldLoad(WorldLoadEvent e) {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				readAllFromWorld(e.getWorld());
-			}
-		}.runTaskLater(NovaCore.getInstance(), 1L);
+		if (worldDataLoadingEnabled) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					readAllFromWorld(e.getWorld());
+				}
+			}.runTaskLater(NovaCore.getInstance(), 1L);
+		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onHangingBreak(HangingBreakEvent e) {
-		if(e.getEntity().getType() == EntityType.ITEM_FRAME) {
-			for(MapDisplay display : mapDisplays) {
-				if(display.isEntityPartOfDisplay(e.getEntity())) {
+		if (e.getEntity().getType() == EntityType.ITEM_FRAME) {
+			for (MapDisplay display : mapDisplays) {
+				if (display.isEntityPartOfDisplay(e.getEntity())) {
 					e.setCancelled(true);
 				}
 			}
@@ -294,20 +319,20 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
-		if(e.getRightClicked().getType() == EntityType.ITEM_FRAME) {
-			for(MapDisplay display : mapDisplays) {
-				if(display.isEntityPartOfDisplay(e.getRightClicked())) {
+		if (e.getRightClicked().getType() == EntityType.ITEM_FRAME) {
+			for (MapDisplay display : mapDisplays) {
+				if (display.isEntityPartOfDisplay(e.getRightClicked())) {
 					e.setCancelled(true);
 				}
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent e) {
-		if(e.getEntity().getType() == EntityType.ITEM_FRAME) {
-			for(MapDisplay display : mapDisplays) {
-				if(display.isEntityPartOfDisplay(e.getEntity())) {
+		if (e.getEntity().getType() == EntityType.ITEM_FRAME) {
+			for (MapDisplay display : mapDisplays) {
+				if (display.isEntityPartOfDisplay(e.getEntity())) {
 					e.setCancelled(true);
 				}
 			}

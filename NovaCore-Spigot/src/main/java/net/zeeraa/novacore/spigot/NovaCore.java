@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -88,6 +89,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private boolean hologramsSupport;
 
 	private boolean loadingDone;
+
+	private LogLevel defaultOpLogLevel = LogLevel.ERROR;
 
 	/**
 	 * Check if the NovaCoreGameEngine plugin is enabled
@@ -177,6 +180,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 		NovaCore.instance = this;
 		this.teamManager = null;
 		this.citizensUtils = null;
+
+		saveDefaultConfig();
 
 		NovaCommons.setAbstractConsoleSender(new AbstractBukkitConsoleSender());
 		NovaCommons.setAbstractPlayerMessageSender(new AbstractBukkitPlayerMessageSender());
@@ -314,9 +319,25 @@ public class NovaCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(NetherBoardScoreboard.class);
 		ModuleManager.loadModule(JumpPadManager.class);
 
-		// Load and enable
-		ModuleManager.loadModule(CustomItemManager.class, true);
-		ModuleManager.loadModule(MapDisplayManager.class, true);
+		// Modules that might be enabled depending on the configuration
+		ModuleManager.loadModule(CustomItemManager.class);
+		ModuleManager.loadModule(MapDisplayManager.class);
+
+		// Module configuration
+		ConfigurationSection mapDisplayManagerConfig = getConfig().getConfigurationSection("EnableModules");
+		MapDisplayManager.getInstance().setWorldDataLoadingEnabled(mapDisplayManagerConfig.getBoolean("EnableWorldDataLoading"));
+		MapDisplayManager.getInstance().setWorldDataSavingDisabled(mapDisplayManagerConfig.getBoolean("DisableWorldDataSaving"));
+
+		// Enable modules
+		ConfigurationSection enableModules = getConfig().getConfigurationSection("EnableModules");
+
+		if (enableModules.getBoolean("CustomItemManager")) {
+			ModuleManager.enable(CustomItemManager.class);
+		}
+
+		if (enableModules.getBoolean("MapDisplayManager")) {
+			ModuleManager.enable(MapDisplayManager.class);
+		}
 
 		// Check if Citizens is enabled
 		if (Bukkit.getServer().getPluginManager().getPlugin("Citizens") != null) {
@@ -411,8 +432,17 @@ public class NovaCore extends JavaPlugin implements Listener {
 			return;
 		}
 
-		int permissionErrorCheck = 0;
+		if (player.isOp()) {
+			if (defaultOpLogLevel != LogLevel.NONE && defaultOpLogLevel != null) {
+				Log.getSubscribedPlayers().put(player.getUniqueId(), defaultOpLogLevel);
+				Log.trace("NovaCore", "Set the log level of " + player.getName() + " to " + defaultOpLogLevel.name() + " since they have op. This can be changed in config.yml");
+			}
+		}
 
+		// Used to check if the player have 2 or more permission levels
+		int permissionLevelCount = 0;
+
+		// Used to list permissions on error
 		String perms = "";
 
 		// Register permissions for log levels
@@ -422,11 +452,11 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 				Log.debug("NovaCore", "Set " + player.getName() + "s log level to " + ll.name() + " because they have the novacore.loglevel.auto." + ll.name().toLowerCase() + " permission");
 				Log.getSubscribedPlayers().put(player.getUniqueId(), ll);
-				permissionErrorCheck++;
+				permissionLevelCount++;
 			}
 		}
 
-		if (permissionErrorCheck > 1) {
+		if (permissionLevelCount > 1) {
 			Log.warn("NovaCore", player.getName() + " has multiple log level set permissions. Please remove permissions until they only have one of the following: " + perms);
 		}
 	}

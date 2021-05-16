@@ -31,6 +31,11 @@ public class MDCreateSubCommand extends NovaSubCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+		if(!MapDisplayManager.getInstance().isEnabled()) {
+			sender.sendMessage(ChatColor.DARK_RED + "MapDisplayManager is not enabled");
+			return false;
+		}
+		
 		Player player = (Player) sender;
 
 		if (args.length == 0) {

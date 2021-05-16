@@ -14,8 +14,8 @@ public class ModuleManager {
 	private static Map<String, NovaModule> modules = new HashMap<>();
 
 	/**
-	 * Get a {@link Map} containing all modules with the module class name as
-	 * key and the module as value
+	 * Get a {@link Map} containing all modules with the module class name as key
+	 * and the module as value
 	 * 
 	 * @return {@link Map} containing all modules
 	 */

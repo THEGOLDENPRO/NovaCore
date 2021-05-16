@@ -21,6 +21,7 @@ import fr.minuskube.netherboard.Netherboard;
 import fr.minuskube.netherboard.bukkit.BPlayerBoard;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.module.MissingPluginDependencyException;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.scoreboard.event.PlayerNetherboardScoreboardInitEvent;
 
@@ -70,7 +71,11 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	}
 
 	@Override
-	public void onEnable() {
+	public void onEnable() throws Exception {
+		if(Bukkit.getServer().getPluginManager().getPlugin("Netherboard") == null) {
+			throw new MissingPluginDependencyException("Netherboard");
+		}
+		
 		for (int i = 0; i < lineCount; i++) {
 			globalLines.put(i, "");
 		}

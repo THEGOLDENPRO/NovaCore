@@ -1,0 +1,19 @@
+# Enable or disable some of the integrated modules on start
+EnableModules:
+    CustomItemManager: true
+    MapDisplayManager: true
+
+# Configuration for MapDisplayManager
+MapDisplayManager:
+    # If true MapDisplayManager will try to read map displays from the world data file
+    # If disabled map displays wont be persitent between restarts
+    EnableWorldDataLoading: true
+    
+    # If true map displays wont be saved to the world file
+    DisableWorldDataSaving: false
+
+# Values are: NONE, TRACE, DEBUG, INFO, WARN, ERROR and FATAL
+# If set to NONE the plugin wont attempt to change the log level of op players
+# This is applied before the permission based log level so the permission based log level will have higher priority than the op one
+# To not spam the chat op op players this should never be set to anything lower than INFO unless you are trying to debug things
+DefaultOpLogLevel: "ERROR"

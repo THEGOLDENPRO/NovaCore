@@ -24,7 +24,7 @@ public class NovaCoreSubCommandModulesEnable extends NovaSubCommand {
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 
 		setDescription("Enable a module");
-		
+
 		this.setFilterAutocomplete(true);
 	}
 
@@ -61,7 +61,11 @@ public class NovaCoreSubCommandModulesEnable extends NovaSubCommand {
 		} else {
 			ModuleEnableFailureReason reason = module.getEnableFailureReason();
 
-			sender.sendMessage(ChatColor.RED + "An error occured while trying to enable module " + module.getName() + ".\nMore info might be avaliable in the console." + ChatColor.RED + reason.name());
+			if (reason == ModuleEnableFailureReason.MISSING_PLUGIN_DEPENDENCY) {
+				sender.sendMessage(ChatColor.RED + "This module cant be enabled sinse it depends on the plugin " + module.getMissingPluginName() + " that is not installed. Please install the plugin before trying to enable this module");
+			} else {
+				sender.sendMessage(ChatColor.RED + "An error occured while trying to enable module " + module.getName() + ".\nMore info might be avaliable in the console." + ChatColor.RED + reason.name());
+			}
 			return false;
 		}
 	}
