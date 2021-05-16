@@ -16,6 +16,8 @@ public enum ModuleEnableFailureReason {
 	MISSING_DEPENDENCY,
 	/**
 	 * A plugin that this module depends on has not been loaded
+	 * 
+	 * @since 1.1
 	 */
 	MISSING_PLUGIN_DEPENDENCY,
 	/**
