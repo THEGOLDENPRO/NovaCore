@@ -152,7 +152,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	public void setLogLevel(LogLevel logLevel) {
 		try {
-			Log.info("Setting console log level to " + logLevel.name());
+			Log.info("NovaCore", "Setting console log level to " + logLevel.name());
 			Log.setConsoleLogLevel(logLevel);
 			logSeverityConfig.set("severity", logLevel.name());
 			logSeverityConfig.save(logSeverityConfigFile);
@@ -206,7 +206,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 			}
 
 			if (!logSeverityConfigFile.exists()) {
-				Log.info("Creating log_severity.yml");
+				Log.info("NovaCore", "Creating log_severity.yml");
 				FileUtils.touch(logSeverityConfigFile);
 			}
 			logSeverityConfig = YamlConfiguration.loadConfiguration(logSeverityConfigFile);
@@ -222,20 +222,20 @@ public class NovaCore extends JavaPlugin implements Listener {
 				LogLevel logLevel = LogLevel.valueOf(logLevelName);
 				Log.setConsoleLogLevel(logLevel);
 			} catch (Exception e) {
-				Log.warn("The value " + logLevelName + " is not a valid LogLevel. Resetting it to " + LogLevel.INFO.name());
+				Log.warn("NovaCore", "The value " + logLevelName + " is not a valid LogLevel. Resetting it to " + LogLevel.INFO.name());
 				logSeverityConfig.set("severity", LogLevel.INFO.name());
 				logSeverityConfig.save(logSeverityConfigFile);
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			Log.fatal("Failed to setup data directory");
+			Log.fatal("NovaCore", "Failed to setup data directory");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
 
 		String version = NovaCoreAbstraction.getNMSVersion();
 
-		Log.info("Server version: " + version);
+		Log.info("NovaCore", "Server version: " + version);
 
 		try {
 			Class<?> clazz = Class.forName("net.zeeraa.novacore.spigot.version." + version + ".VersionIndependantLoader");
@@ -244,17 +244,17 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 				bukkitCommandRegistrator = versionIndependantLoader.getCommandRegistrator();
 				if (bukkitCommandRegistrator == null) {
-					Log.warn("CommandRegistrator is not supported for this version");
+					Log.warn("NovaCore", "CommandRegistrator is not supported for this version");
 				}
 
 				actionBar = versionIndependantLoader.getActionBar();
 				if (actionBar == null) {
-					Log.warn("ActionBar is not supported for this version");
+					Log.warn("NovaCore", "ActionBar is not supported for this version");
 				}
 
 				versionIndependentUtils = versionIndependantLoader.getVersionIndependentUtils();
 				if (versionIndependentUtils == null) {
-					Log.warn("VersionIndependentUtils is not supported for this version");
+					Log.warn("NovaCore", "VersionIndependentUtils is not supported for this version");
 				} else {
 					VersionIndependantUtils.setInstance(versionIndependentUtils);
 				}
@@ -265,17 +265,17 @@ public class NovaCore extends JavaPlugin implements Listener {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.fatal("Could not find support for this CraftBukkit version.");
+			Log.fatal("NovaCore", "Could not find support for this CraftBukkit version.");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
 
 		if (Bukkit.getServer().getPluginManager().getPlugin("HolographicDisplays") != null) {
 			this.hologramsSupport = true;
-			Log.info("Hologram support enabled");
+			Log.info("NovaCore", "Hologram support enabled");
 		} else {
 			this.hologramsSupport = false;
-			Log.warn("Hologram support disabled due to HolographicDisplays not being installed");
+			Log.warn("NovaCore", "Hologram support disabled due to HolographicDisplays not being installed");
 		}
 
 		// Register permissions for log levels
@@ -283,7 +283,25 @@ public class NovaCore extends JavaPlugin implements Listener {
 			PermissionRegistrator.registerPermission("novacore.loglevel.auto." + ll.name().toLowerCase(), "Sets the players log level to " + ll.name().toLowerCase() + " whan they join", PermissionDefault.FALSE);
 		}
 
-		Log.info("Loading language files...");
+		// Set op log level
+		String defaultOpLogLevelString = getConfig().getString("DefaultOpLogLevel");
+		boolean cfgOpLogLevelFound = false;
+		if (defaultOpLogLevelString != null) {
+			for (LogLevel logLevel : LogLevel.values()) {
+				if (logLevel.name().equalsIgnoreCase(defaultOpLogLevelString)) {
+					defaultOpLogLevel = logLevel;
+					Log.info("NovaCore", "Set default log level for op players to " + defaultOpLogLevel.name());
+					cfgOpLogLevelFound = true;
+					break;
+				}
+			}
+		}
+
+		if (!cfgOpLogLevelFound) {
+			Log.warn("NovaCore", "Unknown DefaultOpLogLevel: " + defaultOpLogLevelString + " in config.yml");
+		}
+
+		Log.info("NovaCore", "Loading language files...");
 		try {
 			LanguageReader.readFromJar(this.getClass(), "/lang/en-us.json");
 		} catch (Exception e) {
@@ -295,7 +313,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		lootTableManager.addLoader(new LootTableLoaderV1());
 		lootTableManager.addLoader(new LootTableLoaderV1Legacy());
 
-		Log.info("Loading loot tables from: " + lootTableFolder.getPath());
+		Log.info("NovaCore", "Loading loot tables from: " + lootTableFolder.getPath());
 		lootTableManager.loadAll(lootTableFolder);
 
 		customCraftingManager = new CustomCraftingManager();
