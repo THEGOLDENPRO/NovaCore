@@ -2,6 +2,8 @@ package net.zeeraa.novacore.commons.utils;
 
 import java.util.Random;
 
+import org.bukkit.ChatColor;
+
 /**
  * This class contains some unicode characters and utils to convert data to text
  * 
@@ -206,5 +208,25 @@ public class TextUtils {
 		}
 
 		return strings[random.nextInt(strings.length)];
+	}
+
+	public static String formatPing(int ping) {
+		ChatColor color = ChatColor.DARK_RED;
+
+		if (ping < 100) {
+			color = ChatColor.GREEN;
+		} else if (ping < 150) {
+			color = ChatColor.DARK_GREEN;
+		} else if (ping < 250) {
+			color = ChatColor.YELLOW;
+		} else if (ping < 500) {
+			color = ChatColor.RED;
+		}
+
+		return color + "" + ping;
+	}
+
+	public static String formatTps(double tps) {
+		return ((tps > 18.0) ? ChatColor.GREEN : (tps > 16.0) ? ChatColor.YELLOW : ChatColor.RED).toString() + ((tps > 20.0) ? "*" : "") + Math.min(Math.round(tps * 100.0) / 100.0, 20.0);
 	}
 }

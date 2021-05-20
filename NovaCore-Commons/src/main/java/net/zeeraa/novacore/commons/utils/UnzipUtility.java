@@ -19,15 +19,15 @@ public class UnzipUtility {
 	/**
 	 * Size of the buffer to read/write data
 	 */
-	private static final int BUFFER_SIZE = 4096;
+	public static final int BUFFER_SIZE = 4096;
 
 	/**
 	 * Extracts a zip file specified by the zipFilePath to a directory specified by
 	 * destDirectory (will be created if does not exists)
 	 * 
-	 * @param zipFilePath
-	 * @param destDirectory
-	 * @throws IOException
+	 * @param zipFilePath   The path of the zip file
+	 * @param destDirectory Probably the destination directory
+	 * @throws IOException when it fails
 	 */
 	public static void unzip(String zipFilePath, String destDirectory) throws IOException {
 		File destDir = new File(destDirectory);
@@ -56,9 +56,9 @@ public class UnzipUtility {
 	/**
 	 * Extracts a zip entry (file entry)
 	 * 
-	 * @param zipIn
-	 * @param filePath
-	 * @throws IOException
+	 * @param zipIn    idk
+	 * @param filePath idk
+	 * @throws IOException when it fails
 	 */
 	private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
