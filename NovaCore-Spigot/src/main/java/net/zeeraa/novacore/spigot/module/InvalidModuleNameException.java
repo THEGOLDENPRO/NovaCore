@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.module;
 /**
  * Thrown when a module with an invalid name is loaded
  * 
+ * @since 1.0
  * @author Zeeraa
  */
 public class InvalidModuleNameException extends RuntimeException {

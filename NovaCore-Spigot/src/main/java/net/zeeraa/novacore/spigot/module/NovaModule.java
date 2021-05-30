@@ -27,9 +27,17 @@ import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
  * </ul>
  * <p>
  * 
+ * @since 1.0
  * @author Zeeraa
  */
 public abstract class NovaModule {
+	/**
+	 * This will be <code>true</code> if the module is enabled
+	 * <p>
+	 * Do dot change this in the code of your module!
+	 * 
+	 * @since 1.0
+	 */
 	protected boolean enabled = false;
 	private boolean hasBeenEnabled = false;
 	protected ModuleEnableFailureReason enableFailureReason = null;
@@ -42,6 +50,7 @@ public abstract class NovaModule {
 	 * Get the module display name. Module names can't contain spaces
 	 * 
 	 * @return name
+	 * @since 1.0
 	 */
 	public abstract String getName();
 
@@ -52,6 +61,7 @@ public abstract class NovaModule {
 	 * {@link StackOverflowError}
 	 * 
 	 * @param dependency The module class to depend on
+	 * @since 1.0
 	 */
 	protected void addDependency(Class<? extends NovaModule> dependency) {
 		dependencies.add(dependency);
@@ -61,6 +71,7 @@ public abstract class NovaModule {
 	 * Get a {@link List} containing all dependencies for this module
 	 * 
 	 * @return List with dependencies
+	 * @since 1.0
 	 */
 	public List<Class<? extends NovaModule>> getDependencies() {
 		return dependencies;
@@ -68,6 +79,8 @@ public abstract class NovaModule {
 
 	/**
 	 * Called when the module is loaded by {@link ModuleManager}
+	 * 
+	 * @since 1.0
 	 */
 	public void onLoad() {
 	}
@@ -76,6 +89,7 @@ public abstract class NovaModule {
 	 * Called when the module is enabling. this is called before registering events
 	 * 
 	 * @throws Exception Thrown if something goes wrong while loading the module
+	 * @since 1.0
 	 */
 	public void onEnable() throws Exception {
 	}
@@ -84,6 +98,7 @@ public abstract class NovaModule {
 	 * Called when the module is disabling. this is called after disabling events
 	 * 
 	 * @throws Exception Thrown if something goes wrong while loading the module
+	 * @since 1.0
 	 */
 	public void onDisable() throws Exception {
 	}
@@ -94,6 +109,7 @@ public abstract class NovaModule {
 	 * 
 	 * @return {@link ModuleEnableFailureReason} on fail, <code>null</code> on
 	 *         success
+	 * @since 1.0
 	 */
 	public ModuleEnableFailureReason getEnableFailureReason() {
 		return this.enableFailureReason;
@@ -106,6 +122,7 @@ public abstract class NovaModule {
 	 * 
 	 * @return <code>true</code> if successful, <code>false</code> if
 	 *         {@link NovaModule#onEnable()} failed
+	 * @since 1.0
 	 */
 	public boolean enable() {
 		if (this.enabled) {
@@ -169,6 +186,7 @@ public abstract class NovaModule {
 	 *
 	 * @return <code>false</code> if an {@link Exception} was thrown by
 	 *         {@link NovaModule#onDisable()} or if the module was already disabled
+	 * @since 1.0
 	 */
 	public boolean disable() {
 		if (!this.enabled) {
@@ -204,6 +222,7 @@ public abstract class NovaModule {
 	 * {@link ModuleManager}
 	 * 
 	 * @return Call name of the module
+	 * @since 1.0
 	 */
 	public String getClassName() {
 		return this.getClass().getName();
@@ -213,6 +232,7 @@ public abstract class NovaModule {
 	 * CheckS if the module has been enabled
 	 * 
 	 * @return <code>true</code> if the module has been enabled
+	 * @since 1.0
 	 */
 	public boolean isEnabled() {
 		return this.enabled;
@@ -224,6 +244,7 @@ public abstract class NovaModule {
 	 * This will be true even if the module has been enabled and disabled again
 	 * 
 	 * @return <code>true</code> if the module has ever been enabled
+	 * @since 1.0
 	 */
 	public boolean hasBeenEnabled() {
 		return hasBeenEnabled;

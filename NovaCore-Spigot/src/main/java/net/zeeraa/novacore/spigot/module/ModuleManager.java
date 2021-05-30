@@ -8,6 +8,7 @@ import net.zeeraa.novacore.commons.log.Log;
 /**
  * This class is used to register, enable and disable {@link NovaModule}s
  * 
+ * @since 1.0
  * @author Zeeraa
  */
 public class ModuleManager {
@@ -17,6 +18,7 @@ public class ModuleManager {
 	 * Get a {@link Map} containing all modules with the module class name as key
 	 * and the module as value
 	 * 
+	 * @since 1.0
 	 * @return {@link Map} containing all modules
 	 */
 	public static Map<String, NovaModule> getModules() {
@@ -26,6 +28,7 @@ public class ModuleManager {
 	/**
 	 * Get a loaded module
 	 * 
+	 * @since 1.0
 	 * @param clazz The class of the module
 	 * @return {@link NovaModule} or null if not loaded
 	 */
@@ -35,7 +38,8 @@ public class ModuleManager {
 
 	/**
 	 * Get a loaded module
-	 * 
+	 *
+	 * @since 1.0
 	 * @param className The class name of the module
 	 * @return {@link NovaModule} or null if not loaded
 	 */
@@ -44,8 +48,23 @@ public class ModuleManager {
 	}
 
 	/**
+	 * Get a loaded module cast to the provided generic type
+	 * 
+	 * @since 1.1
+	 * @param <T>   The type of module to cast to
+	 * @param clazz The class of the module to get
+	 * @return The provided module cast to the provided generic type or
+	 *         <code>null</code> if not loaded
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends NovaModule> T getModuleCast(Class<? extends NovaModule> clazz) {
+		return (T) ModuleManager.getModule(clazz);
+	}
+
+	/**
 	 * Check if a module is enabled
 	 * 
+	 * @since 1.0
 	 * @param clazz The class of the module
 	 * @return <code>true</code> if the module is disabled
 	 */
@@ -56,6 +75,7 @@ public class ModuleManager {
 	/**
 	 * Check if a module is enabled
 	 * 
+	 * @since 1.0
 	 * @param className The class name of the module
 	 * @return <code>true</code> if the module is enabled
 	 */
@@ -70,6 +90,7 @@ public class ModuleManager {
 	/**
 	 * Check if a module is disabled
 	 * 
+	 * @since 1.0
 	 * @param clazz The class of the module
 	 * @return <code>true</code> if the module is disabled
 	 */
@@ -80,6 +101,7 @@ public class ModuleManager {
 	/**
 	 * Check if a module is disabled
 	 * 
+	 * @since 1.0
 	 * @param className The class name of the module
 	 * @return <code>true</code> if the module is disabled
 	 */
@@ -90,6 +112,7 @@ public class ModuleManager {
 	/**
 	 * Enable a module
 	 * 
+	 * @since 1.0
 	 * @param clazz The class of the module
 	 * @return <code>false</code> if {@link NovaModule#onEnable()} generated a
 	 *         exception or if the module failed to enable
@@ -101,6 +124,7 @@ public class ModuleManager {
 	/**
 	 * Enable a module
 	 * 
+	 * @since 1.0
 	 * @param className The class name of the module
 	 * @return <code>false</code> if {@link NovaModule#onEnable()} generated a
 	 *         exception or if the module failed to enable
@@ -116,6 +140,7 @@ public class ModuleManager {
 	/**
 	 * Disable a module
 	 * 
+	 * @since 1.0
 	 * @param clazz The class of the module
 	 * @return <code>false</code> if {@link NovaModule#onDisable()} generated a
 	 *         exception or if the module failed to disable
@@ -127,6 +152,7 @@ public class ModuleManager {
 	/**
 	 * Disable a module
 	 * 
+	 * @since 1.0
 	 * @param className The class name of the module
 	 * @return <code>false</code> if {@link NovaModule#onDisable()} generated a
 	 *         exception or if the module failed to disable
@@ -142,6 +168,7 @@ public class ModuleManager {
 	/**
 	 * Get the reason why a module failed to load
 	 * 
+	 * @since 1.0
 	 * @param clazz The class of the module
 	 * @return The {@link ModuleEnableFailureReason} or <code>null</code> if the
 	 *         module did not fail or was disabled
@@ -153,6 +180,7 @@ public class ModuleManager {
 	/**
 	 * Get the reason why a module failed to load
 	 * 
+	 * @since 1.0
 	 * @param className The class name of the module
 	 * @return The {@link ModuleEnableFailureReason} or <code>null</code> if the
 	 *         module did not fail or was disabled
@@ -168,6 +196,7 @@ public class ModuleManager {
 	/**
 	 * Check if a module has been loaded
 	 * 
+	 * @since 1.0
 	 * @param clazz The class of the module
 	 * @return <code>true</code> if the module has been loaded
 	 */
@@ -178,6 +207,7 @@ public class ModuleManager {
 	/**
 	 * Check if a module has been loaded
 	 * 
+	 * @since 1.0
 	 * @param className The class name of the module
 	 * @return <code>true</code> if the module has been loaded
 	 */
@@ -188,6 +218,7 @@ public class ModuleManager {
 	/**
 	 * Load a module
 	 * 
+	 * @since 1.0
 	 * @param clazz The class of the module
 	 * @return <code>true</code> on success
 	 * 
@@ -200,6 +231,7 @@ public class ModuleManager {
 	/**
 	 * Load a module
 	 * 
+	 * @since 1.0
 	 * @param clazz  The class of the module
 	 * @param enable set to <code>true</code> to enable the module on load
 	 * @return <code>true</code> on success
@@ -243,6 +275,8 @@ public class ModuleManager {
 
 	/**
 	 * Try to disable all modules
+	 * 
+	 * @since 1.0
 	 */
 	public static void disableAll() {
 		Log.info("ModuleManager", "Disabling all modules");
@@ -253,6 +287,14 @@ public class ModuleManager {
 		}
 	}
 
+	/**
+	 * Enable module if not already loaded
+	 * 
+	 * @since 1.0
+	 * @param clazz The class of the module to enable
+	 * @return <code>true</code> if successful or the module is already enabled.
+	 *         <code>false</code> on error
+	 */
 	public static boolean require(Class<? extends NovaModule> clazz) {
 		if (!isEnabled(clazz)) {
 			return enable(clazz);
