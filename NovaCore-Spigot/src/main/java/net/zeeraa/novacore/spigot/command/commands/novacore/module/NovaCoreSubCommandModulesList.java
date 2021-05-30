@@ -23,9 +23,9 @@ public class NovaCoreSubCommandModulesList extends NovaSubCommand {
 
 		this.setPermission("novacore.command.novacore.modules.list");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
-		
+
 		this.setDescription("list modules");
-		
+
 		this.setFilterAutocomplete(true);
 	}
 
@@ -46,7 +46,13 @@ public class NovaCoreSubCommandModulesList extends NovaSubCommand {
 				disabled++;
 			}
 
-			moduleList += ChatColor.AQUA + module.getName()+ ChatColor.GOLD + " : " + (module.isEnabled() ? ChatColor.GREEN + "Enabled" : ChatColor.RED + "Disabled") + ChatColor.RESET + "\n";
+			String style = "";
+			
+			if(ModuleManager.isEssential(module)) {
+				style += ChatColor.BOLD;
+			}
+
+			moduleList += ChatColor.AQUA + module.getName() + ChatColor.GOLD + " : " + (module.isEnabled() ? ChatColor.GREEN + style + "Enabled" : ChatColor.RED + style + "Disabled") + ChatColor.RESET + "\n";
 		}
 
 		message += ChatColor.AQUA + "" + enabled + ChatColor.GOLD + " Enabled, " + ChatColor.AQUA + disabled + ChatColor.GOLD + " Disabled\n";
@@ -57,7 +63,7 @@ public class NovaCoreSubCommandModulesList extends NovaSubCommand {
 
 		return false;
 	}
-	
+
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
 		return new ArrayList<String>();

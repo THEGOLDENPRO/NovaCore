@@ -11,7 +11,6 @@ import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 
-
 /**
  * A command from NovaCore
  * 
@@ -24,7 +23,7 @@ public class NovaCoreSubCommandModulesDisable extends NovaSubCommand {
 		this.setPermissionDefaultValue(PermissionDefault.OP);
 
 		setDescription("Disable a module");
-		
+
 		this.setFilterAutocomplete(true);
 	}
 
@@ -49,6 +48,11 @@ public class NovaCoreSubCommandModulesDisable extends NovaSubCommand {
 			sender.sendMessage(ChatColor.RED + "Could not find a module with that name");
 			return false;
 		}
+		
+		if(ModuleManager.isEssential(module)) {
+			sender.sendMessage(ChatColor.RED + "This module cant be disabled using this command");
+			return false;
+		}
 
 		if (!module.isEnabled()) {
 			sender.sendMessage(ChatColor.RED + "That module is already disabled");
@@ -71,7 +75,9 @@ public class NovaCoreSubCommandModulesDisable extends NovaSubCommand {
 		if (args.length == 1) {
 			for (String key : ModuleManager.getModules().keySet()) {
 				if (ModuleManager.isEnabled(key)) {
-					modules.add(ModuleManager.getModule(key).getName());
+					if (!ModuleManager.isEssential(ModuleManager.getModules().get(key))) {
+						modules.add(ModuleManager.getModule(key).getName());
+					}
 				}
 			}
 		}

@@ -2,8 +2,15 @@ package net.zeeraa.novacore.spigot.module;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.io.FileUtils;
+import org.bukkit.plugin.Plugin;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.module.annotations.EssentialModule;
+import net.zeeraa.novacore.spigot.module.annotations.NovaAutoLoad;
+import net.zeeraa.novacore.spigot.utils.ClassFinder;
 
 /**
  * This class is used to register, enable and disable {@link NovaModule}s
@@ -300,5 +307,61 @@ public class ModuleManager {
 			return enable(clazz);
 		}
 		return true;
+	}
+
+	/**
+	 * Scan for modules in a plugin and load them if they have the
+	 * {@link NovaAutoLoad} annotation
+	 * 
+	 * @param plugin   The plugin that owns the package
+	 * @param packagee The package to scan in (Its called packagee since java does
+	 *                 not allow you to name it package)
+	 * @since 1.1
+	 */
+	@SuppressWarnings("unchecked")
+	public static void scanForModules(Plugin plugin, String packagee) {
+		Log.info("ModuleManager", "Scanning for nova modules in package " + packagee + " of plugin " + plugin.getName());
+
+		Set<Class<?>> classes = ClassFinder.getClasses(FileUtils.toFile(plugin.getClass().getProtectionDomain().getCodeSource().getLocation()), packagee);
+		for (Class<?> clazz : classes) {
+			// Ignore anonymous classes
+			if (clazz.getName().contains("$")) {
+				continue;
+			}
+
+			if (NovaModule.class.isAssignableFrom(clazz)) {
+				NovaAutoLoad autoLoadAnnotation = clazz.getAnnotation(NovaAutoLoad.class);
+
+				if (autoLoadAnnotation != null) {
+					Log.info("ModuleManager", "Scanner found class " + clazz.getName());
+					boolean enable = autoLoadAnnotation.shouldEnable();
+
+					ModuleManager.loadModule((Class<? extends NovaModule>) clazz, enable);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check if the module has the {@link EssentialModule} annotation
+	 * 
+	 * @param module The {@link NovaModule} to check
+	 * @return <code>true</code> if the module has the {@link EssentialModule}
+	 *         annotation
+	 */
+	public static boolean isEssential(NovaModule module) {
+		return ModuleManager.isEssential(module.getClass());
+	}
+
+	/**
+	 * Check if the module has the {@link EssentialModule} annotation
+	 * 
+	 * @param clazz The module class to check
+	 * @return <code>true</code> if the module has the {@link EssentialModule}
+	 *         annotation
+	 */
+	public static boolean isEssential(Class<? extends NovaModule> clazz) {
+		EssentialModule essentialModuleAnnotation = clazz.getAnnotation(EssentialModule.class);
+		return essentialModuleAnnotation != null;
 	}
 }
