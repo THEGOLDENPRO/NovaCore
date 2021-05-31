@@ -110,14 +110,29 @@ public class NovaCore extends JavaPlugin implements Listener {
 		return instance;
 	}
 
+	/**
+	 * Get the {@link CommandRegistrator} for this version
+	 * 
+	 * @return {@link CommandRegistrator}
+	 */
 	public CommandRegistrator getCommandRegistrator() {
 		return bukkitCommandRegistrator;
 	}
 
+	/**
+	 * Get the {@link ActionBar} provider for this version
+	 * 
+	 * @return {@link ActionBar} provider
+	 */
 	public ActionBar getActionBar() {
 		return actionBar;
 	}
 
+	/**
+	 * Get the instance of {@link LootTableManager}
+	 * 
+	 * @return {@link LootTableManager} instance
+	 */
 	public LootTableManager getLootTableManager() {
 		return lootTableManager;
 	}
@@ -126,30 +141,65 @@ public class NovaCore extends JavaPlugin implements Listener {
 		return teamManager;
 	}
 
+	/**
+	 * Set the {@link TeamManager} to use
+	 * 
+	 * @param teamManager The {@link TeamManager} to use
+	 */
 	public void setTeamManager(TeamManager teamManager) {
 		this.teamManager = teamManager;
 	}
 
+	/**
+	 * Check if a {@link TeamManager} has been defined
+	 * 
+	 * @return <code>true</code> if a {@link TeamManager} has been defined
+	 */
 	public boolean hasTeamManager() {
 		return teamManager != null;
 	}
 
+	/**
+	 * Get the instance of {@link CustomCraftingManager}
+	 * 
+	 * @return {@link CustomCraftingManager} instance
+	 */
 	public CustomCraftingManager getCustomCraftingManager() {
 		return customCraftingManager;
 	}
 
+	/**
+	 * Get the instance of {@link VersionIndependantUtils} for this version
+	 * 
+	 * @return {@link VersionIndependantUtils} instance
+	 */
 	public VersionIndependantUtils getVersionIndependentUtils() {
 		return versionIndependentUtils;
 	}
 
+	/**
+	 * Get the instance of {@link VersionIndependantUtils} for this version
+	 * 
+	 * @return {@link VersionIndependantUtils} instance
+	 */
 	public static VersionIndependantUtils versionIndependantUtils() {
 		return NovaCore.getInstance().getVersionIndependentUtils();
 	}
 
+	/**
+	 * Check in holographic displays is installed
+	 * 
+	 * @return <code>true</code> if the holographic displays plugin is installed
+	 */
 	public boolean hasHologramsSupport() {
 		return hologramsSupport;
 	}
 
+	/**
+	 * Set the console log level
+	 * 
+	 * @param logLevel Log level for the console
+	 */
 	public void setLogLevel(LogLevel logLevel) {
 		try {
 			Log.info("NovaCore", "Setting console log level to " + logLevel.name());
@@ -161,6 +211,11 @@ public class NovaCore extends JavaPlugin implements Listener {
 		}
 	}
 
+	/**
+	 * Get the instance of {@link CitizensUtils}
+	 * 
+	 * @return {@link CitizensUtils} instance
+	 */
 	public CitizensUtils getCitizensUtils() {
 		return citizensUtils;
 	}
@@ -402,6 +457,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 		Bukkit.getMessenger().unregisterOutgoingPluginChannel(this);
 	}
 
+	/**
+	 * Read all jump pads from the jump pads file
+	 */
 	private final void loadNovaCoreJumpPads() {
 		try {
 			JumpPadManager.getInstance().loadJumpPads(jumpPadFile, this);
