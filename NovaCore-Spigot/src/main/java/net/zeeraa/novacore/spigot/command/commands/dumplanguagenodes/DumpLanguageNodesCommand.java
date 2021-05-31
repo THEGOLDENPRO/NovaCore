@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.command.commands.dumplanguagenodes;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
@@ -22,7 +23,7 @@ public class DumpLanguageNodesCommand extends NovaCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		String colorChar = "§";
+		String colorChar = "" + ChatColor.COLOR_CHAR;
 
 		System.out.println("Color char: " + colorChar);
 
