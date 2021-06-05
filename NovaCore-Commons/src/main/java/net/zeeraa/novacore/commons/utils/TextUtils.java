@@ -73,6 +73,8 @@ public class TextUtils {
 	 */
 	public static final String ICON_SKULL_AND_CROSSBONES = Character.toString((char) 2620);
 
+	private static String GLITCHTEXT_CACHE = null;
+
 	/**
 	 * Get the ordinal name of a number<br>
 	 * Code from <a href=
@@ -208,6 +210,49 @@ public class TextUtils {
 		}
 
 		return strings[random.nextInt(strings.length)];
+	}
+
+	/**
+	 * Generate a random string using characters from
+	 * <code>UTF-8 C1 Controls and Latin1 Supplement</code>,
+	 * <code>UTF-8 Latin Extended A</code>, <code>UTF-8 Latin Extended B</code>,
+	 * <code>UTF-8 Spacing Modifier Letters</code> and
+	 * <code>UTF-8 Diacritical Marks</code>
+	 * 
+	 * @param length The length of the string to generate
+	 * @return A random string of the provided length
+	 */
+	public static String generateGlitchtext(int length) {
+		return TextUtils.generateGlitchtext(length, new Random());
+	}
+
+	/**
+	 * Generate a random string using characters from
+	 * <code>UTF-8 C1 Controls and Latin1 Supplement</code>,
+	 * <code>UTF-8 Latin Extended A</code>, <code>UTF-8 Latin Extended B</code>,
+	 * <code>UTF-8 Spacing Modifier Letters</code> and
+	 * <code>UTF-8 Diacritical Marks</code>
+	 * 
+	 * @param length The length of the string to generate
+	 * @param random The {@link Random} instance to use
+	 * @return A random string of the provided length
+	 */
+	public static String generateGlitchtext(int length, Random random) {
+		if (GLITCHTEXT_CACHE == null) {
+			String string = "";
+			for (int i = 160; i <= 1023; i++) {
+				string += Character.toString((char) i);
+			}
+			GLITCHTEXT_CACHE = string;
+		}
+
+		String result = "";
+
+		for (int i = 0; i < length; i++) {
+			result += GLITCHTEXT_CACHE.charAt(random.nextInt(GLITCHTEXT_CACHE.length()));
+		}
+
+		return result;
 	}
 
 	public static String formatPing(int ping) {
