@@ -4,6 +4,10 @@ import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+/**
+ * The default {@link JumpPadEffect} in novacore
+ * @author Zeeraa
+ */
 public class DefaultJumpPadEffect implements JumpPadEffect {
 	@Override
 	public void playJumpPadEffect(JumpPad jumpPad, Player player) {

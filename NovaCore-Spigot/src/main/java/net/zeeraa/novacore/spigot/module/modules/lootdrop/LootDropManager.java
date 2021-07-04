@@ -47,6 +47,14 @@ public class LootDropManager extends NovaModule implements Listener {
 
 	private int taskId;
 
+	private String lootDropTexture;
+
+	/**
+	 * The default texture for loot drops. This is set to
+	 * http://textures.minecraft.net/texture/2bdd62f25f4a49cc42e054a3f212c3e0092138299172d7d8f3d438214ca972ac
+	 */
+	public static final String DEFAULT_LOOT_DROP_TEXTURE = "http://textures.minecraft.net/texture/2bdd62f25f4a49cc42e054a3f212c3e0092138299172d7d8f3d438214ca972ac";
+
 	public static LootDropManager getInstance() {
 		return instance;
 	}
@@ -56,14 +64,35 @@ public class LootDropManager extends NovaModule implements Listener {
 		return "LootDropManager";
 	}
 
+	/**
+	 * Get the loot drop texture url
+	 * 
+	 * @return Loot drop texture url
+	 */
+	public String getLootDropTexture() {
+		return lootDropTexture;
+	}
+
+	/**
+	 * Set the loot drop texture to use.
+	 * <p>
+	 * Warning: Setting this to an invalid value will cause the game to crash
+	 * 
+	 * @param lootDropTexture The new texture to use
+	 */
+	public void setLootDropTexture(String lootDropTexture) {
+		this.lootDropTexture = lootDropTexture;
+	}
+
 	@Override
 	public void onLoad() {
 		LootDropManager.instance = this;
-		chests = new ArrayList<LootDrop>();
-		dropEffects = new ArrayList<LootDropEffect>();
-		spawnMessage = new DefaultLootDropSpawnMessage();
-		particleEffects = new HashMap<UUID, LootdropParticleEffect>();
-		taskId = -1;
+		this.chests = new ArrayList<LootDrop>();
+		this.dropEffects = new ArrayList<LootDropEffect>();
+		this.spawnMessage = new DefaultLootDropSpawnMessage();
+		this.particleEffects = new HashMap<UUID, LootdropParticleEffect>();
+		this.taskId = -1;
+		this.lootDropTexture = DEFAULT_LOOT_DROP_TEXTURE;
 
 		this.particleTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override

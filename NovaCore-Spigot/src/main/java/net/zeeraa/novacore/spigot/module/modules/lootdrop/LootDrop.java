@@ -17,6 +17,10 @@ import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.loottable.LootTable;
 
+/**
+ * Represents a loot drop
+ * @author Zeeraa
+ */
 public class LootDrop {
 	private Location location;
 	private Inventory inventory;
@@ -32,7 +36,7 @@ public class LootDrop {
 
 		this.lootTable = lootTable;
 		
-		fill();
+		this.fill();
 
 		NovaCore.getInstance().getVersionIndependentUtils().setBlockAsPlayerSkull(this.location.getBlock());
 		
