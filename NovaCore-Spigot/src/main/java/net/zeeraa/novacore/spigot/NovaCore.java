@@ -244,6 +244,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		NovaCommons.setAbstractAsyncManager(new BukkitAsyncManager(this));
 		NovaCommons.setPlatformIndependentPlayerAPI(new SpigotPlatformIndependentPlayerAPI());
 		NovaCommons.setServerType(ServerType.SPIGOT);
+		NovaCommons.setExtendedDebugging(getConfig().getBoolean("ExtendedDebugging"));
 
 		Log.setConsoleLogLevel(LogLevel.INFO);
 
@@ -397,7 +398,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(MapDisplayManager.class);
 
 		// Module configuration
-		ConfigurationSection mapDisplayManagerConfig = getConfig().getConfigurationSection("EnableModules");
+		ConfigurationSection mapDisplayManagerConfig = getConfig().getConfigurationSection("MapDisplayManager");
 		MapDisplayManager.getInstance().setWorldDataLoadingEnabled(mapDisplayManagerConfig.getBoolean("EnableWorldDataLoading"));
 		MapDisplayManager.getInstance().setWorldDataSavingDisabled(mapDisplayManagerConfig.getBoolean("DisableWorldDataSaving"));
 
@@ -430,6 +431,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 				loadingDone = true;
 			}
 		}.runTaskLater(this, 1L);
+		
+		if(NovaCommons.isExtendedDebugging()) {
+			Log.info("NovaCore", "Extended debigging enabled. You can disable this in plugins/NovaCore/config.yml");
+		}
 	}
 
 	@Override

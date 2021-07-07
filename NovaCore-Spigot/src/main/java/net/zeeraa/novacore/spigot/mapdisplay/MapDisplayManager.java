@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.NovaCore;
@@ -60,11 +61,11 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	public boolean isWorldDataLoadingEnabled() {
 		return worldDataLoadingEnabled;
 	}
-	
+
 	public void setWorldDataSavingDisabled(boolean worldDataSavingDisabled) {
 		this.worldDataSavingDisabled = worldDataSavingDisabled;
 	}
-	
+
 	public boolean isWorldDataSavingDisabled() {
 		return worldDataSavingDisabled;
 	}
@@ -82,10 +83,20 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	@Override
 	public void onEnable() throws Exception {
 		if (worldDataLoadingEnabled) {
+			if (NovaCommons.isExtendedDebugging()) {
+				Log.debug(getName(), "Scheduling load next tick");
+			}
 			new BukkitRunnable() {
 				@Override
 				public void run() {
+					if (NovaCommons.isExtendedDebugging()) {
+						Log.debug(getName(), "Initial worlds to load: " + Bukkit.getServer().getWorlds());
+					}
+
 					for (World world : Bukkit.getServer().getWorlds()) {
+						if (NovaCommons.isExtendedDebugging()) {
+							Log.debug(getName(), "Loading initial world data for world " + world.getName());
+						}
 						readAllFromWorld(world);
 					}
 				}
@@ -226,7 +237,17 @@ public class MapDisplayManager extends NovaModule implements Listener {
 			Log.debug(getName(), "Found data folder for world " + world.getName());
 		}
 
-		for (File file : dataFolder.listFiles()) {
+		File[] files = dataFolder.listFiles();
+
+		int count = 0;
+		for (File file : files) {
+			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("json")) {
+				count++;
+			}
+		}
+		Log.debug("MapDisplayManager", world.getName() + " has " + count + " map display json files");
+
+		for (File file : files) {
 			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("json")) {
 				String name = "";
 				try {

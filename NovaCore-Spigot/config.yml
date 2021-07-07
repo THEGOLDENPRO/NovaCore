@@ -17,3 +17,6 @@ MapDisplayManager:
 # This is applied before the permission based log level so the permission based log level will have higher priority than the op one
 # To not spam the chat op op players this should never be set to anything lower than INFO unless you are trying to debug things
 DefaultOpLogLevel: "ERROR"
+
+# Enable to show more debug messages
+ExtendedDebugging: false

@@ -15,6 +15,7 @@ public class NovaCommons {
 	private static PlatformIndependentBungeecordAPI platformIndependentBungeecordAPI = null;
 	private static PlatformIndependentPlayerAPI platformIndependentPlayerAPI = null;
 	private static ServerType serverType = null;
+	private static boolean extendedDebugging = false;
 
 	public static AbstractPlayerMessageSender getAbstractPlayerMessageSender() {
 		return abstractPlayerMessageSender;
@@ -63,12 +64,20 @@ public class NovaCommons {
 	public static ServerType getServerType() {
 		return serverType;
 	}
-	
+
 	public static PlatformIndependentPlayerAPI getPlatformIndependentPlayerAPI() {
 		return platformIndependentPlayerAPI;
 	}
-	
+
 	public static void setPlatformIndependentPlayerAPI(PlatformIndependentPlayerAPI platformIndependentPlayerAPI) {
 		NovaCommons.platformIndependentPlayerAPI = platformIndependentPlayerAPI;
+	}
+
+	public static void setExtendedDebugging(boolean extendedDebugging) {
+		NovaCommons.extendedDebugging = extendedDebugging;
+	}
+
+	public static boolean isExtendedDebugging() {
+		return extendedDebugging;
 	}
 }
