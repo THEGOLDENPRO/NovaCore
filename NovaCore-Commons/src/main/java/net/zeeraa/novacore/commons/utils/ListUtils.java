@@ -2,6 +2,7 @@ package net.zeeraa.novacore.commons.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ListUtils {
 	/**
@@ -24,7 +25,8 @@ public class ListUtils {
 
 	/**
 	 * Create a list with the provided elements in it
-	 * @param <T> The data type
+	 * 
+	 * @param <T>      The data type
 	 * @param elements The elements to add
 	 * @return {@link List} aith the provided elements
 	 */
@@ -36,5 +38,21 @@ public class ListUtils {
 		}
 
 		return result;
+	}
+
+	public static <T> List<T> shuffleWithRandom(List<T> list, Random random) {
+		List<T> elements = new ArrayList<>();
+
+		while (list.size() > 0) {
+			elements.add(list.remove(0));
+		}
+
+		list.clear();
+
+		while (elements.size() > 0) {
+			list.add(elements.remove(random.nextInt(elements.size())));
+		}
+
+		return list;
 	}
 }
