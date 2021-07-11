@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.gui.callbacks.GUIClickCallback;
 import net.zeeraa.novacore.spigot.module.modules.gui.callbacks.GUICloseCallback;
@@ -44,33 +45,39 @@ public class GUIManager extends NovaModule implements Listener {
 		if (e.getClickedInventory() != null) {
 			if (e.getClickedInventory().getHolder() != null) {
 				if (e.getClickedInventory().getHolder() instanceof GUIHolder) {
-					GUIHolder holder = (GUIHolder) e.getClickedInventory().getHolder();
+					try {
+						GUIHolder holder = (GUIHolder) e.getClickedInventory().getHolder();
 
-					GUIAction action = GUIAction.CANCEL_INTERACTION;
+						GUIAction action = GUIAction.CANCEL_INTERACTION;
 
-					for (GUIClickCallback gcc : holder.getClickCallbacks()) {
-						GUIAction newAction = gcc.onClick(e.getClickedInventory(), e.getInventory(), e.getWhoClicked(), e.getSlot(), e.getSlotType(), e.getAction());
-						if (!(newAction == null || newAction == GUIAction.NONE)) {
-							action = newAction;
-						}
-					}
-
-					if (holder.getSlotClickCallbacks().containsKey(e.getSlot())) {
-						for (GUIClickCallback gcc : holder.getSlotClickCallbacks().get(e.getSlot())) {
+						for (GUIClickCallback gcc : holder.getClickCallbacks()) {
 							GUIAction newAction = gcc.onClick(e.getClickedInventory(), e.getInventory(), e.getWhoClicked(), e.getSlot(), e.getSlotType(), e.getAction());
 							if (!(newAction == null || newAction == GUIAction.NONE)) {
 								action = newAction;
 							}
 						}
-					}
 
-					if (holder instanceof GUIReadOnlyHolder) {
-						e.setCancelled(true);
-						return;
-					}
+						if (holder.getSlotClickCallbacks().containsKey(e.getSlot())) {
+							for (GUIClickCallback gcc : holder.getSlotClickCallbacks().get(e.getSlot())) {
+								GUIAction newAction = gcc.onClick(e.getClickedInventory(), e.getInventory(), e.getWhoClicked(), e.getSlot(), e.getSlotType(), e.getAction());
+								if (!(newAction == null || newAction == GUIAction.NONE)) {
+									action = newAction;
+								}
+							}
+						}
 
-					if (action == GUIAction.CANCEL_INTERACTION) {
+						if (holder instanceof GUIReadOnlyHolder) {
+							e.setCancelled(true);
+							return;
+						}
+
+						if (action == GUIAction.CANCEL_INTERACTION) {
+							e.setCancelled(true);
+						}
+					} catch (Exception ex) {
 						e.setCancelled(true);
+						ex.printStackTrace();
+						Log.error("GUIManager", "An exception occured while processing InventoryClickEvent. Canceling interaction to be on the safe side");
 					}
 				}
 			}
