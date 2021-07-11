@@ -427,6 +427,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case NOTE_PLING:
 			realSound = Sound.BLOCK_NOTE_BLOCK_PLING;
 			break;
+			
+		case NOTE_HAT:
+			realSound = Sound.BLOCK_NOTE_BLOCK_HAT;
+			break;
 
 		case WITHER_DEATH:
 			realSound = Sound.ENTITY_WITHER_DEATH;
