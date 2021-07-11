@@ -248,7 +248,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public ItemStack getColoredItem(DyeColor color, ColoredBlockType type) {
 		MaterialData data = getColoredBlockMaterialData(color, type);
 
-		ItemStack stack = new ItemStack(data.getItemType());
+		ItemStack stack = new ItemStack(data.getItemType(), 1, (short) data.getData());
 
 		stack.setData(data);
 
@@ -339,7 +339,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		recipe.setIngredient(ingredient, skull);
 	}
-	
+
 	@Override
 	public ItemStack getItemStack(VersionIndependantMetarial material) {
 		switch (material) {
