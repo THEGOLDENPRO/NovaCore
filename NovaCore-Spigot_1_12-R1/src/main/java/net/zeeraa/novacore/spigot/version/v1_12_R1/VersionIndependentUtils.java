@@ -248,6 +248,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public ItemStack getColoredItem(DyeColor color, ColoredBlockType type) {
 		MaterialData data = getColoredBlockMaterialData(color, type);
 
+		@SuppressWarnings("deprecation")
 		ItemStack stack = new ItemStack(data.getItemType(), 1, (short) data.getData());
 
 		stack.setData(data);
