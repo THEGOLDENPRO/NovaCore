@@ -198,7 +198,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 	 */
 	public boolean isType(ItemStack item, Class<? extends CustomItem> customItemClass) {
 		if (isCustomItem(item)) {
-			String itemId = NBTEditor.getString(item, "novacore", "iscustomitem");
+			String itemId = NBTEditor.getString(item, "novacore", "customitemid");
 
 			return itemId.equalsIgnoreCase(customItemClass.getName());
 		}
