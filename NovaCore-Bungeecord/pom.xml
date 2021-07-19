@@ -5,6 +5,10 @@
 	<artifactId>novacore-bungeecord</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 
@@ -88,7 +92,7 @@
 			<id>bungeecord-repo</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
-		
+
 		<repository>
 			<id>zeeraas-repo</id>
 			<url>https://nexus.zeeraa.net/repository/maven-group/</url>

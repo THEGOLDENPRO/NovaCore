@@ -11,8 +11,8 @@ import java.util.List;
 public class RainbowText {
 	private int place = 0;
 	private String text = "You did not provide any text.";
-	private String fancyText = "ง4You did not provide any text";
-	private static final List<String> RAINBOW = Arrays.asList("ง4", "งc", "ง6", "งe", "งa", "ง2", "งb", "ง3" /**/, "ง9", "ง1", /**/ "ง5", "งd"); // size is 12
+	private String fancyText = "ยง4You did not provide any text";
+	private static final List<String> RAINBOW = Arrays.asList("ยง4", "ยงc", "ยง6", "ยงe", "ยงa", "ยง2", "ยงb", "ยง3" /**/, "ยง9", "ยง1", /**/ "ยง5", "ยงd"); // size is 12
 	private List<String> rainbowArray = null;
 	private String prefix = "";
 

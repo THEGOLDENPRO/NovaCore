@@ -352,8 +352,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public ItemStack getItemStack(VersionIndependantMetarial material) {
 		switch (material) {
 		case FILLED_MAP:
-			ItemStack stack = new ItemStack(Material.MAP);
-			return stack;
+			return new ItemStack(Material.MAP);
+			
+		case END_STONE:
+			return new ItemStack(Material.ENDER_STONE);
 
 		default:
 			return null;

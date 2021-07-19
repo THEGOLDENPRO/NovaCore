@@ -70,7 +70,7 @@ public class LanguageManager {
 				System.out.println(object.getClass().getName() + " " + object + " " + object.toString());
 			}*/
 			String formatted = String.format(language.getContent().get(node.toLowerCase()), args);
-			return ChatColor.translateAlternateColorCodes('ง', formatted);
+			return ChatColor.translateAlternateColorCodes('ยง', formatted);
 		}
 
 		return node.toLowerCase();

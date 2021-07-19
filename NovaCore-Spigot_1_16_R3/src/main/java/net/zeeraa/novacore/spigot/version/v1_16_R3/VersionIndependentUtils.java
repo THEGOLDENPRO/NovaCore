@@ -492,6 +492,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			ItemStack stack = new ItemStack(Material.FILLED_MAP);
 			return stack;
 
+		case END_STONE:
+			return new ItemStack(Material.END_STONE);
+			
 		default:
 			return null;
 		}

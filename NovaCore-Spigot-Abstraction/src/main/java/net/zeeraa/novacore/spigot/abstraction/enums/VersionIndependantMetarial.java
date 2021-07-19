@@ -1,5 +1,5 @@
 package net.zeeraa.novacore.spigot.abstraction.enums;
 
 public enum VersionIndependantMetarial {
-	FILLED_MAP;
+	FILLED_MAP, END_STONE;
 }

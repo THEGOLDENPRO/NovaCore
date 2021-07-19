@@ -9,7 +9,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 public class ActionBar implements net.zeeraa.novacore.spigot.abstraction.ActionBar {
 	@Override
 	public void sendMessage(Player player, String message) {
-		PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + message.replace("&", "ง") + "\"}"), (byte) 2);
+		PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + message.replace("&", "ยง") + "\"}"), (byte) 2);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 }

@@ -11,7 +11,7 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 public class ActionBar implements net.zeeraa.novacore.spigot.abstraction.ActionBar {
 	@Override
 	public void sendMessage(Player player, String message) {
-		PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + message.replace("&", "ง") + "\"}"), ChatMessageType.GAME_INFO);
+		PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + message.replace("&", "ยง") + "\"}"), ChatMessageType.GAME_INFO);
 	     ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 }
