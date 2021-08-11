@@ -191,7 +191,7 @@ public class MapDisplay {
 	}
 
 	public ItemFrame getItemFrame(int x, int y) {
-		return itemFrames[x][y];
+		return itemFrames[x][y]; //TODO: check if this is the correct order
 	}
 
 	public void setupMaps() {
@@ -263,8 +263,7 @@ public class MapDisplay {
 	}
 
 	private static BufferedImage cropImage(BufferedImage src, Rectangle rect) {
-		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
-		return dest;
+		return src.getSubimage(rect.x, rect.y, rect.width, rect.height);
 	}
 
 	private static Dimension getScaledDimension(Dimension imageSize, Dimension boundary) {
