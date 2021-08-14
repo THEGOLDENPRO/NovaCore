@@ -66,5 +66,12 @@
 			<version>1.16.4-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20200518</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

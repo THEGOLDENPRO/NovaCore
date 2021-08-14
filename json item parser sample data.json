@@ -1,0 +1,61 @@
+[
+	{
+		"material": "POTION",
+		"potion_data": {
+			"main_effect": "BLINDNESS",
+			"custom_effects": [
+				{
+					"type": "BLINDNESS",
+					"amplifier": 0,
+					"duration": 200,
+					"ambient": false,
+					"particles": true
+				},
+				{
+					"type": "CONFUSION",
+					"amplifier": 0,
+					"duration": 200,
+					"ambient": false,
+					"particles": true
+				}
+			]
+		},
+		"item_flags": [
+			"HIDE_POTION_EFFECTS"
+		]
+	},
+	{
+		"material": "DIAMOND_PICKAXE",
+		"display_name": "§aLegendary diamond pickaxe",
+		"unbreakable": true,
+		"enchantments": {
+			"LOOT_BONUS_BLOCKS": 3,
+			"DIG_SPEED": 5
+		},
+		"lore": [
+			"Its unbreakable"
+		]
+	},
+	{
+		"material": "ENCHANTED_BOOK",
+		"display_name": "§aSharpness V book",
+		"stored_enchantments": {
+			"DAMAGE_ALL": 5
+		}
+	},
+	{
+		"record": "cat"
+	},
+	{
+		"material": "WRITTEN_BOOK",
+		"book_data": {
+			"author": "Zeeraa01",
+			"title": "Custom items",
+			"pages": [
+				"This is an example of how to use json item serialiser",
+				"The json item serialiser can be used to store items in json",
+				"§1And this is an example of how to use books\nNovaCore by Zeeraa\nDeveloped for novauniverse.net"
+			]
+		}
+	}
+]

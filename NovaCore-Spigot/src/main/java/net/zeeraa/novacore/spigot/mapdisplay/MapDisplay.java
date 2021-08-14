@@ -7,6 +7,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -28,6 +32,7 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.mapdisplay.renderer.DisplayRenderer;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
+import net.zeeraa.novacore.spigot.utils.XYLocation;
 import net.zeeraa.novacore.spigot.world.WorldUtils;
 
 public class MapDisplay {
@@ -48,6 +53,8 @@ public class MapDisplay {
 	protected String name;
 
 	protected File cacheFile;
+
+	protected List<XYLocation> chunks;
 
 	public void setImage(BufferedImage image) throws Exception {
 		this.setImage(image, true);
@@ -105,14 +112,29 @@ public class MapDisplay {
 	 * 
 	 * @param world          The {@link World} that the display is located in
 	 * @param itemFrameUuids Array of item frames
+	 * @param persistent     Set to true if the display should be saved
+	 * @param name           The name of the display
+	 * @param chunks         List of chunks needed to be loaded for the display to
+	 *                       initiate
 	 * @throws MissingItemFrameException if there is an item frame missing
 	 */
-	public MapDisplay(World world, UUID[][] itemFrameUuids, boolean persistent, String name) {
+	public MapDisplay(World world, UUID[][] itemFrameUuids, boolean persistent, String name, List<XYLocation> chunks) {
 		this.world = world;
 		this.itemFrameUuids = itemFrameUuids;
 		this.persistent = persistent;
 		this.name = name;
+		this.chunks = chunks;
 		this.uuid = UUID.randomUUID();
+
+		Map<XYLocation, Boolean> intialChunkState = new HashMap<>();
+
+		for (XYLocation xyl : chunks) {
+			intialChunkState.put(xyl, world.isChunkLoaded(xyl.getX(), xyl.getY()));
+		}
+
+		for (XYLocation xyl : chunks) {
+			world.loadChunk(xyl.getX(), xyl.getY());
+		}
 
 		this.cacheFile = new File(world.getWorldFolder().getPath() + File.separator + "novacore" + File.separator + "mapdisplays" + File.separator + "cache" + File.separator + name + ".png");
 
@@ -120,6 +142,10 @@ public class MapDisplay {
 		resolution = new Dimension((int) dimensions.getWidth() * 128, (int) dimensions.getHeight() * 128);
 
 		itemFrames = new ItemFrame[itemFrameUuids.length][itemFrameUuids[0].length];
+
+		for (XYLocation xyl : chunks) {
+			world.loadChunk(xyl.getX(), xyl.getY());
+		}
 
 		for (int i = 0; i < itemFrameUuids.length; i++) {
 			for (int j = 0; j < itemFrameUuids[i].length; j++) {
@@ -130,6 +156,12 @@ public class MapDisplay {
 				}
 
 				itemFrames[i][j] = itemFrame;
+			}
+		}
+
+		for (XYLocation xyl : chunks) {
+			if (!intialChunkState.get(xyl)) {
+				world.unloadChunk(xyl.getX(), xyl.getY());
 			}
 		}
 
@@ -176,6 +208,18 @@ public class MapDisplay {
 
 	public ItemFrame[][] getItemFrames() {
 		return itemFrames;
+	}
+
+	public List<ItemFrame> getAllItemFrames() {
+		List<ItemFrame> frames = new ArrayList<>();
+
+		for (int i = 0; i < itemFrames.length; i++) {
+			for (int j = 0; j < itemFrames[i].length; j++) {
+				frames.add(itemFrames[i][j]);
+			}
+		}
+
+		return frames;
 	}
 
 	public World getWorld() {

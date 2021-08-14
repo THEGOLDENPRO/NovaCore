@@ -35,6 +35,7 @@ import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.utils.LocationUtils;
+import net.zeeraa.novacore.spigot.utils.XYLocation;
 
 public class MapDisplayManager extends NovaModule implements Listener {
 	public static final HashMap<BlockFace, Vector> SCAN_DIRECTIONS = new HashMap<>();
@@ -190,7 +191,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 			}
 		}
 
-		MapDisplay display = new MapDisplay(frame.getWorld(), frameUuids, persistent, name);
+		MapDisplay display = new MapDisplay(frame.getWorld(), frameUuids, persistent, name, new ArrayList<>());
 
 		mapDisplays.add(display);
 
@@ -216,6 +217,26 @@ public class MapDisplayManager extends NovaModule implements Listener {
 				}
 
 				json.put("row", rowJson);
+				
+				List<XYLocation> chunks = new ArrayList<>();
+				
+				List<ItemFrame> frameEntityList = display.getAllItemFrames();
+				
+				for(ItemFrame frameToSave : frameEntityList) {
+					XYLocation xyl = new XYLocation(frameToSave.getLocation().getChunk().getX(), frameToSave.getLocation().getChunk().getZ());
+					
+					if(!chunks.contains(xyl)) {
+						chunks.add(xyl);
+					}
+				}
+				
+				JSONArray chunksJson = new JSONArray();
+				
+				for(XYLocation chunk : chunks ) {
+					chunksJson.put(chunk.toJSON());
+				}
+				
+				json.put("chunks", chunks);
 
 				JSONFileUtils.saveJson(dataFile, json);
 			} catch (Exception e) {
@@ -268,7 +289,17 @@ public class MapDisplayManager extends NovaModule implements Listener {
 						}
 					}
 
-					MapDisplay display = new MapDisplay(world, uuids, true, name);
+					List<XYLocation> chunksToLoad = new ArrayList<>();
+
+					if (json.has("chunks")) {
+						JSONArray chunks = json.getJSONArray("chunks");
+
+						for (int i = 0; i < chunks.length(); i++) {
+							chunksToLoad.add(XYLocation.fromJSON(chunks.getJSONObject(i)));
+						}
+					}
+
+					MapDisplay display = new MapDisplay(world, uuids, true, name, chunksToLoad);
 
 					mapDisplays.add(display);
 
