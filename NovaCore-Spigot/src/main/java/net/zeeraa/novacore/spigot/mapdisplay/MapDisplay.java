@@ -27,6 +27,7 @@ import org.bukkit.map.MapView.Scale;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.commons.utils.UUIDUtils;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
@@ -340,7 +341,7 @@ public class MapDisplay {
 	public boolean isEntityPartOfDisplay(Entity entity) {
 		for (int i = 0; i < itemFrames.length; i++) {
 			for (int j = 0; j < itemFrames[i].length; j++) {
-				if (entity.getUniqueId() == itemFrames[i][j].getUniqueId()) {
+				if (UUIDUtils.isSame(entity.getUniqueId(), itemFrames[i][j].getUniqueId())) {
 					return true;
 				}
 			}

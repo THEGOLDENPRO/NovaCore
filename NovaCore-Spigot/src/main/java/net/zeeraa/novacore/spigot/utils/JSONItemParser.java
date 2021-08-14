@@ -36,7 +36,7 @@ public class JSONItemParser {
 		ItemBuilder builder = null;
 
 		if (json.has("record")) {
-			ItemBuilder.getRecordItemBuilder(json.getString("record"));
+			builder = ItemBuilder.getRecordItemBuilder(json.getString("record"));
 		} else {
 			Material material = Material.valueOf(json.getString("material"));
 
@@ -113,8 +113,7 @@ public class JSONItemParser {
 			}
 
 			if (potionData.has("main_effect")) {
-				JSONObject mainEffect = potionData.getJSONObject("main_effect");
-				PotionEffectType type = PotionEffectType.getByName(mainEffect.getString("type"));
+				PotionEffectType type = PotionEffectType.getByName(potionData.getString("main_effect"));
 				meta.setMainEffect(type);
 			}
 
@@ -136,13 +135,10 @@ public class JSONItemParser {
 
 			if (json.has("pages")) {
 				JSONArray pages = json.getJSONArray("pages");
-				List<String> pagesList = new ArrayList<String>();
 
 				for (int i = 0; i < pages.length(); i++) {
-					pagesList.add(pages.getString(i));
+					meta.addPage(pages.getString(i));
 				}
-
-				meta.setPages(pagesList);
 			}
 
 			item.setItemMeta(meta);
