@@ -183,6 +183,6 @@ public abstract class VersionIndependantUtils {
 	public abstract VersionIndependantItems getVersionIndependantItems();
 
 	public abstract void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient);
-	
+
 	public abstract ItemStack getItemStack(VersionIndependantMetarial material);
 }
