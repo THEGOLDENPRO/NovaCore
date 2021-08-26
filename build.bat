@@ -3,6 +3,7 @@ call mvn package
 if exist %cd%\NovaCore-Spigot.jar del %cd%\NovaCore-Spigot.jar
 if exist %cd%\NovaCore-Bungeecord.jar del %cd%\NovaCore-Bungeecord.jar
 if exist %cd%\NovaCore-GameEngine.jar del %cd%\NovaCore-GameEngine.jar
+if exist %cd%\NovaUtils.jar del %cd%\NovaUtils.jar
 
 copy %cd%\NovaCore-Spigot\target\NovaCore-Spigot-1.1.0-SNAPSHOT.jar %cd%\NovaCore-Spigot.jar
 copy %cd%\NovaCore-Bungeecord\target\NovaCore-Bungeecord-1.0.0-SNAPSHOT.jar %cd%\NovaCore-Bungeecord.jar
