@@ -11,5 +11,5 @@ import org.bukkit.Sound;
  *
  */
 public enum VersionIndependantSound {
-	NOTE_PLING, NOTE_HAT, WITHER_DEATH, WITHER_HURT;
+	NOTE_PLING, NOTE_HAT, WITHER_DEATH, WITHER_HURT, ITEM_BREAK, ORB_PICKUP;
 }
