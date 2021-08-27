@@ -2,7 +2,9 @@ package net.zeeraa.novacore.spigot.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -116,6 +118,19 @@ public class PlayerUtils {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Check if a player is online and exists
+	 * <p>
+	 * This also accepts null but will return <code>false</code>
+	 * 
+	 * @param uuid The UUID of the player to check
+	 * @return <code>true</code> if the player is online and exists, this will also
+	 *         return <code>false</code> if the player is <code>null</code>
+	 */
+	public boolean existsAndIsOnline(UUID uuid) {
+		return this.existsAndIsOnline(Bukkit.getServer().getPlayer(uuid));
 	}
 
 	/**
