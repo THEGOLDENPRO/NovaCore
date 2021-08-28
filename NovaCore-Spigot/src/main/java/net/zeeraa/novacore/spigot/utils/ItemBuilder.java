@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
@@ -348,6 +350,36 @@ public class ItemBuilder {
 		}
 
 		return new ItemBuilder(material);
+	}
+
+	/**
+	 * Create an item builder with a player skull of the provided player name
+	 * 
+	 * @param playerName The name of the player the skull belongs to
+	 * @return {@link ItemBuilder} instance
+	 * @since 1.1
+	 */
+	public static ItemBuilder playerSkull(String playerName) {
+		ItemStack playerHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+
+		SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
+
+		meta.setOwner(playerName);
+
+		playerHead.setItemMeta(meta);
+
+		return new ItemBuilder(playerHead);
+	}
+
+	/**
+	 * Create an item builder with a player skull of the provided player
+	 * 
+	 * @param player The player the skull belongs to
+	 * @return {@link ItemBuilder} instance
+	 * @since 1.1
+	 */
+	public static ItemBuilder playerSkull(OfflinePlayer player) {
+		return ItemBuilder.playerSkull(player.getName());
 	}
 
 	/**
