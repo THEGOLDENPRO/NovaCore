@@ -22,11 +22,11 @@ public class SimpleTask extends Task {
 	protected int taskId;
 
 	public SimpleTask(Runnable runnable, long period) {
-		this(NovaCore.getInstance(), runnable, 0L, period);
+		this(NovaCore.getInstance(), runnable, period, period);
 	}
 
 	public SimpleTask(Plugin plugin, Runnable runnable, long period) {
-		this(plugin, runnable, 0L, period);
+		this(plugin, runnable, period, period);
 	}
 
 	public SimpleTask(Runnable runnable, long delay, long period) {
