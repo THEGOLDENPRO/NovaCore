@@ -1,9 +1,6 @@
 package net.zeeraa.novacore.spigot.utils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;

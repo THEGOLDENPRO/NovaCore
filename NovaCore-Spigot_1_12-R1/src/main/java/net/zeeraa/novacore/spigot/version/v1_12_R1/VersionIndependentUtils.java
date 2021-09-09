@@ -282,7 +282,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case NOTE_PLING:
 			realSound = Sound.BLOCK_NOTE_PLING;
 			break;
-			
+
 		case NOTE_HAT:
 			realSound = Sound.BLOCK_NOTE_HAT;
 			break;
@@ -293,6 +293,14 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case WITHER_HURT:
 			realSound = Sound.ENTITY_WITHER_HURT;
+			break;
+
+		case ITEM_BREAK:
+			realSound = Sound.ENTITY_ITEM_BREAK;
+			break;
+
+		case ORB_PICKUP:
+			realSound = Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
 			break;
 
 		default:
@@ -354,7 +362,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case END_STONE:
 			return new ItemStack(Material.ENDER_STONE);
-			
+
 		default:
 			return null;
 		}

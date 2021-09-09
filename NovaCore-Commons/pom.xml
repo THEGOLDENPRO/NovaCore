@@ -79,7 +79,7 @@
 		</repository>
 
 		<repository>
-			<id>everything</id>
+			<id>citizensnpcs</id>
 			<url>https://repo.citizensnpcs.co/</url>
 		</repository>
 	</repositories>

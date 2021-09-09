@@ -288,6 +288,14 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case WITHER_HURT:
 			realSound = Sound.WITHER_HURT;
 			break;
+			
+		case ITEM_BREAK:
+			realSound = Sound.ITEM_BREAK;
+			break;
+			
+		case ORB_PICKUP:
+			realSound = Sound.ORB_PICKUP;
+			break;
 
 		default:
 			System.err.println("[VersionIndependentUtils] VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
