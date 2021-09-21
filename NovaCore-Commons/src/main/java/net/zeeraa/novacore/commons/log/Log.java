@@ -36,6 +36,10 @@ public class Log {
 		Log.info(null, message);
 	}
 
+	public static void success(String message) {
+		Log.success(null, message);
+	}
+
 	public static void warn(String message) {
 		Log.warn(null, message);
 	}
@@ -59,7 +63,7 @@ public class Log {
 	public static void info(String source, String message) {
 		Log.log(source, message, LogLevel.INFO);
 	}
-	
+
 	public static void success(String source, String message) {
 		Log.log(source, message, LogLevel.SUCCESS);
 	}
