@@ -59,6 +59,10 @@ public class Log {
 	public static void info(String source, String message) {
 		Log.log(source, message, LogLevel.INFO);
 	}
+	
+	public static void success(String source, String message) {
+		Log.log(source, message, LogLevel.SUCCESS);
+	}
 
 	public static void warn(String source, String message) {
 		Log.log(source, message, LogLevel.WARN);
