@@ -114,7 +114,7 @@ public enum LogLevel {
 			break;
 
 		case SUCCESS:
-			result = "SUCCESS";
+			result += "SUCCESS";
 			break;
 
 		case INFO:
