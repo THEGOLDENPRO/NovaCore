@@ -29,6 +29,10 @@ public enum LogLevel {
 	 * Anything that can potentially cause application oddities
 	 */
 	WARN(3),
+	/*
+	 * Same level as info but with a success message instead
+	 */
+	SUCCESS(4),
 	/**
 	 * Generally useful information to log
 	 */
@@ -76,6 +80,9 @@ public enum LogLevel {
 		case WARN:
 			return ChatColor.YELLOW;
 
+		case SUCCESS:
+			return ChatColor.GREEN;
+
 		case INFO:
 			return ChatColor.BLUE;
 
@@ -104,6 +111,10 @@ public enum LogLevel {
 
 		case WARN:
 			result += "WARNING";
+			break;
+
+		case SUCCESS:
+			result = "SUCCESS";
 			break;
 
 		case INFO:
