@@ -324,6 +324,7 @@ public class ModuleManager {
 
 		Set<Class<?>> classes = ClassFinder.getClasses(FileUtils.toFile(plugin.getClass().getProtectionDomain().getCodeSource().getLocation()), packagee);
 		for (Class<?> clazz : classes) {
+			
 			// Ignore anonymous classes
 			if (clazz.getName().contains("$")) {
 				continue;
