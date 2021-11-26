@@ -58,7 +58,7 @@ public class DelayedGameTrigger extends ScheduledGameTrigger {
 	/**
 	 * Add a callback that is called when ever the timer counts down
 	 * 
-	 * @param tickCallback The {@link TickCallback} to add
+	 * @param callback The {@link TickCallback} to add
 	 */
 	public void addTickCallback(TickCallback callback) {
 		tickCallbacks.add(callback);
