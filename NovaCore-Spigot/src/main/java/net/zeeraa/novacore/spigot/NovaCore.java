@@ -34,13 +34,16 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitConsoleSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitPlayerMessageSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.BukkitAsyncManager;
+import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
 import net.zeeraa.novacore.spigot.command.commands.dumplanguagenodes.DumpLanguageNodesCommand;
 import net.zeeraa.novacore.spigot.command.commands.novacore.NovaCoreCommand;
+import net.zeeraa.novacore.spigot.command.fallback.ReflectionBasedCommandRegistrator;
 import net.zeeraa.novacore.spigot.customcrafting.CustomCraftingManager;
 import net.zeeraa.novacore.spigot.debug.DebugCommandRegistrator;
 import net.zeeraa.novacore.spigot.debug.builtin.BuiltinDebugTriggers;
 import net.zeeraa.novacore.spigot.language.LanguageReader;
+import net.zeeraa.novacore.spigot.logger.SpigotAbstractionLogger;
 import net.zeeraa.novacore.spigot.loottable.LootTableManager;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1Legacy;
@@ -89,6 +92,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private boolean hologramsSupport;
 
 	private boolean loadingDone;
+
+	private boolean noNMSMode;
+
+	private ReflectionBasedCommandRegistrator reflectionBasedCommandRegistrator;
 
 	private LogLevel defaultOpLogLevel = LogLevel.ERROR;
 
@@ -230,11 +237,29 @@ public class NovaCore extends JavaPlugin implements Listener {
 		return citizensUtils != null;
 	}
 
+	/**
+	 * Check if the plugin is running in no nms mode. If true
+	 * {@link VersionIndependantUtils} wont be avaliabe
+	 * 
+	 * @return <code>true</code> if no nms mode is enabled
+	 */
+	public boolean isNoNMSMode() {
+		return noNMSMode;
+	}
+
+	public ReflectionBasedCommandRegistrator getReflectionBasedCommandRegistrator() {
+		return reflectionBasedCommandRegistrator;
+	}
+
 	@Override
 	public void onEnable() {
 		NovaCore.instance = this;
 		this.teamManager = null;
 		this.citizensUtils = null;
+		this.noNMSMode = false;
+		this.reflectionBasedCommandRegistrator = new ReflectionBasedCommandRegistrator();
+
+		AbstractionLogger.setLogger(new SpigotAbstractionLogger());
 
 		saveDefaultConfig();
 
@@ -322,8 +347,18 @@ public class NovaCore extends JavaPlugin implements Listener {
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.fatal("NovaCore", "Could not find support for this CraftBukkit version.");
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
+			if (this.getConfig().getBoolean("IgnoreMissingNMS")) {
+				noNMSMode = true;
+				Log.warn("NovaCore", "Ignoring missing NMS support due to IgnoreMissingNMS being set to true. The error above can be ignored but some parts of this plugin wont work");
+			} else {
+				Bukkit.getPluginManager().disablePlugin(this);
+				return;
+			}
+		}
+
+		if (bukkitCommandRegistrator == null) {
+			Log.warn("NovaCore", "No command registrator defined. Using the reflection based fallback");
+			bukkitCommandRegistrator = reflectionBasedCommandRegistrator;
 		}
 
 		if (Bukkit.getServer().getPluginManager().getPlugin("HolographicDisplays") != null) {
@@ -431,8 +466,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 				loadingDone = true;
 			}
 		}.runTaskLater(this, 1L);
-		
-		if(NovaCommons.isExtendedDebugging()) {
+
+		if (NovaCommons.isExtendedDebugging()) {
 			Log.info("NovaCore", "Extended debigging enabled. You can disable this in plugins/NovaCore/config.yml");
 		}
 	}

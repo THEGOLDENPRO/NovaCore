@@ -34,11 +34,11 @@ public class CommandRegistry {
 		}
 
 		Log.debug("CommandRegistry", "Registering command " + command.getName());
-		registerCommandPermissions(command);
+		CommandRegistry.registerCommandPermissions(command);
 		NovaCommandProxy commandProxy = new NovaCommandProxy(command);
 		NovaCore.getInstance().getCommandRegistrator().registerCommand(commandProxy);
 
-		registeredCommands.add(command);
+		CommandRegistry.registeredCommands.add(command);
 
 		return true;
 	}

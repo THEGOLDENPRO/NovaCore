@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>novacore-spigot-abstraction</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
@@ -12,6 +10,17 @@
 		<version>PARENT</version>
 		<relativePath>..</relativePath>
 	</parent>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>zeeraas-snapshots</id>
+			<url>https://nexus.zeeraa.net/repository/maven-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>zeeraas-releases</id>
+			<url>https://nexus.zeeraa.net/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -89,7 +98,7 @@
 			<version>1.0.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>

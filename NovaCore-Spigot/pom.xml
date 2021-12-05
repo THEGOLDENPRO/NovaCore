@@ -116,6 +116,11 @@
 		</repository>
 
 		<repository>
+			<id>github-NBTEditor</id>
+			<url>https://maven.pkg.github.com/BananaPuncher714/NBTEditor</url>
+		</repository>
+
+		<repository>
 			<id>citizens</id>
 			<url>https://repo.citizensnpcs.co/</url>
 		</repository>
@@ -214,6 +219,15 @@
 			<optional>true</optional>
 		</dependency>
 
+		<dependency>
+			<groupId>net.zeeraa.novacore</groupId>
+			<artifactId>novacore-spigot_v1_17_R1</artifactId>
+			<version>v1_17_R1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+			<optional>true</optional>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 			<groupId>org.json</groupId>
@@ -240,7 +254,7 @@
 		<dependency>
 			<groupId>io.github.bananapuncher714</groupId>
 			<artifactId>NBTEditor</artifactId>
-			<version>7.16</version>
+			<version>7.18.0</version>
 			<scope>compile</scope>
 		</dependency>
 
