@@ -254,6 +254,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case YELLOW:
 				material = Material.YELLOW_STAINED_GLASS;
 				break;
+				
+			case WHITE:
+				material = Material.WHITE_STAINED_GLASS;
+				break;
 
 			default:
 				material = Material.AIR;
@@ -321,6 +325,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 				material = Material.YELLOW_STAINED_GLASS_PANE;
 				break;
 
+			case WHITE:
+				material = Material.WHITE_STAINED_GLASS_PANE;
+				
 			default:
 				material = Material.AIR;
 				break;
@@ -386,7 +393,11 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case YELLOW:
 				material = Material.YELLOW_WOOL;
 				break;
-
+				
+			case WHITE:
+				material = Material.WHITE_WOOL;
+				break;
+				
 			default:
 				material = Material.AIR;
 				break;
