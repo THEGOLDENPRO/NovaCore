@@ -33,6 +33,7 @@ import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
+import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -517,5 +518,15 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		default:
 			return null;
 		}
+	}
+	
+	private LabyModProtocolImpl lmp = null;
+
+	@Override
+	public LabyModProtocol getLabyModProtocol() {
+		if(lmp == null) {
+			lmp = new LabyModProtocolImpl();
+		}
+		return lmp;
 	}
 }

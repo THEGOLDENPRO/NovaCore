@@ -132,6 +132,42 @@ public class TextUtils {
 
 		return time;
 	}
+	
+	/**
+	 * Convert time to string in the following format: 1:12:4
+	 * 
+	 * @param seconds The amount of seconds
+	 * @return The time formated as text
+	 */
+	public static String formatTimeToHMS(long seconds) {
+		int h = (int) (seconds / 3600);
+		int m = (int) ((seconds % 3600) / 60);
+		int s = (int) (seconds % 60);
+
+		String time = "";
+
+		if (h > 0) {
+			time += h;
+			if (m > 0 && s > 0) {
+				time += "";
+			} else if (m > 0 || s > 0) {
+				time += ":";
+			}
+		}
+
+		if (m > 0) {
+			time += m;
+			if (s > 0) {
+				time += ":";
+			}
+		}
+
+		if (s > 0) {
+			time += s;
+		}
+
+		return time;
+	}
 
 	/**
 	 * Convert seconds to mm:ss string

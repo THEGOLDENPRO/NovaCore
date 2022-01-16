@@ -32,6 +32,8 @@ public abstract class VersionIndependantUtils {
 		VersionIndependantUtils.instance = instance;
 	}
 
+	public abstract LabyModProtocol getLabyModProtocol();
+	
 	public abstract void setBlockAsPlayerSkull(Block block);
 
 	/**
