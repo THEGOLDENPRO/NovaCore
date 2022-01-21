@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.command.commands.game.lootdrop;
+package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.lootdrop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,13 +59,13 @@ public class NovaCoreSubCommandGameLootdrop extends NovaSubCommand {
 							sender.sendMessage(ChatColor.RED + "Failed to spawn loot drop");
 						}
 					} else {
-						sender.sendMessage(ChatColor.RED + "This map does not support the default loot drop system of EZCore");
+						sender.sendMessage(ChatColor.RED + "This map does not support the default loot drop system of NovaCore");
 					}
 				} else {
 					sender.sendMessage(ChatColor.RED + "No map has been loaded");
 				}
 			} else {
-				sender.sendMessage(ChatColor.RED + "This type of game does not support the default loot drop system of EZCore");
+				sender.sendMessage(ChatColor.RED + "This type of game does not support the default loot drop system of NovaCore");
 			}
 		} else {
 			sender.sendMessage(ChatColor.RED + "No game has been loaded");

@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.command.commands.game.trigger;
+package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.trigger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -134,10 +134,8 @@ public class GameTrigger {
 
 		GameTriggerTriggerEvent event = new GameTriggerTriggerEvent(this);
 		Bukkit.getServer().getPluginManager().callEvent(event);
-
-		for (TriggerCallback callback : this.callbacks) {
-			callback.run(this, flag);
-		}
+		
+		callbacks.forEach(callback -> callback.run(this, flag));
 
 		if (this instanceof ScheduledGameTrigger) {
 			if (this.hasFlag(TriggerFlag.RUN_ONLY_ONCE)) {
@@ -192,9 +190,7 @@ public class GameTrigger {
 	 * @param triggers The list of triggers
 	 */
 	public static void triggerMany(List<GameTrigger> triggers) {
-		for (GameTrigger trigger : triggers) {
-			trigger.trigger();
-		}
+		triggers.forEach(t -> t.trigger());
 	}
 
 	/**
@@ -204,9 +200,7 @@ public class GameTrigger {
 	 * @param reason   The {@link TriggerFlag} that activated the trigger
 	 */
 	public static void triggerMany(List<GameTrigger> triggers, TriggerFlag reason) {
-		for (GameTrigger trigger : triggers) {
-			trigger.trigger(reason);
-		}
+		triggers.forEach(t -> t.trigger(reason));
 	}
 
 	/**
@@ -218,11 +212,11 @@ public class GameTrigger {
 	 * @param triggers The list of triggers
 	 */
 	public static void startMany(List<GameTrigger> triggers) {
-		for (GameTrigger trigger : triggers) {
+		triggers.forEach(trigger -> {
 			if (trigger instanceof ScheduledGameTrigger) {
 				((ScheduledGameTrigger) trigger).start();
 			}
-		}
+		});
 	}
 
 	/**
@@ -234,10 +228,10 @@ public class GameTrigger {
 	 * @param triggers The list of triggers
 	 */
 	public static void stopMany(List<GameTrigger> triggers) {
-		for (GameTrigger trigger : triggers) {
+		triggers.forEach(trigger -> {
 			if (trigger instanceof ScheduledGameTrigger) {
 				((ScheduledGameTrigger) trigger).stop();
 			}
-		}
+		});
 	}
 }

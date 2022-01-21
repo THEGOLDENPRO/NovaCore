@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.command.commands.game.debug;
+package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.debug;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

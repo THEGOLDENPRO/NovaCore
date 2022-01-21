@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.command.commands.game.eliminateplayer;
+package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.eliminateplayer;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,7 @@
-package net.zeeraa.novacore.spigot.command.commands.game.start;
+package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.resetcountdown;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -8,25 +9,22 @@ import org.bukkit.permissions.PermissionDefault;
 
 import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
-import net.zeeraa.novacore.spigot.module.modules.gamelobby.GameLobby;
 
 /**
  * A command from NovaCore
  * 
  * @author Zeeraa
  */
-public class NovaCoreSubCommandForceStartGame extends NovaSubCommand {
+public class NovaCoreSubCommandResetCountdownGame extends NovaSubCommand {
 
-	public NovaCoreSubCommandForceStartGame() {
-		super("forcestart");
+	public NovaCoreSubCommandResetCountdownGame() {
+		super("resetcountdown");
 
-		this.setDescription("Force start the game");
-		this.setPermission("novacore.command.game.forcestart");
+		this.setDescription("Reset the game countdown");
+		this.setPermission("novacore.command.game.resetcountdown");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
-		this.setPermissionDescription("Access to the game force start command");
+		this.setPermissionDescription("Access to the reset countdown command");
 
-		this.setEmptyTabMode(true);
-		
 		this.addHelpSubCommand();
 		
 		this.setFilterAutocomplete(true);
@@ -39,22 +37,11 @@ public class NovaCoreSubCommandForceStartGame extends NovaSubCommand {
 				if (!GameManager.getInstance().getActiveGame().hasStarted()) {
 					if (GameManager.getInstance().getActiveGame().canStart()) {
 						if (GameManager.getInstance().hasCountdown()) {
-							if (GameManager.getInstance().getCountdown().hasCountdownStarted()) {
-								GameManager.getInstance().getCountdown().cancelCountdown();
-							}
-						}
-
-						if (GameLobby.getInstance().isEnabled()) {
-							GameLobby.getInstance().startGame();
-							sender.sendMessage(ChatColor.GREEN + "Game started");
+							GameManager.getInstance().getCountdown().resetTimeLeft();
+							sender.sendMessage(ChatColor.GREEN + "Countdown has been reset to the starting value");
+							return true;
 						} else {
-							try {
-								GameManager.getInstance().start();
-								sender.sendMessage(ChatColor.GREEN + "Game started");
-							} catch (IOException e) {
-								e.printStackTrace();
-								sender.sendMessage(ChatColor.DARK_RED + "An exception occured while trying to start the game");
-							}
+							sender.sendMessage(ChatColor.RED + "No countdown has been enabled");
 						}
 					} else {
 						sender.sendMessage(ChatColor.RED + "The game cant start right now");
@@ -69,5 +56,10 @@ public class NovaCoreSubCommandForceStartGame extends NovaSubCommand {
 			sender.sendMessage(ChatColor.RED + "GameManager is not enabled");
 		}
 		return false;
+	}
+
+	@Override
+	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+		return new ArrayList<String>();
 	}
 }

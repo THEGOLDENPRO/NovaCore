@@ -107,6 +107,20 @@ public class VectorArea {
 	}
 
 	/**
+	 * Get the amount of blocks this {@link VectorArea} contains. This inludes air
+	 * blocks
+	 * 
+	 * @return The amount of blocks in this area
+	 */
+	public int getArea() {
+		int xLenght = position1.getBlockX() - position2.getBlockX();
+		int yLenght = position1.getBlockY() - position2.getBlockY();
+		int zLenght = position1.getBlockZ() - position2.getBlockZ();
+
+		return xLenght * yLenght * zLenght;
+	}
+
+	/**
 	 * Get the position with the lowest x, y and z values
 	 * 
 	 * @return The {@link Vector} with the lowest values

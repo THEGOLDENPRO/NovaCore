@@ -13,6 +13,7 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftin
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.mapprotection.MapProtection;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.settime.SetTime;
+import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.simplemapdecay.SimpleBoxDecay;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.startmessage.StartMessage;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.worldborder.WorldborderMapModule;
 import net.zeeraa.novacore.spigot.module.modules.gamelobby.GameLobby;
@@ -37,10 +38,10 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		}
 
 		NovaCoreGameEngine.instance = this;
-		
+
 		Log.info("NovaCoreGameEngine", "Adding debug triggers...");
 		GameEngineDebugTriggers.init();
-		
+
 		Log.info("NovaCoreGameEngine", "Loading modules...");
 		ModuleManager.loadModule(GameManager.class);
 		ModuleManager.loadModule(GameLobby.class);
@@ -55,5 +56,8 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.startmessage", StartMessage.class);
 		MapModuleManager.addMapModule("novacore.graceperiod", GracePeriodMapModule.class);
 		MapModuleManager.addMapModule("novacore.falldamagegraceperiod", FallDamageGracePeriodMapModule.class);
+		MapModuleManager.addMapModule("novacore.simpleboxdecay", SimpleBoxDecay.class);
+
+		Log.success("NovaCoreGameEngine", "Game engine enabled");
 	}
 }
