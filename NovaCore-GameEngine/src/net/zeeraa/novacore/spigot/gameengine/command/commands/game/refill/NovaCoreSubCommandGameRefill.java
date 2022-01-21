@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.refill;
+package net.zeeraa.novacore.spigot.gameengine.command.commands.game.refill;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.gameenginecommand.commands.game;
+package net.zeeraa.novacore.spigot.gameengine.command.commands.game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,17 +9,17 @@ import org.bukkit.permissions.PermissionDefault;
 
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.NovaCommand;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.addplayer.NovaCoreSubCommandGameAddPlayer;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.debug.GameDebugCommand;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.eliminateplayer.NovaCoreSubCommandGameEliminatePlayer;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.listplayers.NovaCoreSubCommandGameListplayers;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.lootdrop.NovaCoreSubCommandGameLootdrop;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.refill.NovaCoreSubCommandGameRefill;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.resetcountdown.NovaCoreSubCommandResetCountdownGame;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.start.NovaCoreSubCommandForceStartGame;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.start.NovaCoreSubCommandStartGame;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.stop.NovaCoreSubCommandStopGame;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.trigger.NovaCoreSubCommandGameTrigger;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.addplayer.NovaCoreSubCommandGameAddPlayer;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.debug.GameDebugCommand;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.eliminateplayer.NovaCoreSubCommandGameEliminatePlayer;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.listplayers.NovaCoreSubCommandGameListplayers;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.lootdrop.NovaCoreSubCommandGameLootdrop;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.refill.NovaCoreSubCommandGameRefill;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.resetcountdown.NovaCoreSubCommandResetCountdownGame;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.start.NovaCoreSubCommandForceStartGame;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.start.NovaCoreSubCommandStartGame;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.stop.NovaCoreSubCommandStopGame;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.trigger.NovaCoreSubCommandGameTrigger;
 
 /**
  * A command from NovaCore

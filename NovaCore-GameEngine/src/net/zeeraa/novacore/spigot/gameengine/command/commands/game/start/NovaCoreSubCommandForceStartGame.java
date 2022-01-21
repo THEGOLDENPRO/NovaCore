@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.start;
+package net.zeeraa.novacore.spigot.gameengine.command.commands.game.start;
 
 import java.io.IOException;
 

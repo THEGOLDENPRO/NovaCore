@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.stop;
+package net.zeeraa.novacore.spigot.gameengine.command.commands.game.stop;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -35,7 +35,7 @@ import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.commons.utils.Callback;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
-import net.zeeraa.novacore.spigot.gameenginecommand.commands.game.NovaCoreCommandGame;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.NovaCoreCommandGame;
 import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.game.countdown.DefaultGameCountdown;

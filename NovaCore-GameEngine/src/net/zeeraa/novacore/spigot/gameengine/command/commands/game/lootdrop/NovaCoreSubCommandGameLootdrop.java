@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.lootdrop;
+package net.zeeraa.novacore.spigot.gameengine.command.commands.game.lootdrop;
 
 import java.util.ArrayList;
 import java.util.List;

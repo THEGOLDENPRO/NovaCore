@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.gameenginecommand.commands.game.addplayer;
+package net.zeeraa.novacore.spigot.gameengine.command.commands.game.addplayer;
 
 import java.util.ArrayList;
 import java.util.List;
