@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.module.modules.compass;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -77,6 +78,10 @@ public class CompassTracker extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerInteract(PlayerInteractEvent e) {
+		if (e.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+			return;
+		}
+
 		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (NovaCore.getInstance().getVersionIndependentUtils().getItemInMainHand(e.getPlayer()).getType() == Material.COMPASS) {
 				if (!hasCompassTrackerTarget()) {
