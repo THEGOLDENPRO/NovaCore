@@ -228,6 +228,15 @@
 			<optional>true</optional>
 		</dependency>
 
+		<dependency>
+			<groupId>net.zeeraa.novacore</groupId>
+			<artifactId>novacore-spigot_v1_18_R1</artifactId>
+			<version>v1_18_R1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+			<optional>true</optional>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 			<groupId>org.json</groupId>
@@ -251,12 +260,8 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!--<dependency>
-			<groupId>io.github.bananapuncher714</groupId>
-			<artifactId>NBTEditor</artifactId>
-			<version>7.18.0</version>
-			<scope>compile</scope>
-		</dependency>-->
+		<!--<dependency> <groupId>io.github.bananapuncher714</groupId> <artifactId>NBTEditor</artifactId> 
+			<version>7.18.0</version> <scope>compile</scope> </dependency> -->
 
 		<dependency>
 			<groupId>fr.minuskube</groupId>
