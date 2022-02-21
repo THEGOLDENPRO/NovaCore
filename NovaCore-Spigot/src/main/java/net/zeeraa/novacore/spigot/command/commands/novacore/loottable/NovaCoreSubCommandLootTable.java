@@ -46,9 +46,7 @@ public class NovaCoreSubCommandLootTable extends NovaSubCommand {
 		ArrayList<String> lootTables = new ArrayList<String>();
 
 		if (args.length == 1) {
-			for (String key : NovaCore.getInstance().getLootTableManager().getLootTables().keySet()) {
-				lootTables.add(key);
-			}
+			NovaCore.getInstance().getLootTableManager().getLootTables().keySet().forEach(key -> lootTables.add(key));
 		}
 
 		return lootTables;

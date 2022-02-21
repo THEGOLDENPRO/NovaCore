@@ -65,13 +65,13 @@ public class JumpPadManager extends NovaModule implements Listener {
 		task = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
 			public void run() {
-				for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+				Bukkit.getServer().getOnlinePlayers().forEach(player -> {
 					if (player.getGameMode() == GameMode.SPECTATOR) {
-						continue;
+						return;
 					}
 
 					if (player.getGameMode() == GameMode.CREATIVE && player.isFlying()) {
-						continue;
+						return;
 					}
 
 					boolean isPlayerOnJumpPad = false;
@@ -104,8 +104,8 @@ public class JumpPadManager extends NovaModule implements Listener {
 								isOnJumpPad.remove(player);
 							}
 						}
-					}
-				}
+					}					
+				});
 			}
 		}, 5L, 5L);
 		task.start();
@@ -132,11 +132,11 @@ public class JumpPadManager extends NovaModule implements Listener {
 	public void saveJumpPads(File file, Plugin owner) throws IOException {
 		JSONArray array = new JSONArray();
 
-		for (JumpPad pad : jumpPads) {
+		jumpPads.forEach(pad -> {
 			if (pad.getOwner().getName().equalsIgnoreCase(owner.getName())) {
 				array.put(pad.toJson());
 			}
-		}
+		});
 
 		JSONFileUtils.saveJson(file, array, 4);
 	}

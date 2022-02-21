@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
@@ -39,9 +38,7 @@ public class PlayerUtils {
 	 * @param player The {@link Player} to remove potion effects from
 	 */
 	public static void clearPotionEffects(Player player) {
-		for (PotionEffect effect : player.getActivePotionEffects()) {
-			player.removePotionEffect(effect.getType());
-		}
+		player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
 	}
 
 	/**
@@ -142,9 +139,7 @@ public class PlayerUtils {
 	public static List<String> getNames(List<Player> players) {
 		List<String> names = new ArrayList<String>();
 
-		for (Player player : players) {
-			names.add(player.getName());
-		}
+		players.forEach(player -> names.add(player.getName()));
 
 		return names;
 	}

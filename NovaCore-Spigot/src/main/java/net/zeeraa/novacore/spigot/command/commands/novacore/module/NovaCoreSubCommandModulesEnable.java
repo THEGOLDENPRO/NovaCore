@@ -50,11 +50,11 @@ public class NovaCoreSubCommandModulesEnable extends NovaSubCommand {
 			return false;
 		}
 
-		if(ModuleManager.isEssential(module)) {
+		if (ModuleManager.isEssential(module)) {
 			sender.sendMessage(ChatColor.RED + "This module cant be enabled using this command");
 			return false;
 		}
-		
+
 		if (module.isEnabled()) {
 			sender.sendMessage(ChatColor.RED + "That module is already enabled");
 			return false;
@@ -80,13 +80,13 @@ public class NovaCoreSubCommandModulesEnable extends NovaSubCommand {
 		ArrayList<String> modules = new ArrayList<String>();
 
 		if (args.length == 1) {
-			for (String key : ModuleManager.getModules().keySet()) {
+			ModuleManager.getModules().keySet().forEach(key -> {
 				if (ModuleManager.isDisabled(key)) {
 					if (!ModuleManager.isEssential(ModuleManager.getModules().get(key))) {
 						modules.add(ModuleManager.getModule(key).getName());
 					}
 				}
-			}
+			});
 		}
 
 		return modules;

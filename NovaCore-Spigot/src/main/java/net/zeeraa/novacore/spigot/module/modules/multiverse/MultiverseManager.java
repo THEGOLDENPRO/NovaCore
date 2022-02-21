@@ -37,7 +37,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 	@Override
 	public void onDisable() {
-		unloadAll();
+		this.unloadAll();
 	}
 
 	@Override
@@ -281,14 +281,14 @@ public class MultiverseManager extends NovaModule implements Listener {
 	public void unloadAll() {
 		while (worlds.size() > 0) {
 			String key = worlds.keySet().iterator().next();
-			unload(worlds.get(key));
+			this.unload(worlds.get(key));
 		}
 	}
 
 	@EventHandler
 	public void onWatherChage(WeatherChangeEvent e) {
-		if (hasWorld(e.getWorld())) {
-			if (getWorld(e.getWorld()).isLockWeather()) {
+		if (this.hasWorld(e.getWorld())) {
+			if (this.getWorld(e.getWorld()).isLockWeather()) {
 				Log.debug("Multiverse", "Prevented weather change in world " + e.getWorld().getName());
 				e.setCancelled(true);
 			}

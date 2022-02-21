@@ -42,7 +42,7 @@ public class NovaCoreSubCommandLoggerSet extends NovaSubCommand {
 
 		LogLevel level;
 		try {
-			level = LogLevel.valueOf(args[0]);
+			level = LogLevel.valueOf(args[0].toUpperCase());
 		} catch (Exception e) {
 			String valid = "";
 			for (LogLevel l : LogLevel.values()) {

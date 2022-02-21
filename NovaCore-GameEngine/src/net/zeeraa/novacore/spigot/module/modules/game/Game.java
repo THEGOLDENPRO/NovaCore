@@ -298,14 +298,13 @@ public abstract class Game {
 	public List<GameTrigger> getTriggersByFlags(TriggerFlag... flags) {
 		List<GameTrigger> result = new ArrayList<GameTrigger>();
 
-		for (GameTrigger trigger : triggers) {
-			for (TriggerFlag flag : flags) {
+		triggers.forEach(trigger -> {
+			trigger.getFlags().forEach(flag -> {
 				if (trigger.hasFlag(flag)) {
 					result.add(trigger);
-					continue;
 				}
-			}
-		}
+			});
+		});
 
 		return result;
 	}
@@ -469,7 +468,7 @@ public abstract class Game {
 	 *         and {@link Game#hasEnded()} is <code>false</code>
 	 */
 	public boolean isRunning() {
-		return hasStarted() && !hasEnded();
+		return this.hasStarted() && !this.hasEnded();
 	}
 
 	/**
@@ -518,7 +517,7 @@ public abstract class Game {
 		}
 		startCalled = true;
 
-		if (autoEndGame()) {
+		if (this.autoEndGame()) {
 			winCheckTask.start();
 		}
 
@@ -606,11 +605,11 @@ public abstract class Game {
 
 		players.remove(player.getUniqueId());
 
-		onPlayerEliminated(player, killer, reason, placement);
-		getGameManager().getPlayerEliminationMessage().showPlayerEliminatedMessage(player, killer, reason, placement);
+		this.onPlayerEliminated(player, killer, reason, placement);
+		this.getGameManager().getPlayerEliminationMessage().showPlayerEliminatedMessage(player, killer, reason, placement);
 
 		if (NovaCore.getInstance().getTeamManager() != null) {
-			if (getGameManager().isUseTeams()) {
+			if (this.getGameManager().isUseTeams()) {
 				boolean teamEliminated = true;
 				List<UUID> teamsLeft = new ArrayList<UUID>();
 
@@ -640,8 +639,8 @@ public abstract class Game {
 						Log.debug("A team was eliminated. Teams left: " + teamsLeft.size());
 						Log.trace("Team placement: " + teamPlacement);
 
-						if (getGameManager().getTeamEliminationMessage() != null) {
-							getGameManager().getTeamEliminationMessage().showTeamEliminatedMessage(team, teamPlacement);
+						if (this.getGameManager().getTeamEliminationMessage() != null) {
+							this.getGameManager().getTeamEliminationMessage().showTeamEliminatedMessage(team, teamPlacement);
 						}
 					}
 				}

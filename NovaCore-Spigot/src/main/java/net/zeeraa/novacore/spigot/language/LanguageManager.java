@@ -64,11 +64,11 @@ public class LanguageManager {
 
 	public static String getString(Language language, String node, Object... args) {
 		if (language.getContent().containsKey(node.toLowerCase())) {
-			/*System.out.println(args);
-			System.out.println("Arg length: " + args.length);
-			for(Object object : args) {
-				System.out.println(object.getClass().getName() + " " + object + " " + object.toString());
-			}*/
+			/*
+			 * System.out.println(args); System.out.println("Arg length: " + args.length);
+			 * for(Object object : args) { System.out.println(object.getClass().getName() +
+			 * " " + object + " " + object.toString()); }
+			 */
 			String formatted = String.format(language.getContent().get(node.toLowerCase()), args);
 			return ChatColor.translateAlternateColorCodes('§', formatted);
 		}
@@ -113,9 +113,7 @@ public class LanguageManager {
 	 * @param node The language node to broadcast
 	 */
 	public static void broadcast(String node, Object... args) {
-		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-			player.sendMessage(LanguageManager.getString(player, node, args));
-		}
+		Bukkit.getServer().getOnlinePlayers().forEach(player -> player.sendMessage(LanguageManager.getString(player, node, args)));
 		Bukkit.getServer().getConsoleSender().sendMessage(LanguageManager.getString(node, args));
 	}
 }

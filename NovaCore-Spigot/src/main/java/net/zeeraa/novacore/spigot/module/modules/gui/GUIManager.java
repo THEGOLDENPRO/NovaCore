@@ -9,7 +9,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.gui.callbacks.GUIClickCallback;
-import net.zeeraa.novacore.spigot.module.modules.gui.callbacks.GUICloseCallback;
 import net.zeeraa.novacore.spigot.module.modules.gui.holders.GUIHolder;
 import net.zeeraa.novacore.spigot.module.modules.gui.holders.GUIReadOnlyHolder;
 
@@ -89,9 +88,7 @@ public class GUIManager extends NovaModule implements Listener {
 		if (e.getInventory().getHolder() instanceof GUIHolder) {
 			GUIHolder holder = (GUIHolder) e.getInventory().getHolder();
 
-			for (GUICloseCallback gcc : holder.getCloseCallbacks()) {
-				gcc.onClose(e);
-			}
+			holder.getCloseCallbacks().forEach(gcc -> gcc.onClose(e));
 		}
 	}
 }

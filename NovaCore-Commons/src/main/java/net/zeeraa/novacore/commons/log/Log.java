@@ -106,12 +106,12 @@ public class Log {
 			return;
 		}
 
-		for (UUID uuid : subscribedPlayers.keySet()) {
+		subscribedPlayers.keySet().forEach(uuid -> {
 			LogLevel userLogLevel = subscribedPlayers.get(uuid);
 			if (logLevel.shouldLog(userLogLevel)) {
 				NovaCommons.getAbstractPlayerMessageSender().trySendMessage(uuid, fullMessage);
 			}
-		}
+		});
 	}
 
 	/**

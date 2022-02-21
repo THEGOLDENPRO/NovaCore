@@ -48,8 +48,8 @@ public class NovaCoreSubCommandModulesDisable extends NovaSubCommand {
 			sender.sendMessage(ChatColor.RED + "Could not find a module with that name");
 			return false;
 		}
-		
-		if(ModuleManager.isEssential(module)) {
+
+		if (ModuleManager.isEssential(module)) {
 			sender.sendMessage(ChatColor.RED + "This module cant be disabled using this command");
 			return false;
 		}
@@ -73,13 +73,13 @@ public class NovaCoreSubCommandModulesDisable extends NovaSubCommand {
 		ArrayList<String> modules = new ArrayList<String>();
 
 		if (args.length == 1) {
-			for (String key : ModuleManager.getModules().keySet()) {
+			ModuleManager.getModules().keySet().forEach(key -> {
 				if (ModuleManager.isEnabled(key)) {
 					if (!ModuleManager.isEssential(ModuleManager.getModules().get(key))) {
 						modules.add(ModuleManager.getModule(key).getName());
 					}
 				}
-			}
+			});
 		}
 
 		return modules;

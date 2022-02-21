@@ -1,12 +1,12 @@
 package net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.worldborder;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
@@ -123,9 +123,9 @@ public class WorldborderMapModule extends MapModule {
 				// Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD +
 				// "The world border is starting to shrink");
 				LanguageManager.broadcast("novacore.game.wordborder.start");
-				for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-					player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 1F);
-				}
+				
+				Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependantUtils.get().playSound(player, player.getLocation(), VersionIndependantSound.NOTE_PLING, 1F, 1F));
+				
 				start();
 			}
 		});

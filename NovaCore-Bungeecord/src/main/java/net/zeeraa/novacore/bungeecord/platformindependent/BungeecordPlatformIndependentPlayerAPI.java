@@ -41,11 +41,9 @@ public class BungeecordPlatformIndependentPlayerAPI extends PlatformIndependentP
 	@Override
 	public List<UUID> getOnlinePlayers() {
 		List<UUID> result = new ArrayList<UUID>();
-		
-		for(ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-			result.add(player.getUniqueId());
-		}
-		
+
+		ProxyServer.getInstance().getPlayers().forEach(player -> result.add(player.getUniqueId()));
+
 		return result;
 	}
 }

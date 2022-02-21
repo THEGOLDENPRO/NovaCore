@@ -1,9 +1,7 @@
 package net.zeeraa.novacore.spigot.module.modules.lootdrop;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -22,15 +20,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.loottable.LootTable;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.event.LootDropSpawnEvent;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.message.DefaultLootDropSpawnMessage;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.message.LootDropSpawnMessage;
-import net.zeeraa.novacore.spigot.module.modules.lootdrop.particles.LootdropParticleEffect;
-import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 import net.zeeraa.novacore.spigot.utils.LocationUtils;
 
 public class LootDropManager extends NovaModule implements Listener {
@@ -39,11 +34,11 @@ public class LootDropManager extends NovaModule implements Listener {
 	private List<LootDrop> chests;
 	private List<LootDropEffect> dropEffects;
 
-	private Map<UUID, LootdropParticleEffect> particleEffects;
+	// private Map<UUID, LootdropParticleEffect> particleEffects;
 
 	private LootDropSpawnMessage spawnMessage;
 
-	private Task particleTask;
+	// private Task particleTask;
 
 	private int taskId;
 
@@ -90,18 +85,16 @@ public class LootDropManager extends NovaModule implements Listener {
 		this.chests = new ArrayList<LootDrop>();
 		this.dropEffects = new ArrayList<LootDropEffect>();
 		this.spawnMessage = new DefaultLootDropSpawnMessage();
-		this.particleEffects = new HashMap<UUID, LootdropParticleEffect>();
+		// this.particleEffects = new HashMap<UUID, LootdropParticleEffect>();
 		this.taskId = -1;
 		this.lootDropTexture = DEFAULT_LOOT_DROP_TEXTURE;
 
-		this.particleTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				for (UUID uuid : particleEffects.keySet()) {
-					particleEffects.get(uuid).update();
-				}
-			}
-		}, 2L);
+		/*
+		 * this.particleTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
+		 * 
+		 * @Override public void run() { for (UUID uuid : particleEffects.keySet()) {
+		 * particleEffects.get(uuid).update(); } } }, 2L);
+		 */
 	}
 
 	@Override
@@ -117,13 +110,13 @@ public class LootDropManager extends NovaModule implements Listener {
 			}
 		}, 20L, 20L);
 
-		particleTask.start();
+		// particleTask.start();
 	}
 
 	@Override
 	public void onDisable() {
-		Task.tryStopTask(particleTask);
-		destroy();
+		// Task.tryStopTask(particleTask);
+		this.destroy();
 	}
 
 	public void destroy() {
@@ -131,11 +124,9 @@ public class LootDropManager extends NovaModule implements Listener {
 			Bukkit.getScheduler().cancelTask(taskId);
 		}
 
-		for (LootDropEffect effect : dropEffects) {
-			effect.undoBlocks();
-		}
+		dropEffects.forEach(effect -> effect.undoBlocks());
 
-		particleEffects.clear();
+		// particleEffects.clear();
 
 		for (int i = chests.size(); i > 0; i--) {
 			removeChest(chests.get(i - 1));
@@ -149,17 +140,14 @@ public class LootDropManager extends NovaModule implements Listener {
 			}
 		}
 
-		List<UUID> removeParticles = new ArrayList<UUID>();
-
-		for (UUID uuid : particleEffects.keySet()) {
-			if (particleEffects.get(uuid).getLocation().getWorld().equals(world)) {
-				removeParticles.add(uuid);
-			}
-		}
-
-		for (UUID uuid : removeParticles) {
-			particleEffects.remove(uuid);
-		}
+		/*
+		 * List<UUID> removeParticles = new ArrayList<UUID>(); for (UUID uuid :
+		 * particleEffects.keySet()) { if
+		 * (particleEffects.get(uuid).getLocation().getWorld().equals(world)) {
+		 * removeParticles.add(uuid); } }
+		 * 
+		 * for (UUID uuid : removeParticles) { particleEffects.remove(uuid); }
+		 */
 
 		for (int i = chests.size(); i > 0; i--) {
 			if (chests.get(i).getWorld().equals(world)) {
@@ -224,7 +212,7 @@ public class LootDropManager extends NovaModule implements Listener {
 			}
 		}
 
-		if (location.getBlock().getType() == Material.SKULL) {
+		if (this.isSkull(location.getBlock().getType())) {
 			return false;
 		}
 
@@ -239,9 +227,12 @@ public class LootDropManager extends NovaModule implements Listener {
 		LootDrop drop = new LootDrop(location, lootTable);
 		chests.add(drop);
 
-		Location particleLocation = new Location(location.getWorld(), LocationUtils.blockCenter(location.getBlockX()), location.getY() + 0.8, LocationUtils.blockCenter(location.getBlockZ()));
+		// Location particleLocation = new Location(location.getWorld(),
+		// LocationUtils.blockCenter(location.getBlockX()), location.getY() + 0.8,
+		// LocationUtils.blockCenter(location.getBlockZ()));
 
-		particleEffects.put(drop.getUuid(), new LootdropParticleEffect(particleLocation));
+		// particleEffects.put(drop.getUuid(), new
+		// LootdropParticleEffect(particleLocation));
 	}
 
 	public LootDrop getChestAtLocation(Location location) {
@@ -263,9 +254,10 @@ public class LootDropManager extends NovaModule implements Listener {
 	public void removeChest(LootDrop chest) {
 		chests.remove(chest);
 		chest.remove();
-		if (particleEffects.containsKey(chest.getUuid())) {
-			particleEffects.remove(chest.getUuid());
-		}
+		/*
+		 * if (particleEffects.containsKey(chest.getUuid())) {
+		 * particleEffects.remove(chest.getUuid()); }
+		 */
 	}
 
 	public LootDrop getChestByUUID(UUID uuid) {
@@ -325,10 +317,14 @@ public class LootDropManager extends NovaModule implements Listener {
 		}
 	}
 
+	private boolean isSkull(Material material) {
+		return material.name().equals("SKULL") || material.name().equals("PLAYER_HEAD");
+	}
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			if (e.getClickedBlock().getType() == Material.SKULL) {
+			if (this.isSkull(e.getClickedBlock().getType())) {
 				LootDrop chest = this.getChestAtLocation(e.getClickedBlock().getLocation());
 
 				if (chest != null) {
@@ -361,7 +357,7 @@ public class LootDropManager extends NovaModule implements Listener {
 			}
 		}
 
-		if (e.getBlock().getType() == Material.SKULL) {
+		if (this.isSkull(e.getBlock().getType())) {
 			LootDrop chest = this.getChestAtLocation(e.getBlock().getLocation());
 
 			if (chest != null) {

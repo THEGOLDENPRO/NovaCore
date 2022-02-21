@@ -42,9 +42,7 @@ public class SpigotPlatformIndependentPlayerAPI extends PlatformIndependentPlaye
 	public List<UUID> getOnlinePlayers() {
 		List<UUID> result = new ArrayList<UUID>();
 
-		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-			result.add(player.getUniqueId());
-		}
+		Bukkit.getServer().getOnlinePlayers().forEach(player -> result.add(player.getUniqueId()));
 
 		return result;
 	}

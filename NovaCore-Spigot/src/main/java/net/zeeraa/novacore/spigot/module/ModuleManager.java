@@ -287,11 +287,11 @@ public class ModuleManager {
 	 */
 	public static void disableAll() {
 		Log.info("ModuleManager", "Disabling all modules");
-		for (String module : modules.keySet()) {
+		modules.keySet().forEach(module -> {
 			if (isEnabled(module)) {
 				disable(module);
 			}
-		}
+		});
 	}
 
 	/**

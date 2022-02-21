@@ -137,11 +137,11 @@ public class GameLobby extends NovaModule implements Listener {
 			@Override
 			public void run() {
 				if (hasActiveMap()) {
-					for (Player player : getActiveMap().getWorld().getPlayers()) {
+					getActiveMap().getWorld().getPlayers().forEach(player -> {
 						if (GameManager.getInstance().hasGame()) {
 							if (GameManager.getInstance().getActiveGame().hasStarted()) {
 								GameManager.getInstance().getActiveGame().tpToSpectator(player);
-								continue;
+								return;
 							}
 						}
 
@@ -151,7 +151,7 @@ public class GameLobby extends NovaModule implements Listener {
 							player.setFallDistance(0);
 							player.teleport(activeMap.getSpawnLocation());
 						}
-					}
+					});
 				}
 			}
 		}, 5L, 5L);

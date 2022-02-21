@@ -80,21 +80,19 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 			globalLines.put(i, "");
 		}
 
-		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-			createPlayerScoreboard(player);
-		}
+		Bukkit.getServer().getOnlinePlayers().forEach(player -> createPlayerScoreboard(player));
 
 		if (taskId == -1) {
 			taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
 				@Override
 				public void run() {
-					for (UUID uuid : boards.keySet()) {
+					boards.keySet().forEach(uuid -> {
 						Player player = Bukkit.getServer().getPlayer(uuid);
 
 						if (player != null) {
 							update(player);
 						}
-					}
+					});
 				}
 			}, 5L, 5L);
 		}
@@ -153,7 +151,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 				}
 			}
 
-			for (UUID uuid : playerNameColor.keySet()) {
+			playerNameColor.keySet().forEach(uuid -> {
 				Team team = board.getScoreboard().getTeam("C_" + playerNameColor.get(uuid).name());
 				if (team != null) {
 					OfflinePlayer p = Bukkit.getServer().getOfflinePlayer(uuid);
@@ -167,7 +165,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 				} else {
 					Log.warn("Missing team color: C_" + playerNameColor.get(uuid).name());
 				}
-			}
+			});
 
 			update(player);
 
@@ -417,7 +415,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 		if (newColor != null) {
 			playerNameColor.put(player.getUniqueId(), newColor);
-			for (UUID uuid : boards.keySet()) {
+			boards.keySet().forEach(uuid -> {
 				BPlayerBoard board = boards.get(uuid);
 
 				Team team = board.getScoreboard().getTeam("C_" + newColor.name());
@@ -429,7 +427,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 						}
 					}
 				}
-			}
+			});
 		}
 	}
 }

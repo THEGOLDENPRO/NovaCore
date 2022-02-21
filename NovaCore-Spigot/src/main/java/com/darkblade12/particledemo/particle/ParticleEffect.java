@@ -44,6 +44,7 @@ import com.darkblade12.particledemo.particle.ReflectionUtils.PackageType;
  * 
  * @author DarkBlade12
  * @version 1.7
+ * @deprecated Not supported in newer versions of the game
  */
 public enum ParticleEffect {
 	/**
@@ -1058,7 +1059,6 @@ public enum ParticleEffect {
 		 * @param material Material of the item/block
 		 * @param data     Data value of the item/block
 		 */
-		@SuppressWarnings("deprecation")
 		public ParticleData(Material material, byte data) {
 			this.material = material;
 			this.data = data;

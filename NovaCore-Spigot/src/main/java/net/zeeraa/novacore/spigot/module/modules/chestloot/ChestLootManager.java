@@ -8,7 +8,6 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
@@ -23,6 +22,8 @@ import org.bukkit.inventory.ItemStack;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.loottable.LootTable;
 import net.zeeraa.novacore.spigot.module.NovaModule;
@@ -59,10 +60,11 @@ public class ChestLootManager extends NovaModule implements Listener {
 		enderChests.clear();
 		chests.clear();
 		if (announce) {
-			for (Player p : Bukkit.getOnlinePlayers()) {
-				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);
-				p.sendMessage(LanguageManager.getString(p, "novacore.game.modules.chestloot.refill"));
-			}
+			
+			Bukkit.getOnlinePlayers().forEach(player -> {
+				player.sendMessage(LanguageManager.getString(player, "novacore.game.modules.chestloot.refill"));
+				VersionIndependantUtils.get().playSound(player, player.getLocation(), VersionIndependantSound.NOTE_PLING, 1F, 1F);
+			});
 		}
 	}
 
@@ -199,14 +201,14 @@ public class ChestLootManager extends NovaModule implements Listener {
 							inventory.setItem(slot, item);
 						}
 					}
-
+					
 					for (BlockFace face : chestBlockFaces) {
 						Block nextBlock = block.getRelative(face);
 
 						if (nextBlock.getType() == Material.CHEST || nextBlock.getType() == Material.TRAPPED_CHEST) {
 							if (!chests.contains(nextBlock.getLocation())) {
 								Log.trace("Executing recursive fill to chest at location " + nextBlock.getLocation().toString());
-								fillChest(nextBlock);
+								this.fillChest(nextBlock);
 							}
 						}
 					}

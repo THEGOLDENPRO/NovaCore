@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,6 +18,7 @@ import net.zeeraa.novacore.spigot.loottable.LootTable;
 
 /**
  * Represents a loot drop
+ * 
  * @author Zeeraa
  */
 public class LootDrop {
@@ -35,11 +35,11 @@ public class LootDrop {
 		this.inventory = Bukkit.createInventory(new LootDropInventoryHolder(uuid), 27, "Loot drop");
 
 		this.lootTable = lootTable;
-		
+
 		this.fill();
 
 		NovaCore.getInstance().getVersionIndependentUtils().setBlockAsPlayerSkull(this.location.getBlock());
-		
+
 		NBTEditor.setSkullTexture(this.location.getBlock(), "http://textures.minecraft.net/texture/2bdd62f25f4a49cc42e054a3f212c3e0092138299172d7d8f3d438214ca972ac");
 	}
 
@@ -93,17 +93,17 @@ public class LootDrop {
 
 		this.location.getBlock().setType(Material.AIR);
 
-		for (Player p : this.location.getWorld().getPlayers()) {
-			if (p.getOpenInventory() != null) {
-				if (p.getOpenInventory().getTopInventory() != null) {
-					if (p.getOpenInventory().getTopInventory().getHolder() instanceof LootDropInventoryHolder) {
-						if (((LootDropInventoryHolder) p.getOpenInventory().getTopInventory().getHolder()).getUuid() == this.uuid) {
-							p.closeInventory();
+		this.location.getWorld().getPlayers().forEach(player -> {
+			if (player.getOpenInventory() != null) {
+				if (player.getOpenInventory().getTopInventory() != null) {
+					if (player.getOpenInventory().getTopInventory().getHolder() instanceof LootDropInventoryHolder) {
+						if (((LootDropInventoryHolder) player.getOpenInventory().getTopInventory().getHolder()).getUuid() == this.uuid) {
+							player.closeInventory();
 						}
 					}
 				}
 			}
-		}
+		});
 
 		for (ItemStack i : this.inventory.getContents()) {
 			if (i == null) {

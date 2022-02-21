@@ -11,7 +11,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,8 +28,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
+import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.spigot.module.modules.game.mapselector.MapSelector;
 import net.zeeraa.novacore.spigot.module.modules.gamelobby.events.PlayerJoinGameLobbyEvent;
@@ -69,8 +71,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 			Inventory voteInventory = Bukkit.createInventory(new MapVoteInventoryHolder(), 9, ChatColor.GOLD + "" + ChatColor.BOLD + LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote_for_map"));
 			playerVoteInventory.put(player.getUniqueId(), voteInventory);
 
-			updateInventory(player);
-
+			this.updateInventory(player);
 		}
 
 		player.openInventory(playerVoteInventory.get(player.getUniqueId()));
@@ -84,6 +85,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 			holder.getMapSlots().clear();
 
 			int slot = 0;
+			
 			for (GameMapData map : getMaps()) {
 				ItemStack voteItem = new ItemStack(map.isEnabled() ? Material.EMERALD : Material.COAL);
 
@@ -189,42 +191,25 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoinGameLobby(PlayerJoinGameLobbyEvent e) {
-		/*
-		 * ItemStack item = new ItemBuilder(Material.COMPASS).setName(ChatColor.GOLD +
-		 * "" + ChatColor.BOLD + "Map selector").build(); item = NBTEditor.set(item, 1,
-		 * "novacore", "mapselector");
-		 * 
-		 * e.getPlayer().getInventory().addItem(item);
-		 */
-
 		e.getPlayer().getInventory().addItem(CustomItemManager.getInstance().getCustomItemStack(GUIMapVoteMenuIcon.class, e.getPlayer()));
 	}
 
-	/*
-	 * @EventHandler(priority = EventPriority.NORMAL) public void
-	 * onPlayerDropItem(PlayerDropItemEvent e) { if
-	 * (e.getItemDrop().getItemStack().getType() == Material.COMPASS) { if
-	 * (e.getPlayer().getGameMode() != GameMode.CREATIVE) { if
-	 * (NBTEditor.contains(e.getItemDrop().getItemStack(), "novacore",
-	 * "mapselector")) { e.setCancelled(true); } } } }
-	 */
-
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent e) {
-		/*
-		 * if (e.getCurrentItem() != null) { if (e.getCurrentItem().getType() ==
-		 * Material.COMPASS) { if (e.getWhoClicked().getGameMode() != GameMode.CREATIVE)
-		 * { if (NBTEditor.contains(e.getCurrentItem(), "novacore", "mapselector")) {
-		 * e.setCancelled(true); return; } } } }
-		 */
-
+		if(GameManager.getInstance().hasGame()) {
+			if(GameManager.getInstance().getActiveGame().hasStarted()) {
+				// Prevent spectators in game from opening gui
+				return;
+			}
+		}
+		
 		if (e.getInventory().getHolder() instanceof MapVoteInventoryHolder) {
 			e.setCancelled(true);
 			if (e.getClickedInventory() != null) {
 				if (e.getClickedInventory().getHolder() instanceof MapVoteInventoryHolder) {
 					MapVoteInventoryHolder holder = (MapVoteInventoryHolder) e.getClickedInventory().getHolder();
 
-					Player p = (Player) e.getWhoClicked();
+					Player player = (Player) e.getWhoClicked();
 
 					if (holder.getMapSlots().containsKey(e.getSlot())) {
 						String mapName = holder.getMapSlots().get(e.getSlot());
@@ -232,7 +217,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 						boolean changed = false;
 
 						if (e.getClick() == ClickType.MIDDLE) {
-							if (p.hasPermission("novacore.gamelobby.forcemap")) {
+							if (player.hasPermission("novacore.gamelobby.forcemap")) {
 								if (forcedMap == mapName) {
 									forcedMap = null;
 									Bukkit.getServer().broadcast(ChatColor.GREEN + "Set forced map to null", "novacore.gamelobby.forcemap");
@@ -245,20 +230,20 @@ public class GUIMapVote extends MapSelector implements Listener {
 							}
 						}
 
-						if (votes.containsKey(p.getUniqueId())) {
-							if (votes.get(p.getUniqueId()).equals(mapName)) {
+						if (votes.containsKey(player.getUniqueId())) {
+							if (votes.get(player.getUniqueId()).equals(mapName)) {
 								return;
 							}
-							votes.remove(p.getUniqueId());
+							votes.remove(player.getUniqueId());
 							changed = true;
 						}
 
-						votes.put(p.getUniqueId(), mapName);
+						votes.put(player.getUniqueId(), mapName);
 
-						p.playSound(p.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
-						p.sendMessage(ChatColor.GREEN + (changed ? LanguageManager.getString(p, "novacore.game.lobby.map_vote.vote.changed") : LanguageManager.getString(p, "novacore.game.lobby.map_vote.vote.for")) + this.getMap(mapName).getDisplayName());
+						VersionIndependantUtils.get().playSound(player, player.getLocation(), VersionIndependantSound.ORB_PICKUP, 1F, 1F);
+						player.sendMessage(ChatColor.GREEN + (changed ? LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote.changed") : LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote.for")) + this.getMap(mapName).getDisplayName());
 
-						updateInventory(p);
+						updateInventory(player);
 					}
 				}
 			}

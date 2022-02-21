@@ -34,7 +34,7 @@ public class NovaCoreSubCommandGoToWorld extends NovaSubCommand {
 		this.addHelpSubCommand();
 
 		this.setDescription("Teleport to the spawn of a world");
-		
+
 		this.setFilterAutocomplete(true);
 	}
 
@@ -70,12 +70,12 @@ public class NovaCoreSubCommandGoToWorld extends NovaSubCommand {
 		String lastWord = args[args.length - 1];
 
 		ArrayList<String> matchedWorlds = new ArrayList<String>();
-		for (World world : Bukkit.getServer().getWorlds()) {
+		Bukkit.getServer().getWorlds().forEach(world -> {
 			String name = world.getName();
 			if (StringUtil.startsWithIgnoreCase(name, lastWord)) {
 				matchedWorlds.add(name);
 			}
-		}
+		});
 
 		Collections.sort(matchedWorlds, String.CASE_INSENSITIVE_ORDER);
 		return matchedWorlds;

@@ -11,6 +11,7 @@ import com.darkblade12.particledemo.particle.ParticleEffect;
  * https://github.com/iSach/UltraCosmetics/blob/master/core/src/main/java/be/isach/ultracosmetics/cosmetics/particleeffects/ParticleEffectGreenSparks.java
  * 
  * @author Zeeraa
+ * @deprecated Not supported in newer versions of the game
  */
 public class LootdropParticleEffect {
 	private Location location;

@@ -5,6 +5,9 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+/**
+ * @deprecated Not supported in newer versions of the game
+ */
 public enum ColoredParticle {
 	SPELL_MOB("SPELL_MOB"), SPELL_MOB_AMBIENT("SPELL_MOB_AMBIENT"), REDSTONE("REDSTONE");
 

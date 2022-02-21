@@ -72,9 +72,8 @@ public abstract class AbstractMapData {
 
 	protected boolean initHolograms(World world) {
 		try {
-			for (HologramData hologramData : holograms) {
-				hologramData.create(world);
-			}
+			holograms.forEach(hologramData -> hologramData.create(world));
+			
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

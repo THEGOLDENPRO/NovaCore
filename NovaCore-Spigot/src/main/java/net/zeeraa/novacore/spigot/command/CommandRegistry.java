@@ -68,9 +68,7 @@ public class CommandRegistry {
 			PermissionRegistrator.registerPermission(command.getPermission(), command.getPermissionDescription(), command.getPermissionDefaultValue());
 		}
 
-		for (NovaCommandBase subCommand : command.getSubCommands()) {
-			registerCommandPermissions(subCommand);
-		}
+		command.getSubCommands().forEach(sub -> registerCommandPermissions(sub));
 	}
 
 	/**

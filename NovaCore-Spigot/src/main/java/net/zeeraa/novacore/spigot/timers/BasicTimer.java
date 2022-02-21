@@ -90,15 +90,14 @@ public class BasicTimer implements Timer {
 			public void run() {
 				timeLeft--;
 
-				for (TickCallback tc : tickCallbacks) {
-					tc.execute(timeLeft);
-				}
+				tickCallbacks.forEach(tc -> tc.execute(timeLeft));
+
 
 				if (timeLeft <= 0) {
 					finished = true;
-					for (Callback c : finishCallbacks) {
-						c.execute();
-					}
+					
+					finishCallbacks.forEach(c -> c.execute());
+					
 					stop();
 				}
 			}

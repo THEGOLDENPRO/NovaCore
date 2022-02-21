@@ -27,6 +27,7 @@ import org.bukkit.Bukkit;
  * 
  * @author DarkBlade12
  * @version 1.1
+ * @deprecated Not supported in newer versions of the game
  */
 public final class ReflectionUtils {
 	// Prevent accidental construction
