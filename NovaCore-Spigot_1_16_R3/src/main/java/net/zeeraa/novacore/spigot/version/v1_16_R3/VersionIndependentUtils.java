@@ -29,6 +29,7 @@ import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
+import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
@@ -255,7 +256,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case YELLOW:
 				material = Material.YELLOW_STAINED_GLASS;
 				break;
-				
+
 			case WHITE:
 				material = Material.WHITE_STAINED_GLASS;
 				break;
@@ -328,7 +329,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 			case WHITE:
 				material = Material.WHITE_STAINED_GLASS_PANE;
-				
+
 			default:
 				material = Material.AIR;
 				break;
@@ -394,11 +395,11 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case YELLOW:
 				material = Material.YELLOW_WOOL;
 				break;
-				
+
 			case WHITE:
 				material = Material.WHITE_WOOL;
 				break;
-				
+
 			default:
 				material = Material.AIR;
 				break;
@@ -439,7 +440,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case NOTE_PLING:
 			realSound = Sound.BLOCK_NOTE_BLOCK_PLING;
 			break;
-			
+
 		case NOTE_HAT:
 			realSound = Sound.BLOCK_NOTE_BLOCK_HAT;
 			break;
@@ -455,11 +456,11 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case ITEM_BREAK:
 			realSound = Sound.ENTITY_ITEM_BREAK;
 			break;
-			
+
 		case ORB_PICKUP:
 			realSound = Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
 			break;
-			
+
 		default:
 			System.err.println("[VersionIndependentUtils] VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
 			return;
@@ -504,7 +505,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient) {
 		recipe.setIngredient(ingredient, Material.PLAYER_HEAD);
 	}
-	
+
 	@Override
 	public ItemStack getItemStack(VersionIndependantMetarial material) {
 		switch (material) {
@@ -514,19 +515,24 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case END_STONE:
 			return new ItemStack(Material.END_STONE);
-			
+
 		default:
 			return null;
 		}
 	}
-	
+
 	private LabyModProtocolImpl lmp = null;
 
 	@Override
 	public LabyModProtocol getLabyModProtocol() {
-		if(lmp == null) {
+		if (lmp == null) {
 			lmp = new LabyModProtocolImpl();
 		}
 		return lmp;
+	}
+
+	@Override
+	public NovaCoreGameVersion getNovaCoreGameVersion() {
+		return NovaCoreGameVersion.V_1_16;
 	}
 }

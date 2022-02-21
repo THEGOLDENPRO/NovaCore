@@ -34,6 +34,7 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_12_R1.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
+import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
@@ -368,14 +369,19 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			return null;
 		}
 	}
-	
+
 	private LabyModProtocolImpl lmp = null;
 
 	@Override
 	public LabyModProtocol getLabyModProtocol() {
-		if(lmp == null) {
+		if (lmp == null) {
 			lmp = new LabyModProtocolImpl();
 		}
 		return lmp;
+	}
+
+	@Override
+	public NovaCoreGameVersion getNovaCoreGameVersion() {
+		return NovaCoreGameVersion.V_1_12;
 	}
 }

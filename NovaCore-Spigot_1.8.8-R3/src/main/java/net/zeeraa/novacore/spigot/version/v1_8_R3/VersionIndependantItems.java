@@ -4,10 +4,10 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
-public class VersionIndependantItems extends net.zeeraa.novacore.spigot.abstraction.VersionIndependantItems{
+public class VersionIndependantItems extends net.zeeraa.novacore.spigot.abstraction.VersionIndependantItems {
 	@Override
 	public ItemStack getPlayerSkull() {
-		return new ItemStack(Material.SKULL_ITEM, 1, (byte)3);
+		return new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -18,7 +18,7 @@ public class VersionIndependantItems extends net.zeeraa.novacore.spigot.abstract
 
 			return data.getData() == 3;
 		}
-		
+
 		return false;
 	}
 }

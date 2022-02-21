@@ -8,6 +8,7 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * This class is used to communicate with the pvp client labymod
+ * 
  * @since 1.1
  */
 public abstract class LabyModProtocol {
@@ -25,7 +26,7 @@ public abstract class LabyModProtocol {
 	 * @param messageContent json object content
 	 */
 	public abstract void sendLabyModMessage(Player player, String key, JsonElement messageContent);
-	
+
 	/**
 	 * Gets the bytes that are required to send the given message
 	 *
@@ -34,7 +35,7 @@ public abstract class LabyModProtocol {
 	 * @return the byte array that should be the payload
 	 */
 	public abstract byte[] getBytesToSend(String messageKey, String messageContents);
-	
+
 	/**
 	 * Writes a varint to the given byte buffer
 	 *
@@ -42,7 +43,7 @@ public abstract class LabyModProtocol {
 	 * @param input the int that should be written to the buffer
 	 */
 	public abstract void writeVarIntToBuffer(ByteBuf buf, int input);
-	
+
 	/**
 	 * Writes a string to the given byte buffer
 	 *
@@ -50,7 +51,7 @@ public abstract class LabyModProtocol {
 	 * @param string the string that should be written to the buffer
 	 */
 	public abstract void writeString(ByteBuf buf, String string);
-	
+
 	/**
 	 * Reads a varint from the given byte buffer
 	 *
@@ -58,7 +59,7 @@ public abstract class LabyModProtocol {
 	 * @return the int read
 	 */
 	public abstract int readVarIntFromBuffer(ByteBuf buf);
-	
+
 	/**
 	 * Reads a string from the given byte buffer
 	 *

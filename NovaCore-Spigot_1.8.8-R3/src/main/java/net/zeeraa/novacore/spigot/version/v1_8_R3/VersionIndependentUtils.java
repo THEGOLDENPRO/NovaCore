@@ -36,6 +36,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
+import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
@@ -206,21 +207,21 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
 		MaterialData data = getColoredBlockMaterialData(color, type);
-		
+
 		recipe.setIngredient(ingredient, data);
 	}
-	
+
 	@Override
 	public void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
 		MaterialData data = getColoredBlockMaterialData(color, type);
-		
+
 		recipe.addIngredient(ingredient, data);
 	}
-	
+
 	@Override
 	public ItemStack getColoredItem(DyeColor color, ColoredBlockType type) {
 		MaterialData data = getColoredBlockMaterialData(color, type);
-		
+
 		return data.toItemStack();
 	}
 
@@ -277,7 +278,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case NOTE_PLING:
 			realSound = Sound.NOTE_PLING;
 			break;
-			
+
 		case NOTE_HAT:
 			realSound = Sound.NOTE_STICKS;
 			break;
@@ -289,11 +290,11 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case WITHER_HURT:
 			realSound = Sound.WITHER_HURT;
 			break;
-			
+
 		case ITEM_BREAK:
 			realSound = Sound.ITEM_BREAK;
 			break;
-			
+
 		case ORB_PICKUP:
 			realSound = Sound.ORB_PICKUP;
 			break;
@@ -362,7 +363,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		switch (material) {
 		case FILLED_MAP:
 			return new ItemStack(Material.MAP);
-			
+
 		case END_STONE:
 			return new ItemStack(Material.ENDER_STONE);
 
@@ -370,14 +371,19 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			return null;
 		}
 	}
-	
+
 	private LabyModProtocolImpl lmp = null;
 
 	@Override
 	public LabyModProtocol getLabyModProtocol() {
-		if(lmp == null) {
+		if (lmp == null) {
 			lmp = new LabyModProtocolImpl();
 		}
 		return lmp;
+	}
+
+	@Override
+	public NovaCoreGameVersion getNovaCoreGameVersion() {
+		return NovaCoreGameVersion.V_1_8;
 	}
 }

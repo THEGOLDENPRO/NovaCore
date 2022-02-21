@@ -13,6 +13,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.map.MapView;
 
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
+import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
@@ -33,7 +34,14 @@ public abstract class VersionIndependantUtils {
 	}
 
 	public abstract LabyModProtocol getLabyModProtocol();
-	
+
+	/**
+	 * Get the {@link NovaCoreGameVersion} nova core is using for the server
+	 * 
+	 * @return The {@link NovaCoreGameVersion} for thie server
+	 */
+	public abstract NovaCoreGameVersion getNovaCoreGameVersion();
+
 	public abstract void setBlockAsPlayerSkull(Block block);
 
 	/**
