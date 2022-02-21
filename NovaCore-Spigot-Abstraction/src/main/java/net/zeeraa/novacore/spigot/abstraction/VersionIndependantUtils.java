@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -156,9 +157,11 @@ public abstract class VersionIndependantUtils {
 	 * @param player   The player to play the sound for
 	 * @param location The location of the sound
 	 * @param sound    The {@link VersionIndependantSound} to play
+	 * @return <code>true</code> on success. <code>false</code> if the sound is not
+	 *         configured
 	 */
-	public void playSound(Player player, Location location, VersionIndependantSound sound) {
-		this.playSound(player, location, sound, 1F, 1F);
+	public boolean playSound(Player player, Location location, VersionIndependantSound sound) {
+		return this.playSound(player, location, sound, 1F, 1F);
 	}
 
 	/**
@@ -169,8 +172,60 @@ public abstract class VersionIndependantUtils {
 	 * @param sound    The {@link VersionIndependantSound} to play
 	 * @param volume   The volume of the sound
 	 * @param pitch    The pitch of the sound
+	 * @return <code>true</code> on success. <code>false</code> if the sound is not
+	 *         configured
 	 */
-	public abstract void playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch);
+	public boolean playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch) {
+		Sound realSound = this.getSound(sound);
+
+		if (sound == null) {
+			return false;
+		}
+
+		player.playSound(location, realSound, volume, pitch);
+		return true;
+	}
+
+	/**
+	 * Play a sound at a location
+	 * 
+	 * @param location The location of the sound
+	 * @param sound    The {@link VersionIndependantSound} to play
+	 * @return <code>true</code> on success. <code>false</code> if the sound is not
+	 *         configured
+	 */
+	public boolean playSound(Location location, VersionIndependantSound sound) {
+		return this.playSound(location, sound, 1F, 1F);
+	}
+
+	/**
+	 * Play a sound at a location
+	 * 
+	 * @param location The location of the sound
+	 * @param sound    The {@link VersionIndependantSound} to play
+	 * @param volume   The volume of the sound
+	 * @param pitch    The pitch of the sound
+	 * @return <code>true</code> on success. <code>false</code> if the sound is not
+	 *         configured
+	 */
+	public boolean playSound(Location location, VersionIndependantSound sound, float volume, float pitch) {
+		Sound realSound = this.getSound(sound);
+
+		if (sound == null) {
+			return false;
+		}
+
+		location.getWorld().playSound(location, realSound, volume, pitch);
+		return true;
+	}
+
+	/**
+	 * Get the {@link Sound} from a {@link VersionIndependantSound}
+	 * 
+	 * @param sound The {@link VersionIndependantSound} to get
+	 * @return resulting {@link Sound}
+	 */
+	public abstract Sound getSound(VersionIndependantSound sound);
 
 	public abstract void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut);
 

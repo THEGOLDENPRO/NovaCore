@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.Sound;
@@ -271,40 +270,33 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public void playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch) {
-		Sound realSound = null;
-
+	public Sound getSound(VersionIndependantSound sound) {
 		switch (sound) {
 		case NOTE_PLING:
-			realSound = Sound.NOTE_PLING;
-			break;
+			return Sound.NOTE_PLING;
 
 		case NOTE_HAT:
-			realSound = Sound.NOTE_STICKS;
-			break;
+			return Sound.NOTE_STICKS;
 
 		case WITHER_DEATH:
-			realSound = Sound.WITHER_DEATH;
-			break;
+			return Sound.WITHER_DEATH;
 
 		case WITHER_HURT:
-			realSound = Sound.WITHER_HURT;
-			break;
+			return Sound.WITHER_HURT;
 
 		case ITEM_BREAK:
-			realSound = Sound.ITEM_BREAK;
-			break;
+			return Sound.ITEM_BREAK;
 
 		case ORB_PICKUP:
-			realSound = Sound.ORB_PICKUP;
-			break;
+			return Sound.ORB_PICKUP;
+
+		case ANVIL_LAND:
+			return Sound.ANVIL_LAND;
 
 		default:
 			System.err.println("[VersionIndependentUtils] VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
-			return;
+			return null;
 		}
-
-		player.playSound(location, realSound, volume, pitch);
 	}
 
 	@Override
