@@ -1,17 +1,18 @@
 package net.zeeraa.novacore.spigot.module.modules.lootdrop.particles;
 
+import java.awt.Color;
+
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-import com.darkblade12.particledemo.particle.ColoredParticle;
-import com.darkblade12.particledemo.particle.ParticleEffect;
+import xyz.xenondevs.particle.ParticleBuilder;
+import xyz.xenondevs.particle.ParticleEffect;
 
 /**
  * Effect from
  * https://github.com/iSach/UltraCosmetics/blob/master/core/src/main/java/be/isach/ultracosmetics/cosmetics/particleeffects/ParticleEffectGreenSparks.java
  * 
  * @author Zeeraa
- * @deprecated Not supported in newer versions of the game
  */
 public class LootdropParticleEffect {
 	private Location location;
@@ -20,7 +21,9 @@ public class LootdropParticleEffect {
 	private int g;
 	private int b;
 
-	private ColoredParticle particle;
+	private boolean useColor;
+
+	private ParticleEffect particle;
 
 	boolean up;
 	float height;
@@ -28,15 +31,17 @@ public class LootdropParticleEffect {
 
 	public LootdropParticleEffect(Location location) {
 
-		this(location, ColoredParticle.REDSTONE, 255, 255, 255);
+		this(location, ParticleEffect.FIREWORKS_SPARK, 255, 255, 255, true);
 	}
 
-	public LootdropParticleEffect(Location location, ColoredParticle particle, int r, int g, int b) {
+	public LootdropParticleEffect(Location location, ParticleEffect particle, int r, int g, int b, boolean useColor) {
 		this.location = location;
 
 		this.r = r;
 		this.g = g;
 		this.b = b;
+
+		this.useColor = useColor;
 
 		this.particle = particle;
 
@@ -62,7 +67,17 @@ public class LootdropParticleEffect {
 		Vector v = new Vector();
 		v.setX(Math.cos(angle) * 1.1);
 		v.setZ(Math.sin(angle) * 1.1);
-		ParticleEffect.FIREWORKS_SPARK.display(new Vector(0, 0, 0), 0, location.clone().add(v).add(0, height, 0), 50);
+
+		ParticleBuilder builder = new ParticleBuilder(particle, location.clone().add(v).add(0, height, 0));
+
+		if (isUseColor()) {
+			builder.setColor(new Color(r, g, b));
+		}
+
+		builder.display();
+		
+		// ParticleEffect.FIREWORKS_SPARK.display(new Vector(0, 0, 0), 0,
+		// location.clone().add(v).add(0, height, 0), 50);
 		step += 4;
 	}
 
@@ -82,7 +97,11 @@ public class LootdropParticleEffect {
 		return b;
 	}
 
-	public ColoredParticle getParticle() {
+	public boolean isUseColor() {
+		return useColor;
+	}
+
+	public ParticleEffect getParticle() {
 		return particle;
 	}
 }

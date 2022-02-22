@@ -162,6 +162,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>xyz.xenondevs</groupId>
+			<artifactId>particle</artifactId>
+			<version>1.7</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -195,11 +202,9 @@
 			<artifactId>novacore-spigot_v1.8.8-R3</artifactId>
 			<version>v1.8.8-R3-SNAPSHOT</version>
 			<type>jar</type>
-			<scope>compile</scope> <!-- The 'compile' scope will get shaded in -->
-			<optional>true</optional> <!-- Set all of these to optional, to ensure plugins building against yours 
-				don't look for them -->
+			<scope>compile</scope>
+			<optional>true</optional>
 		</dependency>
-
 
 		<dependency>
 			<groupId>net.zeeraa.novacore</groupId>

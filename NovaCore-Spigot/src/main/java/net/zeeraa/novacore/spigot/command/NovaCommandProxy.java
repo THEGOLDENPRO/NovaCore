@@ -83,7 +83,7 @@ public class NovaCommandProxy extends Command {
 						newArgs[i - 1] = args[i];
 					}
 
-					Log.trace("recursive check on sub command " + subCommand.getName() + " origin command: " + novaCommand.getName());
+					//Log.trace("recursive check on sub command " + subCommand.getName() + " origin command: " + novaCommand.getName());
 
 					return recursiceCommandExecutionCheck(subCommand, sender, commandLabel, newArgs);
 				}

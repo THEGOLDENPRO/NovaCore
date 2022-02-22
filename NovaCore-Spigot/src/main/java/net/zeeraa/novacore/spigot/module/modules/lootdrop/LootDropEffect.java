@@ -125,7 +125,7 @@ public class LootDropEffect implements Runnable {
 		removedBlocks.clear();
 
 		LootDropManager.getInstance().spawnChest(location, lootTable);
-		
+
 		VersionIndependantSound.ANVIL_LAND.playAtLocation(location, 1F, 1F);
 	}
 
@@ -140,6 +140,10 @@ public class LootDropEffect implements Runnable {
 
 	public Location getLocation() {
 		return location;
+	}
+
+	public Location getFireworkLocation() {
+		return new Location(location.getWorld(), location.getX(), (double) y, location.getZ());
 	}
 
 	public World getWorld() {
