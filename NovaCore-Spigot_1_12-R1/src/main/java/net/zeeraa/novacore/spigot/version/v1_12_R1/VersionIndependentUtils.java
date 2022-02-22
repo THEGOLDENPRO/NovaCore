@@ -379,4 +379,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public NovaCoreGameVersion getNovaCoreGameVersion() {
 		return NovaCoreGameVersion.V_1_12;
 	}
+	
+	@Override
+	public ItemStack getPlayerSkullitem() {
+		return new ItemStack(Material.SKULL, 1, (short) 3);
+	}
 }

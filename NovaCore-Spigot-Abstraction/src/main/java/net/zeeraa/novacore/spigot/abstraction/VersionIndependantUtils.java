@@ -268,4 +268,6 @@ public abstract class VersionIndependantUtils {
 
 		return new ItemStack(mcMaterial);
 	}
+	
+	public abstract ItemStack getPlayerSkullitem();
 }
