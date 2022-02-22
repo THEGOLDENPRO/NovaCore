@@ -1,7 +1,6 @@
 package net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftingtable;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -12,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
 
@@ -41,7 +41,7 @@ public class HandCraftingTable extends MapModule implements Listener {
 				if (e.getPlayer().getLocation().getWorld() == game.getWorld()) {
 					ItemStack item = NovaCore.getInstance().getVersionIndependentUtils().getItemInMainHand(e.getPlayer());
 					if (item != null) {
-						if (item.getType() == Material.WORKBENCH) {
+						if (item.getType() == VersionIndependantMetarial.WORKBENCH.toBukkitVersion()) {
 							e.getPlayer().openWorkbench(null, true);
 						}
 					}

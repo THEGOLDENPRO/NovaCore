@@ -304,17 +304,17 @@ public class LootDropManager extends NovaModule implements Listener {
 		}
 		return false;
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
 	public void onEntityDamage(EntityDamageEvent e) {
-		if(e.getCause() == DamageCause.ENTITY_EXPLOSION) {
-			if(VersionIndependantUtils.get().getNovaCoreGameVersion() == NovaCoreGameVersion.V_1_8) {
+		if (e.getCause() == DamageCause.ENTITY_EXPLOSION) {
+			if (VersionIndependantUtils.get().getNovaCoreGameVersion() == NovaCoreGameVersion.V_1_8) {
 				return;
 			}
-			
+
 			this.dropEffects.forEach(effect -> {
-				if(effect.getWorld() == e.getEntity().getWorld()) {
-					if(e.getEntity().getLocation().distance(effect.getFireworkLocation()) < 7) {
+				if (effect.getWorld() == e.getEntity().getWorld()) {
+					if (e.getEntity().getLocation().distance(effect.getFireworkLocation()) < 7) {
 						e.setCancelled(true);
 					}
 				}

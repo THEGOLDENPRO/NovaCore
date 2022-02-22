@@ -155,6 +155,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Mixed dependencies -->
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>
@@ -169,7 +170,42 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20200518</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.citizensnpcs</groupId>
+			<artifactId>citizens-main</artifactId>
+			<version>2.0.27-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>fr.minuskube</groupId>
+			<artifactId>netherboard-bukkit</artifactId>
+			<version>1.2.2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.gmail.filoghost.holographicdisplays</groupId>
+			<artifactId>holographicdisplays-api</artifactId>
+			<version>2.4.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -183,6 +219,7 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- NovaCore commons -->
 		<dependency>
 			<groupId>net.zeeraa.novacore</groupId>
 			<artifactId>novacore-commons</artifactId>
@@ -190,6 +227,7 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- Abstraction layer -->
 		<dependency>
 			<groupId>net.zeeraa.novacore</groupId>
 			<artifactId>novacore-spigot-abstraction</artifactId>
@@ -197,6 +235,7 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- Abstraction versions -->
 		<dependency>
 			<groupId>net.zeeraa.novacore</groupId>
 			<artifactId>novacore-spigot_v1.8.8-R3</artifactId>
@@ -224,6 +263,8 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!-- When adding new features to the abstraction layer the repos below 
+			this might need to be temporary removed -->
 		<dependency>
 			<groupId>net.zeeraa.novacore</groupId>
 			<artifactId>novacore-spigot_v1_17_R1</artifactId>
@@ -240,46 +281,6 @@
 			<type>jar</type>
 			<scope>compile</scope>
 			<optional>true</optional>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.json/json -->
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20200518</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>net.citizensnpcs</groupId>
-			<artifactId>citizens-main</artifactId>
-			<version>2.0.27-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-
-		<!--<dependency> <groupId>io.github.bananapuncher714</groupId> <artifactId>NBTEditor</artifactId> 
-			<version>7.18.0</version> <scope>compile</scope> </dependency> -->
-
-		<dependency>
-			<groupId>fr.minuskube</groupId>
-			<artifactId>netherboard-bukkit</artifactId>
-			<version>1.2.2</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.gmail.filoghost.holographicdisplays</groupId>
-			<artifactId>holographicdisplays-api</artifactId>
-			<version>2.4.0</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

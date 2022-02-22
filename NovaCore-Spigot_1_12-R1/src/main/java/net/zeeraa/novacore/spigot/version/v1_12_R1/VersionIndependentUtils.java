@@ -37,6 +37,7 @@ import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
 
@@ -300,7 +301,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			return Sound.BLOCK_ANVIL_LAND;
 
 		default:
-			System.err.println("[VersionIndependentUtils] VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
 			return null;
 		}
 	}
@@ -348,14 +349,16 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public ItemStack getItemStack(VersionIndependantMetarial material) {
+	public Material getMaterial(VersionIndependantMetarial material) {
 		switch (material) {
 		case FILLED_MAP:
-			ItemStack stack = new ItemStack(Material.MAP);
-			return stack;
+			return Material.MAP;
 
 		case END_STONE:
-			return new ItemStack(Material.ENDER_STONE);
+			return Material.ENDER_STONE;
+			
+		case WORKBENCH:
+			return Material.WORKBENCH;
 
 		default:
 			return null;

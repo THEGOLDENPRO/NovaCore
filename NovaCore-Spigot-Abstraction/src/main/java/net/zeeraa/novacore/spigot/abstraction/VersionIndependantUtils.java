@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
@@ -18,6 +19,7 @@ import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 
 public abstract class VersionIndependantUtils {
 	private static VersionIndependantUtils instance;
@@ -249,5 +251,21 @@ public abstract class VersionIndependantUtils {
 
 	public abstract void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient);
 
-	public abstract ItemStack getItemStack(VersionIndependantMetarial material);
+	/**
+	 * Get the {@link Material} from {@link VersionIndependantMetarial}
+	 * 
+	 * @param material The {@link VersionIndependantMetarial}
+	 * @return The minecraft {@link Material}
+	 */
+	public abstract Material getMaterial(VersionIndependantMetarial material);
+
+	public ItemStack getItemStack(VersionIndependantMetarial material) {
+		Material mcMaterial = this.getMaterial(material);
+		if (mcMaterial == null) {
+			AbstractionLogger.getLogger().error("VersionIndependantUtils", "Failed to get version independant material " + material.name() + " for version " + this.getNovaCoreGameVersion().name() + ". This needs to be added");
+			return null;
+		}
+
+		return new ItemStack(mcMaterial);
+	}
 }
