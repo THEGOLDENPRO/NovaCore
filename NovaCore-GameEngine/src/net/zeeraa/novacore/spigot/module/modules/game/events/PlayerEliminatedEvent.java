@@ -20,14 +20,16 @@ public class PlayerEliminatedEvent extends Event implements Cancellable {
 	private Entity killer;
 	private PlayerEliminationReason reason;
 	private int placement;
+	private boolean silent;
 
 	private boolean cancel;
 
-	public PlayerEliminatedEvent(OfflinePlayer player, Entity killer, PlayerEliminationReason reason, int placement) {
+	public PlayerEliminatedEvent(OfflinePlayer player, Entity killer, PlayerEliminationReason reason, int placement, boolean silent) {
 		this.player = player;
 		this.killer = killer;
 		this.reason = reason;
 		this.placement = placement;
+		this.silent = silent;
 
 		this.cancel = false;
 	}
@@ -69,6 +71,10 @@ public class PlayerEliminatedEvent extends Event implements Cancellable {
 	 */
 	public int getPlacement() {
 		return placement;
+	}
+	
+	public boolean isSilent() {
+		return silent;
 	}
 
 	@Override

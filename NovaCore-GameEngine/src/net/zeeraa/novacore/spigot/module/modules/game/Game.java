@@ -580,6 +580,26 @@ public abstract class Game {
 	 *         is not enabled
 	 */
 	public boolean eliminatePlayer(OfflinePlayer player, Entity killer, PlayerEliminationReason reason) {
+		return this.eliminatePlayer(player, killer, reason, false);
+	}
+
+	/**
+	 * Eliminate a player from the game
+	 * 
+	 * @param player The player to eliminate
+	 * @param killer killer The entity that killed the player. this can be null
+	 * @param reason {@link PlayerEliminationReason} for why the player was
+	 *               eliminated
+	 * @param silent Set to true to indicate that there should be no elimination
+	 *               message
+	 * 
+	 * @return <code>true</code> if player was eliminated. <code>false</code> if the
+	 *         player was not in game or if canceled. This might also return
+	 *         <code>false</code> if the game was ended by
+	 *         {@link Game#checkWinner()} and {@link Game#eliminateAfterAutoWin()}
+	 *         is not enabled
+	 */
+	public boolean eliminatePlayer(OfflinePlayer player, Entity killer, PlayerEliminationReason reason, boolean silent) {
 		if (!players.contains(player.getUniqueId())) {
 			Log.trace("Canceling elimination because the player is not in game");
 			return false;
@@ -594,7 +614,7 @@ public abstract class Game {
 
 		int placement = players.size() - 1;
 
-		PlayerEliminatedEvent playerEliminatedEvent = new PlayerEliminatedEvent(player, killer, reason, placement);
+		PlayerEliminatedEvent playerEliminatedEvent = new PlayerEliminatedEvent(player, killer, reason, placement, silent);
 
 		Bukkit.getServer().getPluginManager().callEvent(playerEliminatedEvent);
 
@@ -606,7 +626,9 @@ public abstract class Game {
 		players.remove(player.getUniqueId());
 
 		this.onPlayerEliminated(player, killer, reason, placement);
-		this.getGameManager().getPlayerEliminationMessage().showPlayerEliminatedMessage(player, killer, reason, placement);
+		if (!silent) {
+			this.getGameManager().getPlayerEliminationMessage().showPlayerEliminatedMessage(player, killer, reason, placement);
+		}
 
 		if (NovaCore.getInstance().getTeamManager() != null) {
 			if (this.getGameManager().isUseTeams()) {
