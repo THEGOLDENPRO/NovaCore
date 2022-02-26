@@ -15,7 +15,7 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
  *
  */
 public enum VersionIndependantSound {
-	NOTE_PLING, NOTE_HAT, WITHER_DEATH, WITHER_HURT, ITEM_BREAK, ORB_PICKUP, ANVIL_LAND;
+	NOTE_PLING, NOTE_HAT, WITHER_DEATH, WITHER_HURT, ITEM_BREAK, ORB_PICKUP, ANVIL_LAND, EXPLODE;
 
 	public void playAtLocation(Location location) {
 		this.playAtLocation(location, 1F, 1F);
