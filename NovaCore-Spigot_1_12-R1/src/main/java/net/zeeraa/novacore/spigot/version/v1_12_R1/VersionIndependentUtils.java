@@ -275,7 +275,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public int getMapViewId(MapView mapView) {
 		return (int) mapView.getId();
 	}
-	
+
 	@Override
 	public Sound getSound(VersionIndependantSound sound) {
 		switch (sound) {
@@ -296,7 +296,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case ORB_PICKUP:
 			return Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
-			
+
 		case ANVIL_LAND:
 			return Sound.BLOCK_ANVIL_LAND;
 
@@ -356,10 +356,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case END_STONE:
 			return Material.ENDER_STONE;
-			
+
 		case WORKBENCH:
 			return Material.WORKBENCH;
-			
+
 		case OAK_BOAT:
 			return Material.BOAT;
 
@@ -382,9 +382,14 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public NovaCoreGameVersion getNovaCoreGameVersion() {
 		return NovaCoreGameVersion.V_1_12;
 	}
-	
+
 	@Override
 	public ItemStack getPlayerSkullitem() {
 		return new ItemStack(Material.SKULL, 1, (short) 3);
+	}
+
+	@Override
+	public boolean isSign(Material material) {
+		return material == Material.SIGN_POST || material == Material.WALL_SIGN;
 	}
 }

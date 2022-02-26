@@ -390,4 +390,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public ItemStack getPlayerSkullitem() {
 		return new ItemStack(Material.SKULL, 1, (short) 3);
 	}
+	
+	@Override
+	public boolean isSign(Material material) {
+		return material == Material.SIGN_POST || material == Material.WALL_SIGN;
+	}
 }

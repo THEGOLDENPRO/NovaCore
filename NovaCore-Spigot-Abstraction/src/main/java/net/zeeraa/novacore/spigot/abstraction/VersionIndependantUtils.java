@@ -268,6 +268,12 @@ public abstract class VersionIndependantUtils {
 
 		return new ItemStack(mcMaterial);
 	}
-	
+
 	public abstract ItemStack getPlayerSkullitem();
+
+	public boolean isSign(Block block) {
+		return this.isSign(block.getType());
+	}
+
+	public abstract boolean isSign(Material material);
 }
