@@ -11,7 +11,7 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
  * @author Zeeraa
  */
 public enum VersionIndependantMetarial {
-	FILLED_MAP, END_STONE, WORKBENCH;
+	FILLED_MAP, END_STONE, WORKBENCH, OAK_BOAT;
 
 	/**
 	 * Get the bukkit {@link Material} for the currently used version of the game

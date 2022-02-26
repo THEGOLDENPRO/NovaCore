@@ -359,6 +359,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			
 		case WORKBENCH:
 			return Material.WORKBENCH;
+			
+		case OAK_BOAT:
+			return Material.BOAT;
 
 		default:
 			return null;
