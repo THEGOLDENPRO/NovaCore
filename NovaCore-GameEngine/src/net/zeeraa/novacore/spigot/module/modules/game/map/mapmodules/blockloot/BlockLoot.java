@@ -27,6 +27,8 @@ public class BlockLoot extends MapModule implements Listener {
 	public BlockLoot(JSONObject json) {
 		super(json);
 
+		materialData = new HashMap<Material, BlockLootData>();
+
 		json.keySet().forEach(key -> {
 			try {
 				Material material = Material.valueOf(key);
@@ -61,8 +63,6 @@ public class BlockLoot extends MapModule implements Listener {
 		});
 
 		Log.info("BlockLoot", "Loaded loot tables for " + materialData.size() + " materials");
-
-		materialData = new HashMap<Material, BlockLootData>();
 	}
 
 	@Override
@@ -86,6 +86,8 @@ public class BlockLoot extends MapModule implements Listener {
 				e.setCancelled(true);
 				e.getBlock().setType(Material.AIR);
 			}
+
+			Log.trace("BlockLoot", "droping loot from loot table " + data.getLootTable().getName() + ". Cancel drop: " + data.isCancelDrop());
 
 			Location dropLocation = LocationUtils.centerLocation(e.getBlock().getLocation().clone());
 
