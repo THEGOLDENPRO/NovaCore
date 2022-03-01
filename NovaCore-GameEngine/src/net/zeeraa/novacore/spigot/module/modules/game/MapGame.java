@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.gameengine.NovaCoreGameEngine;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameStartEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMap;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMapData;
@@ -26,8 +28,17 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
 public abstract class MapGame extends Game {
 	private GameMap activeMap;
 
+	/**
+	 * Deprecated: Please provide the plugin responsible for this game
+	 */
+	@Deprecated
 	public MapGame() {
-		super();
+		this(NovaCoreGameEngine.getInstance());
+		Log.warn("Game", "The game is using the lagacy contructor without defining owner plugin. Some map modules might now work as expected");
+	}
+
+	public MapGame(Plugin plugin) {
+		super(plugin);
 
 		this.activeMap = null;
 	}

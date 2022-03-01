@@ -1,0 +1,6 @@
+name: GameMapDesignToolkit
+main: net.zeeraa.novacore.spigot.gamemapdesigntoolkit.GameMapDesignToolkit
+description: Utils for creating map data
+version: 1.0
+api-version: 1.13
+depend: [NovaCore]

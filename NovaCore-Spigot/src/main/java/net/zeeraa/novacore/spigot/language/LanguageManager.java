@@ -40,7 +40,7 @@ public class LanguageManager {
 	 * @param primaryLanguage The new primary language for the
 	 *                        {@link LanguageManager}
 	 */
-	public static void setPrimaryLanguage(String primaryLanguage, Object... args) {
+	public static void setPrimaryLanguage(String primaryLanguage) {
 		LanguageManager.primaryLanguage = primaryLanguage;
 	}
 
@@ -111,6 +111,7 @@ public class LanguageManager {
 	 * language
 	 * 
 	 * @param node The language node to broadcast
+	 * @param args Any additional data needed to send the message
 	 */
 	public static void broadcast(String node, Object... args) {
 		Bukkit.getServer().getOnlinePlayers().forEach(player -> player.sendMessage(LanguageManager.getString(player, node, args)));

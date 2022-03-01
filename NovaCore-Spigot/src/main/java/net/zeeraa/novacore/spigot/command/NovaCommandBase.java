@@ -556,6 +556,8 @@ public abstract class NovaCommandBase {
 	 * <p>
 	 * Might return <code>null</code> if its called on a {@link NovaSubCommand} that
 	 * has not been added to a {@link NovaCommand}
+	 * 
+	 * @return {@link Plugin}
 	 */
 	public Plugin getOwner() {
 		NovaCommand base = this.getBaseCommand();

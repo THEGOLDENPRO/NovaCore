@@ -42,6 +42,7 @@
 		<module>NovaCore-Spigot</module>
 		<module>NovaCore-GameEngine</module>
 		<module>NovaUtils</module>
+		<module>NovaCore-GameMapDesignToolkit</module>
 	</modules>
 
 	<repositories>

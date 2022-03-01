@@ -6,6 +6,7 @@ import net.zeeraa.novacore.spigot.language.LanguageReader;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModuleManager;
+import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.blockloot.BlockLoot;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.chestloot.ChestLoot;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.falldamagegraceperiod.FallDamageGracePeriodMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.graceperiod.GracePeriodMapModule;
@@ -57,6 +58,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.graceperiod", GracePeriodMapModule.class);
 		MapModuleManager.addMapModule("novacore.falldamagegraceperiod", FallDamageGracePeriodMapModule.class);
 		MapModuleManager.addMapModule("novacore.simpleboxdecay", SimpleBoxDecay.class);
+		MapModuleManager.addMapModule("novacore.blockloot", BlockLoot.class);
 
 		Log.success("NovaCoreGameEngine", "Game engine enabled");
 	}

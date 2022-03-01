@@ -12,10 +12,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.gameengine.NovaCoreGameEngine;
 import net.zeeraa.novacore.spigot.module.modules.game.elimination.PlayerEliminationReason;
 import net.zeeraa.novacore.spigot.module.modules.game.elimination.PlayerQuitEliminationAction;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameBeginEvent;
@@ -102,7 +104,18 @@ public abstract class Game {
 
 	private boolean beginEventCalled;
 
+	private Plugin plugin;
+
+	/**
+	 * Deprecated: Please provide the plugin responsible for this game
+	 */
+	@Deprecated
 	public Game() {
+		this(NovaCoreGameEngine.getInstance());
+		Log.warn("Game", "The game is using the lagacy contructor without defining owner plugin. Some map modules might now work as expected");
+	}
+
+	public Game(Plugin plugin) {
 		this.players = new ArrayList<UUID>();
 		this.triggers = new ArrayList<GameTrigger>();
 		this.world = null;
@@ -111,6 +124,7 @@ public abstract class Game {
 		this.autoWinnerCheckCompleted = false;
 		this.random = new Random();
 		this.beginEventCalled = false;
+		this.plugin = plugin;
 		this.winCheckTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
 			public void run() {
@@ -121,6 +135,15 @@ public abstract class Game {
 				}
 			}
 		}, 5L);
+	}
+
+	/**
+	 * Get the {@link Plugin} that owns this game
+	 * 
+	 * @return {@link Plugin}
+	 */
+	public Plugin getPlugin() {
+		return plugin;
 	}
 
 	/**
