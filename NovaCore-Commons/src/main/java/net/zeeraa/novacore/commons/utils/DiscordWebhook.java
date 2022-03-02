@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.utils;
+package net.zeeraa.novacore.commons.utils;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.Color;
