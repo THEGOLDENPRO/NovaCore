@@ -169,11 +169,22 @@ public abstract class Game {
 	public abstract String getName();
 
 	/**
-	 * Get the display name of the game
+	 * Get the display name of the game.<br>
+	 * If you need to get the display name to use in messages use
+	 * {@link Game#getDisplayNameFromGameManager()} instead
 	 * 
 	 * @return Display name of the game
 	 */
 	public abstract String getDisplayName();
+
+	/**
+	 * Get the display name of the game using {@link GameManager#getDisplayName()}
+	 * 
+	 * @return Display name of the game for use in score boards or in the game
+	 */
+	public final String getDisplayNameFromGameManager() {
+		return GameManager.getInstance().getDisplayName();
+	}
 
 	/**
 	 * Get the {@link World} that the game takes place in.
@@ -203,7 +214,7 @@ public abstract class Game {
 	 * This should not be called outside of {@link GameManager}
 	 */
 	public void load() {
-		onLoad();
+		this.onLoad();
 	}
 
 	/**
@@ -214,7 +225,7 @@ public abstract class Game {
 	public void unload() {
 		winCheckTask.stop();
 
-		onUnload();
+		this.onUnload();
 	}
 
 	/**
@@ -242,7 +253,7 @@ public abstract class Game {
 	 * 
 	 * @return {@link List} with the {@link UUID} of all participants
 	 */
-	public List<UUID> getPlayers() {
+	public final List<UUID> getPlayers() {
 		return players;
 	}
 
@@ -251,7 +262,7 @@ public abstract class Game {
 	 * 
 	 * @return {@link List} with game triggers
 	 */
-	public List<GameTrigger> getTriggers() {
+	public final List<GameTrigger> getTriggers() {
 		return triggers;
 	}
 
@@ -308,7 +319,7 @@ public abstract class Game {
 	 * @param flag The flag to check for
 	 * @return List with triggers
 	 */
-	public List<GameTrigger> getTriggersByFlag(TriggerFlag flag) {
+	public final List<GameTrigger> getTriggersByFlag(TriggerFlag flag) {
 		return this.getTriggersByFlags(flag);
 	}
 
@@ -318,7 +329,7 @@ public abstract class Game {
 	 * @param flags The flags to check for
 	 * @return List with triggers
 	 */
-	public List<GameTrigger> getTriggersByFlags(TriggerFlag... flags) {
+	public final List<GameTrigger> getTriggersByFlags(TriggerFlag... flags) {
 		List<GameTrigger> result = new ArrayList<GameTrigger>();
 
 		triggers.forEach(trigger -> {
@@ -338,7 +349,7 @@ public abstract class Game {
 	 * @param name The name of the {@link GameTrigger}
 	 * @return <code>true</code> if a trigger with that name exists
 	 */
-	public boolean triggerExist(String name) {
+	public final boolean triggerExist(String name) {
 		return this.getTrigger(name) != null;
 	}
 
@@ -350,7 +361,7 @@ public abstract class Game {
 	 * @param trigger The {@link GameTrigger} to check for
 	 * @return <code>true</code> if that trigger has been added
 	 */
-	public boolean triggerExist(GameTrigger trigger) {
+	public final boolean triggerExist(GameTrigger trigger) {
 		return this.triggerExist(trigger.getName());
 	}
 
@@ -360,7 +371,7 @@ public abstract class Game {
 	 * @param name The name of the {@link GameTrigger}
 	 * @return The {@link GameTrigger} or <code>null</code> if not found
 	 */
-	public GameTrigger getTrigger(String name) {
+	public final GameTrigger getTrigger(String name) {
 		for (GameTrigger trigger : triggers) {
 			if (trigger.getName().equalsIgnoreCase(name)) {
 				return trigger;

@@ -104,6 +104,8 @@ public class GameManager extends NovaModule implements Listener {
 
 	private List<CombatTagMessage> combatTagMessages;
 
+	private String displayNameOverride;
+
 	/**
 	 * Get instance of {@link GameManager}
 	 * 
@@ -141,6 +143,8 @@ public class GameManager extends NovaModule implements Listener {
 		this.useCombatTagging = false;
 		this.combatTaggingTime = 5;
 
+		this.displayNameOverride = null;
+
 		this.combatTagMessages = new ArrayList<CombatTagMessage>();
 
 		this.combatTagCountdownTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
@@ -156,6 +160,44 @@ public class GameManager extends NovaModule implements Listener {
 
 		this.showDeathMessaage = false;
 		this.dropItemsOnDeath = false;
+	}
+
+	/**
+	 * Set the name to be displayed in score board and in game
+	 * 
+	 * @param displayNameOverride The new name or <code>null</code> to disable
+	 */
+	public void setDisplayNameOverride(String displayNameOverride) {
+		this.displayNameOverride = displayNameOverride;
+	}
+
+	/**
+	 * Get the display name override used by score boards and the game
+	 * 
+	 * @return The name to use or <code>null</code> if not enabled
+	 */
+	public String getDisplayNameOverride() {
+		return displayNameOverride;
+	}
+
+	/**
+	 * Get the name from the game using {@link Game#getDisplayName()} or use the
+	 * name from {@link GameManager#getDisplayNameOverride()} if name override is
+	 * enabled. If none of these could be fetched this will return <code>null</code>
+	 * instead
+	 * 
+	 * @return The name to use in score boards or in the game
+	 */
+	public String getDisplayName() {
+		if (this.getDisplayNameOverride() != null) {
+			return this.getDisplayNameOverride();
+		}
+
+		if (this.hasGame()) {
+			return this.getActiveGame().getDisplayName();
+		}
+
+		return null;
 	}
 
 	/**
@@ -782,7 +824,7 @@ public class GameManager extends NovaModule implements Listener {
 						try {
 							if (dropItemsOnDeath) {
 								Location lootLocation = e.getEntity().getLocation().clone();
-								
+
 								try {
 									ItemStack[] armor = e.getEntity().getInventory().getArmorContents();
 									for (ItemStack item : armor) {
