@@ -98,6 +98,26 @@ public class LocationUtils {
 		return new Location(world, x, y, z, yaw, pitch);
 	}
 
+	public static Location fromJSONObject(JSONObject json, World world) {
+		double x = json.getDouble("x");
+		double y = json.getDouble("y");
+		double z = json.getDouble("z");
+
+		float yaw = 0;
+
+		if (json.has("yaw")) {
+			yaw = json.getFloat("yaw");
+		}
+
+		float pitch = 0;
+
+		if (json.has("pitch")) {
+			pitch = json.getFloat("pitch");
+		}
+
+		return new Location(world, x, y, z, yaw, pitch);
+	}
+
 	public static World getFirstAvaliableWorld() {
 		return Bukkit.getServer().getWorlds().get(0);
 	}
