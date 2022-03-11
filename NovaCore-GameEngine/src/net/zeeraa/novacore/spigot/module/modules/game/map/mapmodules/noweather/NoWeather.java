@@ -20,6 +20,9 @@ public class NoWeather extends MapModule implements Listener {
 	@Override
 	public void onGameStart(Game game) {
 		Bukkit.getServer().getPluginManager().registerEvents(this, NovaCore.getInstance());
+
+		game.getWorld().setWeatherDuration(0);
+		game.getWorld().setThundering(false);
 	}
 
 	@Override
@@ -28,13 +31,13 @@ public class NoWeather extends MapModule implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	  public void onWeatherChange(WeatherChangeEvent e) {
-	    if (!e.toWeatherState()) {
-	      return; 
+	public void onWeatherChange(WeatherChangeEvent e) {
+		if (!e.toWeatherState()) {
+			return;
 		}
 
 		e.setCancelled(true);
-	      e.getWorld().setWeatherDuration(0);
-			e.getWorld().setThundering(false);
-		}
+		e.getWorld().setWeatherDuration(0);
+		e.getWorld().setThundering(false);
 	}
+}
