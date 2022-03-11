@@ -21,6 +21,7 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.graceperiod
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.mapprotection.MapProtection;
+import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.noweather.NoWeather;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.settime.SetTime;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.simplemapdecay.SimpleBoxDecay;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.startmessage.StartMessage;
@@ -70,6 +71,9 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.simpleboxdecay", SimpleBoxDecay.class);
 		MapModuleManager.addMapModule("novacore.blockloot", BlockLoot.class);
 		MapModuleManager.addMapModule("novacore.blockreplacer", BlockReplacer.class);
+		MapModuleManager.addMapModule("novacore.noweather", NoWeather.class);
+		
+		
 
 		File overridesFile = new File(this.getDataFolder().getAbsolutePath() + File.separator + "overrides.json");
 		if (overridesFile.exists()) {
