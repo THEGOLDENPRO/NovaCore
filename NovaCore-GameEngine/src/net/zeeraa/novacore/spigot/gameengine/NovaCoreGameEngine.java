@@ -17,6 +17,7 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.blockloot.B
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.blockreplacer.BlockReplacer;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.chestloot.ChestLoot;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.falldamagegraceperiod.FallDamageGracePeriodMapModule;
+import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.gamerule.Gamerule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.graceperiod.GracePeriodMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
@@ -72,7 +73,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.blockloot", BlockLoot.class);
 		MapModuleManager.addMapModule("novacore.blockreplacer", BlockReplacer.class);
 		MapModuleManager.addMapModule("novacore.noweather", NoWeather.class);
-		MapModuleManager.addMapModule("novacore.gamerule", NoWeather.class);
+		MapModuleManager.addMapModule("novacore.gamerule", Gamerule.class);
 		
 		
 
