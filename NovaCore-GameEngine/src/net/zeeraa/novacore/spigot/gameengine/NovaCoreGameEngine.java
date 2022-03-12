@@ -72,6 +72,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.blockloot", BlockLoot.class);
 		MapModuleManager.addMapModule("novacore.blockreplacer", BlockReplacer.class);
 		MapModuleManager.addMapModule("novacore.noweather", NoWeather.class);
+		MapModuleManager.addMapModule("novacore.gamerule", NoWeather.class);
 		
 		
 
