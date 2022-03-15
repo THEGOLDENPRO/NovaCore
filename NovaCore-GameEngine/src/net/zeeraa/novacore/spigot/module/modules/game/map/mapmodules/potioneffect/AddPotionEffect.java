@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.potioneffect;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -19,6 +20,8 @@ public class AddPotionEffect extends MapModule {
 
 	public AddPotionEffect(JSONObject json) {
 		super(json);
+		
+		effects = new ArrayList<>();
 		
 		JSONArray effectsJson = json.getJSONArray("effects");
 		for(int i = 0; i < effectsJson.length(); i++) {
