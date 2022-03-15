@@ -23,6 +23,7 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftin
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.mapprotection.MapProtection;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.noweather.NoWeather;
+import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.potioneffect.AddPotionEffect;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.settime.SetTime;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.simplemapdecay.SimpleBoxDecay;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.startmessage.StartMessage;
@@ -74,8 +75,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.blockreplacer", BlockReplacer.class);
 		MapModuleManager.addMapModule("novacore.noweather", NoWeather.class);
 		MapModuleManager.addMapModule("novacore.gamerule", Gamerule.class);
-		
-		
+		MapModuleManager.addMapModule("novacore.addpotioneffect", AddPotionEffect.class);
 
 		File overridesFile = new File(this.getDataFolder().getAbsolutePath() + File.separator + "overrides.json");
 		if (overridesFile.exists()) {
