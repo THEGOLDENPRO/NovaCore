@@ -54,7 +54,7 @@ public class LocationUtils {
 	 * @param location2 Location 2 to check
 	 * @return <code>true</code> if matching
 	 */
-	public static boolean isSameBlockCoordinates(Location location1, Location location2) {
+	public static boolean isSameVector(Location location1, Location location2) {
 		if (location1.getBlockX() == location2.getBlockX()) {
 			if (location1.getBlockY() == location2.getBlockY()) {
 				if (location1.getBlockZ() == location2.getBlockZ()) {
