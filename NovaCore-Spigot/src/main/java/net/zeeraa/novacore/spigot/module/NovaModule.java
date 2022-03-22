@@ -158,7 +158,7 @@ public abstract class NovaModule {
 		try {
 			this.onEnable();
 			if (this instanceof Listener) {
-				Log.info("Module:" + getName(), "Registering listeners for module " + this.getName());
+				Log.debug("Module:" + getName(), "Registering listeners for module " + this.getName());
 				Bukkit.getPluginManager().registerEvents((Listener) this, NovaCore.getInstance());
 			}
 			this.enableFailureReason = null;
@@ -198,7 +198,7 @@ public abstract class NovaModule {
 		this.enableFailureReason = null;
 		boolean returnValue;
 		if (this instanceof Listener) {
-			Log.info("Unregistering listeners for module " + this.getName());
+			Log.debug("Unregistering listeners for module " + this.getName());
 			HandlerList.unregisterAll((Listener) this);
 		}
 

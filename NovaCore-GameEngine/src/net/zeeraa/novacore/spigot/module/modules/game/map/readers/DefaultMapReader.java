@@ -51,13 +51,17 @@ public class DefaultMapReader extends MapReader {
 				MapModule mapModule;
 				try {
 					mapModule = MapModuleManager.loadMapModule(clazz, json.getJSONObject(key));
-					
+
 					mapModule.setName(key);
-					
+
 					mapModules.add(mapModule);
 				} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | JSONException e) {
 					Log.error("Failed to load MapModule " + clazz.getName() + " from map " + mapName + ". Caused by " + e.getClass().getName());
 					e.printStackTrace();
+					if (e.getCause() != null) {
+						Log.info("Exception cause printed below");
+						e.getCause().printStackTrace();
+					}
 				}
 			}
 		}
