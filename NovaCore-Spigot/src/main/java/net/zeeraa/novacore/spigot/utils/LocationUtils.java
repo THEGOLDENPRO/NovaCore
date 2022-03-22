@@ -46,6 +46,25 @@ public class LocationUtils {
 		return false;
 	}
 
+	/**
+	 * Check if 2 locations have matching {@link Location#getBlockX()},
+	 * {@link Location#getBlockY()} and {@link Location#getBlockZ()}
+	 * 
+	 * @param location1 Location 1 to check
+	 * @param location2 Location 2 to check
+	 * @return <code>true</code> if matching
+	 */
+	public static boolean isSameBlockCoordinates(Location location1, Location location2) {
+		if (location1.getBlockX() == location2.getBlockX()) {
+			if (location1.getBlockY() == location2.getBlockY()) {
+				if (location1.getBlockZ() == location2.getBlockZ()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public static double blockCenter(int block) {
 		/*
 		 * if (block >= 0) { return ((double) block) + 0.5; } if (block < 0) { return

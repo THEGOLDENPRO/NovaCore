@@ -18,6 +18,7 @@ import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.blockreplac
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.chestloot.ChestLoot;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.falldamagegraceperiod.FallDamageGracePeriodMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.gamerule.Gamerule;
+import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.giveitems.GiveItemSlow;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.graceperiod.GracePeriodMapModule;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
 import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
@@ -76,6 +77,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.noweather", NoWeather.class);
 		MapModuleManager.addMapModule("novacore.gamerule", Gamerule.class);
 		MapModuleManager.addMapModule("novacore.addpotioneffect", AddPotionEffect.class);
+		MapModuleManager.addMapModule("novacore.giveitem.slow", GiveItemSlow.class);
 
 		File overridesFile = new File(this.getDataFolder().getAbsolutePath() + File.separator + "overrides.json");
 		if (overridesFile.exists()) {
