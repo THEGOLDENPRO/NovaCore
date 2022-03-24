@@ -130,11 +130,13 @@ public class GameTrigger {
 
 		this.triggerCount++;
 
-		Log.trace("GameTrigger", "Trigger: " + name + " was triggered with flag " + (flag == null ? "null" : flag.name()) + ". Times triggered: " + triggerCount);
+		if (!this.hasFlag(TriggerFlag.DISABLE_LOGGING)) {
+			Log.trace("GameTrigger", "Trigger: " + name + " was triggered with flag " + (flag == null ? "null" : flag.name()) + ". Times triggered: " + triggerCount);
+		}
 
 		GameTriggerTriggerEvent event = new GameTriggerTriggerEvent(this);
 		Bukkit.getServer().getPluginManager().callEvent(event);
-		
+
 		callbacks.forEach(callback -> callback.run(this, flag));
 
 		if (this instanceof ScheduledGameTrigger) {

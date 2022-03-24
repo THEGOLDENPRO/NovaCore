@@ -81,7 +81,13 @@ public enum TriggerFlag {
 	 * before the game starts for this flag to work, if the trigger with this flag
 	 * was added after the game has started it will never be called by this flag
 	 */
-	START_ON_GAME_START(false, true);
+	START_ON_GAME_START(false, true),
+
+	/**
+	 * Disables the logging when a trigger activates. Can be used to prevent console
+	 * spam if your trigger activates every tick
+	 */
+	DISABLE_LOGGING(false, true);
 
 	private boolean canTrigger;
 	private boolean canBeApplied;
