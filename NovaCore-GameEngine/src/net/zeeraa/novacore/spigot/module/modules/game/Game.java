@@ -154,6 +154,7 @@ public abstract class Game {
 	 */
 	protected void sendBeginEvent() {
 		if (beginEventCalled) {
+			Log.warn("Game", "Tried to call Game#sendBeginEvent() twice");
 			return;
 		}
 		beginEventCalled = true;
