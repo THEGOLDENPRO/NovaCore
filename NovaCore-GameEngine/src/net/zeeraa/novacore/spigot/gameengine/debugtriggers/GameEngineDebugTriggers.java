@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,8 @@ import net.zeeraa.novacore.spigot.debug.DebugTrigger;
 import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.module.modules.game.MapGame;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMap;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.GameTrigger;
+import net.zeeraa.novacore.spigot.module.modules.game.triggers.TriggerFlag;
 
 public class GameEngineDebugTriggers {
 	public static void init() {
@@ -46,7 +49,7 @@ public class GameEngineDebugTriggers {
 				player.teleport(location);
 
 				i++;
-				
+
 				index.put(player, i);
 
 				new BukkitRunnable() {
@@ -66,11 +69,11 @@ public class GameEngineDebugTriggers {
 
 							if (game.hasActiveMap()) {
 								Player player = (Player) sender;
-								
-								if(index.containsKey(player)) {
+
+								if (index.containsKey(player)) {
 									index.remove(player);
 								}
-								
+
 								next(player);
 							} else {
 								sender.sendMessage("The active game does not have a map right now");
@@ -99,6 +102,61 @@ public class GameEngineDebugTriggers {
 			@Override
 			public String getName() {
 				return "testgamespawnlocations";
+			}
+
+			@Override
+			public AllowedSenders getAllowedSenders() {
+				return AllowedSenders.PLAYERS;
+			}
+		});
+
+		DebugCommandRegistrator.getInstance().addDebugTrigger(new DebugTrigger() {
+			@Override
+			public void onExecute(CommandSender sender, String commandLabel, String[] args) {
+				if (GameManager.getInstance().isEnabled()) {
+					if (GameManager.getInstance().hasGame()) {
+						if (args.length > 0) {
+							String flagName = args[0];
+							try {
+								TriggerFlag flag = TriggerFlag.valueOf(flagName);
+								List<GameTrigger> triggers = GameManager.getInstance().getActiveGame().getTriggersByFlag(flag);
+								Bukkit.getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + "BEGIN DEBUG TRIGGER DUMP");
+								Bukkit.getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + "" + triggers.size() + " triggers found with flag " + flag.name());
+								triggers.forEach(trigger -> {
+									String flags = "";
+									for (TriggerFlag tFlag : trigger.getFlags()) {
+										flags += tFlag.name() + ",";
+									}
+									Bukkit.getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + "Found trigger " + trigger + " with flags " + flags + " trigger count: " + trigger.getTriggerCount() + " class type: " + trigger.getClass().getName());
+								});
+								Bukkit.getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + "END DEBUG TRIGGER DUMP");
+							} catch (IllegalArgumentException e) {
+								sender.sendMessage("Invalid flag");
+							}
+						} else {
+							sender.sendMessage("Provide a flag");
+						}
+					} else {
+						sender.sendMessage("GameManager dest not have an active game");
+					}
+				} else {
+					sender.sendMessage("GameManager not enabled");
+				}
+			}
+
+			@Override
+			public PermissionDefault getPermissionDefault() {
+				return PermissionDefault.OP;
+			}
+
+			@Override
+			public String getPermission() {
+				return "novacore.debug.gettriggersbyflag";
+			}
+
+			@Override
+			public String getName() {
+				return "gettriggersbyflag";
 			}
 
 			@Override

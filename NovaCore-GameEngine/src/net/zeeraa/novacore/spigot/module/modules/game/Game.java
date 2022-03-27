@@ -334,11 +334,13 @@ public abstract class Game {
 		List<GameTrigger> result = new ArrayList<GameTrigger>();
 
 		triggers.forEach(trigger -> {
-			trigger.getFlags().forEach(flag -> {
+			for (TriggerFlag flag : flags) {
 				if (trigger.hasFlag(flag)) {
-					result.add(trigger);
+					if (!result.contains(trigger)) {
+						result.add(trigger);
+					}
 				}
-			});
+			}
 		});
 
 		return result;
@@ -726,14 +728,14 @@ public abstract class Game {
 		if (NovaCore.getInstance().hasTeamManager() && getGameManager().isUseTeams()) {
 			List<UUID> teamsLeft = new ArrayList<UUID>();
 
-			for (UUID uuid : players) {
+			players.forEach(uuid -> {
 				Team team = NovaCore.getInstance().getTeamManager().getPlayerTeam(uuid);
 				if (team != null) {
 					if (!teamsLeft.contains(team.getTeamUuid())) {
 						teamsLeft.add(team.getTeamUuid());
 					}
 				}
-			}
+			});
 
 			if (teamsLeft.size() == 1) {
 				Team team = NovaCore.getInstance().getTeamManager().getTeamByTeamUUID(teamsLeft.get(0));

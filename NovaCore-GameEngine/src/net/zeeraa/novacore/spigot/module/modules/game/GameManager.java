@@ -150,9 +150,9 @@ public class GameManager extends NovaModule implements Listener {
 		this.combatTagCountdownTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
 			public void run() {
-				for (UUID uuid : combatTaggedPlayers.keySet()) {
+				combatTaggedPlayers.keySet().forEach(uuid -> {
 					combatTaggedPlayers.put(uuid, combatTaggedPlayers.get(uuid) - 1);
-				}
+				});
 
 				combatTaggedPlayers.entrySet().removeIf(i -> i.getValue() <= 0);
 			}
@@ -270,11 +270,9 @@ public class GameManager extends NovaModule implements Listener {
 	 */
 	public void showNoLongerCombatTaggedMessage(Player player) {
 		try {
-			for (CombatTagMessage message : combatTagMessages) {
-				message.showNoLongerTaggedMessage(player);
-			}
+			combatTagMessages.forEach(message -> message.showNoLongerTaggedMessage(player));
 		} catch (Exception e) {
-			Log.error("Error while showing no longer combat tagged message fro a player: " + e.getClass().getName() + " " + e.getMessage());
+			Log.error("Error while showing no longer combat tagged message for a player: " + e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

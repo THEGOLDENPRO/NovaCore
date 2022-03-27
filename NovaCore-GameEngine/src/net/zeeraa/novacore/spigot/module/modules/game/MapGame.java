@@ -11,7 +11,6 @@ import net.zeeraa.novacore.spigot.gameengine.NovaCoreGameEngine;
 import net.zeeraa.novacore.spigot.module.modules.game.events.GameStartEvent;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMap;
 import net.zeeraa.novacore.spigot.module.modules.game.map.GameMapData;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModule;
 
 /**
  * This is the same as {@link Game} but this type of game uses pre made maps for
@@ -81,9 +80,7 @@ public abstract class MapGame extends Game {
 		this.activeMap = map;
 		this.world = map.getWorld();
 
-		for (MapModule mapModule : map.getMapData().getMapModules()) {
-			mapModule.onMapLoad(map);
-		}
+		map.getMapData().getMapModules().forEach(module -> module.onMapLoad(map));
 
 		return true;
 	}
@@ -102,10 +99,10 @@ public abstract class MapGame extends Game {
 
 		Bukkit.getServer().getPluginManager().callEvent(new GameStartEvent(this));
 
-		for (MapModule module : activeMap.getMapData().getMapModules()) {
+		activeMap.getMapData().getMapModules().forEach(module -> {
 			Log.trace("MapGame", "Calling onGameStart() for map module " + module.getName());
 			module.onGameStart(this);
-		}
+		});
 
 		if (autoEndGame()) {
 			winCheckTask.start();

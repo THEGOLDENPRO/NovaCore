@@ -388,7 +388,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public ItemStack getPlayerSkullitem() {
-		return new ItemStack(Material.SKULL, 1, (short) 3);
+		return new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
 	}
 
 	@Override
