@@ -11,17 +11,21 @@ import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 
 public class InstantVoidKill extends MapModule {
 	private Task taks;
-	
+
 	public InstantVoidKill(JSONObject json) {
 		super(json);
-		
+
 		this.taks = new SimpleTask(new Runnable() {
 			@Override
 			public void run() {
 				Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-					if(player.getLocation().getBlockY() < 0) {
-						if(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
-							player.setHealth(0);
+					if (player.getLocation().getBlockY() < 0) {
+						if (!player.isDead()) {
+							if (player.getHealth() > 0) {
+								if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
+									player.setHealth(0);
+								}
+							}
 						}
 					}
 				});
