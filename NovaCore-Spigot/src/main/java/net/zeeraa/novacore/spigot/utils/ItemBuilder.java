@@ -58,7 +58,7 @@ public class ItemBuilder {
 	public ItemBuilder(Material material, int ammount) {
 		this(new ItemStack(material, ammount), false);
 	}
-	
+
 	/**
 	 * Init by material
 	 * 
@@ -410,6 +410,16 @@ public class ItemBuilder {
 	 */
 	public static ItemStack getPlayerSkullWithBase64Texture(String b64stringtexture) {
 		return VersionIndependantUtils.get().getPlayerSkullWithBase64Texture(b64stringtexture);
+	}
+
+	/**
+	 * Get a player skull with the provided texture
+	 * 
+	 * @param b64stringtexture The texture
+	 * @return {@link ItemBuilder} with a player skull
+	 */
+	public static ItemBuilder getPlayerSkullWithBase64TextureAsBuilder(String b64stringtexture) {
+		return new ItemBuilder(VersionIndependantUtils.get().getPlayerSkullWithBase64Texture(b64stringtexture));
 	}
 
 	/**
