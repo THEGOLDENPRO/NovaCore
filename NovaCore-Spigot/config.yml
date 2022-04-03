@@ -15,7 +15,7 @@ MapDisplayManager:
 # Values are: NONE, TRACE, DEBUG, INFO, WARN, ERROR and FATAL
 # If set to NONE the plugin wont attempt to change the log level of op players
 # This is applied before the permission based log level so the permission based log level will have higher priority than the op one
-# To not spam the chat op op players this should never be set to anything lower than INFO unless you are trying to debug things
+# To not spam the chat op players this should never be set to anything lower than INFO unless you are trying to debug things
 DefaultOpLogLevel: "ERROR"
 
 # Enable to show more debug messages
