@@ -83,7 +83,8 @@ public class NovaCommandProxy extends Command {
 						newArgs[i - 1] = args[i];
 					}
 
-					//Log.trace("recursive check on sub command " + subCommand.getName() + " origin command: " + novaCommand.getName());
+					// Log.trace("recursive check on sub command " + subCommand.getName() + " origin
+					// command: " + novaCommand.getName());
 
 					return recursiceCommandExecutionCheck(subCommand, sender, commandLabel, newArgs);
 				}
@@ -142,17 +143,17 @@ public class NovaCommandProxy extends Command {
 			// Find aliases for sub commands
 			ArrayList<String> matchedSubCommands = new ArrayList<String>();
 
-			for (NovaSubCommand subCommand : command.getSubCommands()) {
+			command.getSubCommands().forEach(subCommand -> {
 				if (StringUtil.startsWithIgnoreCase(subCommand.getName(), lastWord)) {
 					matchedSubCommands.add(subCommand.getName());
 				}
 
-				for (String subCommandAlias : subCommand.getAliases()) {
-					if (StringUtil.startsWithIgnoreCase(subCommandAlias, lastWord)) {
-						matchedSubCommands.add(subCommandAlias);
+				subCommand.getAliases().forEach(subAlias -> {
+					if (StringUtil.startsWithIgnoreCase(subAlias, lastWord)) {
+						matchedSubCommands.add(subAlias);
 					}
-				}
-			}
+				});
+			});
 
 			Collections.sort(matchedSubCommands, String.CASE_INSENSITIVE_ORDER);
 

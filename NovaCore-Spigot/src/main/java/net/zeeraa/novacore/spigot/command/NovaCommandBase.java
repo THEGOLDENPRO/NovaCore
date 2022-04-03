@@ -370,12 +370,12 @@ public abstract class NovaCommandBase {
 		Player senderPlayer = sender instanceof Player ? (Player) sender : null;
 
 		ArrayList<String> matchedPlayers = new ArrayList<String>();
-		for (Player player : sender.getServer().getOnlinePlayers()) {
+		sender.getServer().getOnlinePlayers().forEach(player -> {
 			String name = player.getName();
 			if ((senderPlayer == null || senderPlayer.canSee(player)) && StringUtil.startsWithIgnoreCase(name, lastWord)) {
 				matchedPlayers.add(name);
 			}
-		}
+		});
 
 		Collections.sort(matchedPlayers, String.CASE_INSENSITIVE_ORDER);
 		return matchedPlayers;
