@@ -217,25 +217,23 @@ public class MapDisplayManager extends NovaModule implements Listener {
 				}
 
 				json.put("row", rowJson);
-				
+
 				List<XYLocation> chunks = new ArrayList<>();
-				
+
 				List<ItemFrame> frameEntityList = display.getAllItemFrames();
-				
-				for(ItemFrame frameToSave : frameEntityList) {
+
+				frameEntityList.forEach(frameToSave -> {
 					XYLocation xyl = new XYLocation(frameToSave.getLocation().getChunk().getX(), frameToSave.getLocation().getChunk().getZ());
-					
-					if(!chunks.contains(xyl)) {
+
+					if (!chunks.contains(xyl)) {
 						chunks.add(xyl);
 					}
-				}
-				
+				});
+
 				JSONArray chunksJson = new JSONArray();
-				
-				for(XYLocation chunk : chunks ) {
-					chunksJson.put(chunk.toJSON());
-				}
-				
+
+				chunks.forEach(chunk -> chunksJson.put(chunk.toJSON()));
+
 				json.put("chunks", chunks);
 
 				JSONFileUtils.saveJson(dataFile, json);
@@ -361,33 +359,33 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onHangingBreak(HangingBreakEvent e) {
 		if (e.getEntity().getType() == EntityType.ITEM_FRAME) {
-			for (MapDisplay display : mapDisplays) {
+			mapDisplays.forEach(display -> {
 				if (display.isEntityPartOfDisplay(e.getEntity())) {
 					e.setCancelled(true);
 				}
-			}
+			});
 		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
 		if (e.getRightClicked().getType() == EntityType.ITEM_FRAME) {
-			for (MapDisplay display : mapDisplays) {
+			mapDisplays.forEach(display -> {
 				if (display.isEntityPartOfDisplay(e.getRightClicked())) {
 					e.setCancelled(true);
 				}
-			}
+			});
 		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent e) {
 		if (e.getEntity().getType() == EntityType.ITEM_FRAME) {
-			for (MapDisplay display : mapDisplays) {
+			mapDisplays.forEach(display -> {
 				if (display.isEntityPartOfDisplay(e.getEntity())) {
 					e.setCancelled(true);
 				}
-			}
+			});
 		}
 	}
 

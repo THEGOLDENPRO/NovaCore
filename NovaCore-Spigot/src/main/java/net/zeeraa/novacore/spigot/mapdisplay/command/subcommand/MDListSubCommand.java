@@ -6,7 +6,6 @@ import org.bukkit.permissions.PermissionDefault;
 
 import net.zeeraa.novacore.spigot.command.AllowedSenders;
 import net.zeeraa.novacore.spigot.command.NovaSubCommand;
-import net.zeeraa.novacore.spigot.mapdisplay.MapDisplay;
 import net.zeeraa.novacore.spigot.mapdisplay.MapDisplayManager;
 
 public class MDListSubCommand extends NovaSubCommand {
@@ -29,9 +28,7 @@ public class MDListSubCommand extends NovaSubCommand {
 			return false;
 		}
 		
-		for (MapDisplay display : MapDisplayManager.getInstance().getMapDisplays()) {
-			sender.sendMessage(ChatColor.AQUA + display.getName() + ChatColor.GOLD + " in world " + ChatColor.AQUA + display.getWorld().getName());
-		}
+		MapDisplayManager.getInstance().getMapDisplays().forEach(display -> sender.sendMessage(ChatColor.AQUA + display.getName() + ChatColor.GOLD + " in world " + ChatColor.AQUA + display.getWorld().getName()));
 		return true;
 	}
 }

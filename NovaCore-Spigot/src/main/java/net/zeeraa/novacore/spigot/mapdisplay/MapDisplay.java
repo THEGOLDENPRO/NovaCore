@@ -129,13 +129,9 @@ public class MapDisplay {
 
 		Map<XYLocation, Boolean> intialChunkState = new HashMap<>();
 
-		for (XYLocation xyl : chunks) {
-			intialChunkState.put(xyl, world.isChunkLoaded(xyl.getX(), xyl.getY()));
-		}
+		chunks.forEach(xyl -> intialChunkState.put(xyl, world.isChunkLoaded(xyl.getX(), xyl.getY())));
 
-		for (XYLocation xyl : chunks) {
-			world.loadChunk(xyl.getX(), xyl.getY());
-		}
+		chunks.forEach(xyl -> world.loadChunk(xyl.getX(), xyl.getY()));
 
 		this.cacheFile = new File(world.getWorldFolder().getPath() + File.separator + "novacore" + File.separator + "mapdisplays" + File.separator + "cache" + File.separator + name + ".png");
 
@@ -144,9 +140,7 @@ public class MapDisplay {
 
 		itemFrames = new ItemFrame[itemFrameUuids.length][itemFrameUuids[0].length];
 
-		for (XYLocation xyl : chunks) {
-			world.loadChunk(xyl.getX(), xyl.getY());
-		}
+		chunks.forEach(xyl -> world.loadChunk(xyl.getX(), xyl.getY()));
 
 		for (int i = 0; i < itemFrameUuids.length; i++) {
 			for (int j = 0; j < itemFrameUuids[i].length; j++) {
@@ -160,11 +154,11 @@ public class MapDisplay {
 			}
 		}
 
-		for (XYLocation xyl : chunks) {
+		chunks.forEach(xyl -> {
 			if (!intialChunkState.get(xyl)) {
 				world.unloadChunk(xyl.getX(), xyl.getY());
 			}
-		}
+		});
 
 		renderers = new DisplayRenderer[itemFrameUuids.length][itemFrameUuids[0].length];
 
@@ -236,7 +230,7 @@ public class MapDisplay {
 	}
 
 	public ItemFrame getItemFrame(int x, int y) {
-		return itemFrames[x][y]; //TODO: check if this is the correct order
+		return itemFrames[x][y]; // TODO: check if this is the correct order
 	}
 
 	public void setupMaps() {
