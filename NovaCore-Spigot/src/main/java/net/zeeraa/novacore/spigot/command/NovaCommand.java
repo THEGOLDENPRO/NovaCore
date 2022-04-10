@@ -2,7 +2,6 @@ package net.zeeraa.novacore.spigot.command;
 
 import org.bukkit.plugin.Plugin;
 
-import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 
 /**
@@ -14,20 +13,6 @@ import net.zeeraa.novacore.spigot.NovaCore;
  */
 public abstract class NovaCommand extends NovaCommandBase {
 	private Plugin owner;
-
-	/**
-	 * Deprecated: Provide a owning plugin using
-	 * {@link NovaCommand#NovaCommand(String, Plugin)} instead
-	 * 
-	 * @param name The name of the command. If the name is hello the command will be
-	 *             /hello
-	 */
-	@Deprecated
-	public NovaCommand(String name) {
-		this(name, NovaCore.getInstance());
-
-		Log.warn("NovaCommand", "The command " + this.getClass().getName() + " is using the legacy constructor NovaCommand#NovaCommand(String)");
-	}
 
 	/**
 	 * @param name The name of the command. If the name is hello the command will be
