@@ -6,7 +6,7 @@ package net.zeeraa.novacore.spigot.command;
  * @author Zeeraa
  *
  */
-public enum NodeType {
+public enum CommandNodeType {
 	/**
 	 * The command is of type: {@link NovaCommand}
 	 */

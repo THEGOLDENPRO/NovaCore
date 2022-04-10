@@ -44,9 +44,9 @@ public abstract class NovaCommandBase {
 
 	private boolean emptyTabMode;
 
-	private NodeType nodeType;
+	private CommandNodeType nodeType;
 
-	public NovaCommandBase(String name, NodeType nodeType) {
+	public NovaCommandBase(String name, CommandNodeType nodeType) {
 		this.name = name;
 		this.description = "";
 		this.permission = null;
@@ -521,14 +521,14 @@ public abstract class NovaCommandBase {
 	}
 
 	/**
-	 * Get the {@link NodeType} of this command
+	 * Get the {@link CommandNodeType} of this command
 	 * <p>
 	 * This can be used to check if the command is a {@link NovaCommand} or a
 	 * {@link NovaSubCommand}
 	 * 
-	 * @return {@link NodeType}
+	 * @return {@link CommandNodeType}
 	 */
-	public NodeType getNodeType() {
+	public CommandNodeType getNodeType() {
 		return nodeType;
 	}
 
@@ -541,7 +541,7 @@ public abstract class NovaCommandBase {
 	 * @return The {@link NovaCommand} this command belongs to
 	 */
 	public NovaCommand getBaseCommand() {
-		if (this.getNodeType() == NodeType.BASE_COMMAND) {
+		if (this.getNodeType() == CommandNodeType.BASE_COMMAND) {
 			return (NovaCommand) this;
 		} else if (this.hasParentCommand()) {
 			// Find base command parent using recursion

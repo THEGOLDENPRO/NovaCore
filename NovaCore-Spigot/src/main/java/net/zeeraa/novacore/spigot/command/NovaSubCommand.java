@@ -13,6 +13,6 @@ public abstract class NovaSubCommand extends NovaCommandBase {
 	 *             name is hello the command will be /hello world
 	 */
 	public NovaSubCommand(String name) {
-		super(name, NodeType.SUB_COMMAND);
+		super(name, CommandNodeType.SUB_COMMAND);
 	}
 }

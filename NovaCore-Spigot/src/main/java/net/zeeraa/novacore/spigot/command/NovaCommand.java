@@ -20,7 +20,7 @@ public abstract class NovaCommand extends NovaCommandBase {
 	 * @param owner The plugin that owns this command
 	 */
 	public NovaCommand(String name, Plugin owner) {
-		super(name, NodeType.BASE_COMMAND);
+		super(name, CommandNodeType.BASE_COMMAND);
 		this.owner = owner;
 
 	}
