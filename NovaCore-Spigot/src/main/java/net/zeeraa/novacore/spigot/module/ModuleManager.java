@@ -212,6 +212,7 @@ public class ModuleManager {
 	 * Load a module
 	 * 
 	 * @since 1.0
+	 * @param owner The {@link Plugin} the module belongs to
 	 * @param clazz The class of the module
 	 * @return <code>true</code> on success
 	 * 
@@ -225,6 +226,7 @@ public class ModuleManager {
 	 * Load a module
 	 * 
 	 * @since 1.0
+	 * @param owner The {@link Plugin} the module belongs to
 	 * @param clazz  The class of the module
 	 * @param enable set to <code>true</code> to enable the module on load
 	 * @return <code>true</code> on success

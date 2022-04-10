@@ -2,8 +2,6 @@ package net.zeeraa.novacore.spigot.command;
 
 import org.bukkit.plugin.Plugin;
 
-import net.zeeraa.novacore.spigot.NovaCore;
-
 /**
  * Represents a command managed by NovaCore
  * <p>
@@ -27,9 +25,6 @@ public abstract class NovaCommand extends NovaCommandBase {
 
 	/**
 	 * Get the plugin that owns this command
-	 * <p>
-	 * If the deprecated method {@link NovaCommand#NovaCommand(String)} is used the
-	 * owher will be set to {@link NovaCore}
 	 * 
 	 * @return The {@link Plugin} that own this command
 	 */

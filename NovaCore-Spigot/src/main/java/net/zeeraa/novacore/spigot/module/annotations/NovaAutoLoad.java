@@ -10,7 +10,7 @@ import net.zeeraa.novacore.spigot.module.ModuleManager;
 
 /**
  * This annotation can be added to modules to load them without calling
- * {@link ModuleManager#loadModule(Class)} by instead using
+ * {@link ModuleManager#loadModule(org.bukkit.plugin.Plugin, Class)} by instead using
  * {@link ModuleManager#scanForModules(org.bukkit.plugin.Plugin, String)}
  * 
  * @author Zeeraa

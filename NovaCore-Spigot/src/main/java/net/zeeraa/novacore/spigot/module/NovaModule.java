@@ -20,7 +20,7 @@ import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
  * <ul>
  * <li>Module names can't contain spaces</li>
  * <li>Modules need to be loaded with
- * {@link ModuleManager#loadModule(Class)}</li>
+ * {@link ModuleManager#loadModule(Plugin, Class)}</li>
  * <li>All modules will be disabled in {@link NovaCore#onDisable()}</li>
  * <li>All modules added to {@link NovaModule#addDependency(Class)} will be
  * enabled before this module is enabled</li>
