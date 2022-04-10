@@ -34,9 +34,8 @@ public class GUIManager extends NovaModule implements Listener {
 		instance = this;
 	}
 
-	@Override
-	public String getName() {
-		return "GUIManager";
+	public GUIManager() {
+		super("NovaCore.GUIManager");
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)

@@ -6,6 +6,8 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.event.ModuleDisabledEvent;
@@ -18,7 +20,7 @@ import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
  * <ul>
  * <li>Module names can't contain spaces</li>
  * <li>Modules need to be loaded with
- * {@link ModuleManager#loadModule(Class)}</li>
+ * {@link ModuleManager#loadModule(Plugin, Class)}</li>
  * <li>All modules will be disabled in {@link NovaCore#onDisable()}</li>
  * <li>All modules added to {@link NovaModule#addDependency(Class)} will be
  * enabled before this module is enabled</li>
@@ -41,18 +43,30 @@ public abstract class NovaModule {
 	protected boolean enabled = false;
 	private boolean hasBeenEnabled = false;
 	protected ModuleEnableFailureReason enableFailureReason = null;
+	private String name;
+	private Plugin plugin;
 
 	private List<Class<? extends NovaModule>> dependencies = new ArrayList<Class<? extends NovaModule>>();
 
 	private String missingPluginName;
 
+	public NovaModule(String name) {
+		this.name = name;
+		this.plugin = null;
+	}
+
 	/**
-	 * Get the module display name. Module names can't contain spaces
+	 * Get the module display name. Module names can't contain spaces.
+	 * <p>
+	 * As of version 2.0.0 you can no longer override this to set the name. To set
+	 * the name use the constructor instead
 	 * 
 	 * @return name
 	 * @since 1.0
 	 */
-	public abstract String getName();
+	public final String getName() {
+		return this.name;
+	}
 
 	/**
 	 * Add a module to use as a dependency. All the dependencies will be enabled
@@ -260,5 +274,29 @@ public abstract class NovaModule {
 	 */
 	public String getMissingPluginName() {
 		return missingPluginName;
+	}
+
+	/**
+	 * Set the {@link Plugin} that owns this module. This will only set the plugin
+	 * first time this is called and attempting to set the plugin again will cause a
+	 * warning
+	 * 
+	 * @param owner {@link Plugin} that owns this module
+	 */
+	public final void setPlugin(Plugin owner) {
+		if (owner != null) {
+			Log.warn("Tried to call NovaModule#setPlugin() after plugin has already been set in " + this.getClassName());
+			return;
+		}
+		this.plugin = owner;
+	}
+
+	/**
+	 * Get the {@link Plugin} that this module belongs to
+	 * 
+	 * @return {@link Plugin} that registered this module
+	 */
+	public final Plugin getPlugin() {
+		return plugin;
 	}
 }

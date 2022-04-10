@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 
 import net.zeeraa.novacore.spigot.command.NovaSubCommand;
-import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
 
 public class NovaCoreSubCommandGameAddPlayer extends NovaSubCommand {
 

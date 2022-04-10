@@ -62,10 +62,9 @@ public class LootDropManager extends NovaModule implements Listener {
 	public static LootDropManager getInstance() {
 		return instance;
 	}
-
-	@Override
-	public String getName() {
-		return "LootDropManager";
+	
+	public LootDropManager() {
+		super("NovaCore.LootDropManager");
 	}
 
 	/**

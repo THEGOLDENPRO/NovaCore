@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import net.md_5.bungee.api.ChatColor;
 
 /**
  * Represents a team used by games

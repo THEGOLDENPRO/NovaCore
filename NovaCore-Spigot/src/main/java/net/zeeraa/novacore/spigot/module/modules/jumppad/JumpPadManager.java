@@ -37,9 +37,8 @@ public class JumpPadManager extends NovaModule implements Listener {
 		return instance;
 	}
 
-	@Override
-	public String getName() {
-		return "JumpPadManager";
+	public JumpPadManager() {
+		super("Novacore.JumpPadManager");
 	}
 
 	@Override

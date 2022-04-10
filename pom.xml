@@ -2,13 +2,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.zeeraa.novacore</groupId>
+	<groupId>net.novauniverse.novacore</groupId>
 	<artifactId>novacore-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>PARENT</version>
 	<name>NovaCore Parent</name>
 	
-	<url>https://zeeraa.net</url>
+	<url>https://novauniverse.net</url>
 	
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>

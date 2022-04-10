@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.weather.WeatherChangeEvent;
-
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
@@ -40,9 +39,8 @@ public class MultiverseManager extends NovaModule implements Listener {
 		this.unloadAll();
 	}
 
-	@Override
-	public String getName() {
-		return "MultiverseManager";
+	public MultiverseManager() {
+		super("NovaCore.MultiverseManager");
 	}
 
 	public Map<String, MultiverseWorld> getWorlds() {

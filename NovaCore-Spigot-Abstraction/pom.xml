@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>novacore-spigot-abstraction</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
 	<name>NovaCore Spigot Abstraction</name>
 
 	<parent>
-		<groupId>net.zeeraa.novacore</groupId>
+		<groupId>net.novauniverse.novacore</groupId>
 		<artifactId>novacore-parent</artifactId>
 		<version>PARENT</version>
 		<relativePath>..</relativePath>
@@ -93,9 +93,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>net.zeeraa.novacore</groupId>
+			<groupId>net.novauniverse.novacore</groupId>
 			<artifactId>novacore-commons</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>2.0.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 

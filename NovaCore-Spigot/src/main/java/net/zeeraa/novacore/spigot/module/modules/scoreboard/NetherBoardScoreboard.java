@@ -53,9 +53,8 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		return instance;
 	}
 
-	@Override
-	public String getName() {
-		return "NetherBoardScoreboard";
+	public NetherBoardScoreboard() {
+		super("NovaCore.NetherBoardScoreboard");
 	}
 
 	@Override

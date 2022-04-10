@@ -55,20 +55,6 @@ public class ModuleManager {
 	}
 
 	/**
-	 * Get a loaded module cast to the provided generic type
-	 * 
-	 * @since 1.1
-	 * @param <T>   The type of module to cast to
-	 * @param clazz The class of the module to get
-	 * @return The provided module cast to the provided generic type or
-	 *         <code>null</code> if not loaded
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends NovaModule> T getModuleCast(Class<? extends NovaModule> clazz) {
-		return (T) ModuleManager.getModule(clazz);
-	}
-
-	/**
 	 * Check if a module is enabled
 	 * 
 	 * @since 1.0
@@ -226,26 +212,28 @@ public class ModuleManager {
 	 * Load a module
 	 * 
 	 * @since 1.0
+	 * @param owner The {@link Plugin} the module belongs to
 	 * @param clazz The class of the module
 	 * @return <code>true</code> on success
 	 * 
 	 * @throws InvalidModuleNameException if the module name contains spaces
 	 */
-	public static boolean loadModule(Class<? extends NovaModule> clazz) {
-		return loadModule(clazz, false);
+	public static boolean loadModule(Plugin owner, Class<? extends NovaModule> clazz) {
+		return loadModule(owner, clazz, false);
 	}
 
 	/**
 	 * Load a module
 	 * 
 	 * @since 1.0
+	 * @param owner The {@link Plugin} the module belongs to
 	 * @param clazz  The class of the module
 	 * @param enable set to <code>true</code> to enable the module on load
 	 * @return <code>true</code> on success
 	 * 
 	 * @throws InvalidModuleNameException if the module name contains spaces
 	 */
-	public static boolean loadModule(Class<? extends NovaModule> clazz, boolean enable) {
+	public static boolean loadModule(Plugin owner, Class<? extends NovaModule> clazz, boolean enable) {
 		if (moduleExists(clazz)) {
 			Log.warn("ModuleManager", "Module " + clazz.getName() + " was already loaded");
 			return false;
@@ -260,8 +248,12 @@ public class ModuleManager {
 					throw new InvalidModuleNameException("The module name can't contain spaces. Module class: " + module.getClass().getName());
 				}
 
-				((NovaModule) module).onLoad();
-				modules.put(((NovaModule) module).getClassName(), (NovaModule) module);
+				NovaModule mod = ((NovaModule) module);
+				
+				mod.onLoad();
+				modules.put(mod.getClassName(), mod);
+				
+				mod.setPlugin(owner);
 
 				if (enable) {
 					enable(clazz);
@@ -337,7 +329,7 @@ public class ModuleManager {
 					Log.info("ModuleManager", "Scanner found class " + clazz.getName());
 					boolean enable = autoLoadAnnotation.shouldEnable();
 
-					ModuleManager.loadModule((Class<? extends NovaModule>) clazz, enable);
+					ModuleManager.loadModule(plugin, (Class<? extends NovaModule>) clazz, enable);
 				}
 			}
 		}
