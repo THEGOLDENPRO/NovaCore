@@ -26,7 +26,6 @@ import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.log.LogLevel;
 import net.zeeraa.novacore.commons.utils.JSONFileType;
 import net.zeeraa.novacore.commons.utils.JSONFileUtils;
-import net.zeeraa.novacore.spigot.abstraction.ActionBar;
 import net.zeeraa.novacore.spigot.abstraction.CommandRegistrator;
 import net.zeeraa.novacore.spigot.abstraction.NovaCoreAbstraction;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantLoader;
@@ -71,8 +70,6 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private static NovaCore instance;
 
 	private CommandRegistrator bukkitCommandRegistrator;
-
-	private ActionBar actionBar;
 
 	private LootTableManager lootTableManager;
 
@@ -124,15 +121,6 @@ public class NovaCore extends JavaPlugin implements Listener {
 	 */
 	public CommandRegistrator getCommandRegistrator() {
 		return bukkitCommandRegistrator;
-	}
-
-	/**
-	 * Get the {@link ActionBar} provider for this version
-	 * 
-	 * @return {@link ActionBar} provider
-	 */
-	public ActionBar getActionBar() {
-		return actionBar;
 	}
 
 	/**
@@ -328,11 +316,6 @@ public class NovaCore extends JavaPlugin implements Listener {
 					Log.warn("NovaCore", "CommandRegistrator is not supported for this version");
 				}
 
-				actionBar = versionIndependantLoader.getActionBar();
-				if (actionBar == null) {
-					Log.warn("NovaCore", "ActionBar is not supported for this version");
-				}
-
 				versionIndependentUtils = versionIndependantLoader.getVersionIndependentUtils();
 				if (versionIndependentUtils == null) {
 					Log.warn("NovaCore", "VersionIndependentUtils is not supported for this version");
@@ -420,17 +403,17 @@ public class NovaCore extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(customCraftingManager, this);
 
 		// Load modules
-		ModuleManager.loadModule(GUIManager.class);
-		ModuleManager.loadModule(LootDropManager.class);
-		ModuleManager.loadModule(ChestLootManager.class);
-		ModuleManager.loadModule(MultiverseManager.class);
-		ModuleManager.loadModule(CompassTracker.class);
-		ModuleManager.loadModule(NetherBoardScoreboard.class);
-		ModuleManager.loadModule(JumpPadManager.class);
+		ModuleManager.loadModule(this, GUIManager.class);
+		ModuleManager.loadModule(this, LootDropManager.class);
+		ModuleManager.loadModule(this, ChestLootManager.class);
+		ModuleManager.loadModule(this, MultiverseManager.class);
+		ModuleManager.loadModule(this, CompassTracker.class);
+		ModuleManager.loadModule(this, NetherBoardScoreboard.class);
+		ModuleManager.loadModule(this, JumpPadManager.class);
 
 		// Modules that might be enabled depending on the configuration
-		ModuleManager.loadModule(CustomItemManager.class);
-		ModuleManager.loadModule(MapDisplayManager.class);
+		ModuleManager.loadModule(this, CustomItemManager.class);
+		ModuleManager.loadModule(this, MapDisplayManager.class);
 
 		// Module configuration
 		ConfigurationSection mapDisplayManagerConfig = getConfig().getConfigurationSection("MapDisplayManager");

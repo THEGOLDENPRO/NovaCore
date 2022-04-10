@@ -9,28 +9,28 @@ import org.json.JSONObject;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.gameengine.debugtriggers.GameEngineDebugTriggers;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModuleManager;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockloot.BlockLoot;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockreplacer.BlockReplacer;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chestloot.ChestLoot;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.falldamagegraceperiod.FallDamageGracePeriodMapModule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.gamerule.Gamerule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.giveitems.GiveItemSlow;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod.GracePeriodMapModule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.instantvoidkill.InstantVoidKill;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.mapprotection.MapProtection;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.noweather.NoWeather;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.potioneffect.AddPotionEffect;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.settime.SetTime;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.simplemapdecay.SimpleBoxDecay;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.startmessage.StartMessage;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.worldborder.WorldborderMapModule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.GameLobby;
 import net.zeeraa.novacore.spigot.language.LanguageReader;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
-import net.zeeraa.novacore.spigot.module.modules.game.GameManager;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodule.MapModuleManager;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.blockloot.BlockLoot;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.blockreplacer.BlockReplacer;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.chestloot.ChestLoot;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.falldamagegraceperiod.FallDamageGracePeriodMapModule;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.gamerule.Gamerule;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.giveitems.GiveItemSlow;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.graceperiod.GracePeriodMapModule;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.instantvoidkill.InstantVoidKill;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.mapprotection.MapProtection;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.noweather.NoWeather;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.potioneffect.AddPotionEffect;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.settime.SetTime;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.simplemapdecay.SimpleBoxDecay;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.startmessage.StartMessage;
-import net.zeeraa.novacore.spigot.module.modules.game.map.mapmodules.worldborder.WorldborderMapModule;
-import net.zeeraa.novacore.spigot.module.modules.gamelobby.GameLobby;
 import net.zeeraa.novacore.spigot.novaplugin.NovaPlugin;
 
 public class NovaCoreGameEngine extends NovaPlugin {
@@ -59,8 +59,8 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		GameEngineDebugTriggers.init();
 
 		Log.info("NovaCoreGameEngine", "Loading modules...");
-		ModuleManager.loadModule(GameManager.class);
-		ModuleManager.loadModule(GameLobby.class);
+		ModuleManager.loadModule(this, GameManager.class);
+		ModuleManager.loadModule(this, GameLobby.class);
 
 		Log.info("NovaCoreGameEngine", "Loading map modules...");
 		MapModuleManager.addMapModule("novacore.chestloot", ChestLoot.class);
@@ -80,7 +80,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.addpotioneffect", AddPotionEffect.class);
 		MapModuleManager.addMapModule("novacore.giveitem.slow", GiveItemSlow.class);
 		MapModuleManager.addMapModule("novacore.instantvoidkill", InstantVoidKill.class);
-		
+
 		File overridesFile = new File(this.getDataFolder().getAbsolutePath() + File.separator + "overrides.json");
 		if (overridesFile.exists()) {
 			Log.info("NovaCoreGameEngine", "Found overrides.json");

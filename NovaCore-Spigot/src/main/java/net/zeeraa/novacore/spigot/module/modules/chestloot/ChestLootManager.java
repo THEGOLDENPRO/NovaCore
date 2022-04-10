@@ -45,6 +45,7 @@ public class ChestLootManager extends NovaModule implements Listener {
 	}
 
 	public ChestLootManager() {
+		super("NovaCore.ChestLootManager");
 		ChestLootManager.instance = this;
 		this.enderChests = new HashMap<Location, Inventory>();
 		this.chests = new ArrayList<Location>();
@@ -215,10 +216,5 @@ public class ChestLootManager extends NovaModule implements Listener {
 				}
 			}
 		}
-	}
-
-	@Override
-	public String getName() {
-		return "ChestLootManager";
 	}
 }

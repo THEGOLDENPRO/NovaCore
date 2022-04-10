@@ -34,9 +34,8 @@ public class CustomItemManager extends NovaModule implements Listener {
 		return instance != null;
 	}
 
-	@Override
-	public String getName() {
-		return "CustomItemManager";
+	public CustomItemManager() {
+		super("NovaCore.CustomItemManager");
 	}
 
 	@Override

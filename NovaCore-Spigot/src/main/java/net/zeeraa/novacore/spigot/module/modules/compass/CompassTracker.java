@@ -21,6 +21,10 @@ import net.zeeraa.novacore.spigot.module.modules.compass.event.CompassTrackingEv
  * @author Zeeraa
  */
 public class CompassTracker extends NovaModule implements Listener {
+	public CompassTracker(String name) {
+		super("NovaCore.CompassTracker");
+	}
+
 	private static CompassTracker instance;
 
 	private CompassTrackerTarget compassTrackerTarget;
@@ -114,11 +118,6 @@ public class CompassTracker extends NovaModule implements Listener {
 			Bukkit.getScheduler().cancelTask(this.taskId);
 			this.taskId = -1;
 		}
-	}
-
-	@Override
-	public String getName() {
-		return "CompassTracker";
 	}
 
 	/**

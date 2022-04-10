@@ -38,6 +38,10 @@ import net.zeeraa.novacore.spigot.utils.LocationUtils;
 import net.zeeraa.novacore.spigot.utils.XYLocation;
 
 public class MapDisplayManager extends NovaModule implements Listener {
+	public MapDisplayManager() {
+		super("NovaCore.MapDisplayManager");
+	}
+
 	public static final HashMap<BlockFace, Vector> SCAN_DIRECTIONS = new HashMap<>();
 	static {
 		SCAN_DIRECTIONS.put(BlockFace.SOUTH, new Vector(1, 0, 0));
@@ -387,10 +391,5 @@ public class MapDisplayManager extends NovaModule implements Listener {
 				}
 			});
 		}
-	}
-
-	@Override
-	public String getName() {
-		return "MapDisplayManager";
 	}
 }

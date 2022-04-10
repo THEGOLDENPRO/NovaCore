@@ -276,4 +276,6 @@ public abstract class VersionIndependantUtils {
 	}
 
 	public abstract boolean isSign(Material material);
+	
+	public abstract void sendActionBarMessage(Player player, String message);
 }

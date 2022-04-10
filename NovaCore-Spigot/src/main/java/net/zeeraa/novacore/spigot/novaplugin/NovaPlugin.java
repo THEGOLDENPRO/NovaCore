@@ -33,7 +33,7 @@ public abstract class NovaPlugin extends JavaPlugin {
 	 * @throws InvalidModuleNameException if the module name contains spaces
 	 */
 	protected boolean loadModule(Class<? extends NovaModule> clazz) {
-		return ModuleManager.loadModule(clazz);
+		return ModuleManager.loadModule(this, clazz);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public abstract class NovaPlugin extends JavaPlugin {
 	 * @throws InvalidModuleNameException if the module name contains spaces
 	 */
 	protected boolean loadModule(Class<? extends NovaModule> clazz, boolean enable) {
-		return ModuleManager.loadModule(clazz, enable);
+		return ModuleManager.loadModule(this, clazz, enable);
 	}
 
 	/**

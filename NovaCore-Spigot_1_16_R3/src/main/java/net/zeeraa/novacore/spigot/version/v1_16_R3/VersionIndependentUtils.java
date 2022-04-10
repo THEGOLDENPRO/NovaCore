@@ -21,6 +21,8 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_16_R3.ChatComponentText;
 import net.minecraft.server.v1_16_R3.DamageSource;
 import net.minecraft.server.v1_16_R3.MinecraftServer;
@@ -455,7 +457,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case ANVIL_LAND:
 			return Sound.BLOCK_ANVIL_LAND;
-			
+
 		case EXPLODE:
 			return Sound.ENTITY_GENERIC_EXPLODE;
 
@@ -553,5 +555,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		}
 
 		return false;
+	}
+
+	@Override
+	public void sendActionBarMessage(Player player, String message) {
+		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
 	}
 }
