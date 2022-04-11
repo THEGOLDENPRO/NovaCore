@@ -21,7 +21,7 @@ import net.zeeraa.novacore.spigot.module.modules.compass.event.CompassTrackingEv
  * @author Zeeraa
  */
 public class CompassTracker extends NovaModule implements Listener {
-	public CompassTracker(String name) {
+	public CompassTracker() {
 		super("NovaCore.CompassTracker");
 	}
 
