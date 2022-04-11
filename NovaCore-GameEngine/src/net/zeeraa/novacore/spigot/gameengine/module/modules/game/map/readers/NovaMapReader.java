@@ -63,7 +63,7 @@ public class NovaMapReader extends MapReader {
 					Class<? extends MapModule> clazz = MapModuleManager.getMapModule(key);
 					MapModule mapModule;
 					try {
-						mapModule = MapModuleManager.loadMapModule(clazz, json.getJSONObject(key));
+						mapModule = MapModuleManager.loadMapModule(clazz, modulesJSON.getJSONObject(key));
 
 						mapModule.setName(key);
 
