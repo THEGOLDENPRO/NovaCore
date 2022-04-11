@@ -71,10 +71,10 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 	@Override
 	public void onEnable() throws Exception {
-		if(Bukkit.getServer().getPluginManager().getPlugin("Netherboard") == null) {
+		if (Bukkit.getServer().getPluginManager().getPlugin("Netherboard") == null) {
 			throw new MissingPluginDependencyException("Netherboard");
 		}
-		
+
 		for (int i = 0; i < lineCount; i++) {
 			globalLines.put(i, "");
 		}
@@ -289,9 +289,10 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	public void setGlobalLine(int line, String content) {
 		globalLines.put(line, content);
 	}
-	
+
 	/**
 	 * Get the content of a global line
+	 * 
 	 * @param line The line to get
 	 * @return The content of that line
 	 */
@@ -379,6 +380,23 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	 */
 	public void resetPlayerNameColor(OfflinePlayer player) {
 		setPlayerNameColor(player, null);
+	}
+
+	/**
+	 * Set the name color of a player using the bungeecord version of chat color.
+	 * Warning: using this with non enum value chat colors will probably cause this
+	 * to crash
+	 * <p>
+	 * Name colors use scoreboard teams to chance the name color above the players
+	 * head
+	 * 
+	 * @param player   The player to set the color of
+	 * @param newColor The {@link net.md_5.bungee.api.ChatColor} to use
+	 * @since 2.0.0
+	 */
+	public void setPlayerNameColorBungee(OfflinePlayer player, net.md_5.bungee.api.ChatColor newColor) {
+		ChatColor realColor = ChatColor.valueOf(newColor.name());
+		this.setPlayerNameColor(player, realColor);
 	}
 
 	/**

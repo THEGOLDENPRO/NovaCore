@@ -410,12 +410,12 @@ public class GameManager extends NovaModule implements Listener {
 	 * @param directory      Directory to scan
 	 * @param worldDirectory The directory containing the worlds
 	 */
-	public void addMaps(File directory, File worldDirectory) {
+	public void loadMaps(File directory, File worldDirectory) {
 		Log.info("Scanning folder " + directory.getName() + " for maps");
 		for (File file : directory.listFiles()) {
 			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("json")) {
 				if (!file.isDirectory()) {
-					this.addMap(file, worldDirectory);
+					this.loadMap(file, worldDirectory);
 				}
 			}
 		}
@@ -429,7 +429,7 @@ public class GameManager extends NovaModule implements Listener {
 	 * @param worldDirectory The directory containing the worlds
 	 * @return <code>true</code> on success
 	 */
-	public boolean addMap(File mapFile, File worldDirectory) {
+	public boolean loadMap(File mapFile, File worldDirectory) {
 		try {
 			Log.info("Reading map from file " + mapFile.getName());
 
