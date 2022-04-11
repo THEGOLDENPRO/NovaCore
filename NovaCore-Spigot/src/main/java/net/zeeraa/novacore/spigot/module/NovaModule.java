@@ -284,7 +284,7 @@ public abstract class NovaModule {
 	 * @param owner {@link Plugin} that owns this module
 	 */
 	public final void setPlugin(Plugin owner) {
-		if (owner != null) {
+		if (this.plugin != null) {
 			Log.warn("Tried to call NovaModule#setPlugin() after plugin has already been set in " + this.getClassName());
 			return;
 		}
