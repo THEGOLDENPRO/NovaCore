@@ -12,6 +12,7 @@ import net.zeeraa.novacore.spigot.command.NovaCommand;
 import net.zeeraa.novacore.spigot.gameengine.command.commands.game.addplayer.NovaCoreSubCommandGameAddPlayer;
 import net.zeeraa.novacore.spigot.gameengine.command.commands.game.debug.GameDebugCommand;
 import net.zeeraa.novacore.spigot.gameengine.command.commands.game.eliminateplayer.NovaCoreSubCommandGameEliminatePlayer;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.eliminateplayer.offline.NovaCoreSubCommandGameEliminateOfflinePlayer;
 import net.zeeraa.novacore.spigot.gameengine.command.commands.game.listplayers.NovaCoreSubCommandGameListplayers;
 import net.zeeraa.novacore.spigot.gameengine.command.commands.game.lootdrop.NovaCoreSubCommandGameLootdrop;
 import net.zeeraa.novacore.spigot.gameengine.command.commands.game.refill.NovaCoreSubCommandGameRefill;
@@ -45,6 +46,7 @@ public class NovaCoreCommandGame extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandGameListplayers());
 		this.addSubCommand(new NovaCoreSubCommandGameAddPlayer());
 		this.addSubCommand(new NovaCoreSubCommandGameEliminatePlayer());
+		this.addSubCommand(new NovaCoreSubCommandGameEliminateOfflinePlayer());
 		this.addSubCommand(new NovaCoreSubCommandResetCountdownGame());
 		this.addSubCommand(new NovaCoreSubCommandGameTrigger());
 		this.addSubCommand(new GameDebugCommand());

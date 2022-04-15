@@ -56,7 +56,7 @@ public class NovaCoreSubCommandGameEliminatePlayer extends NovaSubCommand {
 								sender.sendMessage(ChatColor.RED + "That player is not in the game");
 							}
 						} else {
-							sender.sendMessage(ChatColor.RED + "That player could not be found");
+							sender.sendMessage(ChatColor.RED + "That player could not be found. If they are offline you can try" + ChatColor.AQUA + " /game eliminateofflineplayer <Name>");
 						}
 					}
 				} else {
