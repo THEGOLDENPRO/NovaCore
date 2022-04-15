@@ -24,6 +24,10 @@ public enum VersionIndependantSound {
 	public void playAtLocation(Location location, float volume, float pitch) {
 		VersionIndependantUtils.get().playSound(location, this, volume, pitch);
 	}
+	
+	public void play(Player player) {
+		this.play(player, player.getLocation(), 1F, 1F);
+	}
 
 	public void play(Player player, Location location) {
 		this.play(player, location, 1F, 1F);
