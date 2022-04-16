@@ -224,6 +224,18 @@ public class ItemBuilder {
 	}
 
 	/**
+	 * Add multiple lines of lore to the item
+	 * 
+	 * @param lines The lines to add
+	 * @return The item builder instance
+	 * @since 2.0.0
+	 */
+	public ItemBuilder addLore(List<String> lines) {
+		lines.forEach(string -> this.addLore(string));
+		return this;
+	}
+
+	/**
 	 * Set the durability of the item
 	 * 
 	 * @param durability New durability
@@ -291,7 +303,7 @@ public class ItemBuilder {
 	}
 
 	/**
-	 * Get a empty {@link List}
+	 * Get an empty {@link List}
 	 * 
 	 * @return An empty {@link List}
 	 */
