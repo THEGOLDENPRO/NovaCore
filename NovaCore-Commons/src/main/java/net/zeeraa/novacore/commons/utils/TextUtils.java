@@ -148,7 +148,7 @@ public class TextUtils {
 
 		if (h > 0) {
 			time += h;
-			if (m > 0 && s > 0) {
+			if (m == 0 && s == 0) {
 				time += "";
 			} else if (m > 0 || s > 0) {
 				time += ":";
