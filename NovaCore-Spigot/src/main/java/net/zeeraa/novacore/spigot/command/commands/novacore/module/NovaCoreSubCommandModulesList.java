@@ -9,6 +9,7 @@ import org.bukkit.permissions.PermissionDefault;
 
 import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
+import net.zeeraa.novacore.spigot.module.ModuleNameComparator;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 
 /**
@@ -37,7 +38,12 @@ public class NovaCoreSubCommandModulesList extends NovaSubCommand {
 		int disabled = 0;
 
 		String moduleList = "";
-		for (String key : ModuleManager.getModules().keySet()) {
+
+		List<String> keys = new ArrayList<>(ModuleManager.getModules().keySet());
+
+		keys.sort(new ModuleNameComparator());
+
+		for (String key : keys) {
 			NovaModule module = ModuleManager.getModule(key);
 
 			if (module.isEnabled()) {
@@ -47,8 +53,8 @@ public class NovaCoreSubCommandModulesList extends NovaSubCommand {
 			}
 
 			String style = "";
-			
-			if(ModuleManager.isEssential(module)) {
+
+			if (ModuleManager.isEssential(module)) {
 				style += ChatColor.BOLD;
 			}
 

@@ -226,7 +226,7 @@ public class ModuleManager {
 	 * Load a module
 	 * 
 	 * @since 1.0
-	 * @param owner The {@link Plugin} the module belongs to
+	 * @param owner  The {@link Plugin} the module belongs to
 	 * @param clazz  The class of the module
 	 * @param enable set to <code>true</code> to enable the module on load
 	 * @return <code>true</code> on success
@@ -249,10 +249,9 @@ public class ModuleManager {
 				}
 
 				NovaModule mod = ((NovaModule) module);
-				
+
 				mod.onLoad();
 				modules.put(mod.getClassName(), mod);
-				
 				mod.setPlugin(owner);
 
 				if (enable) {
@@ -316,7 +315,7 @@ public class ModuleManager {
 
 		Set<Class<?>> classes = ClassFinder.getClasses(FileUtils.toFile(plugin.getClass().getProtectionDomain().getCodeSource().getLocation()), packagee);
 		for (Class<?> clazz : classes) {
-			
+
 			// Ignore anonymous classes
 			if (clazz.getName().contains("$")) {
 				continue;

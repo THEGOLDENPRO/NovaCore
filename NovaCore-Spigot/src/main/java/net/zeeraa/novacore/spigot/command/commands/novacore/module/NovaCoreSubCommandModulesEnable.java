@@ -10,6 +10,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 import net.zeeraa.novacore.spigot.module.ModuleEnableFailureReason;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
+import net.zeeraa.novacore.spigot.module.ModuleNameComparator;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 
 /**
@@ -77,7 +78,7 @@ public class NovaCoreSubCommandModulesEnable extends NovaSubCommand {
 
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		ArrayList<String> modules = new ArrayList<String>();
+		List<String> modules = new ArrayList<String>();
 
 		if (args.length == 1) {
 			ModuleManager.getModules().keySet().forEach(key -> {
@@ -88,6 +89,8 @@ public class NovaCoreSubCommandModulesEnable extends NovaSubCommand {
 				}
 			});
 		}
+		
+		modules.sort(new ModuleNameComparator());
 
 		return modules;
 	}
