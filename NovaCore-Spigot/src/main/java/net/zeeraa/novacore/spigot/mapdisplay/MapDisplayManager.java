@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -25,13 +26,13 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.utils.LocationUtils;
@@ -206,26 +207,23 @@ public class MapDisplayManager extends NovaModule implements Listener {
 				File dataFile = getDataFile(frame.getLocation().getWorld(), name);
 				dataFile.getParentFile().mkdirs();
 
-				JSONObject json = new JSONObject();
+				ByteArrayDataOutput out = ByteStreams.newDataOutput();
+				// Name
+				out.writeUTF(name);
 
-				json.put("name", name);
+				// Size
+				out.writeInt(frameUuids.length);
+				out.writeInt(frameUuids[0].length);
 
-				JSONArray rowJson = new JSONArray();
-
+				// UUIDs
 				for (int i = 0; i < frameUuids.length; i++) {
-					JSONArray col = new JSONArray();
 					for (int j = 0; j < frameUuids[i].length; j++) {
-						col.put(frameUuids[i][j].toString());
+						out.writeUTF(frameUuids[i][j].toString());
 					}
-					rowJson.put(col);
 				}
 
-				json.put("row", rowJson);
-
 				List<XYLocation> chunks = new ArrayList<>();
-
 				List<ItemFrame> frameEntityList = display.getAllItemFrames();
-
 				frameEntityList.forEach(frameToSave -> {
 					XYLocation xyl = new XYLocation(frameToSave.getLocation().getChunk().getX(), frameToSave.getLocation().getChunk().getZ());
 
@@ -233,14 +231,16 @@ public class MapDisplayManager extends NovaModule implements Listener {
 						chunks.add(xyl);
 					}
 				});
+				// Amount of chunks
+				out.writeInt(chunks.size());
 
-				JSONArray chunksJson = new JSONArray();
+				// Chunks
+				chunks.forEach(chunk -> {
+					out.writeInt(chunk.getX());
+					out.writeInt(chunk.getY());
+				});
 
-				chunks.forEach(chunk -> chunksJson.put(chunk.toJSON()));
-
-				json.put("chunks", chunks);
-
-				JSONFileUtils.saveJson(dataFile, json);
+				Files.write(out.toByteArray(), dataFile);
 			} catch (Exception e) {
 				Log.error("Failed to save persistent data for MapDisplay " + name + ". " + e.getClass().getName() + " " + e.getMessage());
 				e.printStackTrace();
@@ -264,50 +264,55 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 		int count = 0;
 		for (File file : files) {
-			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("json")) {
+			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("dat")) {
 				count++;
 			}
 		}
-		Log.debug("MapDisplayManager", world.getName() + " has " + count + " map display json files");
+		Log.debug("MapDisplayManager", world.getName() + " has " + count + " map display dat files");
 
 		for (File file : files) {
-			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("json")) {
-				String name = "";
+			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("dat")) {
+				String name = "[UNKNOWN]";
 				try {
-					JSONObject json = JSONFileUtils.readJSONObjectFromFile(file);
+					byte[] bytes = FileUtils.readFileToByteArray(file);
 
-					name = json.getString("name");
+					ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
 
-					Log.trace(getName(), "Found display named " + name + " in world " + world.getName());
+					// Name
+					name = in.readUTF();
 
-					JSONArray row = json.getJSONArray("row");
+					// Size
+					int x = in.readInt();
+					int y = in.readInt();
 
-					UUID[][] uuids = new UUID[row.length()][row.getJSONArray(0).length()];
+					UUID[][] uuids = new UUID[x][y];
 
-					for (int i = 0; i < row.length(); i++) {
-						JSONArray col = row.getJSONArray(i);
-						for (int j = 0; j < col.length(); j++) {
-							uuids[i][j] = UUID.fromString(col.getString(j));
+					// UUIDs
+					for (int i = 0; i < x; i++) {
+						for (int j = 0; j < y; j++) {
+							uuids[i][j] = UUID.fromString(in.readUTF());
 						}
 					}
 
+					// Amount of chunks
+					int chunkCount = in.readInt();
+
+					// Chunks
 					List<XYLocation> chunksToLoad = new ArrayList<>();
 
-					if (json.has("chunks")) {
-						JSONArray chunks = json.getJSONArray("chunks");
-
-						for (int i = 0; i < chunks.length(); i++) {
-							chunksToLoad.add(XYLocation.fromJSON(chunks.getJSONObject(i)));
-						}
+					for (int i = 0; i < chunkCount; i++) {
+						chunksToLoad.add(new XYLocation(in.readInt(), in.readInt()));
 					}
 
+					Log.trace("MapDisplayManager", "Data from file " + file.getAbsolutePath() + ": name:" + name + ". size: " + x + " " + y + ". chunk count: " + chunksToLoad.size());
+					// Init display
 					MapDisplay display = new MapDisplay(world, uuids, true, name, chunksToLoad);
 
 					mapDisplays.add(display);
 
 					display.setupMaps();
 					display.tryLoadFromCache();
-				} catch (JSONException | IOException | MapDisplayNameAlreadyExistsException | MissingItemFrameException e) {
+				} catch (IOException | MapDisplayNameAlreadyExistsException | MissingItemFrameException e) {
 					if (e instanceof MapDisplayNameAlreadyExistsException) {
 						Log.error(getName(), "Failed to load map display named " + name + " in world " + world + ". " + e.getClass().getName() + " " + e.getMessage());
 						continue;
@@ -315,9 +320,11 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 					if (e instanceof MissingItemFrameException) {
 						Log.error(getName(), "Failed to load map display named " + name + " in world " + world + ". " + e.getClass().getName() + " " + e.getMessage());
-						file.delete();
+						// file.delete();
 						continue;
 					}
+
+					Log.error(getName(), "Failed to load map display from file " + file.getAbsolutePath() + " in world " + world + ". " + e.getClass().getName() + " " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -329,7 +336,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	}
 
 	public File getDataFile(World world, String name) {
-		return new File(getDataFolder(world).getPath() + File.separator + name + ".json");
+		return new File(getDataFolder(world).getPath() + File.separator + name + ".dat");
 	}
 
 	public ItemFrame getItemFrameAtLocation(Location location) {

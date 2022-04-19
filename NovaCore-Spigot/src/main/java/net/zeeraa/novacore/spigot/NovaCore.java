@@ -260,7 +260,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		NovaCommons.setExtendedDebugging(getConfig().getBoolean("ExtendedDebugging"));
 
 		Log.setConsoleLogLevel(LogLevel.INFO);
-
+		
 		jumpPadFile = new File(this.getDataFolder().getPath() + File.separator + "jump_pads.json");
 
 		File lootTableFolder = new File(this.getDataFolder().getPath() + File.separator + "LootTables");
