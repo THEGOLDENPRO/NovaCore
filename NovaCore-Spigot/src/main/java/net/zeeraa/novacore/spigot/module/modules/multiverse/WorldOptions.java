@@ -12,6 +12,7 @@ public class WorldOptions {
 	private PlayerUnloadOption playerUnloadOption;
 	private boolean saveOnUnload;
 	private boolean lockWeather;
+	private String generator;
 
 	public WorldOptions(String name) {
 		this.name = name;
@@ -23,6 +24,7 @@ public class WorldOptions {
 		this.playerUnloadOption = PlayerUnloadOption.KICK;
 		this.saveOnUnload = true;
 		this.lockWeather = false;
+		this.generator = null;
 	}
 
 	public WorldOptions withSeed(long seed) {
@@ -65,8 +67,18 @@ public class WorldOptions {
 		return this;
 	}
 
-	public void setLockWeather(boolean lockWeather) {
+	public WorldOptions setLockWeather(boolean lockWeather) {
 		this.lockWeather = lockWeather;
+		return this;
+	}
+
+	public WorldOptions setGenerator(String generator) {
+		this.generator = generator;
+		return this;
+	}
+
+	public String getGenerator() {
+		return generator;
 	}
 
 	public String getName() {

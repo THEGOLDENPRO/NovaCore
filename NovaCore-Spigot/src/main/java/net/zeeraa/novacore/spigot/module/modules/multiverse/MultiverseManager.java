@@ -58,6 +58,10 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 		worldCreator.generateStructures(options.isGenerateStructures());
 
+		if (options.getGenerator() != null) {
+			worldCreator.generator(options.getGenerator());
+		}
+
 		World world = worldCreator.createWorld();
 
 		MultiverseWorld multiverseWorld = new MultiverseWorld(options.getName(), world, options.getUnloadOption(), options.getPlayerUnloadOption(), options.isSaveOnUnload(), options.isLockWeather());
@@ -254,7 +258,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 			case DO_NOTHING:
 				break;
-				
+
 			default:
 				player.kickPlayer("Unloading world.\nA server error has occured: ERR:BAD_PLAYER_UNLOAD_OPTION");
 				break;
