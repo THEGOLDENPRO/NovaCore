@@ -1099,7 +1099,6 @@ public class GameManager extends NovaModule implements Listener {
 							int seconds = activeGame.getPlayerEliminationDelay() % 60;
 
 							Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
-
 							break;
 
 						default:
