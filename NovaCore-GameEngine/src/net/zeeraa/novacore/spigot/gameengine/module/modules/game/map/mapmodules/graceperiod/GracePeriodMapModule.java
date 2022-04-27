@@ -1,5 +1,8 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -22,6 +26,26 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 	private BasicTimer endTimer;
 	private boolean isActive;
 	private int seconds;
+
+	public static final List<DamageCause> BLOCKED_CAUSES = new ArrayList<>();
+
+	static {
+		BLOCKED_CAUSES.add(DamageCause.BLOCK_EXPLOSION);
+		BLOCKED_CAUSES.add(DamageCause.CONTACT);
+		BLOCKED_CAUSES.add(DamageCause.DROWNING);
+		BLOCKED_CAUSES.add(DamageCause.ENTITY_ATTACK);
+		BLOCKED_CAUSES.add(DamageCause.ENTITY_EXPLOSION);
+		BLOCKED_CAUSES.add(DamageCause.FALLING_BLOCK);
+		BLOCKED_CAUSES.add(DamageCause.FIRE);
+		BLOCKED_CAUSES.add(DamageCause.LAVA);
+		BLOCKED_CAUSES.add(DamageCause.LIGHTNING);
+		BLOCKED_CAUSES.add(DamageCause.MAGIC);
+		BLOCKED_CAUSES.add(DamageCause.POISON);
+		BLOCKED_CAUSES.add(DamageCause.PROJECTILE);
+		BLOCKED_CAUSES.add(DamageCause.SUFFOCATION);
+		BLOCKED_CAUSES.add(DamageCause.THORNS);
+		BLOCKED_CAUSES.add(DamageCause.WITHER);
+	}
 
 	public GracePeriodMapModule(JSONObject json) {
 		super(json);
@@ -52,7 +76,9 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 	public void onEntityDamage(EntityDamageEvent e) {
 		if (e.getEntity() instanceof Player) {
 			if (isActive) {
-				e.setCancelled(true);
+				if (BLOCKED_CAUSES.contains(e.getCause())) {
+					e.setCancelled(true);
+				}
 			}
 		}
 	}
@@ -71,7 +97,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 		Log.info("GracePeriodMapModule", "Grace period will be " + seconds + " seconds long");
 		Bukkit.getServer().getPluginManager().registerEvents(this, NovaCore.getInstance());
 	}
-	
+
 	@Override
 	public void onGameEnd(Game game) {
 		isActive = false;
