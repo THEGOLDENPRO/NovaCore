@@ -5,18 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.utils.JSONItemParser;
 
@@ -26,7 +22,7 @@ import net.zeeraa.novacore.spigot.utils.JSONItemParser;
  * 
  * @author Zeeraa
  */
-public class GiveItemInstant extends MapModule implements Listener {
+public class GiveItemInstant extends MapModule {
 	private List<ItemStack> items;
 
 	public GiveItemInstant(JSONObject json) {
@@ -44,23 +40,18 @@ public class GiveItemInstant extends MapModule implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onGameBegin(GameBeginEvent e) {
-		e.getGame().getPlayers().forEach(uuid -> {
-			Player player = Bukkit.getServer().getPlayer(uuid);
-			if (player != null) {
-				items.forEach(item -> player.getInventory().addItem(item.clone()));
-			}
-		});
-	}
-
 	@Override
 	public void onGameStart(Game game) {
-		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
-	}
-
-	@Override
-	public void onGameEnd(Game game) {
-		HandlerList.unregisterAll(this);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				game.getPlayers().forEach(uuid -> {
+					Player player = Bukkit.getServer().getPlayer(uuid);
+					if (player != null) {
+						items.forEach(item -> player.getInventory().addItem(item.clone()));
+					}
+				});
+			}
+		}.runTaskLater(game.getPlugin(), 5L);
 	}
 }

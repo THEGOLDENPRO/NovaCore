@@ -48,7 +48,14 @@ public class JSONItemParser {
 				damage = (short) json.getInt("damage");
 			}
 
-			builder = new ItemBuilder(new ItemStack(material, 1, damage, data));
+			if (data == 0 && damage == 0) {
+				builder = new ItemBuilder(new ItemStack(material, 1));
+			} else if (data == 0) {
+				builder = new ItemBuilder(new ItemStack(material, 1, damage));
+			} else {
+				builder = new ItemBuilder(new ItemStack(material, 1, damage, data));
+			}
+
 		}
 
 		if (json.has("lore")) {

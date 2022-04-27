@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.Callback;
-import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
@@ -72,7 +71,7 @@ public class FallDamageGracePeriodMapModule extends MapModule implements Listene
 	@Override
 	public void onGameStart(Game game) {
 		Log.info("FallDamageGracePeriodMapModule", "Fall damage grace period will be " + seconds + " seconds long");
-		Bukkit.getServer().getPluginManager().registerEvents(this, NovaCore.getInstance());
+		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
 	}
 
 	@Override

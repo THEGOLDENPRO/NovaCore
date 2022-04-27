@@ -25,7 +25,7 @@ public class HandCraftingTable extends MapModule implements Listener {
 	@Override
 	public void onGameStart(Game game) {
 		this.game = game;
-		Bukkit.getServer().getPluginManager().registerEvents(this, NovaCore.getInstance());
+		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
 	}
 
 	@Override

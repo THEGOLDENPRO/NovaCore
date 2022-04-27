@@ -16,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 
@@ -145,7 +144,7 @@ public class MapProtection extends MapModule implements Listener {
 	@Override
 	public void onGameStart(Game game) {
 		this.game = game;
-		Bukkit.getServer().getPluginManager().registerEvents(this, NovaCore.getInstance());
+		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
 	}
 
 	@Override
