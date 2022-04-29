@@ -45,8 +45,6 @@ public class NovaCoreGameEngine extends NovaPlugin {
 	public void onEnable() {
 		this.getDataFolder().mkdir();
 
-		// Looks better when printed to the console
-		System.out.println(" \n_   _                  _____                      ______             _ \n| \\\\ | |                / ____|                    |  ____|           (_)           \n|  \\\\| | _____   ____ _| |  __  __ _ _ __ ___   ___| |__   _ __   __ _ _ _ __   ___ \n| . ` |/ _ \\\\ \\\\ / / _` | | |_ |/ _` | '_ ` _ \\\\ / _ \\\\  __| | '_ \\\\ / _` | | '_ \\\\ / _ \\\\\n| |\\\\  | (_) \\\\ V / (_| | |__| | (_| | | | | | |  __/ |____| | | | (_| | | | | |  __/\n|_| \\\\_|\\\\___/ \\\\_/ \\\\__,_|\\\\_____|\\\\__,_|_| |_| |_|\\\\___|______|_| |_|\\\\__, |_|_| |_|\\\\___|\n                                                                 __/ |             \n                                                                |___/\"");
 		Log.info("NovaCoreGameEngine", "Loading language files...");
 		try {
 			LanguageReader.readFromJar(this.getClass(), "/lang/en-us.json");

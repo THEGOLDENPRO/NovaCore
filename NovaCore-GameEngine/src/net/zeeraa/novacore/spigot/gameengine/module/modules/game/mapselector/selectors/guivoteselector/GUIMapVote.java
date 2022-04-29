@@ -99,7 +99,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 					}
 				}
 
-				ArrayList<String> lore = new ArrayList<String>();
+				List<String> lore = new ArrayList<String>();
 
 				for (String line : map.getDescription().split("\n")) {
 					lore.add(line);
