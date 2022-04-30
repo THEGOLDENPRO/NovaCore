@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.gameengine.module.modules.game.events;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.teams.Team;
 
 /**
@@ -15,10 +16,16 @@ public class TeamEliminatedEvent extends Event {
 
 	private Team team;
 	private int placement;
+	private Game game;
 
-	public TeamEliminatedEvent(Team team, int placement) {
+	public TeamEliminatedEvent(Team team, int placement, Game game) {
 		this.team = team;
 		this.placement = placement;
+		this.game = game;
+	}
+
+	public Game getGame() {
+		return game;
 	}
 
 	/**

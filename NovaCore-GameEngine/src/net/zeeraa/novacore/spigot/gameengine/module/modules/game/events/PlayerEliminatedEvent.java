@@ -6,6 +6,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.elimination.PlayerEliminationReason;
 
 /**
@@ -21,17 +22,23 @@ public class PlayerEliminatedEvent extends Event implements Cancellable {
 	private PlayerEliminationReason reason;
 	private int placement;
 	private boolean silent;
+	private Game game;
 
 	private boolean cancel;
 
-	public PlayerEliminatedEvent(OfflinePlayer player, Entity killer, PlayerEliminationReason reason, int placement, boolean silent) {
+	public PlayerEliminatedEvent(OfflinePlayer player, Entity killer, PlayerEliminationReason reason, int placement, boolean silent, Game game) {
 		this.player = player;
 		this.killer = killer;
 		this.reason = reason;
 		this.placement = placement;
 		this.silent = silent;
+		this.game = game;
 
 		this.cancel = false;
+	}
+	
+	public Game getGame() {
+		return game;
 	}
 
 	/**

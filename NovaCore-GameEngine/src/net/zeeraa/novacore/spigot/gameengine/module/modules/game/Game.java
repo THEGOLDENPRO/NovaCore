@@ -651,7 +651,7 @@ public abstract class Game {
 
 		int placement = players.size() - 1;
 
-		PlayerEliminatedEvent playerEliminatedEvent = new PlayerEliminatedEvent(player, killer, reason, placement, silent);
+		PlayerEliminatedEvent playerEliminatedEvent = new PlayerEliminatedEvent(player, killer, reason, placement, silent, this);
 
 		Bukkit.getServer().getPluginManager().callEvent(playerEliminatedEvent);
 
@@ -689,7 +689,7 @@ public abstract class Game {
 
 					if (teamEliminated) {
 						int teamPlacement = teamsLeft.size() + 1;
-						TeamEliminatedEvent event = new TeamEliminatedEvent(team, teamPlacement);
+						TeamEliminatedEvent event = new TeamEliminatedEvent(team, teamPlacement, this);
 
 						Bukkit.getServer().getPluginManager().callEvent(event);
 
