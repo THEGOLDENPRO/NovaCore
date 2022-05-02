@@ -44,6 +44,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.countdown.GameC
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.elimination.EliminationTask;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.elimination.PlayerEliminationReason;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.elimination.PlayerQuitEliminationAction;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameEndEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameLoadedEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameStartEvent;
@@ -1110,6 +1111,15 @@ public class GameManager extends NovaModule implements Listener {
 		}
 
 		removeCombatTag(p);
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onGameBegin(GameBeginEvent e) {
+		if (e.getGame() instanceof MapGame) {
+			Log.trace("GameManager", "Sending begin event to map modules");
+			MapGame game = (MapGame) e.getGame();
+			game.getActiveMap().getMapData().getMapModules().forEach(module -> module.onGameBegin(game));
+		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)

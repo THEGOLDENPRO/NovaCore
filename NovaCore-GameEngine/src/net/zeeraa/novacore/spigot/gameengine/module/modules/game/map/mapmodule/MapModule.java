@@ -29,11 +29,21 @@ public abstract class MapModule {
 	}
 
 	/**
-	 * Galled when a game is starting
+	 * Called when a game is starting. This gets called before
+	 * {@link Game#onStart()}
 	 * 
 	 * @param game The {@link Game} that is starting
 	 */
 	public void onGameStart(Game game) {
+	}
+
+	/**
+	 * Called when the game has started
+	 * 
+	 * @param game The {@link Game} that has started
+	 * @since 2.0.0
+	 */
+	public void onGameBegin(Game game) {
 	}
 
 	/**
