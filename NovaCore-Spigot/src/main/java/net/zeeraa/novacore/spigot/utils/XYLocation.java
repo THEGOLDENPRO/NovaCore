@@ -23,11 +23,11 @@ public class XYLocation {
 
 		return json;
 	}
-	
+
 	public int getX() {
 		return x;
 	}
-	
+
 	public int getY() {
 		return y;
 	}
@@ -45,5 +45,10 @@ public class XYLocation {
 		}
 
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "X: " + y + " Y: " + y;
 	}
 }
