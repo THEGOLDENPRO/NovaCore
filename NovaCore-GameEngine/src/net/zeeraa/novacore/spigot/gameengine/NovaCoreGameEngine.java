@@ -24,6 +24,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.instantvoidkill.InstantVoidKill;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.lootdrop.medical.MedicalSupplyDropMapModule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.mapprotection.MapProtection;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.noweather.NoWeather;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.potioneffect.AddPotionEffect;
@@ -66,6 +67,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		Log.info("NovaCoreGameEngine", "Loading map modules...");
 		MapModuleManager.addMapModule("novacore.chestloot", ChestLoot.class);
 		MapModuleManager.addMapModule("novacore.lootdrop", LootDropMapModule.class);
+		MapModuleManager.addMapModule("novacore.lootdrop.medical", MedicalSupplyDropMapModule.class);
 		MapModuleManager.addMapModule("novacore.mapprotection", MapProtection.class);
 		MapModuleManager.addMapModule("novacore.handcraftingtable", HandCraftingTable.class);
 		MapModuleManager.addMapModule("novacore.worldborder", WorldborderMapModule.class);
@@ -83,8 +85,11 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.giveitem.instant", GiveItemInstant.class);
 		MapModuleManager.addMapModule("novacore.instantvoidkill", InstantVoidKill.class);
 
+		// Legacy modules
+		MapModuleManager.addMapModule("novauniverse.survivalgames.medicalsupplydrop", MedicalSupplyDropMapModule.class);
+
 		CommandRegistry.registerCommand(new NovaCoreCommandGameLobby());
-		
+
 		File overridesFile = new File(this.getDataFolder().getAbsolutePath() + File.separator + "overrides.json");
 		if (overridesFile.exists()) {
 			Log.info("NovaCoreGameEngine", "Found overrides.json");
