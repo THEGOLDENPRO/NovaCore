@@ -12,7 +12,6 @@ import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
 
 public class NovaCoreSubCommandGameAddPlayer extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameAddPlayer() {
 		super("addplayer");
 

@@ -15,7 +15,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.elimination.PlayerEliminationReason;
 
 public class NovaCoreSubCommandGameEliminatePlayer extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameEliminatePlayer() {
 		super("eliminateplayer");
 

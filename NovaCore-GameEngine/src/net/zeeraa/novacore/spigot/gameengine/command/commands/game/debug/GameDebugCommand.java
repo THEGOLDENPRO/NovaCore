@@ -12,7 +12,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.MapGame;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 
 public class GameDebugCommand extends NovaSubCommand {
-
 	public GameDebugCommand() {
 		super("debug");
 		setAllowedSenders(AllowedSenders.ALL);

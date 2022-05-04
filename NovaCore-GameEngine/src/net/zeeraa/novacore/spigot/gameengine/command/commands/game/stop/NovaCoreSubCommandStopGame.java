@@ -14,7 +14,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
  * @author Zeeraa
  */
 public class NovaCoreSubCommandStopGame extends NovaSubCommand {
-
 	public NovaCoreSubCommandStopGame() {
 		super("stop");
 

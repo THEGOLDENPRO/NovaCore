@@ -6,7 +6,6 @@ import org.bukkit.permissions.PermissionDefault;
 import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 
 public class NovaCoreSubCommandGameTrigger extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameTrigger() {
 		super("trigger");
 

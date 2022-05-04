@@ -13,7 +13,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.Trigge
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.TriggerResponse;
 
 public class NovaCoreSubCommandGameTriggerTrigger extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameTriggerTrigger() {
 		super("trigger");
 

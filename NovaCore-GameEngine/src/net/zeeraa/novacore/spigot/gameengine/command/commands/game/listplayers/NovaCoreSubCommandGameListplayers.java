@@ -21,7 +21,6 @@ import net.zeeraa.novacore.spigot.teams.Team;
  * @author Zeeraa
  */
 public class NovaCoreSubCommandGameListplayers extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameListplayers() {
 		super("listplayers");
 

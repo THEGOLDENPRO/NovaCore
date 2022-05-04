@@ -8,6 +8,8 @@ import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.JSONFileUtils;
+import net.zeeraa.novacore.spigot.command.CommandRegistry;
+import net.zeeraa.novacore.spigot.gameengine.command.commands.gamelobby.NovaCoreCommandGameLobby;
 import net.zeeraa.novacore.spigot.gameengine.debugtriggers.GameEngineDebugTriggers;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModuleManager;
@@ -81,6 +83,8 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.giveitem.instant", GiveItemInstant.class);
 		MapModuleManager.addMapModule("novacore.instantvoidkill", InstantVoidKill.class);
 
+		CommandRegistry.registerCommand(new NovaCoreCommandGameLobby());
+		
 		File overridesFile = new File(this.getDataFolder().getAbsolutePath() + File.separator + "overrides.json");
 		if (overridesFile.exists()) {
 			Log.info("NovaCoreGameEngine", "Found overrides.json");

@@ -12,7 +12,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.GameTr
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.ScheduledGameTrigger;
 
 public class NovaCoreSubCommandGameTriggerStart extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameTriggerStart() {
 		super("start");
 

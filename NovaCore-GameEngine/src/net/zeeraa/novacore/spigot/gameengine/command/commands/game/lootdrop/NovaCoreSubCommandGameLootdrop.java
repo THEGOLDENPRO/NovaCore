@@ -20,7 +20,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.
  * @author Zeeraa
  */
 public class NovaCoreSubCommandGameLootdrop extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameLootdrop() {
 		super("lootdrop");
 

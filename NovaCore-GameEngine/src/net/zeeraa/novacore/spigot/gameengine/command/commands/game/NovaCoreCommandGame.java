@@ -1,8 +1,5 @@
 package net.zeeraa.novacore.spigot.gameengine.command.commands.game;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
@@ -28,7 +25,6 @@ import net.zeeraa.novacore.spigot.gameengine.command.commands.game.trigger.NovaC
  * @author Zeeraa
  */
 public class NovaCoreCommandGame extends NovaCommand {
-
 	public NovaCoreCommandGame() {
 		super("game", NovaCore.getInstance());
 
@@ -51,6 +47,7 @@ public class NovaCoreCommandGame extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandGameTrigger());
 		this.addSubCommand(new GameDebugCommand());
 
+		this.setEmptyTabMode(true);
 		this.setFilterAutocomplete(true);
 	}
 
@@ -58,10 +55,5 @@ public class NovaCoreCommandGame extends NovaCommand {
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
 		sender.sendMessage(ChatColor.GOLD + "Use " + ChatColor.AQUA + "/game help" + ChatColor.GOLD + " to see all commands");
 		return true;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }

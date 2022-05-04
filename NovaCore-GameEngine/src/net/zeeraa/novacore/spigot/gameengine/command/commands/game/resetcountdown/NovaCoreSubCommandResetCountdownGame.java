@@ -16,7 +16,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
  * @author Zeeraa
  */
 public class NovaCoreSubCommandResetCountdownGame extends NovaSubCommand {
-
 	public NovaCoreSubCommandResetCountdownGame() {
 		super("resetcountdown");
 

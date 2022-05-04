@@ -16,7 +16,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.GameLobby;
  * @author Zeeraa
  */
 public class NovaCoreSubCommandStartGame extends NovaSubCommand {
-
 	public NovaCoreSubCommandStartGame() {
 		super("start");
 

@@ -16,7 +16,6 @@ import net.zeeraa.novacore.spigot.module.modules.chestloot.ChestLootManager;
  * @author Zeeraa
  */
 public class NovaCoreSubCommandGameRefill extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameRefill() {
 		super("refill");
 

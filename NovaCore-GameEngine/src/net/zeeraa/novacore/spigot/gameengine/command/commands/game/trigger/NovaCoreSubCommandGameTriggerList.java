@@ -11,7 +11,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.Schedu
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.TriggerFlag;
 
 public class NovaCoreSubCommandGameTriggerList extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameTriggerList() {
 		super("list");
 

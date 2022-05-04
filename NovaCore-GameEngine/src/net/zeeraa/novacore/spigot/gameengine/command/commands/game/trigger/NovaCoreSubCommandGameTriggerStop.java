@@ -12,7 +12,6 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.GameTr
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.ScheduledGameTrigger;
 
 public class NovaCoreSubCommandGameTriggerStop extends NovaSubCommand {
-
 	public NovaCoreSubCommandGameTriggerStop() {
 		super("stop");
 
