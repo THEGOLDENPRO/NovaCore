@@ -11,6 +11,7 @@ import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
 import net.zeeraa.novacore.spigot.gameengine.command.commands.gamelobby.NovaCoreCommandGameLobby;
 import net.zeeraa.novacore.spigot.gameengine.debugtriggers.GameEngineDebugTriggers;
+import net.zeeraa.novacore.spigot.gameengine.lootdrop.medical.MedicalSupplyDropManager;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModuleManager;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockloot.BlockLoot;
@@ -63,6 +64,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		Log.info("NovaCoreGameEngine", "Loading modules...");
 		ModuleManager.loadModule(this, GameManager.class);
 		ModuleManager.loadModule(this, GameLobby.class);
+		ModuleManager.loadModule(this, MedicalSupplyDropManager.class);
 
 		Log.info("NovaCoreGameEngine", "Loading map modules...");
 		MapModuleManager.addMapModule("novacore.chestloot", ChestLoot.class);

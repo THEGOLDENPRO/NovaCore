@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.RandomGenerator;
+import net.zeeraa.novacore.spigot.gameengine.lootdrop.medical.MedicalSupplyDropManager;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMap;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;

@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.lootdrop.medical;
+package net.zeeraa.novacore.spigot.gameengine.lootdrop.medical;
 
 import java.util.ArrayList;
 import java.util.HashMap;
