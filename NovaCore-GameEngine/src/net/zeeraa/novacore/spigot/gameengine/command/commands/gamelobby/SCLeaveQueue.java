@@ -24,7 +24,7 @@ public class SCLeaveQueue extends NovaSubCommand {
 
 		this.setEmptyTabMode(true);
 		this.setFilterAutocomplete(true);
-
+		
 		this.addHelpSubCommand();
 	}
 
