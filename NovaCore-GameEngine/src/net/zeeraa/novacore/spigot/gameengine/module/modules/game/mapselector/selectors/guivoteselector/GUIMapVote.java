@@ -85,7 +85,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 			holder.getMapSlots().clear();
 
 			int slot = 0;
-			
+
 			for (GameMapData map : getMaps()) {
 				ItemStack voteItem = new ItemStack(map.isEnabled() ? Material.EMERALD : Material.COAL);
 
@@ -196,13 +196,13 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent e) {
-		if(GameManager.getInstance().hasGame()) {
-			if(GameManager.getInstance().getActiveGame().hasStarted()) {
+		if (GameManager.getInstance().hasGame()) {
+			if (GameManager.getInstance().getActiveGame().hasStarted()) {
 				// Prevent spectators in game from opening gui
 				return;
 			}
 		}
-		
+
 		if (e.getInventory().getHolder() instanceof MapVoteInventoryHolder) {
 			e.setCancelled(true);
 			if (e.getClickedInventory() != null) {
@@ -215,6 +215,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 						String mapName = holder.getMapSlots().get(e.getSlot());
 
 						boolean changed = false;
+						boolean forced = false;
 
 						if (e.getClick() == ClickType.MIDDLE) {
 							if (player.hasPermission("novacore.gamelobby.forcemap")) {
@@ -226,6 +227,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 									forcedMap = mapName;
 									Bukkit.getServer().broadcast(ChatColor.GREEN + "Set forced map to " + mapName, "novacore.gamelobby.forcemap");
 									Log.info("Set forced map to " + mapName);
+									forced = true;
 								}
 							}
 						}
@@ -239,6 +241,12 @@ public class GUIMapVote extends MapSelector implements Listener {
 						}
 
 						votes.put(player.getUniqueId(), mapName);
+
+						GameMapData map = getMaps().stream().filter(m -> m.getMapName().equalsIgnoreCase(mapName)).findFirst().orElse(null);
+						if (map != null) {
+							GUIMapSelectorPlayerVotedEvent event = new GUIMapSelectorPlayerVotedEvent(player, forced, map);
+							Bukkit.getServer().getPluginManager().callEvent(event);
+						}
 
 						VersionIndependantUtils.get().playSound(player, player.getLocation(), VersionIndependantSound.ORB_PICKUP, 1F, 1F);
 						player.sendMessage(ChatColor.GREEN + (changed ? LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote.changed") : LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote.for")) + this.getMap(mapName).getDisplayName());
