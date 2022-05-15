@@ -294,7 +294,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case ANVIL_LAND:
 			return Sound.ANVIL_LAND;
-			
+
 		case EXPLODE:
 			return Sound.EXPLODE;
 
@@ -369,8 +369,15 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case OAK_BOAT:
 			return Material.BOAT;
-			
+
+		case DIAMOND_SHOVEL:
+			return Material.DIAMOND_SPADE;
+
+		case SNOWBALL:
+			return Material.SNOW_BALL;
+
 		default:
+			AbstractionLogger.getLogger().warning("VersionIndependentUtils", "Unknown version Independent meterial: " + material.name());
 			return null;
 		}
 	}
@@ -389,20 +396,20 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public NovaCoreGameVersion getNovaCoreGameVersion() {
 		return NovaCoreGameVersion.V_1_8;
 	}
-	
+
 	@Override
 	public ItemStack getPlayerSkullitem() {
 		return new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
 	}
-	
+
 	@Override
 	public boolean isSign(Material material) {
 		return material == Material.SIGN_POST || material == Material.WALL_SIGN;
 	}
-	
+
 	@Override
 	public void sendActionBarMessage(Player player, String message) {
 		PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + message.replace("&", "§") + "\"}"), (byte) 2);
-		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);		
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 }
