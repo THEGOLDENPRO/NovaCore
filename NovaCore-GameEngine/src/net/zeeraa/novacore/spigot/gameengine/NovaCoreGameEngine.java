@@ -18,6 +18,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockreplacer.BlockReplacer;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chestloot.ChestLoot;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.falldamagegraceperiod.FallDamageGracePeriodMapModule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.fireresistance.FireReistance;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.gamerule.Gamerule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.giveitems.GiveItemInstant;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.giveitems.GiveItemSlow;
@@ -86,6 +87,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.giveitem.slow", GiveItemSlow.class);
 		MapModuleManager.addMapModule("novacore.giveitem.instant", GiveItemInstant.class);
 		MapModuleManager.addMapModule("novacore.instantvoidkill", InstantVoidKill.class);
+		MapModuleManager.addMapModule("novacore.fireresistance", FireReistance.class);
 
 		// Legacy modules
 		MapModuleManager.addMapModule("novauniverse.survivalgames.medicalsupplydrop", MedicalSupplyDropMapModule.class);
