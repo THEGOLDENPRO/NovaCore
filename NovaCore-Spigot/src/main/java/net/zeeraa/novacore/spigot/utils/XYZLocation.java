@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.utils;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 import org.json.JSONObject;
 
@@ -24,6 +25,12 @@ public class XYZLocation {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+
+	public XYZLocation(ConfigurationSection configurationSection) {
+		this.x = configurationSection.getDouble("x", 0);
+		this.y = configurationSection.getDouble("y", 0);
+		this.z = configurationSection.getDouble("z", 0);
 	}
 
 	public XYZLocation(Vector vector) {
