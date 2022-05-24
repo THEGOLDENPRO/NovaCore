@@ -875,16 +875,16 @@ public class GameManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDeath(PlayerDeathEvent e) {
-		Player p = e.getEntity();
+		Player player = e.getEntity();
 
 		if (hasGame()) {
 			if (getActiveGame().hasStarted()) {
-				if (getActiveGame().getPlayers().contains(p.getUniqueId())) {
+				if (getActiveGame().getPlayers().contains(player.getUniqueId())) {
 					if (!showDeathMessaage) {
 						e.setDeathMessage(null);
 					}
 
-					if (getActiveGame().eliminatePlayerOnDeath(p)) {
+					if (getActiveGame().eliminatePlayerOnDeath(player)) {
 						try {
 							if (dropItemsOnDeath) {
 								Location lootLocation = e.getEntity().getLocation().clone();
@@ -918,14 +918,14 @@ public class GameManager extends NovaModule implements Listener {
 
 						PlayerUtils.clearPlayerInventory(e.getEntity());
 
-						LivingEntity killer = p.getKiller();
+						LivingEntity killer = player.getKiller();
 
 						Log.trace("Eliminating player on death");
-						getActiveGame().eliminatePlayer(p, killer, (killer == null ? PlayerEliminationReason.DEATH : PlayerEliminationReason.KILLED));
+						getActiveGame().eliminatePlayer(player, killer, (killer == null ? PlayerEliminationReason.DEATH : PlayerEliminationReason.KILLED));
 					}
 
-					if (!callOnRespawn.contains(p.getUniqueId())) {
-						callOnRespawn.add(p.getUniqueId());
+					if (!callOnRespawn.contains(player.getUniqueId())) {
+						callOnRespawn.add(player.getUniqueId());
 					}
 
 					if (autoRespawn) {
@@ -933,7 +933,7 @@ public class GameManager extends NovaModule implements Listener {
 
 							@Override
 							public void run() {
-								p.spigot().respawn();
+								player.spigot().respawn();
 							}
 						}.runTaskLater(NovaCore.getInstance(), 5L);
 					}
@@ -1052,22 +1052,22 @@ public class GameManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent e) {
-		Player p = e.getPlayer();
+		Player player = e.getPlayer();
 		if (eliminationTasks.containsKey(e.getPlayer().getUniqueId())) {
-			eliminationTasks.get(p.getUniqueId()).cancel();
-			eliminationTasks.remove(p.getUniqueId());
+			eliminationTasks.get(player.getUniqueId()).cancel();
+			eliminationTasks.remove(player.getUniqueId());
 
 			// Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + ""
 			// + p.getName() + ChatColor.GREEN + ChatColor.BOLD + " reconnected in time");
-			LanguageManager.broadcast("novacore.game.elimination.player.reconnected", p.getName());
+			LanguageManager.broadcast("novacore.game.elimination.player.reconnected", player.getName());
 		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent e) {
-		Player p = e.getPlayer();
-		if (callOnRespawn.contains(p.getUniqueId())) {
-			callOnRespawn.remove(p.getUniqueId());
+		Player player = e.getPlayer();
+		if (callOnRespawn.contains(player.getUniqueId())) {
+			callOnRespawn.remove(player.getUniqueId());
 		}
 
 		if (hasGame()) {
@@ -1075,19 +1075,26 @@ public class GameManager extends NovaModule implements Listener {
 				return;
 			}
 			if (activeGame.hasStarted()) {
-				if (activeGame.getPlayers().contains(p.getUniqueId())) {
-					if (isCombatTagged(p)) {
+				if (activeGame.getPlayers().contains(player.getUniqueId())) {
+					if (isCombatTagged(player)) {
 						if (activeGame.isDropItemsOnCombatLog()) {
-							for (ItemStack item : p.getInventory().getContents()) {
+							for (ItemStack item : player.getInventory().getContents()) {
 								if (item != null) {
 									if (item.getType() != Material.AIR) {
-										p.getWorld().dropItem(p.getLocation(), item.clone());
+										player.getWorld().dropItem(player.getLocation(), item.clone());
 									}
 								}
 							}
-							p.getInventory().clear();
+							for (ItemStack item : player.getInventory().getArmorContents()) {
+								if (item != null) {
+									if (item.getType() != Material.AIR) {
+										player.getWorld().dropItem(player.getLocation(), item.clone());
+									}
+								}
+							}
+							PlayerUtils.clearPlayerInventory(player);
 						}
-						activeGame.eliminatePlayer(p, null, PlayerEliminationReason.COMBAT_LOGGING);
+						activeGame.eliminatePlayer(player, null, PlayerEliminationReason.COMBAT_LOGGING);
 					} else {
 
 						switch (activeGame.getPlayerQuitEliminationAction()) {
@@ -1095,21 +1102,21 @@ public class GameManager extends NovaModule implements Listener {
 							break;
 
 						case INSTANT:
-							activeGame.eliminatePlayer(p, null, PlayerEliminationReason.QUIT);
+							activeGame.eliminatePlayer(player, null, PlayerEliminationReason.QUIT);
 							break;
 
 						case DELAYED:
-							EliminationTask eliminationTask = new EliminationTask(p.getUniqueId(), p.getName(), activeGame.getPlayerEliminationDelay(), new Callback() {
+							EliminationTask eliminationTask = new EliminationTask(player.getUniqueId(), player.getName(), activeGame.getPlayerEliminationDelay(), new Callback() {
 								@Override
 								public void execute() {
-									getActiveGame().eliminatePlayer(p, null, PlayerEliminationReason.DID_NOT_RECONNECT);
+									getActiveGame().eliminatePlayer(player, null, PlayerEliminationReason.DID_NOT_RECONNECT);
 								}
 							});
 							eliminationTasks.put(e.getPlayer().getUniqueId(), eliminationTask);
 							int minutes = (activeGame.getPlayerEliminationDelay() / 60);
 							int seconds = activeGame.getPlayerEliminationDelay() % 60;
 
-							Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + p.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
+							Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + player.getName() + ChatColor.RED + ChatColor.BOLD + " disconnected. They have " + minutes + " minute" + (minutes == 1 ? "" : "s") + (seconds == 0 ? "" : " and " + seconds + " seconds") + " to reconnect");
 							break;
 
 						default:
@@ -1120,7 +1127,7 @@ public class GameManager extends NovaModule implements Listener {
 			}
 		}
 
-		removeCombatTag(p);
+		removeCombatTag(player);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
