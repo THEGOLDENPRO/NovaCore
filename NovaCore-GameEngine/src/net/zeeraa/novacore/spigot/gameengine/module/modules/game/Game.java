@@ -97,6 +97,14 @@ public abstract class Game {
 	protected World world;
 
 	/**
+	 * should we drop the players inventory if they combat log? Default value is:
+	 * <code>false</code>
+	 * 
+	 * @since 2.0.0
+	 */
+	private boolean dropItemsOnCombatLog;
+
+	/**
 	 * A {@link Random} instance that can be used in the game
 	 */
 	protected Random random;
@@ -115,6 +123,7 @@ public abstract class Game {
 		this.random = new Random();
 		this.beginEventCalled = false;
 		this.plugin = plugin;
+		this.dropItemsOnCombatLog = false;
 		this.winCheckTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
 			public void run() {
@@ -447,6 +456,27 @@ public abstract class Game {
 	 */
 	public boolean eliminateAfterAutoWin() {
 		return false;
+	}
+
+	/**
+	 * Set if the players inventory should be dropped if they combat log. This is
+	 * disabled by default
+	 * 
+	 * @param dropItemsOnCombatLog <code>true</code> to enable
+	 * @since 2.0.0
+	 */
+	public void setDropItemsOnCombatLog(boolean dropItemsOnCombatLog) {
+		this.dropItemsOnCombatLog = dropItemsOnCombatLog;
+	}
+
+	/**
+	 * Check if we should drop the players inventory when they combat log. This is
+	 * disabled by default
+	 * 
+	 * @return <code>true</code> if enabled
+	 */
+	public boolean isDropItemsOnCombatLog() {
+		return dropItemsOnCombatLog;
 	}
 
 	/**

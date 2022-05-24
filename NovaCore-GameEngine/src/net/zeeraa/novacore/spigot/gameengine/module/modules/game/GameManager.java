@@ -299,7 +299,7 @@ public class GameManager extends NovaModule implements Listener {
 				message.showTaggedMessage(player);
 			}
 		} catch (Exception e) {
-			Log.error("Error while showing combat tagged message fro a player: " + e.getClass().getName() + " " + e.getMessage());
+			Log.error("Error while showing combat tagged message for a player: " + e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -1077,6 +1077,16 @@ public class GameManager extends NovaModule implements Listener {
 			if (activeGame.hasStarted()) {
 				if (activeGame.getPlayers().contains(p.getUniqueId())) {
 					if (isCombatTagged(p)) {
+						if (activeGame.isDropItemsOnCombatLog()) {
+							for (ItemStack item : p.getInventory().getContents()) {
+								if (item != null) {
+									if (item.getType() != Material.AIR) {
+										p.getWorld().dropItem(p.getLocation(), item.clone());
+									}
+								}
+							}
+							p.getInventory().clear();
+						}
 						activeGame.eliminatePlayer(p, null, PlayerEliminationReason.COMBAT_LOGGING);
 					} else {
 
