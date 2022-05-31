@@ -137,6 +137,28 @@ public abstract class Game {
 	}
 
 	/**
+	 * Check if a player is in the game
+	 * 
+	 * @param uuid The {@link UUID} of the player to check
+	 * @return <code>true</code> if the player is in the list of active players
+	 * @since 2.0.0
+	 */
+	public boolean isPlayerInGame(UUID uuid) {
+		return this.players.contains(uuid);
+	}
+
+	/**
+	 * Check if a player is in the game
+	 * 
+	 * @param uuid The {@link OfflinePlayer} of the player to check
+	 * @return <code>true</code> if the player is in the list of active players
+	 * @since 2.0.0
+	 */
+	public boolean isPlayerInGame(OfflinePlayer player) {
+		return this.isPlayerInGame(player.getUniqueId());
+	}
+
+	/**
 	 * Get the {@link Plugin} that owns this game
 	 * 
 	 * @return {@link Plugin}
