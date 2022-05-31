@@ -150,7 +150,7 @@ public abstract class Game {
 	/**
 	 * Check if a player is in the game
 	 * 
-	 * @param uuid The {@link OfflinePlayer} of the player to check
+	 * @param player The {@link OfflinePlayer} of the player to check
 	 * @return <code>true</code> if the player is in the list of active players
 	 * @since 2.0.0
 	 */
