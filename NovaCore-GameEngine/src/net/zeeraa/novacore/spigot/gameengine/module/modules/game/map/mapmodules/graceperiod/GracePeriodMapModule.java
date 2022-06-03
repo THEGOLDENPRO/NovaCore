@@ -12,10 +12,15 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.commons.timers.TickCallback;
 import net.zeeraa.novacore.commons.utils.Callback;
+import net.zeeraa.novacore.commons.utils.TextUtils;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
@@ -25,6 +30,8 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 	private BasicTimer endTimer;
 	private boolean isActive;
 	private int seconds;
+
+	private List<Long> warnings;
 
 	public static final List<DamageCause> BLOCKED_CAUSES = new ArrayList<>();
 
@@ -50,6 +57,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 		super(json);
 
 		seconds = 15;
+		warnings = new ArrayList<>();
 
 		if (json.has("time")) {
 			seconds = json.getInt("time");
@@ -58,15 +66,33 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 			Log.warn("GracePeriodMapModule", "No time defined. Using the default of 15 seconds");
 		}
 
+		if (json.has("warnings")) {
+			JSONArray warningsJSON = json.getJSONArray("warnings");
+			for (int i = 0; i < warningsJSON.length(); i++) {
+				warnings.add(warningsJSON.getLong(i));
+			}
+		}
+
 		isActive = false;
 
 		endTimer = new BasicTimer(seconds, 20L);
+
+		endTimer.addTickCallback(new TickCallback() {
+			@Override
+			public void execute(long timeLeft) {
+				if (warnings.contains(timeLeft)) {
+					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependantSound.NOTE_PLING.play(player));
+					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period ends in " + timeLeft + " seconds " + TextUtils.ICON_WARNING);
+				}
+			}
+		});
 
 		endTimer.addFinishCallback(new Callback() {
 			@Override
 			public void execute() {
 				isActive = false;
-				Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Grace period is over");
+				Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependantUtils.get().sendTitle(player, "", ChatColor.YELLOW + TextUtils.ICON_WARNING + " Grace period is over " + TextUtils.ICON_WARNING, 10, 40, 10));
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period is over");
 			}
 		});
 	}
@@ -87,7 +113,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 		Log.info("GracePeriodMapModule", "Received GameBeginEvent");
 		isActive = true;
 		// TODO: language file
-		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Grace period will end in " + seconds + " seconds");
+		Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "Grace period will end in " + seconds + " seconds");
 		endTimer.start();
 	}
 

@@ -1,5 +1,8 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.falldamagegraceperiod;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -9,10 +12,14 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.commons.timers.TickCallback;
 import net.zeeraa.novacore.commons.utils.Callback;
+import net.zeeraa.novacore.commons.utils.TextUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
@@ -23,10 +30,13 @@ public class FallDamageGracePeriodMapModule extends MapModule implements Listene
 	private boolean isActive;
 	private int seconds;
 
+	private List<Long> warnings;
+
 	public FallDamageGracePeriodMapModule(JSONObject json) {
 		super(json);
 
 		seconds = 15;
+		warnings = new ArrayList<>();
 
 		if (json.has("time")) {
 			seconds = json.getInt("time");
@@ -35,15 +45,32 @@ public class FallDamageGracePeriodMapModule extends MapModule implements Listene
 			Log.warn("FallDamageGracePeriodMapModule", "No time defined. Using the default of 30 seconds");
 		}
 
+		if (json.has("warnings")) {
+			JSONArray warningsJSON = json.getJSONArray("warnings");
+			for (int i = 0; i < warningsJSON.length(); i++) {
+				warnings.add(warningsJSON.getLong(i));
+			}
+		}
+
 		isActive = false;
 
 		endTimer = new BasicTimer(seconds, 20L);
+
+		endTimer.addTickCallback(new TickCallback() {
+			@Override
+			public void execute(long timeLeft) {
+				if (warnings.contains(timeLeft)) {
+					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependantSound.NOTE_PLING.play(player));
+					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Fall damage will be enabled in " + timeLeft + " seconds " + ChatColor.YELLOW + TextUtils.ICON_WARNING);
+				}
+			}
+		});
 
 		endTimer.addFinishCallback(new Callback() {
 			@Override
 			public void execute() {
 				isActive = false;
-				Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Fall damage is now enabled");
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Fall damage is now enabled");
 			}
 		});
 	}
@@ -64,7 +91,7 @@ public class FallDamageGracePeriodMapModule extends MapModule implements Listene
 		Log.info("FallDamageGracePeriodMapModule", "Received GameBeginEvent");
 		isActive = true;
 		// TODO: language file
-		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Fall damage will be enabled in " + seconds + " seconds");
+		Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "Fall damage will be enabled in " + seconds + " seconds");
 		endTimer.start();
 	}
 

@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.timers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 
@@ -22,8 +23,8 @@ public class BasicTimer implements Timer {
 	private boolean started;
 	private boolean finished;
 
-	private ArrayList<Callback> finishCallbacks;
-	private ArrayList<TickCallback> tickCallbacks;
+	private List<Callback> finishCallbacks;
+	private List<TickCallback> tickCallbacks;
 
 	/**
 	 * Timer that will run a callback every second and when finished
