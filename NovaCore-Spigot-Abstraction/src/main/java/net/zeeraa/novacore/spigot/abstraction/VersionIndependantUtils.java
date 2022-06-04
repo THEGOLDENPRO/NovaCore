@@ -25,7 +25,7 @@ public abstract class VersionIndependantUtils {
 	private static VersionIndependantUtils instance;
 
 	public static VersionIndependantUtils get() {
-		return VersionIndependantUtils.getInstance();
+		return instance;
 	}
 
 	public static VersionIndependantUtils getInstance() {
