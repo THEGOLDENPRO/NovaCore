@@ -375,7 +375,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			return Material.SNOW_BALL;
 			
 		default:
-			AbstractionLogger.getLogger().warning("VersionIndependentUtils", "Unknown version Independent meterial: " + material.name());
+			AbstractionLogger.getLogger().warning("VersionIndependentUtils", "Unknown version Independent material: " + material.name());
 			return null;
 		}
 	}
