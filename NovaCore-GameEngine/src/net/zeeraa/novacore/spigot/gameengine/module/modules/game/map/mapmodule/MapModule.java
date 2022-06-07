@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule;
 
 import org.json.JSONObject;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMap;
 
@@ -62,6 +63,7 @@ public abstract class MapModule {
 	 */
 	public void setName(String name) {
 		if (this.name != null) {
+			Log.warn("MapModule", "Attempted to set name after name has already been set. This could indicate that MapModule#setName(name) was called outside of the map reader. Please remove any potential custom calls to this function");
 			return;
 		}
 		this.name = name;
