@@ -18,10 +18,10 @@ public class NoWeather extends MapModule implements Listener {
 
 	@Override
 	public void onGameStart(Game game) {
-		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
-
 		game.getWorld().setWeatherDuration(0);
 		game.getWorld().setThundering(false);
+		
+		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
 	}
 
 	@Override
