@@ -1,15 +1,21 @@
 package net.zeeraa.novacore.spigot.utils;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.util.Vector;
 
 /**
  * Functions used for projectiles
+ * 
  * @author Zeeraa
  */
 public class ProjectileUtils {
 	/**
 	 * Check if a a entity is a {@link Projectile}
+	 * 
 	 * @param entity The {@link Entity} to check
 	 * @return <code>true</code> if the {@link Entity} is a {@link Projectile}
 	 */
@@ -31,5 +37,32 @@ public class ProjectileUtils {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get the {@link Location} hit by a {@link Projectile}. This is intended to be
+	 * used with the {@link ProjectileHitEvent}
+	 * 
+	 * @param projectile The {@link Projectile}
+	 * @return The estimated hit {@link Location}
+	 * @since 2.0.0
+	 */
+	public static Location getEstimatedHitLocation(Projectile projectile) {
+		Location loc = projectile.getLocation();
+		Vector vec = projectile.getVelocity();
+		Location hitLocation = new Location(loc.getWorld(), loc.getX() + vec.getX(), loc.getY() + vec.getY(), loc.getZ() + vec.getZ());
+		return hitLocation;
+	}
+
+	/**
+	 * Get the {@link Block} hit by a {@link Projectile}. This is intended to be
+	 * used with the {@link ProjectileHitEvent}
+	 * 
+	 * @param projectile The {@link Projectile}
+	 * @return The estimated hit {@link Block}
+	 * @since 2.0.0
+	 */
+	public static Block getEstimatedHitBlock(Projectile projectile) {
+		return ProjectileUtils.getEstimatedHitLocation(projectile).getBlock();
 	}
 }
