@@ -24,6 +24,13 @@ import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 public abstract class VersionIndependantUtils {
 	private static VersionIndependantUtils instance;
 
+	/**
+	 * Get the {@link ChunkLoader} implementation
+	 * 
+	 * @return {@link ChunkLoader} to use
+	 */
+	public abstract ChunkLoader getChunkLoader();
+
 	public static VersionIndependantUtils get() {
 		return instance;
 	}
@@ -276,9 +283,9 @@ public abstract class VersionIndependantUtils {
 	}
 
 	public abstract boolean isSign(Material material);
-	
+
 	public abstract void sendActionBarMessage(Player player, String message);
-	
+
 	/**
 	 * @return The minimum y level blocks can exist at
 	 */

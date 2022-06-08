@@ -260,7 +260,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		NovaCommons.setExtendedDebugging(getConfig().getBoolean("ExtendedDebugging"));
 
 		Log.setConsoleLogLevel(LogLevel.INFO);
-		
+
 		jumpPadFile = new File(this.getDataFolder().getPath() + File.separator + "jump_pads.json");
 
 		File lootTableFolder = new File(this.getDataFolder().getPath() + File.separator + "LootTables");
@@ -324,6 +324,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 				}
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
+				Bukkit.getServer().getPluginManager().registerEvents(VersionIndependantUtils.get().getChunkLoader(), this);
 			} else {
 				throw new InvalidClassException(clazz.getName() + " is not assignable from " + VersionIndependantLoader.class.getName());
 			}

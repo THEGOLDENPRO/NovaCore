@@ -3,23 +3,18 @@ package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.world.ChunkUnloadEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.utils.VectorArea;
 
-public class Chunkloader extends MapModule implements Listener {
+public class Chunkloader extends MapModule {
 	private List<Chunk> chunks;
 	private List<VectorArea> areas;
 
@@ -50,20 +45,11 @@ public class Chunkloader extends MapModule implements Listener {
 
 		Log.info("Chunkloader", chunks.size() + " chunks will be loaded");
 
-		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
-		chunks.forEach(chunk -> chunk.load());
+		chunks.forEach(chunk -> VersionIndependantUtils.get().getChunkLoader().add(chunk));
 	}
 
 	@Override
 	public void onGameEnd(Game game) {
-		HandlerList.unregisterAll(this);
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onChunkUnload(ChunkUnloadEvent e) {
-		if (chunks.contains(e.getChunk())) {
-			Log.trace("Chunkloader", "Preventing unloading of chunk at X: " + e.getChunk().getX() + " Z: " + e.getChunk().getZ());
-			e.setCancelled(true);
-		}
+		chunks.forEach(chunk -> VersionIndependantUtils.get().getChunkLoader().remove(chunk));		
 	}
 }

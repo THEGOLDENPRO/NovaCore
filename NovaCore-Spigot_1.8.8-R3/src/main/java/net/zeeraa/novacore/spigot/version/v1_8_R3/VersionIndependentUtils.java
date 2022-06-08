@@ -41,11 +41,22 @@ import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
+import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
+
+	private ChunkLoader chunkLoader;
+
+	@Override
+	public ChunkLoader getChunkLoader() {
+		if (chunkLoader == null) {
+			chunkLoader = new ChunkLoaderImplementation();
+		}
+		return chunkLoader;
+	}
 
 	public VersionIndependentUtils() {
 		itemBuilderRecordList = new ItemBuilderRecordList1_8();
@@ -288,7 +299,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case ITEM_BREAK:
 			return Sound.ITEM_BREAK;
-			
+
 		case ITEM_PICKUP:
 			return Sound.ITEM_PICKUP;
 
@@ -378,7 +389,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case SNOWBALL:
 			return Material.SNOW_BALL;
-			
+
 		case FARMLAND:
 			return Material.SOIL;
 
