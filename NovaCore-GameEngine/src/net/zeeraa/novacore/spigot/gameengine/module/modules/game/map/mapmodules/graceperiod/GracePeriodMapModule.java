@@ -82,7 +82,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 			public void execute(long timeLeft) {
 				if (warnings.contains(timeLeft)) {
 					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentSound.NOTE_PLING.play(player));
-					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period ends in " + timeLeft + " seconds " + TextUtils.ICON_WARNING);
+					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period ends in " + timeLeft + " seconds " + ChatColor.RESET + ChatColor.YELLOW + TextUtils.ICON_WARNING);
 				}
 			}
 		});
