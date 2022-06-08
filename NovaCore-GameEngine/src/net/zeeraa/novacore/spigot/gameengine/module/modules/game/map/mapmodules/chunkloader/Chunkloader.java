@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chunkloader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -25,6 +26,9 @@ public class Chunkloader extends MapModule implements Listener {
 	public Chunkloader(JSONObject json) {
 		super(json);
 
+		this.chunks = new ArrayList<>();
+		this.areas = new ArrayList<>();
+		
 		JSONArray areas = json.getJSONArray("areas");
 		for (int i = 0; i < areas.length(); i++) {
 			this.areas.add(VectorArea.fromJSON(areas.getJSONObject(i)));
