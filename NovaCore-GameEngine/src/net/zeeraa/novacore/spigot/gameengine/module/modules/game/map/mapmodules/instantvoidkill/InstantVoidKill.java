@@ -5,6 +5,8 @@ import org.bukkit.GameMode;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.tasks.Task;
+import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
@@ -18,6 +20,10 @@ public class InstantVoidKill extends MapModule {
 		super(json);
 
 		y = 0;
+		
+		if(!NovaCore.getInstance().isNoNMSMode()) {
+			y = VersionIndependantUtils.get().getMinY();
+		}
 
 		if (json.has("y")) {
 			y = json.getInt("y");

@@ -278,4 +278,9 @@ public abstract class VersionIndependantUtils {
 	public abstract boolean isSign(Material material);
 	
 	public abstract void sendActionBarMessage(Player player, String message);
+	
+	/**
+	 * @return The minimum y level blocks can exist at
+	 */
+	public abstract int getMinY();
 }

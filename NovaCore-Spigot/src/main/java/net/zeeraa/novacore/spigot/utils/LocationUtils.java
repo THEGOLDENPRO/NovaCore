@@ -2,14 +2,19 @@ package net.zeeraa.novacore.spigot.utils;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.utils.Rotation;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseWorld;
 
 /**
@@ -91,6 +96,72 @@ public class LocationUtils {
 		result.put("world", location.getWorld().getName());
 
 		return result;
+	}
+
+	public static int getHighestYAtLocation(Location location) {
+		return LocationUtils.getHighestYAtLocation(location, false, false);
+	}
+
+	public static int getHighestYAtLocation(Location location, boolean ignoreNonSolid) {
+		return LocationUtils.getHighestYAtLocation(location, ignoreNonSolid, false);
+	}
+
+	public static int getHighestYAtLocation(Location location, boolean ignoreNonSolid, boolean ignoreLiquid) {
+		int max = location.getWorld().getMaxHeight();
+		int min = VersionIndependantUtils.get().getMinY();
+
+		for (int y = max; y >= min; y--) {
+			Block block = location.getWorld().getBlockAt(location.getBlockX(), y, location.getBlockZ());
+
+			if (block.getType() == Material.AIR) {
+				continue;
+			}
+
+			if (block.isLiquid() && ignoreLiquid) {
+				continue;
+			}
+
+			if (!block.getType().isSolid() && ignoreNonSolid) {
+				continue;
+			}
+
+			return y;
+		}
+
+		return max;
+	}
+
+	public static @Nullable Block getHighestBlockAtLocation(Location location) {
+		return LocationUtils.getHighestBlockAtLocation(location, false, false);
+	}
+
+	public static @Nullable Block getHighestBlockAtLocation(Location location, boolean ignoreNonSolid) {
+		return LocationUtils.getHighestBlockAtLocation(location, ignoreNonSolid, false);
+	}
+
+	public static @Nullable Block getHighestBlockAtLocation(Location location, boolean ignoreNonSolid, boolean ignoreLiquid) {
+		int max = location.getWorld().getMaxHeight();
+		int min = VersionIndependantUtils.get().getMinY();
+
+		for (int y = max; y >= min; y--) {
+			Block block = location.getWorld().getBlockAt(location.getBlockX(), y, location.getBlockZ());
+
+			if (block.getType() == Material.AIR) {
+				continue;
+			}
+
+			if (block.isLiquid() && ignoreLiquid) {
+				continue;
+			}
+
+			if (!block.getType().isSolid() && ignoreNonSolid) {
+				continue;
+			}
+
+			return block;
+		}
+
+		return null;
 	}
 
 	public static Location fromJSONObject(JSONObject json) {

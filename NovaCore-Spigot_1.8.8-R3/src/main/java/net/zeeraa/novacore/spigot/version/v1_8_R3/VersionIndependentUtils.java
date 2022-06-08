@@ -418,4 +418,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + message.replace("&", "§") + "\"}"), (byte) 2);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
+
+	@Override
+	public int getMinY() {
+		return 0;
+	}
 }
