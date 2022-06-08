@@ -1,7 +1,5 @@
 package net.zeeraa.novacore.spigot.utils;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
