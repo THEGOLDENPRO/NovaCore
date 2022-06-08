@@ -348,6 +348,7 @@ public class LocationUtils {
 		if (randomRadius < minRadius) {
 			randomRadius = minRadius;
 		}
+		Log.info("randomRadius: " + randomRadius + " min: " + minRadius);
 		double theta = Math.toRadians(random.nextDouble() * 360);
 		double phi = Math.toRadians(random.nextDouble() * 180 - 90);
 
