@@ -17,6 +17,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.M
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockloot.BlockLoot;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockreplacer.BlockReplacer;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chestloot.ChestLoot;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chunkloader.Chunkloader;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.falldamagegraceperiod.FallDamageGracePeriodMapModule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.farmlandprotection.FarmlandProtection;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.fireresistance.FireReistance;
@@ -90,6 +91,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.instantvoidkill", InstantVoidKill.class);
 		MapModuleManager.addMapModule("novacore.fireresistance", FireReistance.class);
 		MapModuleManager.addMapModule("novacore.farmlandprotection", FarmlandProtection.class);
+		MapModuleManager.addMapModule("novacore.chunkloader", Chunkloader.class);
 
 		// Legacy modules
 		MapModuleManager.addMapModule("novauniverse.survivalgames.medicalsupplydrop", MedicalSupplyDropMapModule.class);

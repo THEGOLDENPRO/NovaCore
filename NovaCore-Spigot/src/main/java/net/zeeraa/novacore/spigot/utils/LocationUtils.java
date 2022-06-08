@@ -13,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 import org.json.JSONObject;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.Rotation;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseWorld;
@@ -107,7 +108,7 @@ public class LocationUtils {
 	}
 
 	public static int getHighestYAtLocation(Location location, boolean ignoreNonSolid, boolean ignoreLiquid) {
-		int max = location.getWorld().getMaxHeight();
+		int max = location.getWorld().getMaxHeight() - 1;
 		int min = VersionIndependantUtils.get().getMinY();
 
 		for (int y = max; y >= min; y--) {
@@ -127,6 +128,7 @@ public class LocationUtils {
 
 			return y;
 		}
+		Log.trace("Failure. Use default");
 
 		return max;
 	}
@@ -140,7 +142,7 @@ public class LocationUtils {
 	}
 
 	public static @Nullable Block getHighestBlockAtLocation(Location location, boolean ignoreNonSolid, boolean ignoreLiquid) {
-		int max = location.getWorld().getMaxHeight();
+		int max = location.getWorld().getMaxHeight() - 1;
 		int min = VersionIndependantUtils.get().getMinY();
 
 		for (int y = max; y >= min; y--) {
@@ -338,7 +340,14 @@ public class LocationUtils {
 	}
 
 	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, Random random, boolean _3D) {
+		return LocationUtils.getRandomLocationWithRadiusFromCenter(origin, radius, random, _3D, 0);
+	}
+
+	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, Random random, boolean _3D, double minRadius) {
 		double randomRadius = random.nextDouble() * radius;
+		if (randomRadius < minRadius) {
+			randomRadius = minRadius;
+		}
 		double theta = Math.toRadians(random.nextDouble() * 360);
 		double phi = Math.toRadians(random.nextDouble() * 180 - 90);
 
