@@ -326,39 +326,4 @@ public class LocationUtils {
 
 		return newLocation;
 	}
-
-	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius) {
-		return LocationUtils.getRandomLocationWithRadiusFromCenter(origin, radius, new Random(), false);
-	}
-
-	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, boolean _3D) {
-		return LocationUtils.getRandomLocationWithRadiusFromCenter(origin, radius, new Random(), _3D);
-	}
-
-	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, Random random) {
-		return LocationUtils.getRandomLocationWithRadiusFromCenter(origin, radius, random, false);
-	}
-
-	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, Random random, boolean _3D) {
-		return LocationUtils.getRandomLocationWithRadiusFromCenter(origin, radius, random, _3D, 0);
-	}
-
-	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, Random random, boolean _3D, double minRadius) {
-		double randomRadius = random.nextDouble() * radius;
-		if (randomRadius < minRadius) {
-			randomRadius = minRadius;
-		}
-		Log.info("randomRadius: " + randomRadius + " min: " + minRadius);
-		double theta = Math.toRadians(random.nextDouble() * 360);
-		double phi = Math.toRadians(random.nextDouble() * 180 - 90);
-
-		double x = randomRadius * Math.cos(theta) * Math.sin(phi);
-		double y = randomRadius * Math.sin(theta) * Math.cos(phi);
-		double z = randomRadius * Math.cos(phi);
-		Location newLoc = origin.add(x, origin.getY(), z);
-		if (_3D) {
-			newLoc.add(0, y, 0);
-		}
-		return newLoc;
-	}
 }
