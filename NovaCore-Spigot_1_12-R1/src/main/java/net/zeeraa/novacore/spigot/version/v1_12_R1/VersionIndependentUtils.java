@@ -296,6 +296,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case ITEM_BREAK:
 			return Sound.ENTITY_ITEM_BREAK;
 
+		case ITEM_PICKUP:
+			return Sound.ENTITY_ITEM_PICKUP;
+
 		case ORB_PICKUP:
 			return Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
 
@@ -370,13 +373,13 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case DIAMOND_SHOVEL:
 			return Material.DIAMOND_SPADE;
-			
+
 		case SNOWBALL:
 			return Material.SNOW_BALL;
-			
+
 		case FARMLAND:
 			return Material.SOIL;
-			
+
 		default:
 			AbstractionLogger.getLogger().warning("VersionIndependentUtils", "Unknown version Independent material: " + material.name());
 			return null;
