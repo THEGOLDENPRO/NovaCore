@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 
 /**
  * This class contains some of the in game sounds that can be used instead of
@@ -14,7 +14,7 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
  * @author Zeeraa
  *
  */
-public enum VersionIndependantSound {
+public enum VersionIndependentSound {
 	NOTE_PLING, NOTE_HAT, WITHER_DEATH, WITHER_HURT, ITEM_BREAK, ITEM_PICKUP, ORB_PICKUP, ANVIL_LAND, EXPLODE;
 
 	public void playAtLocation(Location location) {
@@ -22,7 +22,7 @@ public enum VersionIndependantSound {
 	}
 
 	public void playAtLocation(Location location, float volume, float pitch) {
-		VersionIndependantUtils.get().playSound(location, this, volume, pitch);
+		VersionIndependentUtils.get().playSound(location, this, volume, pitch);
 	}
 
 	public void play(Player player) {
@@ -38,6 +38,6 @@ public enum VersionIndependantSound {
 	}
 
 	public void play(Player player, Location location, float volume, float pitch) {
-		VersionIndependantUtils.get().playSound(player, location, this, volume, pitch);
+		VersionIndependentUtils.get().playSound(player, location, this, volume, pitch);
 	}
 }

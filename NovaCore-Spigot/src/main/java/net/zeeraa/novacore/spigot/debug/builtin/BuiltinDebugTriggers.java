@@ -15,7 +15,7 @@ import org.json.JSONArray;
 
 import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.NovaCore;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.command.AllowedSenders;
 import net.zeeraa.novacore.spigot.debug.DebugCommandRegistrator;
 import net.zeeraa.novacore.spigot.debug.DebugTrigger;
@@ -211,7 +211,7 @@ public class BuiltinDebugTriggers {
 				Player player = (Player) sender;
 
 				try {
-					String base64 = BukkitSerailization.itemStackToBase64(VersionIndependantUtils.get().getItemInMainHand(player));
+					String base64 = BukkitSerailization.itemStackToBase64(VersionIndependentUtils.get().getItemInMainHand(player));
 					player.sendMessage(base64);
 					Bukkit.getConsoleSender().sendMessage("base64dumpitem result: " + base64);
 				} catch (IOException e) {

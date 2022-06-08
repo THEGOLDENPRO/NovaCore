@@ -5,7 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class VersionIndependantPlayerAchievementAwardedEvent extends Event implements Cancellable {
+public class VersionIndependentPlayerAchievementAwardedEvent extends Event implements Cancellable {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
 
 	private boolean cancel;
@@ -13,7 +13,7 @@ public class VersionIndependantPlayerAchievementAwardedEvent extends Event imple
 	private Player player;
 	private String achievementName;
 
-	public VersionIndependantPlayerAchievementAwardedEvent(Player player, String achievementName, boolean cancel) {
+	public VersionIndependentPlayerAchievementAwardedEvent(Player player, String achievementName, boolean cancel) {
 		this.player = player;
 		this.achievementName = achievementName;
 		this.cancel = cancel;

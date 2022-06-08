@@ -14,8 +14,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMetarial;
 
 /**
  * Useful tool to create item stacks with custom names and data using a single
@@ -64,7 +64,7 @@ public class ItemBuilder {
 	 * 
 	 * @param material The material
 	 */
-	public ItemBuilder(VersionIndependantMetarial material) {
+	public ItemBuilder(VersionIndependentMetarial material) {
 		this(material, 1);
 	}
 
@@ -74,7 +74,7 @@ public class ItemBuilder {
 	 * @param material The material
 	 * @param ammount  The amount
 	 */
-	public ItemBuilder(VersionIndependantMetarial material, int ammount) {
+	public ItemBuilder(VersionIndependentMetarial material, int ammount) {
 		this(new ItemStack(material.toBukkitVersion(), ammount), false);
 	}
 
@@ -421,7 +421,7 @@ public class ItemBuilder {
 	 * @return {@link ItemStack} with a player skull
 	 */
 	public static ItemStack getPlayerSkullWithBase64Texture(String b64stringtexture) {
-		return VersionIndependantUtils.get().getPlayerSkullWithBase64Texture(b64stringtexture);
+		return VersionIndependentUtils.get().getPlayerSkullWithBase64Texture(b64stringtexture);
 	}
 
 	/**
@@ -431,7 +431,7 @@ public class ItemBuilder {
 	 * @return {@link ItemBuilder} with a player skull
 	 */
 	public static ItemBuilder getPlayerSkullWithBase64TextureAsBuilder(String b64stringtexture) {
-		return new ItemBuilder(VersionIndependantUtils.get().getPlayerSkullWithBase64Texture(b64stringtexture));
+		return new ItemBuilder(VersionIndependentUtils.get().getPlayerSkullWithBase64Texture(b64stringtexture));
 	}
 
 	/**

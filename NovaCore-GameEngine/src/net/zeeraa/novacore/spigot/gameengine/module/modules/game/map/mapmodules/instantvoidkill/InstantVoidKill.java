@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
@@ -22,7 +22,7 @@ public class InstantVoidKill extends MapModule {
 		y = 0;
 		
 		if(!NovaCore.getInstance().isNoNMSMode()) {
-			y = VersionIndependantUtils.get().getMinY();
+			y = VersionIndependentUtils.get().getMinY();
 		}
 
 		if (json.has("y")) {

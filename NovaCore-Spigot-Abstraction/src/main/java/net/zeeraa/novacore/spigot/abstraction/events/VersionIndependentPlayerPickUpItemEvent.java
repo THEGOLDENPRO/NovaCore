@@ -6,7 +6,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class VersionIndependantPlayerPickUpItemEvent extends Event implements Cancellable {
+public class VersionIndependentPlayerPickUpItemEvent extends Event implements Cancellable {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
 
 	private boolean cancel;
@@ -14,7 +14,7 @@ public class VersionIndependantPlayerPickUpItemEvent extends Event implements Ca
 	private final Player player;
 	private final Item item;
 
-	public VersionIndependantPlayerPickUpItemEvent(final Player player, final Item item) {
+	public VersionIndependentPlayerPickUpItemEvent(final Player player, final Item item) {
 		this.player = player;
 		this.item = item;
 	}

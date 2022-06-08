@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 
 public class MedicalSupplyDropEffect implements Runnable {
 	private Location location;
@@ -136,7 +136,7 @@ public class MedicalSupplyDropEffect implements Runnable {
 		removedBlocks.clear();
 
 		MedicalSupplyDropManager.getInstance().spawnChest(location, lootTable);
-		VersionIndependantSound.ANVIL_LAND.playAtLocation(location, 1F, 1F);
+		VersionIndependentSound.ANVIL_LAND.playAtLocation(location, 1F, 1F);
 	}
 
 	private void animationCompleted() {

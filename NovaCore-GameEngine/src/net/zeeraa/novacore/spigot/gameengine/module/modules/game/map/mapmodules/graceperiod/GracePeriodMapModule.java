@@ -19,8 +19,8 @@ import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.timers.TickCallback;
 import net.zeeraa.novacore.commons.utils.Callback;
 import net.zeeraa.novacore.commons.utils.TextUtils;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
@@ -81,7 +81,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 			@Override
 			public void execute(long timeLeft) {
 				if (warnings.contains(timeLeft)) {
-					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependantSound.NOTE_PLING.play(player));
+					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentSound.NOTE_PLING.play(player));
 					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period ends in " + timeLeft + " seconds " + TextUtils.ICON_WARNING);
 				}
 			}
@@ -91,7 +91,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 			@Override
 			public void execute() {
 				isActive = false;
-				Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependantUtils.get().sendTitle(player, "", ChatColor.YELLOW + TextUtils.ICON_WARNING + " Grace period is over " + TextUtils.ICON_WARNING, 10, 40, 10));
+				Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().sendTitle(player, "", ChatColor.YELLOW + TextUtils.ICON_WARNING + " Grace period is over " + TextUtils.ICON_WARNING, 10, 40, 10));
 				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period is over");
 			}
 		});

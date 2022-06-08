@@ -7,13 +7,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
-import net.zeeraa.novacore.spigot.abstraction.events.VersionIndependantPlayerAchievementAwardedEvent;
-import net.zeeraa.novacore.spigot.abstraction.events.VersionIndependantPlayerPickUpItemEvent;
+import net.zeeraa.novacore.spigot.abstraction.events.VersionIndependentPlayerAchievementAwardedEvent;
+import net.zeeraa.novacore.spigot.abstraction.events.VersionIndependentPlayerPickUpItemEvent;
 
 public class Listeners extends net.zeeraa.novacore.spigot.abstraction.Listeners implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onAchievement(PlayerAchievementAwardedEvent e) {
-		VersionIndependantPlayerAchievementAwardedEvent event = new VersionIndependantPlayerAchievementAwardedEvent(e.getPlayer(), e.getAchievement().name(), e.isCancelled());
+		VersionIndependentPlayerAchievementAwardedEvent event = new VersionIndependentPlayerAchievementAwardedEvent(e.getPlayer(), e.getAchievement().name(), e.isCancelled());
 
 		Bukkit.getServer().getPluginManager().callEvent(event);
 
@@ -22,7 +22,7 @@ public class Listeners extends net.zeeraa.novacore.spigot.abstraction.Listeners 
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerPickupItem(PlayerPickupItemEvent e) {
-		VersionIndependantPlayerPickUpItemEvent event = new VersionIndependantPlayerPickUpItemEvent(e.getPlayer(), e.getItem());
+		VersionIndependentPlayerPickUpItemEvent event = new VersionIndependentPlayerPickUpItemEvent(e.getPlayer(), e.getItem());
 		event.setCancelled(e.isCancelled());
 
 		Bukkit.getServer().getPluginManager().callEvent(event);

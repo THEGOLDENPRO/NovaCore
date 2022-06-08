@@ -28,18 +28,18 @@ import net.minecraft.server.v1_16_R3.DamageSource;
 import net.minecraft.server.v1_16_R3.MinecraftServer;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantItems;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMetarial;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
 
-public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils {
+public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
 
 	private ChunkLoader chunkLoader;
@@ -446,7 +446,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public Sound getSound(VersionIndependantSound sound) {
+	public Sound getSound(VersionIndependentSound sound) {
 		switch (sound) {
 		case NOTE_PLING:
 			return Sound.BLOCK_NOTE_BLOCK_PLING;
@@ -509,7 +509,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public VersionIndependantItems getVersionIndependantItems() {
+	public VersionIndependentItems getVersionIndependantItems() {
 		return new net.zeeraa.novacore.spigot.version.v1_16_R3.VersionIndependantItems();
 	}
 
@@ -519,7 +519,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public Material getMaterial(VersionIndependantMetarial material) {
+	public Material getMaterial(VersionIndependentMetarial material) {
 		switch (material) {
 		case FILLED_MAP:
 			return Material.FILLED_MAP;

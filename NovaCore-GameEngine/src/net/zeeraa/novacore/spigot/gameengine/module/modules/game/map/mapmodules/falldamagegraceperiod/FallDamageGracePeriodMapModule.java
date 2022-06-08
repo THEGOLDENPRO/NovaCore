@@ -19,7 +19,7 @@ import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.timers.TickCallback;
 import net.zeeraa.novacore.commons.utils.Callback;
 import net.zeeraa.novacore.commons.utils.TextUtils;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
@@ -60,7 +60,7 @@ public class FallDamageGracePeriodMapModule extends MapModule implements Listene
 			@Override
 			public void execute(long timeLeft) {
 				if (warnings.contains(timeLeft)) {
-					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependantSound.NOTE_PLING.play(player));
+					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentSound.NOTE_PLING.play(player));
 					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Fall damage will be enabled in " + timeLeft + " seconds " + ChatColor.YELLOW + TextUtils.ICON_WARNING);
 				}
 			}

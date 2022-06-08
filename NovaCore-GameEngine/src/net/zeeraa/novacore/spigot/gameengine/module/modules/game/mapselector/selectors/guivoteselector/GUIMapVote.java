@@ -28,8 +28,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector.MapSelector;
@@ -248,7 +248,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 							Bukkit.getServer().getPluginManager().callEvent(event);
 						}
 
-						VersionIndependantUtils.get().playSound(player, player.getLocation(), VersionIndependantSound.ORB_PICKUP, 1F, 1F);
+						VersionIndependentUtils.get().playSound(player, player.getLocation(), VersionIndependentSound.ORB_PICKUP, 1F, 1F);
 						player.sendMessage(ChatColor.GREEN + (changed ? LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote.changed") : LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote.for")) + this.getMap(mapName).getDisplayName());
 
 						updateInventory(player);

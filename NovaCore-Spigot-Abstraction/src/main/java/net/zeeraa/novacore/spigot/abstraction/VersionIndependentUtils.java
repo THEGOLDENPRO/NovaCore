@@ -17,12 +17,12 @@ import org.bukkit.map.MapView;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMetarial;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 
-public abstract class VersionIndependantUtils {
-	private static VersionIndependantUtils instance;
+public abstract class VersionIndependentUtils {
+	private static VersionIndependentUtils instance;
 
 	/**
 	 * Get the {@link ChunkLoader} implementation
@@ -31,16 +31,16 @@ public abstract class VersionIndependantUtils {
 	 */
 	public abstract ChunkLoader getChunkLoader();
 
-	public static VersionIndependantUtils get() {
+	public static VersionIndependentUtils get() {
 		return instance;
 	}
 
-	public static VersionIndependantUtils getInstance() {
+	public static VersionIndependentUtils getInstance() {
 		return instance;
 	}
 
-	public static void setInstance(VersionIndependantUtils instance) {
-		VersionIndependantUtils.instance = instance;
+	public static void setInstance(VersionIndependentUtils instance) {
+		VersionIndependentUtils.instance = instance;
 	}
 
 	public abstract LabyModProtocol getLabyModProtocol();
@@ -165,11 +165,11 @@ public abstract class VersionIndependantUtils {
 	 * 
 	 * @param player   The player to play the sound for
 	 * @param location The location of the sound
-	 * @param sound    The {@link VersionIndependantSound} to play
+	 * @param sound    The {@link VersionIndependentSound} to play
 	 * @return <code>true</code> on success. <code>false</code> if the sound is not
 	 *         configured
 	 */
-	public boolean playSound(Player player, Location location, VersionIndependantSound sound) {
+	public boolean playSound(Player player, Location location, VersionIndependentSound sound) {
 		return this.playSound(player, location, sound, 1F, 1F);
 	}
 
@@ -178,13 +178,13 @@ public abstract class VersionIndependantUtils {
 	 * 
 	 * @param player   The player to play the sound for
 	 * @param location The location of the sound
-	 * @param sound    The {@link VersionIndependantSound} to play
+	 * @param sound    The {@link VersionIndependentSound} to play
 	 * @param volume   The volume of the sound
 	 * @param pitch    The pitch of the sound
 	 * @return <code>true</code> on success. <code>false</code> if the sound is not
 	 *         configured
 	 */
-	public boolean playSound(Player player, Location location, VersionIndependantSound sound, float volume, float pitch) {
+	public boolean playSound(Player player, Location location, VersionIndependentSound sound, float volume, float pitch) {
 		Sound realSound = this.getSound(sound);
 
 		if (sound == null) {
@@ -199,11 +199,11 @@ public abstract class VersionIndependantUtils {
 	 * Play a sound at a location
 	 * 
 	 * @param location The location of the sound
-	 * @param sound    The {@link VersionIndependantSound} to play
+	 * @param sound    The {@link VersionIndependentSound} to play
 	 * @return <code>true</code> on success. <code>false</code> if the sound is not
 	 *         configured
 	 */
-	public boolean playSound(Location location, VersionIndependantSound sound) {
+	public boolean playSound(Location location, VersionIndependentSound sound) {
 		return this.playSound(location, sound, 1F, 1F);
 	}
 
@@ -211,13 +211,13 @@ public abstract class VersionIndependantUtils {
 	 * Play a sound at a location
 	 * 
 	 * @param location The location of the sound
-	 * @param sound    The {@link VersionIndependantSound} to play
+	 * @param sound    The {@link VersionIndependentSound} to play
 	 * @param volume   The volume of the sound
 	 * @param pitch    The pitch of the sound
 	 * @return <code>true</code> on success. <code>false</code> if the sound is not
 	 *         configured
 	 */
-	public boolean playSound(Location location, VersionIndependantSound sound, float volume, float pitch) {
+	public boolean playSound(Location location, VersionIndependentSound sound, float volume, float pitch) {
 		Sound realSound = this.getSound(sound);
 
 		if (sound == null) {
@@ -229,12 +229,12 @@ public abstract class VersionIndependantUtils {
 	}
 
 	/**
-	 * Get the {@link Sound} from a {@link VersionIndependantSound}
+	 * Get the {@link Sound} from a {@link VersionIndependentSound}
 	 * 
-	 * @param sound The {@link VersionIndependantSound} to get
+	 * @param sound The {@link VersionIndependentSound} to get
 	 * @return resulting {@link Sound}
 	 */
-	public abstract Sound getSound(VersionIndependantSound sound);
+	public abstract Sound getSound(VersionIndependentSound sound);
 
 	public abstract void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut);
 
@@ -254,22 +254,22 @@ public abstract class VersionIndependantUtils {
 		throw new IllegalArgumentException("Cannot find field with type " + fieldType);
 	}
 
-	public abstract VersionIndependantItems getVersionIndependantItems();
+	public abstract VersionIndependentItems getVersionIndependantItems();
 
 	public abstract void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient);
 
 	/**
-	 * Get the {@link Material} from {@link VersionIndependantMetarial}
+	 * Get the {@link Material} from {@link VersionIndependentMetarial}
 	 * 
-	 * @param material The {@link VersionIndependantMetarial}
+	 * @param material The {@link VersionIndependentMetarial}
 	 * @return The minecraft {@link Material}
 	 */
-	public abstract Material getMaterial(VersionIndependantMetarial material);
+	public abstract Material getMaterial(VersionIndependentMetarial material);
 
-	public ItemStack getItemStack(VersionIndependantMetarial material) {
+	public ItemStack getItemStack(VersionIndependentMetarial material) {
 		Material mcMaterial = this.getMaterial(material);
 		if (mcMaterial == null) {
-			AbstractionLogger.getLogger().error("VersionIndependantUtils", "Failed to get version independant material " + material.name() + " for version " + this.getNovaCoreGameVersion().name() + ". This needs to be added");
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "Failed to get version independent material " + material.name() + " for version " + this.getNovaCoreGameVersion().name() + ". This needs to be added");
 			return null;
 		}
 

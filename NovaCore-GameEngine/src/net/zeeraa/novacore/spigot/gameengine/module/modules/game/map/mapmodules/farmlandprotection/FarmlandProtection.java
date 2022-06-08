@@ -11,7 +11,7 @@ import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.json.JSONObject;
 
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantMetarial;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMetarial;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 
@@ -34,7 +34,7 @@ public class FarmlandProtection extends MapModule implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if (e.getAction() == Action.PHYSICAL) {
 			if (e.getClickedBlock() != null) {
-				if (e.getClickedBlock().getType() == VersionIndependantMetarial.FARMLAND.toBukkitVersion()) {
+				if (e.getClickedBlock().getType() == VersionIndependentMetarial.FARMLAND.toBukkitVersion()) {
 					e.setCancelled(true);
 				}
 			}
@@ -43,7 +43,7 @@ public class FarmlandProtection extends MapModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockFade(BlockFadeEvent e) {
-		if (e.getBlock().getType() == VersionIndependantMetarial.FARMLAND.toBukkitVersion()) {
+		if (e.getBlock().getType() == VersionIndependentMetarial.FARMLAND.toBukkitVersion()) {
 			if (e.getNewState().getType() == Material.DIRT) {
 				e.setCancelled(true);
 			}

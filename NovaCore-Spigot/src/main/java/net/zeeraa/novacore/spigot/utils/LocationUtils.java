@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.Rotation;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseWorld;
 
 /**
@@ -107,7 +107,7 @@ public class LocationUtils {
 
 	public static int getHighestYAtLocation(Location location, boolean ignoreNonSolid, boolean ignoreLiquid) {
 		int max = location.getWorld().getMaxHeight() - 1;
-		int min = VersionIndependantUtils.get().getMinY();
+		int min = VersionIndependentUtils.get().getMinY();
 
 		for (int y = max; y >= min; y--) {
 			Block block = location.getWorld().getBlockAt(location.getBlockX(), y, location.getBlockZ());
@@ -141,7 +141,7 @@ public class LocationUtils {
 
 	public static @Nullable Block getHighestBlockAtLocation(Location location, boolean ignoreNonSolid, boolean ignoreLiquid) {
 		int max = location.getWorld().getMaxHeight() - 1;
-		int min = VersionIndependantUtils.get().getMinY();
+		int min = VersionIndependentUtils.get().getMinY();
 
 		for (int y = max; y >= min; y--) {
 			Block block = location.getWorld().getBlockAt(location.getBlockX(), y, location.getBlockZ());

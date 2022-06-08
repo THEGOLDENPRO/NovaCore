@@ -27,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.particles.LootdropParticleEffect;
@@ -245,7 +245,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
 	public void onEntityDamage(EntityDamageEvent e) {
 		if (e.getCause() == DamageCause.ENTITY_EXPLOSION) {
-			if (VersionIndependantUtils.get().getNovaCoreGameVersion() == NovaCoreGameVersion.V_1_8) {
+			if (VersionIndependentUtils.get().getNovaCoreGameVersion() == NovaCoreGameVersion.V_1_8) {
 				return;
 			}
 

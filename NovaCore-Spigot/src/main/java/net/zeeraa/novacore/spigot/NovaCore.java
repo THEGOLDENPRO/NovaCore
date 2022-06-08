@@ -29,7 +29,7 @@ import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.abstraction.CommandRegistrator;
 import net.zeeraa.novacore.spigot.abstraction.NovaCoreAbstraction;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependantLoader;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitConsoleSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitPlayerMessageSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.BukkitAsyncManager;
@@ -80,7 +80,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	private TeamManager teamManager;
 
-	private VersionIndependantUtils versionIndependentUtils;
+	private VersionIndependentUtils versionIndependentUtils;
 
 	private CustomCraftingManager customCraftingManager;
 
@@ -164,20 +164,20 @@ public class NovaCore extends JavaPlugin implements Listener {
 	}
 
 	/**
-	 * Get the instance of {@link VersionIndependantUtils} for this version
+	 * Get the instance of {@link VersionIndependentUtils} for this version
 	 * 
-	 * @return {@link VersionIndependantUtils} instance
+	 * @return {@link VersionIndependentUtils} instance
 	 */
-	public VersionIndependantUtils getVersionIndependentUtils() {
+	public VersionIndependentUtils getVersionIndependentUtils() {
 		return versionIndependentUtils;
 	}
 
 	/**
-	 * Get the instance of {@link VersionIndependantUtils} for this version
+	 * Get the instance of {@link VersionIndependentUtils} for this version
 	 * 
-	 * @return {@link VersionIndependantUtils} instance
+	 * @return {@link VersionIndependentUtils} instance
 	 */
-	public static VersionIndependantUtils versionIndependantUtils() {
+	public static VersionIndependentUtils versionIndependantUtils() {
 		return NovaCore.getInstance().getVersionIndependentUtils();
 	}
 
@@ -227,7 +227,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	/**
 	 * Check if the plugin is running in no nms mode. If true
-	 * {@link VersionIndependantUtils} wont be avaliabe
+	 * {@link VersionIndependentUtils} wont be avaliabe
 	 * 
 	 * @return <code>true</code> if no nms mode is enabled
 	 */
@@ -307,7 +307,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		Log.info("NovaCore", "Server version: " + version);
 
 		try {
-			Class<?> clazz = Class.forName("net.zeeraa.novacore.spigot.version." + version + ".VersionIndependantLoader");
+			Class<?> clazz = Class.forName("net.zeeraa.novacore.spigot.version." + version + ".VersionIndependentLoader");
 			if (VersionIndependantLoader.class.isAssignableFrom(clazz)) {
 				VersionIndependantLoader versionIndependantLoader = (VersionIndependantLoader) clazz.getConstructor().newInstance();
 
@@ -320,11 +320,11 @@ public class NovaCore extends JavaPlugin implements Listener {
 				if (versionIndependentUtils == null) {
 					Log.warn("NovaCore", "VersionIndependentUtils is not supported for this version");
 				} else {
-					VersionIndependantUtils.setInstance(versionIndependentUtils);
+					VersionIndependentUtils.setInstance(versionIndependentUtils);
 				}
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
-				Bukkit.getServer().getPluginManager().registerEvents(VersionIndependantUtils.get().getChunkLoader(), this);
+				Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getChunkLoader(), this);
 			} else {
 				throw new InvalidClassException(clazz.getName() + " is not assignable from " + VersionIndependantLoader.class.getName());
 			}

@@ -14,7 +14,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import net.zeeraa.novacore.spigot.NovaCore;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependantSound;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 
 public class LootDropEffect implements Runnable {
 	private Location location;
@@ -126,7 +126,7 @@ public class LootDropEffect implements Runnable {
 
 		LootDropManager.getInstance().spawnChest(location, lootTable);
 
-		VersionIndependantSound.ANVIL_LAND.playAtLocation(location, 1F, 1F);
+		VersionIndependentSound.ANVIL_LAND.playAtLocation(location, 1F, 1F);
 	}
 
 	private void animationCompleted() {

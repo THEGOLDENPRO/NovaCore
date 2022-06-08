@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependantUtils;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.utils.VectorArea;
@@ -45,11 +45,11 @@ public class Chunkloader extends MapModule {
 
 		Log.info("Chunkloader", chunks.size() + " chunks will be loaded");
 
-		chunks.forEach(chunk -> VersionIndependantUtils.get().getChunkLoader().add(chunk));
+		chunks.forEach(chunk -> VersionIndependentUtils.get().getChunkLoader().add(chunk));
 	}
 
 	@Override
 	public void onGameEnd(Game game) {
-		chunks.forEach(chunk -> VersionIndependantUtils.get().getChunkLoader().remove(chunk));		
+		chunks.forEach(chunk -> VersionIndependentUtils.get().getChunkLoader().remove(chunk));		
 	}
 }
