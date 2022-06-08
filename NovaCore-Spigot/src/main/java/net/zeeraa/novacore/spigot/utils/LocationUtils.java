@@ -254,19 +254,19 @@ public class LocationUtils {
 		return newLocation;
 	}
 
-	public Location getRandomLocationWithRadiusFromCenter(Location origin, double radius) {
-		return this.getRandomLocationWithRadiusFromCenter(origin, radius, new Random(), false);
+	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius) {
+		return LocationUtils.getRandomLocationWithRadiusFromCenter(origin, radius, new Random(), false);
 	}
 
-	public Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, boolean _3D) {
-		return this.getRandomLocationWithRadiusFromCenter(origin, radius, new Random(), _3D);
+	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, boolean _3D) {
+		return LocationUtils.getRandomLocationWithRadiusFromCenter(origin, radius, new Random(), _3D);
 	}
 
-	public Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, Random random) {
-		return this.getRandomLocationWithRadiusFromCenter(origin, radius, random, false);
+	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, Random random) {
+		return LocationUtils.getRandomLocationWithRadiusFromCenter(origin, radius, random, false);
 	}
 
-	public Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, Random random, boolean _3D) {
+	public static Location getRandomLocationWithRadiusFromCenter(Location origin, double radius, Random random, boolean _3D) {
 		double randomRadius = random.nextDouble() * radius;
 		double theta = Math.toRadians(random.nextDouble() * 360);
 		double phi = Math.toRadians(random.nextDouble() * 180 - 90);
