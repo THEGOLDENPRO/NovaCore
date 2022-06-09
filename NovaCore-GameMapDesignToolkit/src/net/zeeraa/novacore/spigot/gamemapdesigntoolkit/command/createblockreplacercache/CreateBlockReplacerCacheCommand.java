@@ -17,7 +17,7 @@ public class CreateBlockReplacerCacheCommand extends NovaCommand {
 		setAllowedSenders(AllowedSenders.PLAYERS);
 		setPermission("gamemapdesigntoolkit.createblockreplacercache");
 		setPermissionDefaultValue(PermissionDefault.OP);
-		setUseage("/createblockreplacercache x1 z1 x2 z2");
+		setUsage("/createblockreplacercache x1 z1 x2 z2");
 		addHelpSubCommand();
 	}
 

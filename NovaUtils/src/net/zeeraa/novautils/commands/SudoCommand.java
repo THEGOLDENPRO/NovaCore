@@ -24,7 +24,7 @@ public class SudoCommand extends NovaCommand {
 		setPermissionDescription("Allow players to force another player to run a command");
 
 		setDescription("Make another player run a command");
-		setUseage("/sudo <Player> <Command>");
+		setUsage("/sudo <Player> <Command>");
 
 		addHelpSubCommand();
 

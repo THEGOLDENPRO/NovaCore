@@ -26,7 +26,7 @@ public class MDCreateSubCommand extends NovaSubCommand {
 		setDescription("Create a map display");
 		setEmptyTabMode(true);
 		setAllowedSenders(AllowedSenders.PLAYERS);
-		setUseage("/mapdisplay create <name>");
+		setUsage("/mapdisplay create <name>");
 	}
 
 	@Override

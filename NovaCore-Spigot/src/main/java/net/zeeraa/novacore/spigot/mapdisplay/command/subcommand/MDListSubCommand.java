@@ -18,7 +18,7 @@ public class MDListSubCommand extends NovaSubCommand {
 		setDescription("List all map displays");
 		setEmptyTabMode(true);
 		setAllowedSenders(AllowedSenders.ALL);
-		setUseage("/mapdisplay list");
+		setUsage("/mapdisplay list");
 	}
 
 	@Override

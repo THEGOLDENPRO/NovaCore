@@ -21,7 +21,7 @@ public class InvseeCommand extends NovaCommand {
 		setPermissionDescription("Allow players to access other players inventory");
 		
 		setDescription("Open another players inventory");
-		setUseage("/invsee <Player>");
+		setUsage("/invsee <Player>");
 		
 		addHelpSubCommand();
 		

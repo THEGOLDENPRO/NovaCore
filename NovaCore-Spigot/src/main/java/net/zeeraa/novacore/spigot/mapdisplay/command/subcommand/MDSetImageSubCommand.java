@@ -27,7 +27,7 @@ public class MDSetImageSubCommand extends NovaSubCommand {
 		setDescription("Set the image of a map display");
 		setFilterAutocomplete(true);
 		setAllowedSenders(AllowedSenders.ALL);
-		setUseage("/mapdisplay setimage <name> <url>");
+		setUsage("/mapdisplay setimage <name> <url>");
 	}
 
 	@Override

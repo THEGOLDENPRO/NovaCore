@@ -21,7 +21,7 @@ public class MDDeleteSubCommand extends NovaSubCommand {
 		setDescription("Delete a map display");
 		setFilterAutocomplete(true);
 		setAllowedSenders(AllowedSenders.ALL);
-		setUseage("/mapdisplay delete <name>");
+		setUsage("/mapdisplay delete <name>");
 	}
 
 	@Override

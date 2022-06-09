@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.language.LanguageManager;
 
 /**
@@ -35,7 +36,7 @@ public abstract class NovaCommandBase {
 	private boolean requireOp;
 
 	private String description;
-	private String useage;
+	private String usage;
 
 	private String name;
 	private List<String> aliases;
@@ -56,7 +57,7 @@ public abstract class NovaCommandBase {
 		this.subCommands = new ArrayList<NovaSubCommand>();
 		this.allowedSenders = AllowedSenders.ALL;
 		this.parentCommand = null;
-		this.useage = null;
+		this.usage = null;
 
 		this.aliases = new ArrayList<String>();
 
@@ -105,12 +106,30 @@ public abstract class NovaCommandBase {
 		return description;
 	}
 
-	protected void setUseage(String useage) {
-		this.useage = useage;
+	/**
+	 * Deprecated: Spelling mistake. Use {@link NovaCommandBase#setUsage(String)}
+	 * instead. This will be removed in a future update
+	 * 
+	 * @param usage Command usage
+	 */
+	@Deprecated
+	protected void setUseage(String usage) {
+		Log.warn("NovaCommandBase", this.getClass().getName() + " is using the deprecated function setUseage instead of setUsage. This function will soon be removed due to a spelling mistake");
+		this.usage = usage;
 	}
 
-	public String getUseage() {
-		return useage;
+	/**
+	 * @param usage Command usage
+	 */
+	protected void setUsage(String usage) {
+		this.usage = usage;
+	}
+
+	/**
+	 * @return Command usage
+	 */
+	public String getUsage() {
+		return usage;
 	}
 
 	/**
