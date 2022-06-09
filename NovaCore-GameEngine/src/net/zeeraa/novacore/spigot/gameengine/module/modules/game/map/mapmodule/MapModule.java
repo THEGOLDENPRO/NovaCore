@@ -61,7 +61,7 @@ public abstract class MapModule {
 	 * 
 	 * @param name The name to set
 	 */
-	public void setName(String name) {
+	public final void setName(String name) {
 		if (this.name != null) {
 			Log.warn("MapModule", "Attempted to set name after name has already been set. This could indicate that MapModule#setName(name) was called outside of the map reader. Please remove any potential custom calls to this function");
 			return;
@@ -74,7 +74,7 @@ public abstract class MapModule {
 	 * 
 	 * @return Name of the map module
 	 */
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 }
