@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMetarial;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 
 /**
  * Useful tool to create item stacks with custom names and data using a single
@@ -64,7 +64,7 @@ public class ItemBuilder {
 	 * 
 	 * @param material The material
 	 */
-	public ItemBuilder(VersionIndependentMetarial material) {
+	public ItemBuilder(VersionIndependentMaterial material) {
 		this(material, 1);
 	}
 
@@ -74,7 +74,7 @@ public class ItemBuilder {
 	 * @param material The material
 	 * @param ammount  The amount
 	 */
-	public ItemBuilder(VersionIndependentMetarial material, int ammount) {
+	public ItemBuilder(VersionIndependentMaterial material, int ammount) {
 		this(new ItemStack(material.toBukkitVersion(), ammount), false);
 	}
 

@@ -30,7 +30,7 @@ import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.UUIDUtils;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMetarial;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.mapdisplay.renderer.DisplayRenderer;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 import net.zeeraa.novacore.spigot.utils.XYLocation;
@@ -240,14 +240,14 @@ public class MapDisplay {
 
 				MapView view = null;
 				if (item != null) {
-					if (item.getType() == VersionIndependentUtils.get().getItemStack(VersionIndependentMetarial.FILLED_MAP).getType()) {
+					if (item.getType() == VersionIndependentUtils.get().getItemStack(VersionIndependentMaterial.FILLED_MAP).getType()) {
 						view = NovaCore.getInstance().getVersionIndependentUtils().getAttachedMapView(item);
 					}
 				}
 
 				ItemFrame frame = itemFrames[i][j];
 
-				item = VersionIndependentUtils.get().getItemStack(VersionIndependentMetarial.FILLED_MAP);
+				item = VersionIndependentUtils.get().getItemStack(VersionIndependentMaterial.FILLED_MAP);
 
 				if (view == null) {
 					view = Bukkit.createMap(world);

@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.spigot.NovaCore;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMetarial;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 
@@ -41,7 +41,7 @@ public class HandCraftingTable extends MapModule implements Listener {
 				if (e.getPlayer().getLocation().getWorld() == game.getWorld()) {
 					ItemStack item = NovaCore.getInstance().getVersionIndependentUtils().getItemInMainHand(e.getPlayer());
 					if (item != null) {
-						if (item.getType() == VersionIndependentMetarial.WORKBENCH.toBukkitVersion()) {
+						if (item.getType() == VersionIndependentMaterial.WORKBENCH.toBukkitVersion()) {
 							e.getPlayer().openWorkbench(null, true);
 						}
 					}

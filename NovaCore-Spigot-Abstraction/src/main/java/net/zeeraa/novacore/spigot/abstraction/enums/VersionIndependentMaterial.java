@@ -11,7 +11,7 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
  * 
  * @author Zeeraa
  */
-public enum VersionIndependentMetarial {
+public enum VersionIndependentMaterial {
 	/**
 	 * Map that supports graphics
 	 */

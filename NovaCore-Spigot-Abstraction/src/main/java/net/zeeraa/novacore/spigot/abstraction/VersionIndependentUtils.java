@@ -17,7 +17,7 @@ import org.bukkit.map.MapView;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMetarial;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 
@@ -259,14 +259,14 @@ public abstract class VersionIndependentUtils {
 	public abstract void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient);
 
 	/**
-	 * Get the {@link Material} from {@link VersionIndependentMetarial}
+	 * Get the {@link Material} from {@link VersionIndependentMaterial}
 	 * 
-	 * @param material The {@link VersionIndependentMetarial}
+	 * @param material The {@link VersionIndependentMaterial}
 	 * @return The minecraft {@link Material}
 	 */
-	public abstract Material getMaterial(VersionIndependentMetarial material);
+	public abstract Material getMaterial(VersionIndependentMaterial material);
 
-	public ItemStack getItemStack(VersionIndependentMetarial material) {
+	public ItemStack getItemStack(VersionIndependentMaterial material) {
 		Material mcMaterial = this.getMaterial(material);
 		if (mcMaterial == null) {
 			AbstractionLogger.getLogger().error("VersionIndependentUtils", "Failed to get version independent material " + material.name() + " for version " + this.getNovaCoreGameVersion().name() + ". This needs to be added");
