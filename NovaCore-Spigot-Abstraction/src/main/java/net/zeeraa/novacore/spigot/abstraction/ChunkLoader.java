@@ -9,6 +9,10 @@ import org.bukkit.event.Listener;
 public abstract class ChunkLoader implements Listener {
 	protected List<Chunk> chunks;
 	
+	public static ChunkLoader getInstance() {
+		return VersionIndependentUtils.get().getChunkLoader();
+	}
+	
 	public ChunkLoader() {
 		this.chunks = new ArrayList<Chunk>();
 	}

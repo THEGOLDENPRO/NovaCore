@@ -1,5 +1,8 @@
 package net.zeeraa.novacore.spigot.utils;
 
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.json.JSONObject;
 
 public class XYLocation {
@@ -34,6 +37,20 @@ public class XYLocation {
 
 	public static XYLocation fromJSON(JSONObject json) {
 		return new XYLocation(json);
+	}
+	
+	/**
+	 * Create a {@link Location} from this instance. Note that the {@link XYLocation#y} will be turned into z of the location
+	 * @param world The {@link World} to use
+	 * @param y The y location to use
+	 * @return {@link Location} with x and z of this object
+	 */
+	public Location toLocation(World world, double y) {
+		return new Location(world, x, y, this.y);
+	}
+	
+	public Chunk getChunk(World world) {
+		return world.getChunkAt(this.toLocation(world, 0));
 	}
 
 	@Override
