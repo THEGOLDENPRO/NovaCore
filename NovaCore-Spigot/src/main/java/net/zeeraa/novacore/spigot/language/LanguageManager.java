@@ -70,7 +70,7 @@ public class LanguageManager {
 			 * " " + object + " " + object.toString()); }
 			 */
 			String formatted = String.format(language.getContent().get(node.toLowerCase()), args);
-			return ChatColor.translateAlternateColorCodes('§', formatted);
+			return ChatColor.translateAlternateColorCodes(ChatColor.COLOR_CHAR, formatted);
 		}
 
 		return node.toLowerCase();

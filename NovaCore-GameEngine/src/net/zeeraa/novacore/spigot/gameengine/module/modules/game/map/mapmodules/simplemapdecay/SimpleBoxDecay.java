@@ -38,7 +38,7 @@ public class SimpleBoxDecay extends MapModule {
 		layer = 0;
 
 		if (json.has("message")) {
-			startMessage = ChatColor.translateAlternateColorCodes('§', json.getString("message"));
+			startMessage = ChatColor.translateAlternateColorCodes(ChatColor.COLOR_CHAR, json.getString("message"));
 		} else {
 			startMessage = null;
 		}
