@@ -464,4 +464,8 @@ public class ItemBuilder {
 	public static ItemBuilder newInstance(Material material) {
 		return new ItemBuilder(material);
 	}
+
+	public static ItemStack setUnbreakable(ItemStack item, boolean unbreakable) {
+		return VersionIndependentUtils.get().setUnbreakable(item, unbreakable);
+	}
 }

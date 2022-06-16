@@ -469,7 +469,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 	
 	@Override
-	public void setUnbreakable(ItemMeta meta, boolean unbreakable) {
+	public ItemMeta setUnbreakable(ItemMeta meta, boolean unbreakable) {
 		meta.spigot().setUnbreakable(unbreakable);
+		return meta;
 	}
 }

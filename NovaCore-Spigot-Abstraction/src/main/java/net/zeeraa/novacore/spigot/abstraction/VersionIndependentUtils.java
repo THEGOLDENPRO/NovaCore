@@ -291,6 +291,13 @@ public abstract class VersionIndependentUtils {
 	 * @return The minimum y level blocks can exist at
 	 */
 	public abstract int getMinY();
-	
-	public abstract void setUnbreakable(ItemMeta meta, boolean unbreakable);
+
+	public abstract ItemMeta setUnbreakable(ItemMeta meta, boolean unbreakable);
+
+	public ItemStack setUnbreakable(ItemStack item, boolean unbreakable) {
+		ItemMeta meta = item.getItemMeta();
+		this.setUnbreakable(meta, unbreakable);
+		item.setItemMeta(meta);
+		return item;
+	}
 }

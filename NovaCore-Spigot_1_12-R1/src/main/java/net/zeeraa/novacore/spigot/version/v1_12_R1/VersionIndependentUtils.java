@@ -56,7 +56,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		}
 		return chunkLoader;
 	}
-	
+
 	public VersionIndependentUtils() {
 		itemBuilderRecordList = new ItemBuilderRecordList1_12();
 	}
@@ -393,34 +393,34 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case FARMLAND:
 			return Material.SOIL;
-			
+
 		case GOLDEN_AXE:
 			return Material.GOLD_AXE;
-			
+
 		case GOLDEN_HOE:
 			return Material.GOLD_HOE;
-			
+
 		case GOLDEN_PICKAXE:
 			return Material.GOLD_PICKAXE;
-			
+
 		case GOLDEN_SHOVEL:
 			return Material.GOLD_SPADE;
-			
+
 		case GOLDEN_SWORD:
 			return Material.GOLD_SWORD;
-			
+
 		case WOODEN_AXE:
 			return Material.WOOD_AXE;
-			
+
 		case WOODEN_HOE:
 			return Material.WOOD_HOE;
-			
+
 		case WOODEN_PICKAXE:
 			return Material.WOOD_PICKAXE;
-			
+
 		case WOODEN_SHOVEL:
 			return Material.WOOD_SPADE;
-			
+
 		case WOODEN_SWORD:
 			return Material.WOOD_SWORD;
 
@@ -465,9 +465,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public int getMinY() {
 		return 0;
 	}
-	
+
 	@Override
-	public void setUnbreakable(ItemMeta meta, boolean unbreakable) {
+	public ItemMeta setUnbreakable(ItemMeta meta, boolean unbreakable) {
 		meta.setUnbreakable(unbreakable);
+		return meta;
 	}
 }
