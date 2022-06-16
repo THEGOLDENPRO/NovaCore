@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 
 /**
  * Represents a team used by games
@@ -97,6 +98,54 @@ public abstract class Team {
 			if (player != null) {
 				if (player.isOnline()) {
 					player.sendMessage(message);
+					count++;
+				}
+			}
+		}
+
+		return count;
+	}
+
+	/**
+	 * Send a title to all the team members
+	 * 
+	 * @param title    The title to send
+	 * @param subtitle The sub title to send
+	 * @param fadeIn   The time in ticks the title should fade in
+	 * @param stay     The time in ticks the title should stay
+	 * @param fadeOut  The time in ticks the title should fade out
+	 * @return number of players that the title was sent to
+	 * @since 2.0.0
+	 */
+	public int sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+		int count = 0;
+		for (UUID uuid : members) {
+			Player player = Bukkit.getServer().getPlayer(uuid);
+			if (player != null) {
+				if (player.isOnline()) {
+					VersionIndependentUtils.get().sendTitle(player, title, subtitle, fadeIn, stay, fadeOut);
+					count++;
+				}
+			}
+		}
+
+		return count;
+	}
+
+	/**
+	 * Send an action bar message to all players in the team
+	 * 
+	 * @param message The message to send
+	 * @return number of players that the action bar message was sent to
+	 * @since 2.0.0
+	 */
+	public int sendActionBarMessage(String message) {
+		int count = 0;
+		for (UUID uuid : members) {
+			Player player = Bukkit.getServer().getPlayer(uuid);
+			if (player != null) {
+				if (player.isOnline()) {
+					VersionIndependentUtils.get().sendActionBarMessage(player, message);
 					count++;
 				}
 			}
