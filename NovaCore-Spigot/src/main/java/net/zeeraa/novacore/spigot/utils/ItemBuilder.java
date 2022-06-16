@@ -465,7 +465,7 @@ public class ItemBuilder {
 		return new ItemBuilder(material);
 	}
 
-	public static ItemStack setUnbreakable(ItemStack item, boolean unbreakable) {
+	public static ItemStack makeItemStackUnbreakable(ItemStack item, boolean unbreakable) {
 		return VersionIndependentUtils.get().setUnbreakable(item, unbreakable);
 	}
 }
