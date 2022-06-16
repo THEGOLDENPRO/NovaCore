@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
@@ -290,4 +291,6 @@ public abstract class VersionIndependentUtils {
 	 * @return The minimum y level blocks can exist at
 	 */
 	public abstract int getMinY();
+	
+	public abstract void setUnbreakable(ItemMeta meta, boolean unbreakable);
 }

@@ -200,7 +200,7 @@ public class ItemBuilder {
 	 * @return The item builder instance
 	 */
 	public ItemBuilder setUnbreakable(boolean unbreakable) {
-		meta.spigot().setUnbreakable(unbreakable);
+		VersionIndependentUtils.get().setUnbreakable(meta, unbreakable);
 		return this;
 	}
 
