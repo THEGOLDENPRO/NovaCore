@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -300,4 +301,6 @@ public abstract class VersionIndependentUtils {
 		item.setItemMeta(meta);
 		return item;
 	}
+	
+	public abstract void setCreatureItemInMainHand(Creature creature, ItemStack item);
 }

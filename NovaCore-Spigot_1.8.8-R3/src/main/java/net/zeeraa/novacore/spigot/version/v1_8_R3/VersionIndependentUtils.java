@@ -12,6 +12,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -472,5 +473,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public ItemMeta setUnbreakable(ItemMeta meta, boolean unbreakable) {
 		meta.spigot().setUnbreakable(unbreakable);
 		return meta;
+	}
+	
+	@Override
+	public void setCreatureItemInMainHand(Creature creature, ItemStack item) {
+		creature.getEquipment().setItemInHand(item);
 	}
 }
