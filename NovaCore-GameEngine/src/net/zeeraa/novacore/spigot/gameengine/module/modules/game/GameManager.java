@@ -458,8 +458,13 @@ public class GameManager extends NovaModule implements Listener {
 
 			GameMapData map = reader.readMap(json, worldDirectory);// this.readMap(new JSONObject(data), worldDirectory);
 
-			this.getMapSelector().addMap(map);
-			return true;
+			if (map != null) {
+				this.getMapSelector().addMap(map);
+				return true;
+			} else {
+				Log.error("GameManager", "Failed to load map " + mapFile.getAbsolutePath() + ". Reader returned null");
+				return false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.error("GameManager", "Failed to load map " + mapFile.getAbsolutePath() + ". Reason: " + e.getClass().getName() + " " + e.getMessage());

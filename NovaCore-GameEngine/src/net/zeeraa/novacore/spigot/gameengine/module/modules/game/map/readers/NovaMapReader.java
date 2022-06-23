@@ -59,6 +59,13 @@ public class NovaMapReader extends MapReader {
 			JSONObject modulesJSON = json.getJSONObject("map_modules");
 
 			for (String key : modulesJSON.keySet()) {
+				boolean critical = false;
+
+				JSONObject moduleData = modulesJSON.getJSONObject(key);
+				if (moduleData.has("is_critical")) {
+					critical = moduleData.getBoolean("is_critical");
+				}
+
 				if (MapModuleManager.hasMapModule(key)) {
 					Class<? extends MapModule> clazz = MapModuleManager.getMapModule(key);
 					MapModule mapModule;
@@ -75,9 +82,18 @@ public class NovaMapReader extends MapReader {
 							Log.info("Exception cause printed below");
 							e.getCause().printStackTrace();
 						}
+
+						if (critical) {
+							Log.error("NovaMapReader", "Failed to read map " + mapName + " because map module " + key + " could not be loaded");
+							return null;
+						}
 					}
 				} else {
 					Log.warn("NovaMapReader", "Map module " + key + " was not found. Map name: " + mapName);
+					if (critical) {
+						Log.error("NovaMapReader", "Failed to read map " + mapName + " because map module " + key + " was not found");
+						return null;
+					}
 				}
 			}
 		}
