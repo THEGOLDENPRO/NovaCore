@@ -29,6 +29,7 @@ import net.minecraft.server.v1_16_R3.DamageSource;
 import net.minecraft.server.v1_16_R3.MinecraftServer;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
+import net.minecraft.server.v1_16_R3.EntityPlayer;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
@@ -635,4 +636,14 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public void setCreatureItemInMainHand(Creature creature, ItemStack item) {
 		creature.getEquipment().setItemInMainHand(item);
 	}
+	
+	@Override
+	public float getPlayerBodyRotation(Player player) {
+		
+	EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+		
+	return nmsPlayer.aA;
+	}
+	
+	
 }
