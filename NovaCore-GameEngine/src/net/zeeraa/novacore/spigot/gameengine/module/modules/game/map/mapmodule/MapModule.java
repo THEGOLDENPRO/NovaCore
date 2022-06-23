@@ -16,9 +16,15 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMap;
  */
 public abstract class MapModule {
 	private String name;
+	private boolean critical;
 
 	public MapModule(JSONObject json) {
 		this.name = null;
+		this.critical = false;
+
+		if (json.has("is_critical")) {
+			this.critical = json.getBoolean("is_critical");
+		}
 	}
 
 	/**
@@ -76,5 +82,19 @@ public abstract class MapModule {
 	 */
 	public final String getName() {
 		return name;
+	}
+
+	/**
+	 * Check if the module was set as critical in the configuration. A critical
+	 * module means that if the module fails to enable the game should end with an
+	 * error state
+	 * <p>
+	 * Critical modules are used when failing to load the module would cause an
+	 * unplayable state if loading fails
+	 * 
+	 * @return <code>true</code> if the module was set as critical
+	 */
+	public boolean isCritical() {
+		return critical;
 	}
 }
