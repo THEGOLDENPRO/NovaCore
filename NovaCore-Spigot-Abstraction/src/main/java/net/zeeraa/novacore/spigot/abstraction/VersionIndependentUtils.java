@@ -303,4 +303,7 @@ public abstract class VersionIndependentUtils {
 	}
 	
 	public abstract void setCreatureItemInMainHand(Creature creature, ItemStack item);
+	
+	public abstract float getPlayerBodyRotation(Player player);
+
 }
