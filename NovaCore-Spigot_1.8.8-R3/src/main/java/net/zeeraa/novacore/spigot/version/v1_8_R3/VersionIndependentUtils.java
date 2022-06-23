@@ -25,7 +25,6 @@ import org.bukkit.material.MaterialData;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-
 import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
@@ -478,5 +477,12 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void setCreatureItemInMainHand(Creature creature, ItemStack item) {
 		creature.getEquipment().setItemInHand(item);
+	}
+	
+	@Override
+	public float getPlayerBodyRotation(Player player) {
+		// TODO Auto-generated method stub
+		AbstractionLogger.getLogger().warning("VersionIndependentUtils", "getPlayerBodyRotation(player) is not implemented for this version");
+		return 0;
 	}
 }
