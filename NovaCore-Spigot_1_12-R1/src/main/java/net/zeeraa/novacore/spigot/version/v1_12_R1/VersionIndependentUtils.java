@@ -34,6 +34,7 @@ import net.minecraft.server.v1_12_R1.MinecraftServer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_12_R1.PlayerConnection;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
@@ -481,7 +482,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public float getPlayerBodyRotation(Player player) {
 		// TODO Auto-generated method stub
-		AbstractionLogger.getLogger().warning("VersionIndependentUtils", "getPlayerBodyRotation(player) is not implemented for this version");
-		return 0;
+		EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+		return nmsPlayer.aN;
 	}
 }
