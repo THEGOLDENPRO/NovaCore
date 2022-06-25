@@ -353,7 +353,7 @@ public abstract class Game {
 	 */
 	public final List<GameTrigger> getTriggersByFlags(TriggerFlag... flags) {
 		List<GameTrigger> result = new ArrayList<GameTrigger>();
-
+		
 		triggers.forEach(trigger -> {
 			for (TriggerFlag flag : flags) {
 				if (trigger.hasFlag(flag)) {
@@ -396,13 +396,7 @@ public abstract class Game {
 	 * @return The {@link GameTrigger} or <code>null</code> if not found
 	 */
 	public final GameTrigger getTrigger(String name) {
-		for (GameTrigger trigger : triggers) {
-			if (trigger.getName().equalsIgnoreCase(name)) {
-				return trigger;
-			}
-		}
-
-		return null;
+		return triggers.stream().filter(trigger -> trigger.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
 
 	/**

@@ -72,13 +72,7 @@ public class GameMapData extends AbstractMapData {
 	}
 
 	public MapModule getMapModule(Class<? extends MapModule> clazz) {
-		for (MapModule mapModule : mapModules) {
-			if (clazz.isAssignableFrom(mapModule.getClass())) {
-				return mapModule;
-			}
-		}
-
-		return null;
+		return mapModules.stream().filter(module -> clazz.isAssignableFrom(module.getClass())).findFirst().orElse(null);
 	}
 
 	/**

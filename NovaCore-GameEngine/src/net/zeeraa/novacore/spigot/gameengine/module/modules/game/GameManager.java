@@ -295,9 +295,7 @@ public class GameManager extends NovaModule implements Listener {
 	 */
 	public void showCombatTaggedMessage(Player player) {
 		try {
-			for (CombatTagMessage message : combatTagMessages) {
-				message.showTaggedMessage(player);
-			}
+			combatTagMessages.forEach(m -> m.showTaggedMessage(player));
 		} catch (Exception e) {
 			Log.error("Error while showing combat tagged message for a player: " + e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
@@ -528,12 +526,12 @@ public class GameManager extends NovaModule implements Listener {
 
 	@Override
 	public void onDisable() {
-		for (UUID uuid : eliminationTasks.keySet()) {
+		eliminationTasks.keySet().forEach(uuid -> {
 			EliminationTask eliminationTask = eliminationTasks.get(uuid);
 			if (eliminationTask != null) {
 				eliminationTask.cancel();
 			}
-		}
+		});
 
 		if (activeGame != null) {
 			if (activeGame instanceof Listener) {

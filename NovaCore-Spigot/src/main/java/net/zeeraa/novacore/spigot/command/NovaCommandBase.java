@@ -388,7 +388,7 @@ public abstract class NovaCommandBase {
 
 		Player senderPlayer = sender instanceof Player ? (Player) sender : null;
 
-		ArrayList<String> matchedPlayers = new ArrayList<String>();
+		List<String> matchedPlayers = new ArrayList<String>();
 		sender.getServer().getOnlinePlayers().forEach(player -> {
 			String name = player.getName();
 			if ((senderPlayer == null || senderPlayer.canSee(player)) && StringUtil.startsWithIgnoreCase(name, lastWord)) {

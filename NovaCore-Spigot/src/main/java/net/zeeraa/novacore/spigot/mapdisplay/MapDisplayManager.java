@@ -119,12 +119,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	}
 
 	public MapDisplay getMapDisplay(String name) {
-		for (MapDisplay display : mapDisplays) {
-			if (display.getName().equalsIgnoreCase(name)) {
-				return display;
-			}
-		}
-		return null;
+		return mapDisplays.stream().filter(display -> display.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
 
 	public boolean hasMapDisplay(String name) {

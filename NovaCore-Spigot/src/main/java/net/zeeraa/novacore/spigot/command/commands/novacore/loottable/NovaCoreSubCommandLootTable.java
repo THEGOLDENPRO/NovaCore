@@ -43,7 +43,7 @@ public class NovaCoreSubCommandLootTable extends NovaSubCommand {
 
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		ArrayList<String> lootTables = new ArrayList<String>();
+		List<String> lootTables = new ArrayList<String>();
 
 		if (args.length == 1) {
 			NovaCore.getInstance().getLootTableManager().getLootTables().keySet().forEach(key -> lootTables.add(key));
