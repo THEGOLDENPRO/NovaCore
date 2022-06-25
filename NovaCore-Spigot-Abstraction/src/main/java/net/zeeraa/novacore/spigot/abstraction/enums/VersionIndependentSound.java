@@ -1,7 +1,9 @@
 package net.zeeraa.novacore.spigot.abstraction.enums;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
@@ -39,5 +41,21 @@ public enum VersionIndependentSound {
 
 	public void play(Player player, Location location, float volume, float pitch) {
 		VersionIndependentUtils.get().playSound(player, location, this, volume, pitch);
+	}
+
+	public void broadcast(float volume, float pitch) {
+		Bukkit.getServer().getOnlinePlayers().forEach(player -> this.play(player, volume, pitch));
+	}
+
+	public void broadcast() {
+		this.broadcast(1F, 1F);
+	}
+
+	public void broadcast(World world, float volume, float pitch) {
+		Bukkit.getServer().getOnlinePlayers().stream().filter(player -> player.getWorld().equals(world)).forEach(player -> this.play(player, volume, pitch));
+	}
+
+	public void broadcast(World world) {
+		this.broadcast(world, 1F, 1F);
 	}
 }

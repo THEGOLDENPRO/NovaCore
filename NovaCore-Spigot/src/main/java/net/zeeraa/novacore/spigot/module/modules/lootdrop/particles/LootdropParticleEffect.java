@@ -25,12 +25,11 @@ public class LootdropParticleEffect {
 
 	private ParticleEffect particle;
 
-	boolean up;
-	float height;
-	int step;
+	private boolean up;
+	private float height;
+	private int step;
 
 	public LootdropParticleEffect(Location location) {
-
 		this(location, ParticleEffect.FIREWORKS_SPARK, 255, 255, 255, true);
 	}
 

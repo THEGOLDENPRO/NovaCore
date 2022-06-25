@@ -1,11 +1,17 @@
 package net.zeeraa.novacore.spigot.utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -119,6 +125,63 @@ public class JSONItemParser {
 			if (potionData.has("main_effect")) {
 				PotionEffectType type = PotionEffectType.getByName(potionData.getString("main_effect"));
 				meta.setMainEffect(type);
+			}
+
+			item.setItemMeta(meta);
+		}
+
+		if (json.has("firework_data")) {
+			JSONObject data = json.getJSONObject("firework_data");
+			FireworkMeta meta = (FireworkMeta) item.getItemMeta();
+
+			if (data.has("power")) {
+				meta.setPower(data.getInt("power"));
+			}
+
+			if (data.has("effects")) {
+				JSONArray effects = data.getJSONArray("effects");
+				for (int i = 0; i < effects.length(); i++) {
+					JSONObject effectJSON = effects.getJSONObject(i);
+
+					FireworkEffect.Builder fwBuilder = FireworkEffect.builder();
+
+					FireworkEffect.Type type = FireworkEffect.Type.valueOf(effectJSON.getString("type"));
+					fwBuilder.with(type);
+
+					JSONArray colorsJSON = effectJSON.getJSONArray("colors");
+					List<Color> colors = new ArrayList<>();
+					for (int j = 0; j < colorsJSON.length(); j++) {
+						int colorInt = Integer.parseInt(colorsJSON.getString(j), 16);
+						Color color = Color.fromRGB(colorInt);
+						colors.add(color);
+					}
+					fwBuilder.withColor((Color[]) colors.toArray());
+
+					if (effectJSON.has("fade")) {
+						JSONArray fadeJSON = effectJSON.getJSONArray("colors");
+						List<Color> fadeColors = new ArrayList<>();
+						for (int j = 0; j < fadeJSON.length(); j++) {
+							int colorInt = Integer.parseInt(fadeJSON.getString(j), 16);
+							Color color = Color.fromRGB(colorInt);
+							fadeColors.add(color);
+						}
+						fwBuilder.withFade((Color[]) fadeColors.toArray());
+					}
+
+					if (json.has("flicker")) {
+						if (json.getBoolean("flicker")) {
+							fwBuilder.withFlicker();
+						}
+					}
+
+					if (json.has("trail")) {
+						if (json.getBoolean("trail")) {
+							fwBuilder.withTrail();
+						}
+					}
+					
+					meta.addEffect(fwBuilder.build());
+				}
 			}
 
 			item.setItemMeta(meta);
