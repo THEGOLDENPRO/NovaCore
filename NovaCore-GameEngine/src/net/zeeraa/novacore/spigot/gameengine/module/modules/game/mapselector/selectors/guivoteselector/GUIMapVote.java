@@ -3,9 +3,11 @@ package net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector.se
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -141,41 +143,35 @@ public class GUIMapVote extends MapSelector implements Listener {
 		if (forcedMap != null) {
 			Log.info("Using forced map " + forcedMap);
 			return this.getMap(forcedMap);
-		} else {
-			HashMap<String, Integer> voteCount = new HashMap<String, Integer>();
-			for (GameMapData map : maps) {
-				int mapVotes = 0;
-
-				for (UUID uuid : votes.keySet()) {
-					if (votes.get(uuid).equalsIgnoreCase(map.getMapName())) {
-						mapVotes++;
-					}
-				}
-
-				Log.debug("Map " + map.getDisplayName() + " has " + mapVotes + " votes");
-
-				voteCount.put(map.getMapName(), mapVotes);
-			}
-
-			String mapName = null;
-			int maxVotes = -1;
-
-			List<String> keys = new ArrayList<String>(voteCount.keySet());
-			Collections.shuffle(keys);
-			for (String key : keys) {
-				int votes = voteCount.get(key);
-
-				if (votes > maxVotes) {
-					mapName = key;
-				}
-			}
-
-			if (mapName != null) {
-				return this.getMap(mapName);
-			}
 		}
 
-		return null;
+		List<VoteEntry> entries = new ArrayList<>();
+
+		votes.forEach((uuid, name) -> {
+			VoteEntry entry = entries.stream().filter(e -> e.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+			if (entry == null) {
+				entry = new VoteEntry(name);
+				entries.add(entry);
+			}
+			entry.addVote();
+		});
+
+		if (votes.size() == 0) {
+			Log.info("No votes. Using random map");
+			Random random = new Random();
+			return maps.get(random.nextInt(maps.size()));
+		}
+
+		Log.info("Got at least 1 vote. Finding top map");
+		Collections.sort(entries, new VoteEntryComparator());
+
+		entries.forEach(e -> Log.trace("Map " + e.getName() + " got " + e.getVotes() + " votes"));
+
+		VoteEntry first = entries.stream().findFirst().get();
+
+		Log.info("Map to use: " + first.getName());
+
+		return this.getMap(first.getName());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -269,5 +265,34 @@ public class GUIMapVote extends MapSelector implements Listener {
 				}
 			}
 		}
+	}
+}
+
+class VoteEntryComparator implements Comparator<VoteEntry> {
+	@Override
+	public int compare(VoteEntry o1, VoteEntry o2) {
+		return o2.getVotes() - o1.getVotes();
+	}
+}
+
+class VoteEntry {
+	private String name;
+	private int votes;
+
+	public VoteEntry(String name) {
+		this.name = name;
+		this.votes = 0;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getVotes() {
+		return votes;
+	}
+
+	public void addVote() {
+		votes++;
 	}
 }
