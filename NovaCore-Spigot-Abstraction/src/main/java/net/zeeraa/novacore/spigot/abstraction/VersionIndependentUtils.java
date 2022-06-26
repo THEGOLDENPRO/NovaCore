@@ -306,4 +306,5 @@ public abstract class VersionIndependentUtils {
 	
 	public abstract float getPlayerBodyRotation(Player player);
 
+	public abstract void setCustomModelData(ItemMeta meta, int data);
 }

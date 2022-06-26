@@ -485,4 +485,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
 		return nmsPlayer.aN;
 	}
+
+	@Override
+	public void setCustomModelData(ItemMeta meta, int data) {
+		// Does not exist for this version
+	}
 }

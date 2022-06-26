@@ -284,6 +284,11 @@ public class ItemBuilder {
 
 		return this;
 	}
+	
+	public ItemBuilder setCustomModelData(int data) {
+		VersionIndependentUtils.get().setCustomModelData(meta, data);
+		return this;
+	}
 
 	/**
 	 * Get a {@link List} containing all lines from a array of strings
