@@ -96,7 +96,7 @@ public class GameManager extends NovaModule implements Listener {
 
 	private Task combatTagCountdownTask;
 
-	private boolean showDeathMessaage;
+	private boolean showDeathMessage;
 
 	private boolean useCombatTagging;
 	private int combatTaggingTime;
@@ -166,7 +166,7 @@ public class GameManager extends NovaModule implements Listener {
 			}
 		}, 20L, 20L);
 
-		this.showDeathMessaage = false;
+		this.showDeathMessage = false;
 		this.dropItemsOnDeath = false;
 
 		mapReaders.add(new LegacyMapReader());
@@ -868,12 +868,12 @@ public class GameManager extends NovaModule implements Listener {
 		return combatTaggedPlayers.containsKey(uuid);
 	}
 
-	public boolean isShowDeathMessaage() {
-		return showDeathMessaage;
+	public boolean isShowDeathMessage() {
+		return showDeathMessage;
 	}
 
-	public void setShowDeathMessaage(boolean showDeathMessaage) {
-		this.showDeathMessaage = showDeathMessaage;
+	public void setShowDeathMessage(boolean showDeathMessaage) {
+		this.showDeathMessage = showDeathMessaage;
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -882,11 +882,11 @@ public class GameManager extends NovaModule implements Listener {
 
 		if (hasGame()) {
 			if (getActiveGame().hasStarted()) {
-				if (getActiveGame().getPlayers().contains(player.getUniqueId())) {
-					if (!showDeathMessaage) {
-						e.setDeathMessage(null);
-					}
+				if (!showDeathMessage) {
+					e.setDeathMessage(null);
+				}
 
+				if (getActiveGame().getPlayers().contains(player.getUniqueId())) {
 					if (getActiveGame().eliminatePlayerOnDeath(player)) {
 						try {
 							if (dropItemsOnDeath) {
