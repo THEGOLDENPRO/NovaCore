@@ -104,7 +104,7 @@ public class GameLobby extends NovaModule implements Listener {
 
 	public GameLobby() {
 		super("NovaCore.GameEngine.GameLobby");
-		
+
 		this.addDependency(MultiverseManager.class);
 		this.addDependency(GameManager.class);
 
@@ -251,18 +251,17 @@ public class GameLobby extends NovaModule implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		if (hasActiveMap()) {
 			if (GameManager.getInstance().hasGame()) {
-				if (!GameManager.getInstance().getActiveGame().hasStarted()) {
-					if (!waitingPlayers.contains(e.getPlayer().getUniqueId())) {
-						waitingPlayers.add(e.getPlayer().getUniqueId());
-
-						tpToLobby(e.getPlayer());
-
-						Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinGameLobbyEvent(e.getPlayer()));
-					}
-				} else {
+				if (GameManager.getInstance().getActiveGame().hasStarted()) {
 					if (!GameManager.getInstance().getActiveGame().getPlayers().contains(e.getPlayer().getUniqueId())) {
 						GameManager.getInstance().getActiveGame().tpToSpectator(e.getPlayer());
 					}
+				} else {
+					if (!waitingPlayers.contains(e.getPlayer().getUniqueId())) {
+						waitingPlayers.add(e.getPlayer().getUniqueId());
+					}
+					tpToLobby(e.getPlayer());
+
+					Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinGameLobbyEvent(e.getPlayer()));
 				}
 			}
 		}
