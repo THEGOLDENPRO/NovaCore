@@ -16,6 +16,8 @@ import net.zeeraa.novacore.spigot.NovaCore;
 
 public class DisplayRenderer extends MapRenderer {
 	private Image image;
+	private List<UUID> hasRendered;
+	private UUID rendererId;
 
 	public Image getImage() {
 		return image;
@@ -24,30 +26,38 @@ public class DisplayRenderer extends MapRenderer {
 	public void setImage(Image image) {
 		this.image = image;
 	}
-	
+
 	public void removePlayerFromCache(Player player) {
-		hasRendered.remove(player.getUniqueId());	
+		hasRendered.remove(player.getUniqueId());
 	}
-	
+
 	public void clearPlayerCache() {
 		hasRendered.clear();
 	}
-	
-	private List<UUID> hasRendered; 
-	
+
+	public List<UUID> getRenderedUsersCache() {
+		return hasRendered;
+	}
+
+	public UUID getRendererId() {
+		return rendererId;
+	}
+
 	public DisplayRenderer() {
 		hasRendered = new ArrayList<UUID>();
+		rendererId = UUID.randomUUID();
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
-		if(hasRendered.contains(player.getUniqueId())) {
+		if (hasRendered.contains(player.getUniqueId())) {
 			return;
 		}
-		
+		//Log.trace("called on " + rendererId.toString());
+
 		hasRendered.add(player.getUniqueId());
-		
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -59,7 +69,7 @@ public class DisplayRenderer extends MapRenderer {
 					}
 				} else {
 					canvas.drawImage(0, 0, image);
-				}				
+				}
 			}
 		}.runTaskAsynchronously(NovaCore.getInstance());
 	}

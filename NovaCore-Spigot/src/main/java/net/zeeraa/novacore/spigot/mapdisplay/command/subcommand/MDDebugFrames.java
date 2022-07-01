@@ -11,17 +11,17 @@ import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 import net.zeeraa.novacore.spigot.mapdisplay.MapDisplay;
 import net.zeeraa.novacore.spigot.mapdisplay.MapDisplayManager;
 
-public class MDDeleteSubCommand extends NovaSubCommand {
+public class MDDebugFrames extends NovaSubCommand {
 
-	public MDDeleteSubCommand() {
-		super("delete");
+	public MDDebugFrames() {
+		super("debugframes");
 
-		setPermission("novacore.command.mapdisplay.delete");
+		setPermission("novacore.command.mapdisplay.debugframes");
 		setPermissionDefaultValue(PermissionDefault.OP);
-		setDescription("Delete a map display");
+		setDescription("Test command");
 		setFilterAutocomplete(true);
 		setAllowedSenders(AllowedSenders.ALL);
-		setUsage("/mapdisplay delete <name>");
+		setUsage("/mapdisplay debugframes <name>");
 	}
 
 	@Override
@@ -38,8 +38,8 @@ public class MDDeleteSubCommand extends NovaSubCommand {
 
 		for (MapDisplay display : MapDisplayManager.getInstance().getMapDisplays()) {
 			if (display.getName().equalsIgnoreCase(args[0])) {
-				display.delete();
-				sender.sendMessage(ChatColor.GREEN + "Display removed");
+				display.debugFrames();
+				
 				return true;
 			}
 		}

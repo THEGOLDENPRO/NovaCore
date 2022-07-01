@@ -56,6 +56,8 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	private boolean worldDataLoadingEnabled;
 	private boolean worldDataSavingDisabled;
 
+	private List<UUID> processedWorlds;
+
 	public static MapDisplayManager getInstance() {
 		return instance;
 	}
@@ -84,6 +86,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 		worldDataLoadingEnabled = true;
 		worldDataSavingDisabled = false;
 		mapDisplays = new ArrayList<>();
+		processedWorlds = new ArrayList<>();
 	}
 
 	@Override
@@ -133,7 +136,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 	public MapDisplay createMapDisplay(ItemFrame frame, boolean persistent, String name) {
 		if (hasMapDisplay(name)) {
-			throw new MapDisplayNameAlreadyExistsException("A map display with the name " + name + " already exits");
+			throw new MapDisplayNameAlreadyExistsException("A map display with the name " + name + " already exist");
 		}
 
 		List<List<UUID>> frames = new ArrayList<List<UUID>>();
@@ -251,6 +254,11 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	}
 
 	public void readAllFromWorld(World world) {
+		if (processedWorlds.contains(world.getUID())) {
+			return;
+		}
+		processedWorlds.add(world.getUID());
+
 		File dataFolder = getDataFolder(world);
 
 		if (!dataFolder.exists()) {
@@ -272,6 +280,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 		for (File file : files) {
 			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("dat")) {
+				Log.trace("MapDisplayManager", "Found file " + file.getAbsolutePath());
 				String name = "[UNKNOWN]";
 				try {
 					byte[] bytes = FileUtils.readFileToByteArray(file);

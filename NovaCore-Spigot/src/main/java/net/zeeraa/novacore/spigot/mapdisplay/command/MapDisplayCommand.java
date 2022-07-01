@@ -7,6 +7,7 @@ import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.AllowedSenders;
 import net.zeeraa.novacore.spigot.command.NovaCommand;
 import net.zeeraa.novacore.spigot.mapdisplay.command.subcommand.MDCreateSubCommand;
+import net.zeeraa.novacore.spigot.mapdisplay.command.subcommand.MDDebugFrames;
 import net.zeeraa.novacore.spigot.mapdisplay.command.subcommand.MDDeleteSubCommand;
 import net.zeeraa.novacore.spigot.mapdisplay.command.subcommand.MDListSubCommand;
 import net.zeeraa.novacore.spigot.mapdisplay.command.subcommand.MDSetImageSubCommand;
@@ -26,6 +27,7 @@ public class MapDisplayCommand extends NovaCommand {
 		addSubCommand(new MDCreateSubCommand());
 		addSubCommand(new MDDeleteSubCommand());
 		addSubCommand(new MDSetImageSubCommand());
+		addSubCommand(new MDDebugFrames());
 
 		addHelpSubCommand();
 	}

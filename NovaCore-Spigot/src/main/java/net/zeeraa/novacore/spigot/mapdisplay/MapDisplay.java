@@ -57,6 +57,27 @@ public class MapDisplay {
 
 	protected List<XYLocation> chunks;
 
+	public void debugFrames() {
+		Log.info("Begin debug dump");
+		Log.info("Name: " + name);
+		Log.info("Persistent: " + persistent);
+
+		Log.info("Renderers:");
+		for (int y = 0; y < renderers.length; y++) {
+			for (int x = 0; x < renderers[y].length; x++) {
+				DisplayRenderer renderer = renderers[y][x];
+				Log.info("Renderer " + x + " " + y + " has image object " + renderer.getImage().toString() + " renderer id " + renderer.getRendererId().toString() + " cached players: " + renderer.getRenderedUsersCache().size());
+			}
+		}
+
+		for (int y = 0; y < itemFrames.length; y++) {
+			for (int x = 0; x < itemFrames[y].length; x++) {
+				ItemFrame frame = itemFrames[y][x];
+				Log.info("Frame " + x + " " + y + " is dead: " + frame.isDead() + " entity id: " + frame.getEntityId());
+			}
+		}
+	}
+
 	public void setImage(BufferedImage image) throws Exception {
 		this.setImage(image, true);
 	}
@@ -234,6 +255,7 @@ public class MapDisplay {
 	}
 
 	public void setupMaps() {
+		Log.trace("MapDisplay", "setupMaps() called");
 		for (int i = 0; i < itemFrames.length; i++) {
 			for (int j = 0; j < itemFrames[i].length; j++) {
 				ItemStack item = itemFrames[i][j].getItem();
@@ -257,11 +279,16 @@ public class MapDisplay {
 				for (MapRenderer old : view.getRenderers()) {
 					view.removeRenderer(old);
 				}
+
+				//Log.trace("MapDisplay", "View renderers cleared. Remaining count: " + view.getRenderers().size());
+
 				DisplayRenderer renderer = new DisplayRenderer();
 				view.addRenderer(renderer);
 				renderers[i][j] = renderer;
 
 				NovaCore.getInstance().getVersionIndependentUtils().attachMapView(item, view);
+
+				//Log.trace("MapDisplay", "View renderers attached. View count: " + view.getRenderers().size());
 
 				frame.setItem(item);
 				frame.setRotation(Rotation.NONE);

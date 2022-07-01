@@ -86,10 +86,8 @@ public class MDSetImageSubCommand extends NovaSubCommand {
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
 		List<String> result = new ArrayList<String>();
 
-		for (MapDisplay display : MapDisplayManager.getInstance().getMapDisplays()) {
-			result.add(display.getName());
-		}
-
+		MapDisplayManager.getInstance().getMapDisplays().forEach(display -> result.add(display.getName()));
+		
 		return result;
 	}
 }
