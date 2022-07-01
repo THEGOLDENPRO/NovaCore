@@ -3,7 +3,7 @@ package net.zeeraa.novacore.spigot.teams;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -23,6 +23,10 @@ public abstract class Team {
 	public Team() {
 		this.teamUuid = UUID.randomUUID();
 		members = new ArrayList<UUID>();
+	}
+	
+	public List<Player> getOnlinePlayers() {
+		return Bukkit.getServer().getOnlinePlayers().stream().filter(player -> isMember(player)).collect(Collectors.toList());
 	}
 
 	/**
