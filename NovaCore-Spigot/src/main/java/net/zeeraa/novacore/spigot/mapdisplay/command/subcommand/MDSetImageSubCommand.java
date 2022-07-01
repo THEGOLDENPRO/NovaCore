@@ -55,6 +55,8 @@ public class MDSetImageSubCommand extends NovaSubCommand {
 				try {
 					URL url = new URL(args[1]);
 					final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+					connection.setConnectTimeout(10000);
+					connection.setReadTimeout(10000);
 					connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
 					image = ImageIO.read(connection.getInputStream());
 					// image = ImageIO.read(url);
