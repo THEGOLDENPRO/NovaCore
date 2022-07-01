@@ -18,13 +18,13 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockreplacer.BlockReplacer;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chestloot.ChestLoot;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chunkloader.Chunkloader;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.falldamagegraceperiod.FallDamageGracePeriodMapModule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.farmlandprotection.FarmlandProtection;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.fireresistance.FireReistance;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.gamerule.Gamerule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.giveitems.GiveItemInstant;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.giveitems.GiveItemSlow;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod.GracePeriodMapModule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod.falldamagegraceperiod.FallDamageGracePeriodMapModule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod.graceperiod.GracePeriodMapModule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.instantvoidkill.InstantVoidKill;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;

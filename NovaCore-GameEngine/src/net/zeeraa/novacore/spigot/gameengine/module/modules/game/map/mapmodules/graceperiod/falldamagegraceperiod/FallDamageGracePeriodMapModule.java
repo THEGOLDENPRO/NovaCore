@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod;
+package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod.falldamagegraceperiod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,41 +19,20 @@ import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.timers.TickCallback;
 import net.zeeraa.novacore.commons.utils.Callback;
 import net.zeeraa.novacore.commons.utils.TextUtils;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.timers.BasicTimer;
 
-public class GracePeriodMapModule extends MapModule implements Listener {
+public class FallDamageGracePeriodMapModule extends MapModule implements Listener {
 	private BasicTimer endTimer;
 	private boolean isActive;
 	private int seconds;
 
 	private List<Long> warnings;
 
-	public static final List<DamageCause> BLOCKED_CAUSES = new ArrayList<>();
-
-	static {
-		BLOCKED_CAUSES.add(DamageCause.BLOCK_EXPLOSION);
-		BLOCKED_CAUSES.add(DamageCause.CONTACT);
-		BLOCKED_CAUSES.add(DamageCause.DROWNING);
-		BLOCKED_CAUSES.add(DamageCause.ENTITY_ATTACK);
-		BLOCKED_CAUSES.add(DamageCause.ENTITY_EXPLOSION);
-		BLOCKED_CAUSES.add(DamageCause.FALLING_BLOCK);
-		BLOCKED_CAUSES.add(DamageCause.FIRE);
-		BLOCKED_CAUSES.add(DamageCause.LAVA);
-		BLOCKED_CAUSES.add(DamageCause.LIGHTNING);
-		BLOCKED_CAUSES.add(DamageCause.MAGIC);
-		BLOCKED_CAUSES.add(DamageCause.POISON);
-		BLOCKED_CAUSES.add(DamageCause.PROJECTILE);
-		BLOCKED_CAUSES.add(DamageCause.SUFFOCATION);
-		BLOCKED_CAUSES.add(DamageCause.THORNS);
-		BLOCKED_CAUSES.add(DamageCause.WITHER);
-	}
-
-	public GracePeriodMapModule(JSONObject json) {
+	public FallDamageGracePeriodMapModule(JSONObject json) {
 		super(json);
 
 		seconds = 15;
@@ -63,7 +42,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 			seconds = json.getInt("time");
 		} else {
 			// TODO: language file
-			Log.warn("GracePeriodMapModule", "No time defined. Using the default of 15 seconds");
+			Log.warn("FallDamageGracePeriodMapModule", "No time defined. Using the default of 30 seconds");
 		}
 
 		if (json.has("warnings")) {
@@ -82,7 +61,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 			public void execute(long timeLeft) {
 				if (warnings.contains(timeLeft)) {
 					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentSound.NOTE_PLING.play(player));
-					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period ends in " + timeLeft + " seconds " + ChatColor.RESET + ChatColor.YELLOW + TextUtils.ICON_WARNING);
+					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Fall damage will be enabled in " + timeLeft + " seconds " + ChatColor.RESET + ChatColor.YELLOW + TextUtils.ICON_WARNING);
 				}
 			}
 		});
@@ -91,8 +70,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 			@Override
 			public void execute() {
 				isActive = false;
-				Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().sendTitle(player, "", ChatColor.YELLOW + TextUtils.ICON_WARNING + " Grace period is over " + TextUtils.ICON_WARNING, 10, 40, 10));
-				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period is over");
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Fall damage is now enabled");
 			}
 		});
 	}
@@ -100,8 +78,8 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent e) {
 		if (e.getEntity() instanceof Player) {
-			if (isActive) {
-				if (BLOCKED_CAUSES.contains(e.getCause())) {
+			if (e.getCause() == DamageCause.FALL) {
+				if (isActive) {
 					e.setCancelled(true);
 				}
 			}
@@ -110,16 +88,16 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 
 	@EventHandler
 	public void onGameBegin(GameBeginEvent e) {
-		Log.info("GracePeriodMapModule", "Received GameBeginEvent");
+		Log.info("FallDamageGracePeriodMapModule", "Received GameBeginEvent");
 		isActive = true;
 		// TODO: language file
-		Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "Grace period will end in " + seconds + " seconds");
+		Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "Fall damage will be enabled in " + seconds + " seconds");
 		endTimer.start();
 	}
 
 	@Override
 	public void onGameStart(Game game) {
-		Log.info("GracePeriodMapModule", "Grace period will be " + seconds + " seconds long");
+		Log.info("FallDamageGracePeriodMapModule", "Fall damage grace period will be " + seconds + " seconds long");
 		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
 	}
 
