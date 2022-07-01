@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.mapdisplay.command.subcommand;
 
 import java.awt.image.BufferedImage;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +33,11 @@ public class MDSetImageSubCommand extends NovaSubCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		if(!MapDisplayManager.getInstance().isEnabled()) {
+		if (!MapDisplayManager.getInstance().isEnabled()) {
 			sender.sendMessage(ChatColor.DARK_RED + "MapDisplayManager is not enabled");
 			return false;
 		}
-		
+
 		if (args.length == 0) {
 			sender.sendMessage(ChatColor.RED + "Please provide a name of a display");
 			return false;
@@ -53,7 +54,10 @@ public class MDSetImageSubCommand extends NovaSubCommand {
 
 				try {
 					URL url = new URL(args[1]);
-					image = ImageIO.read(url);
+					final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+					connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
+					image = ImageIO.read(connection.getInputStream());
+					// image = ImageIO.read(url);
 					Log.trace("Image loaded from url");
 				} catch (Exception e) {
 					sender.sendMessage(ChatColor.RED + "Could not read image from url. " + e.getClass().getName() + " " + e.getMessage());
