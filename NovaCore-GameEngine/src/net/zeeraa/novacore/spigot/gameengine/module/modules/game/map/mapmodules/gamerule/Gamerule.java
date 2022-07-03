@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
+import net.zeeraa.novacore.spigot.world.WorldUtils;
 
 public class Gamerule extends MapModule {
 	private Map<String, String> gamerules;
@@ -26,6 +27,6 @@ public class Gamerule extends MapModule {
 
 	@Override
 	public void onGameStart(Game game) {
-		gamerules.forEach((key, val) -> game.getWorld().setGameRuleValue(key, val));
+		gamerules.forEach((key, val) -> WorldUtils.setGameRule(game.getWorld(), key, val));
 	}
 }
