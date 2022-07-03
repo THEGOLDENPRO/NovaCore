@@ -8,6 +8,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
@@ -489,5 +490,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void setCustomModelData(ItemMeta meta, int data) {
 		// Does not exist for this version
+	}
+
+	@Override
+	public void setGameRule(World world, String rule, String value) {
+		world.setGameRuleValue(rule, value);
 	}
 }

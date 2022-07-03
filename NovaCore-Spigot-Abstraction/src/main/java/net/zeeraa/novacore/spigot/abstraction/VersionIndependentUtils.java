@@ -6,6 +6,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
@@ -301,10 +302,12 @@ public abstract class VersionIndependentUtils {
 		item.setItemMeta(meta);
 		return item;
 	}
-	
+
 	public abstract void setCreatureItemInMainHand(Creature creature, ItemStack item);
-	
+
 	public abstract float getPlayerBodyRotation(Player player);
 
 	public abstract void setCustomModelData(ItemMeta meta, int data);
+
+	public abstract void setGameRule(World world, String rule, String value);
 }
