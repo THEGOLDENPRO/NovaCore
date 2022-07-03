@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
@@ -10,6 +11,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -247,6 +249,18 @@ public class ItemBuilder {
 	}
 
 	/**
+	 * Set the color of leather armor. Do not call this if the item is not a piece
+	 * of leather armor.
+	 * 
+	 * @param color The color to set
+	 * @return The item builder instance
+	 */
+	public ItemBuilder setLeatherArmorColor(Color color) {
+		((LeatherArmorMeta) meta).setColor(color);
+		return this;
+	}
+
+	/**
 	 * Create an item stack from the builder
 	 * 
 	 * @return The item stack
@@ -284,7 +298,7 @@ public class ItemBuilder {
 
 		return this;
 	}
-	
+
 	public ItemBuilder setCustomModelData(int data) {
 		VersionIndependentUtils.get().setCustomModelData(meta, data);
 		return this;
