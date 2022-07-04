@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
@@ -259,7 +260,27 @@ public class GameLobby extends NovaModule implements Listener {
 					if (!waitingPlayers.contains(e.getPlayer().getUniqueId())) {
 						waitingPlayers.add(e.getPlayer().getUniqueId());
 					}
-					tpToLobby(e.getPlayer());
+
+					e.getPlayer().setGameMode(GameMode.SPECTATOR);
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							if (GameManager.getInstance().getActiveGame().hasStarted()) {
+								return;
+							}
+							e.getPlayer().teleport(activeMap.getSpawnLocation());
+						}
+					}.runTaskLater(getPlugin(), 10L);
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							if (GameManager.getInstance().getActiveGame().hasStarted()) {
+								return;
+							}
+							tpToLobby(e.getPlayer());
+						}
+					}.runTaskLater(getPlugin(), 20L);
 
 					Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinGameLobbyEvent(e.getPlayer()));
 				}
