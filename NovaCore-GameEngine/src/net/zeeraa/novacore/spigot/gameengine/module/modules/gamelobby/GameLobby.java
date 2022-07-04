@@ -237,7 +237,7 @@ public class GameLobby extends NovaModule implements Listener {
 	private void tpToLobby(Player player) {
 		player.teleport(activeMap.getSpawnLocation());
 
-		player.getInventory().clear();
+		//player.getInventory().clear();
 
 		player.setGameMode(GameMode.ADVENTURE);
 		NovaCore.getInstance().getVersionIndependentUtils().setEntityMaxHealth(player, 20);
