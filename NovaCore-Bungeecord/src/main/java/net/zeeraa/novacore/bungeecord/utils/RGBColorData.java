@@ -1,6 +1,5 @@
-package net.zeeraa.novacore.spigot.utils;
+package net.zeeraa.novacore.bungeecord.utils;
 
-import org.bukkit.ChatColor;
 import org.json.JSONObject;
 
 public class RGBColorData {
@@ -16,12 +15,6 @@ public class RGBColorData {
 		setR(r);
 		setG(g);
 		setB(b);
-	}
-
-	public RGBColorData(org.bukkit.Color color) {
-		this.r = color.getRed();
-		this.g = color.getGreen();
-		this.b = color.getBlue();
 	}
 
 	public RGBColorData(java.awt.Color color) {
@@ -84,24 +77,12 @@ public class RGBColorData {
 		return new RGBColorData(json.getInt("r"), json.getInt("g"), json.getInt("b"));
 	}
 
-	public org.bukkit.Color toBukkitColor() {
-		return org.bukkit.Color.fromRGB(r, g, b);
-	}
-
 	public java.awt.Color tooAWTColor() {
 		return new java.awt.Color(r, g, b);
 	}
 
-	public static RGBColorData fromChatColor(ChatColor color) {
-		return ChatColorRGBMapper.chatColorToRGBColorData(color);
-	}
-
 	public static RGBColorData fromChatColor(net.md_5.bungee.api.ChatColor color) {
 		return ChatColorRGBMapper.chatColorToRGBColorData(color);
-	}
-
-	public static RGBColorData fromBukkitColor(org.bukkit.Color color) {
-		return new RGBColorData(color);
 	}
 
 	public static RGBColorData fromAWTColor(java.awt.Color color) {
