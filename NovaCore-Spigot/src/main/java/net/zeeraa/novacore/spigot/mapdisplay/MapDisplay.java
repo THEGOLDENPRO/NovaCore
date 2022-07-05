@@ -27,7 +27,6 @@ import org.bukkit.map.MapView.Scale;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.commons.utils.UUIDUtils;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
@@ -280,7 +279,8 @@ public class MapDisplay {
 					view.removeRenderer(old);
 				}
 
-				//Log.trace("MapDisplay", "View renderers cleared. Remaining count: " + view.getRenderers().size());
+				// Log.trace("MapDisplay", "View renderers cleared. Remaining count: " +
+				// view.getRenderers().size());
 
 				DisplayRenderer renderer = new DisplayRenderer();
 				view.addRenderer(renderer);
@@ -288,7 +288,8 @@ public class MapDisplay {
 
 				NovaCore.getInstance().getVersionIndependentUtils().attachMapView(item, view);
 
-				//Log.trace("MapDisplay", "View renderers attached. View count: " + view.getRenderers().size());
+				// Log.trace("MapDisplay", "View renderers attached. View count: " +
+				// view.getRenderers().size());
 
 				frame.setItem(item);
 				frame.setRotation(Rotation.NONE);
@@ -361,7 +362,7 @@ public class MapDisplay {
 	public boolean isEntityPartOfDisplay(Entity entity) {
 		for (int i = 0; i < itemFrames.length; i++) {
 			for (int j = 0; j < itemFrames[i].length; j++) {
-				if (UUIDUtils.isSame(entity.getUniqueId(), itemFrames[i][j].getUniqueId())) {
+				if (entity.getUniqueId().equals(itemFrames[i][j].getUniqueId())) {
 					return true;
 				}
 			}
