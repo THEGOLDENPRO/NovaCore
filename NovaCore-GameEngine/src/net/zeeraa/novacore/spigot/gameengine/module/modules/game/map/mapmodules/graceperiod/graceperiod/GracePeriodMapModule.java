@@ -30,6 +30,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 	private BasicTimer endTimer;
 	private boolean isActive;
 	private int seconds;
+	private int initialTime;
 
 	private List<Long> warnings;
 
@@ -57,28 +58,30 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 		super(json);
 
 		seconds = 15;
+		initialTime = 15;
 		warnings = new ArrayList<>();
 
 		if (json.has("time")) {
 			seconds = json.getInt("time");
+			initialTime = json.getInt("time");
 		} else {
 			// TODO: language file
 			Log.warn("GracePeriodMapModule", "No time defined. Using the default of 15 seconds");
 		}
 
 		boolean legacyMode = false;
-		if(json.has("legacy_mode")) {
+		if (json.has("legacy_mode")) {
 			legacyMode = json.getBoolean("legacy_mode");
 		}
-		
-		if(!legacyMode) {
-			for(DamageCause cause : DamageCause.values()) {
-				if(!BLOCKED_CAUSES.contains(cause)) {
+
+		if (!legacyMode) {
+			for (DamageCause cause : DamageCause.values()) {
+				if (!BLOCKED_CAUSES.contains(cause)) {
 					BLOCKED_CAUSES.add(cause);
 				}
 			}
 		}
-		
+
 		if (json.has("warnings")) {
 			JSONArray warningsJSON = json.getJSONArray("warnings");
 			for (int i = 0; i < warningsJSON.length(); i++) {
@@ -119,6 +122,14 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 				}
 			}
 		}
+	}
+
+	public int getInitialTime() {
+		return initialTime;
+	}
+
+	public Long getTimeLeft() {
+		return endTimer.getTimeLeft();
 	}
 
 	@EventHandler
