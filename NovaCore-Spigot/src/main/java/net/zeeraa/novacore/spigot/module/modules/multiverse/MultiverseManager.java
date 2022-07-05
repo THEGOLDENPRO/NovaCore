@@ -36,7 +36,12 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 	@Override
 	public void onDisable() {
-		this.unloadAll();
+		try {
+			this.unloadAll();
+		} catch (Exception e) {
+			Log.error(getName(), "An error occured while disabling. " + e.getClass().getName() + " " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public MultiverseManager() {
