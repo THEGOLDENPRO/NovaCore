@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -310,4 +311,6 @@ public abstract class VersionIndependentUtils {
 	public abstract void setCustomModelData(ItemMeta meta, int data);
 
 	public abstract void setGameRule(World world, String rule, String value);
+	
+	public abstract boolean isInteractEventMainHand(PlayerInteractEvent e);
 }
