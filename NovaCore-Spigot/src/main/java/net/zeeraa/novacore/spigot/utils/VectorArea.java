@@ -1,5 +1,7 @@
 package net.zeeraa.novacore.spigot.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.util.Vector;
@@ -123,6 +125,38 @@ public class VectorArea {
 		}
 
 		return false;
+	}
+
+	public List<Vector> getOutline(double distance) {
+		List<Vector> result = new ArrayList<>();
+		double minX = position1.getBlockX();
+		double minY = position1.getBlockY();
+		double minZ = position1.getBlockZ();
+		double maxX = position2.getBlockX();
+		double maxY = position2.getBlockY();
+		double maxZ = position2.getBlockZ();
+
+		for (double x = minX; x <= maxX; x = Math.round((x + distance) * 1e2) / 1e2) {
+			for (double y = minY; y <= maxY; y = Math.round((y + distance) * 1e2) / 1e2) {
+				for (double z = minZ; z <= maxZ; z = Math.round((z + distance) * 1e2) / 1e2) {
+					int components = 0;
+					if (x == minX || x == maxX)
+						components++;
+					if (y == minY || y == maxY)
+						components++;
+					if (z == minZ || z == maxZ)
+						components++;
+					if (components >= 2) {
+						result.add(new Vector(x, y, z));
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	public List<Vector> getOutline() {
+		return this.getOutline(1);
 	}
 
 	/**
