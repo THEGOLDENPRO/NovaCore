@@ -75,6 +75,25 @@ public class VectorArea {
 	}
 
 	/**
+	 * Get a {@link JSONObject} from this {@link VectorArea}
+	 * 
+	 * @return {@link JSONObject}
+	 */
+	public JSONObject toJSON() {
+		JSONObject json = new JSONObject();
+
+		json.put("x1", position1.getX());
+		json.put("y1", position1.getX());
+		json.put("z1", position1.getX());
+
+		json.put("x2", position2.getX());
+		json.put("y2", position2.getX());
+		json.put("z2", position2.getX());
+
+		return json;
+	}
+
+	/**
 	 * Check if a vectors position is inside this area. To check block location use
 	 * {@link VectorArea#isInsideBlock(Vector)}
 	 * 
