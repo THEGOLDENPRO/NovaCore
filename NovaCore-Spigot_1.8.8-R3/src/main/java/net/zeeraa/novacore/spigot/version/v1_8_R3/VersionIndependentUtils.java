@@ -317,6 +317,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case LEVEL_UP:
 			return Sound.LEVEL_UP;
+			
+		case WITHER_SHOOT:
+			return Sound.WITHER_SHOOT;
 
 		default:
 			AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
