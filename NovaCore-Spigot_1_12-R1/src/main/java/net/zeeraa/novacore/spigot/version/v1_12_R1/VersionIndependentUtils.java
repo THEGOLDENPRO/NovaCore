@@ -501,6 +501,6 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	
 	@Override
 	public boolean isInteractEventMainHand(PlayerInteractEvent e) {
-		return e.getHand() == EquipmentSlot.HEAD;
+		return e.getHand() == EquipmentSlot.HAND;
 	}
 }
