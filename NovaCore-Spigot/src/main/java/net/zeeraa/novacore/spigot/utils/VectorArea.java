@@ -83,12 +83,12 @@ public class VectorArea {
 		JSONObject json = new JSONObject();
 
 		json.put("x1", position1.getX());
-		json.put("y1", position1.getX());
-		json.put("z1", position1.getX());
+		json.put("y1", position1.getY());
+		json.put("z1", position1.getZ());
 
 		json.put("x2", position2.getX());
-		json.put("y2", position2.getX());
-		json.put("z2", position2.getX());
+		json.put("y2", position2.getY());
+		json.put("z2", position2.getZ());
 
 		return json;
 	}
