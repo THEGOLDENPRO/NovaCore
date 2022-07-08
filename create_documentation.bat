@@ -1,3 +1,3 @@
 @echo off
-call mvn package
+call mvn site site:stage
 pause
