@@ -33,6 +33,8 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitConsoleSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitPlayerMessageSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.BukkitAsyncManager;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
 import net.zeeraa.novacore.spigot.command.commands.dumplanguagenodes.DumpLanguageNodesCommand;
@@ -237,6 +239,45 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	public ReflectionBasedCommandRegistrator getReflectionBasedCommandRegistrator() {
 		return reflectionBasedCommandRegistrator;
+	}
+
+	public boolean runVersionIndependentLayerSelftest() {
+		if (noNMSMode) {
+			Log.error("NovaCore", "Cant run selftest in no nms mode");
+			return false;
+		}
+
+		boolean ok = true;
+		VersionIndependentUtils.get().resetLastError();
+		Log.info("NovaCore", "Running version independent layer selftest");
+
+		Log.debug("NovaCore", "SelfTest: Looping thru VersionIndependentMaterial");
+		for (VersionIndependentMaterial m : VersionIndependentMaterial.values()) {
+			Log.trace("NovaCore", "SelfTest: getMaterial(): " + m.name());
+			VersionIndependentUtils.get().getMaterial(m);
+		}
+
+		if (VersionIndependentUtils.get().getLastError().isProblem()) {
+			Log.error("NovaCore", "Errors detected while running selftest: VersionIndependentUtils last error is " + VersionIndependentUtils.get().getLastError().name() + " after get material test");
+			VersionIndependentUtils.get().resetLastError();
+			ok = false;
+		}
+
+		// Sound test
+		Log.debug("NovaCore", "SelfTest: Looping thru VersionIndependentSound");
+		for (VersionIndependentSound s : VersionIndependentSound.values()) {
+			Log.trace("NovaCore", "SelfTest: getSound(): " + s.name());
+			VersionIndependentUtils.get().getSound(s);
+		}
+
+		if (VersionIndependentUtils.get().getLastError().isProblem()) {
+			Log.error("NovaCore", "Errors detected while running selftest: VersionIndependentUtils last error is " + VersionIndependentUtils.get().getLastError().name() + " after get sound test");
+			VersionIndependentUtils.get().resetLastError();
+			ok = false;
+		}
+
+		VersionIndependentUtils.get().resetLastError();
+		return ok;
 	}
 
 	@Override
@@ -448,6 +489,13 @@ public class NovaCore extends JavaPlugin implements Listener {
 			@Override
 			public void run() {
 				loadingDone = true;
+
+				boolean selfTestResult = runVersionIndependentLayerSelftest();
+				if (selfTestResult) {
+					Log.info("NovaCore", "Self test did dot detect any errors");
+				} else {
+					Log.error("Novacore", "Errors where detected while running the selftest. Check console for more details. Some features of this plugin might not work as expected");
+				}
 			}
 		}.runTaskLater(this, 1L);
 

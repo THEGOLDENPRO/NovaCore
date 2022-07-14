@@ -21,6 +21,7 @@ import org.bukkit.map.MapView;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerError;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
@@ -28,6 +29,20 @@ import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 public abstract class VersionIndependentUtils {
 	private static VersionIndependentUtils instance;
 
+	private VersionIndependenceLayerError lastError = VersionIndependenceLayerError.NONE;
+
+	protected final void setLastError(VersionIndependenceLayerError error) {
+		this.lastError = error;
+	}
+
+	public final VersionIndependenceLayerError getLastError() {
+		return lastError;
+	}
+	
+	public final void resetLastError() {
+		this.lastError = VersionIndependenceLayerError.NONE;
+	}
+	
 	/**
 	 * Get the {@link ChunkLoader} implementation
 	 * 
@@ -311,6 +326,6 @@ public abstract class VersionIndependentUtils {
 	public abstract void setCustomModelData(ItemMeta meta, int data);
 
 	public abstract void setGameRule(World world, String rule, String value);
-	
+
 	public abstract boolean isInteractEventMainHand(PlayerInteractEvent e);
 }
