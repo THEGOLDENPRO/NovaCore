@@ -79,7 +79,11 @@ public enum VersionIndependentMaterial {
 	/**
 	 * Version independent Golden sword
 	 */
-	GOLDEN_SWORD;
+	GOLDEN_SWORD,
+	/**
+	 * WATCH, CLOCK
+	 */
+	WATCH;
 
 	/**
 	 * Get the bukkit {@link Material} for the currently used version of the game

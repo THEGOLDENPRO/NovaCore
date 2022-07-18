@@ -436,6 +436,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case WOODEN_SWORD:
 			return Material.WOOD_SWORD;
+			
+		case WATCH:
+			return Material.WATCH;
 
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
