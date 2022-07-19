@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.loottable.loottables.V1;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -13,8 +14,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.loottable.LootTable;
 import net.zeeraa.novacore.spigot.loottable.LootTableLoader;
+import net.zeeraa.novacore.spigot.version.v1_16_R3.ParsePotionEffect1_16;
 
 /**
  * The loader for NovaCores default {@link LootTable} Version 1
@@ -107,10 +111,14 @@ public class LootTableLoaderV1 implements LootTableLoader {
 
 			JSONObject potionData = itemJson.getJSONObject("potion_data");
 
-			if (potionData.has("main_effect")) {
-				JSONObject mainEffect = potionData.getJSONObject("main_effect");
-				PotionEffectType type = PotionEffectType.getByName(mainEffect.getString("type"));
-				meta.setMainEffect(type);
+			if(NovaCore.getInstance().getVersionIndependentUtils().getNovaCoreGameVersion().isAfterOrEqual(NovaCoreGameVersion.V_1_16)) {
+				ParsePotionEffect1_16.readBasePotionData(potionData.getJSONObject("base_potion_data"), meta);
+			} else {
+				if (potionData.has("main_effect")) {
+					JSONObject mainEffect = potionData.getJSONObject("main_effect");
+					PotionEffectType type = PotionEffectType.getByName(mainEffect.getString("type"));
+					meta.setMainEffect(type);
+				}	
 			}
 
 			if (potionData.has("custom_effects")) {
@@ -165,7 +173,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 			item.setItemMeta(meta);
 		}
 
-		ArrayList<LootEntryV1> extraItems = null;
+		List<LootEntryV1> extraItems = null;
 
 		if (itemJson.has("extra_items")) {
 			extraItems = new ArrayList<LootEntryV1>();
