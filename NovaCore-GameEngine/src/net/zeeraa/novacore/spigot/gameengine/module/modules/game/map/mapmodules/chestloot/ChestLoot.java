@@ -120,6 +120,12 @@ public class ChestLoot extends MapModule {
 	public void onGameStart(Game game) {
 		if (isRefillsEnabled()) {
 			game.addTrigger(trigger);
+		}
+	}
+
+	@Override
+	public void onGameBegin(Game game) {
+		if (isRefillsEnabled()) {
 			startTask();
 		}
 	}

@@ -181,7 +181,10 @@ public class WorldborderMapModule extends MapModule {
 			Log.fatal("Worldborder cant set initial size because the game does not have a world set");
 			return;
 		}
-
+	}
+	
+	@Override
+	public void onGameBegin(Game game) {
 		startTrigger.start();
 	}
 
