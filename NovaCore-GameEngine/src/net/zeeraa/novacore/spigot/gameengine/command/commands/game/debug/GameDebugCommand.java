@@ -35,7 +35,7 @@ public class GameDebugCommand extends NovaSubCommand {
 
 			if (GameManager.getInstance().hasGame()) {
 				sender.sendMessage(ChatColor.GOLD + "Loaded game name: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getName());
-				sender.sendMessage(ChatColor.GOLD + "Display name: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getName());
+				sender.sendMessage(ChatColor.GOLD + "Display name: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getDisplayName());
 				sender.sendMessage(ChatColor.GOLD + "Class: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getClass().getName());
 				boolean started = GameManager.getInstance().getActiveGame().hasStarted();
 				boolean ended = GameManager.getInstance().getActiveGame().hasEnded();
