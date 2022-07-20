@@ -4,6 +4,6 @@ import org.bukkit.entity.Player;
 
 public interface CombatTagMessage {
 	public void showTaggedMessage(Player player);
-	
+
 	public void showNoLongerTaggedMessage(Player player);
 }

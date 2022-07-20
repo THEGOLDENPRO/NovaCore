@@ -77,18 +77,18 @@ public class LootDropMapModule extends MapModule {
 		spawnDrop();
 		startTriggerTimer();
 	}
-	
+
 	private void startTriggerTimer() {
 		int delay = RandomGenerator.generate(minDropTime, maxDropTime);
 
 		Log.debug("Next loot drop in " + delay + " seconds");
 
-		if(trigger.isRunning()) {
+		if (trigger.isRunning()) {
 			trigger.stop();
 		}
-		
+
 		trigger.setDelay(delay * 20);
-		
+
 		trigger.start();
 	}
 
@@ -120,11 +120,11 @@ public class LootDropMapModule extends MapModule {
 		}
 		game.removeTrigger(trigger);
 	}
-	
+
 	public DelayedGameTrigger getTrigger() {
 		return trigger;
 	}
-	
+
 	public boolean spawnDrop() {
 		if (lootTable != null && minDropTime > 0) {
 			if (locationsReal.size() > 0) {

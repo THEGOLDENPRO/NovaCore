@@ -25,9 +25,9 @@ public class NovaCoreSubCommandForceStartGame extends NovaSubCommand {
 		this.setPermissionDescription("Access to the game force start command");
 
 		this.setEmptyTabMode(true);
-		
+
 		this.addHelpSubCommand();
-		
+
 		this.setFilterAutocomplete(true);
 	}
 

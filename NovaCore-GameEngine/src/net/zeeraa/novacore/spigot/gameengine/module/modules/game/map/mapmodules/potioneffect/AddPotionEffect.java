@@ -20,25 +20,25 @@ public class AddPotionEffect extends MapModule {
 
 	public AddPotionEffect(JSONObject json) {
 		super(json);
-		
+
 		effects = new ArrayList<>();
-		
+
 		JSONArray effectsJson = json.getJSONArray("effects");
-		for(int i = 0; i < effectsJson.length(); i++) {
+		for (int i = 0; i < effectsJson.length(); i++) {
 			JSONObject effect = effectsJson.getJSONObject(i);
-			
+
 			PotionEffectType type = PotionEffectType.getByName(effect.getString("type"));
-			if(type == null) {
+			if (type == null) {
 				Log.error("AddPotionEffect", "Invalid potion effect type: " + effect.getString("type"));
-			continue;
+				continue;
 			}
-			
+
 			int duration = effect.getInt("duration");
 			int amplifier = effect.getInt("amplifier");
-			
+
 			boolean ambient = effect.getBoolean("ambient");
 			boolean particles = effect.getBoolean("particles");
-			
+
 			effects.add(new PotionEffect(type, duration, amplifier, ambient, particles));
 		}
 	}

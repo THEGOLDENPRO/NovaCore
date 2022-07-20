@@ -87,7 +87,8 @@ public class BlockLoot extends MapModule implements Listener {
 				e.getBlock().setType(Material.AIR);
 			}
 
-			//Log.trace("BlockLoot", "droping loot from loot table " + data.getLootTable().getName() + ". Cancel drop: " + data.isCancelDrop());
+			// Log.trace("BlockLoot", "droping loot from loot table " +
+			// data.getLootTable().getName() + ". Cancel drop: " + data.isCancelDrop());
 
 			Location dropLocation = LocationUtils.centerLocation(e.getBlock().getLocation().clone());
 

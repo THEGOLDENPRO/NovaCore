@@ -76,7 +76,7 @@ public class SimpleBoxDecay extends MapModule {
 	private void execDecayStep() {
 		// position 2 is larger than position 1
 		int size = area.getPosition2().getBlockY() - area.getPosition1().getBlockY();
-		
+
 		if (layer > size) {
 			if (trigger.isRunning()) {
 				trigger.stop();
@@ -92,7 +92,7 @@ public class SimpleBoxDecay extends MapModule {
 
 		Log.trace("SimpleBoxDecay", "Decay layer: " + layer);
 		Log.trace("SimpleBoxDecay", "Decay bounds: X1: " + x1 + " X2: " + x2 + " Z1: " + z1 + " Z2: " + z2);
-		
+
 		int y = area.getPosition2().getBlockY() - layer;
 
 		for (int x = x1; x <= x2; x++) {

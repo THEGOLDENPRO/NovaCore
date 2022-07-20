@@ -6,17 +6,15 @@ import org.bukkit.World;
 import net.zeeraa.novacore.spigot.gameengine.utils.AbstractMap;
 import net.zeeraa.novacore.spigot.gameengine.utils.AbstractMapData;
 
-
-
 public class GameLobbyMap extends AbstractMap {
 	private Location spawnLocation;
-	
+
 	public GameLobbyMap(World world, AbstractMapData mapData, Location spawnLocation) {
 		super(world, mapData);
-		
+
 		this.spawnLocation = spawnLocation;
 	}
-	
+
 	/**
 	 * Get the spawn location
 	 * 

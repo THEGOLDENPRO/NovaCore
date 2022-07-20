@@ -6,11 +6,12 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.GameTr
 
 /**
  * Called when a {@link GameTrigger} is triggered
+ * 
  * @author Zeeraa
  */
-public class GameTriggerTriggerEvent  extends GameTriggerEvent {
+public class GameTriggerTriggerEvent extends GameTriggerEvent {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
-	
+
 	public GameTriggerTriggerEvent(GameTrigger trigger) {
 		super(trigger);
 	}

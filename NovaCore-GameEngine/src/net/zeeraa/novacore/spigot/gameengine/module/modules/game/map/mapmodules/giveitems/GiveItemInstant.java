@@ -38,7 +38,7 @@ public class GiveItemInstant extends MapModule {
 				Log.error("GiveItemInstant", "Failed to parse item at index " + i + ". " + e.getClass().getName() + " " + e.getMessage());
 			}
 		}
-		
+
 		Log.debug("GiveItemInstant", items.length() + " items will be given to players in the start of the game");
 	}
 

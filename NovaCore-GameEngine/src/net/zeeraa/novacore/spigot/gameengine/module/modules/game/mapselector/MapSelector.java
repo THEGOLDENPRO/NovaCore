@@ -33,12 +33,12 @@ public abstract class MapSelector {
 	 * @return The {@link GameMapData} or <code>null</code> if the map was not found
 	 */
 	public GameMapData getMap(String name) {
-		for(GameMapData map : maps) {
-			if(map.getMapName().equalsIgnoreCase(name)) {
+		for (GameMapData map : maps) {
+			if (map.getMapName().equalsIgnoreCase(name)) {
 				return map;
 			}
 		}
-		
+
 		return null;
 	}
 

@@ -30,7 +30,7 @@ public class NovaCoreSubCommandGameListplayers extends NovaSubCommand {
 		this.setPermissionDescription("Access to the game listplayers command");
 
 		this.addHelpSubCommand();
-		
+
 		this.setFilterAutocomplete(true);
 	}
 
@@ -60,7 +60,7 @@ public class NovaCoreSubCommandGameListplayers extends NovaSubCommand {
 					playerList += ChatColor.YELLOW + uuid.toString() + " ";
 				}
 			}
-			
+
 			sender.sendMessage(ChatColor.GOLD + "Player list: " + playerList);
 		} else {
 			sender.sendMessage(ChatColor.RED + "No game has been loaded");

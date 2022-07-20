@@ -22,14 +22,14 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.M
 public class MapProtection extends MapModule implements Listener {
 	private List<Material> breakWhitelist;
 	private List<Material> breakBlacklist;
-	
+
 	private List<Material> placeWhitelist;
 	private List<Material> placeBlacklist;
-	
+
 	private List<GameMode> bypassedGamemodes;
 
 	private Game game;
-	
+
 	private MapProtectionMode mode;
 
 	public MapProtection(JSONObject json) {
@@ -37,10 +37,10 @@ public class MapProtection extends MapModule implements Listener {
 
 		this.breakWhitelist = new ArrayList<Material>();
 		this.breakBlacklist = new ArrayList<Material>();
-		
+
 		this.placeWhitelist = new ArrayList<Material>();
 		this.placeBlacklist = new ArrayList<Material>();
-		
+
 		this.bypassedGamemodes = new ArrayList<GameMode>();
 
 		try {
@@ -50,89 +50,89 @@ public class MapProtection extends MapModule implements Listener {
 			e.printStackTrace();
 			return;
 		}
-		
-		if(json.has("break_whitelist")) {
+
+		if (json.has("break_whitelist")) {
 			JSONArray whitelistJson = json.getJSONArray("break_whitelist");
-			
-			for(int i = 0; i < whitelistJson.length(); i++) {
+
+			for (int i = 0; i < whitelistJson.length(); i++) {
 				try {
 					breakWhitelist.add(Material.valueOf(whitelistJson.getString(i)));
-				} catch(IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 					Log.error("Could not find break whitelisted material " + whitelistJson.getString(i));
 				}
 			}
 		}
-		
-		if(json.has("break_blacklist")) {
+
+		if (json.has("break_blacklist")) {
 			JSONArray blacklistJson = json.getJSONArray("break_blacklist");
-			
-			for(int i = 0; i < blacklistJson.length(); i++) {
+
+			for (int i = 0; i < blacklistJson.length(); i++) {
 				try {
 					breakBlacklist.add(Material.valueOf(blacklistJson.getString(i)));
-				} catch(IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 					Log.error("Could not find break blacklisted material " + blacklistJson.getString(i));
 				}
 			}
 		}
-		
-		if(json.has("place_whitelist")) {
+
+		if (json.has("place_whitelist")) {
 			JSONArray whitelistJson = json.getJSONArray("place_whitelist");
-			
-			for(int i = 0; i < whitelistJson.length(); i++) {
+
+			for (int i = 0; i < whitelistJson.length(); i++) {
 				try {
 					placeWhitelist.add(Material.valueOf(whitelistJson.getString(i)));
-				} catch(IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 					Log.error("Could not find place whitelisted material " + whitelistJson.getString(i));
 				}
 			}
 		}
-		
-		if(json.has("place_blacklist")) {
+
+		if (json.has("place_blacklist")) {
 			JSONArray blacklistJson = json.getJSONArray("place_blacklist");
-			
-			for(int i = 0; i < blacklistJson.length(); i++) {
+
+			for (int i = 0; i < blacklistJson.length(); i++) {
 				try {
 					placeBlacklist.add(Material.valueOf(blacklistJson.getString(i)));
-				} catch(IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 					Log.error("Could not find place blacklisted material " + blacklistJson.getString(i));
 				}
 			}
 		}
-		
-		if(json.has("bypassed_gamemodes")) {
+
+		if (json.has("bypassed_gamemodes")) {
 			JSONArray gamemodesJson = json.getJSONArray("bypassed_gamemodes");
-			
-			for(int i = 0; i < gamemodesJson.length(); i++) {
+
+			for (int i = 0; i < gamemodesJson.length(); i++) {
 				try {
 					bypassedGamemodes.add(GameMode.valueOf(gamemodesJson.getString(i)));
-				} catch(IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 					Log.error("Could not find gamemode " + gamemodesJson.getString(i));
 				}
 			}
 		}
 	}
-	
+
 	public MapProtectionMode getMode() {
 		return mode;
 	}
-	
+
 	public List<Material> getPlaceBlacklist() {
 		return placeBlacklist;
 	}
-	
+
 	public List<Material> getBreakBlacklist() {
 		return breakBlacklist;
 	}
-	
+
 	public List<Material> getPlaceWhitelist() {
 		return placeWhitelist;
 	}
-	
+
 	public List<Material> getBreakWhitelist() {
 		return breakWhitelist;
 	}
@@ -140,7 +140,7 @@ public class MapProtection extends MapModule implements Listener {
 	public List<GameMode> getBypassedGamemodes() {
 		return bypassedGamemodes;
 	}
-	
+
 	@Override
 	public void onGameStart(Game game) {
 		this.game = game;
@@ -152,22 +152,22 @@ public class MapProtection extends MapModule implements Listener {
 		this.game = null;
 		HandlerList.unregisterAll(this);
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent e) {
-		if(game.hasWorld()) {
-			if(e.getBlock().getWorld() == game.getWorld()) {
-				if(bypassedGamemodes.contains(e.getPlayer().getGameMode())) {
+		if (game.hasWorld()) {
+			if (e.getBlock().getWorld() == game.getWorld()) {
+				if (bypassedGamemodes.contains(e.getPlayer().getGameMode())) {
 					return;
 				}
-				
-				if(mode == MapProtectionMode.WHITELIST) {
-					if(!placeWhitelist.contains(e.getBlock().getType())) {
+
+				if (mode == MapProtectionMode.WHITELIST) {
+					if (!placeWhitelist.contains(e.getBlock().getType())) {
 						Log.trace("Preventing player from placing non whitelisted block");
 						e.setCancelled(true);
 					}
-				} else if(mode == MapProtectionMode.BLACKLIST) {
-					if(placeBlacklist.contains(e.getBlock().getType())) {
+				} else if (mode == MapProtectionMode.BLACKLIST) {
+					if (placeBlacklist.contains(e.getBlock().getType())) {
 						Log.trace("Preventing player from placing blacklisted block");
 						e.setCancelled(true);
 					}
@@ -175,22 +175,22 @@ public class MapProtection extends MapModule implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent e) {
-		if(game.hasWorld()) {
-			if(e.getBlock().getWorld() == game.getWorld()) {
-				if(bypassedGamemodes.contains(e.getPlayer().getGameMode())) {
+		if (game.hasWorld()) {
+			if (e.getBlock().getWorld() == game.getWorld()) {
+				if (bypassedGamemodes.contains(e.getPlayer().getGameMode())) {
 					return;
 				}
-				
-				if(mode == MapProtectionMode.WHITELIST) {
-					if(!breakWhitelist.contains(e.getBlock().getType())) {
+
+				if (mode == MapProtectionMode.WHITELIST) {
+					if (!breakWhitelist.contains(e.getBlock().getType())) {
 						Log.trace("Preventing player from breaking non whitelisted block");
 						e.setCancelled(true);
 					}
-				} else if(mode == MapProtectionMode.BLACKLIST) {
-					if(breakBlacklist.contains(e.getBlock().getType())) {
+				} else if (mode == MapProtectionMode.BLACKLIST) {
+					if (breakBlacklist.contains(e.getBlock().getType())) {
 						Log.trace("Preventing player from breaking blacklisted block");
 						e.setCancelled(true);
 					}

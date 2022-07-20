@@ -25,9 +25,9 @@ public class NovaCoreSubCommandStartGame extends NovaSubCommand {
 		this.setPermissionDescription("Access to the game start command");
 
 		this.setEmptyTabMode(true);
-		
+
 		this.addHelpSubCommand();
-		
+
 		this.setFilterAutocomplete(true);
 	}
 
@@ -36,9 +36,9 @@ public class NovaCoreSubCommandStartGame extends NovaSubCommand {
 		if (GameManager.getInstance().isEnabled()) {
 			if (GameManager.getInstance().hasGame()) {
 				if (!GameManager.getInstance().getActiveGame().hasStarted()) {
-					if(GameManager.getInstance().getActiveGame().canStart()) {
+					if (GameManager.getInstance().getActiveGame().canStart()) {
 						if (GameManager.getInstance().hasCountdown()) {
-							if(!GameManager.getInstance().getCountdown().hasCountdownStarted()) {
+							if (!GameManager.getInstance().getCountdown().hasCountdownStarted()) {
 								GameManager.getInstance().getCountdown().startCountdown();
 								sender.sendMessage(ChatColor.GREEN + "Countdown started");
 							} else {

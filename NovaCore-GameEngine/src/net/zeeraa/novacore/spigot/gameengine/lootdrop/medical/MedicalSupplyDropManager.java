@@ -50,7 +50,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	public static MedicalSupplyDropManager getInstance() {
 		return instance;
 	}
-	
+
 	public MedicalSupplyDropManager() {
 		super("NovaUniverse.MedicalSupplyDropManager");
 	}

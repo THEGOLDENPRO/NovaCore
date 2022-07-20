@@ -13,11 +13,11 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData
  */
 public abstract class MapReader {
 	private String loaderName;
-	
+
 	public MapReader(String loaderName) {
 		this.loaderName = loaderName;
 	}
-	
+
 	/**
 	 * Read {@link GameMapData} from a {@link JSONObject}
 	 * 
@@ -26,7 +26,7 @@ public abstract class MapReader {
 	 * @return Instance of the {@link GameMapData} or <code>null</code> on failure
 	 */
 	public abstract GameMapData readMap(JSONObject json, File worldDirectory);
-	
+
 	public String getLoaderName() {
 		return this.loaderName;
 	}

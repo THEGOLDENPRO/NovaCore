@@ -73,7 +73,7 @@ public abstract class AbstractMapData {
 	protected boolean initHolograms(World world) {
 		try {
 			holograms.forEach(hologramData -> hologramData.create(world));
-			
+
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

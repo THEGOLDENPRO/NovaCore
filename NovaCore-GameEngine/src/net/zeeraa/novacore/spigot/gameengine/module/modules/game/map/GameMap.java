@@ -22,7 +22,7 @@ public class GameMap extends AbstractMap {
 
 	public GameMap(World world, AbstractMapData mapData, List<Location> starterLocations, Location spectatorLocation) {
 		super(world, mapData);
-		
+
 		this.world = world;
 
 		this.starterLocations = starterLocations;

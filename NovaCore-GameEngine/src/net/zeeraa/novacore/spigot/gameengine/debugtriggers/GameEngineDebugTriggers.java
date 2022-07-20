@@ -172,7 +172,7 @@ public class GameEngineDebugTriggers {
 					if (GameManager.getInstance().hasGame()) {
 						if (args.length > 0) {
 							Player player = Bukkit.getServer().getPlayer(args[0]);
-							if(player != null ) {
+							if (player != null) {
 								GameManager.getInstance().getActiveGame().addPlayer(player);
 								sender.sendMessage("Player added");
 							} else {

@@ -23,7 +23,7 @@ public class Chunkloader extends MapModule {
 
 		this.chunks = new ArrayList<>();
 		this.areas = new ArrayList<>();
-		
+
 		JSONArray areas = json.getJSONArray("areas");
 		for (int i = 0; i < areas.length(); i++) {
 			this.areas.add(VectorArea.fromJSON(areas.getJSONObject(i)));
@@ -50,6 +50,6 @@ public class Chunkloader extends MapModule {
 
 	@Override
 	public void onGameEnd(Game game) {
-		chunks.forEach(chunk -> VersionIndependentUtils.get().getChunkLoader().remove(chunk));		
+		chunks.forEach(chunk -> VersionIndependentUtils.get().getChunkLoader().remove(chunk));
 	}
 }

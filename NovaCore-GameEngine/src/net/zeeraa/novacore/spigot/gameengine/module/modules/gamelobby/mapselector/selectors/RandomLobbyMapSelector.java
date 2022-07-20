@@ -16,7 +16,7 @@ public class RandomLobbyMapSelector extends LobbyMapSelector {
 	@Override
 	public GameLobbyMapData getMapToUse() {
 		Log.trace("RandomLobbyMapSelector", "Avaliable maps: " + getMaps().size() + ". instance: " + this);
-		
+
 		if (getMaps().size() == 0) {
 			return null;
 		}

@@ -123,9 +123,9 @@ public class WorldborderMapModule extends MapModule {
 				// Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD +
 				// "The world border is starting to shrink");
 				LanguageManager.broadcast("novacore.game.wordborder.start");
-				
+
 				Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().playSound(player, player.getLocation(), VersionIndependentSound.NOTE_PLING, 1F, 1F));
-				
+
 				start();
 			}
 		});

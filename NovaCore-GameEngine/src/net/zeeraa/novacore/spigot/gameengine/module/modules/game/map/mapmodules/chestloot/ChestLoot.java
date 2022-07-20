@@ -123,7 +123,7 @@ public class ChestLoot extends MapModule {
 			startTask();
 		}
 	}
-	
+
 	public DelayedGameTrigger getTrigger() {
 		return trigger;
 	}

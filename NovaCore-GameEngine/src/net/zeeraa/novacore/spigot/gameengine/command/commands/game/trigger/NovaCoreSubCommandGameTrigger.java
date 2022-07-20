@@ -18,7 +18,7 @@ public class NovaCoreSubCommandGameTrigger extends NovaSubCommand {
 		this.addSubCommand(new NovaCoreSubCommandGameTriggerList());
 		this.addSubCommand(new NovaCoreSubCommandGameTriggerStart());
 		this.addSubCommand(new NovaCoreSubCommandGameTriggerStop());
-		
+
 		this.addHelpSubCommand();
 
 		this.setFilterAutocomplete(true);

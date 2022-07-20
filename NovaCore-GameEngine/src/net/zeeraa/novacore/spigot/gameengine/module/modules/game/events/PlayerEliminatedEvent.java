@@ -36,7 +36,7 @@ public class PlayerEliminatedEvent extends Event implements Cancellable {
 
 		this.cancel = false;
 	}
-	
+
 	public Game getGame() {
 		return game;
 	}
@@ -79,7 +79,7 @@ public class PlayerEliminatedEvent extends Event implements Cancellable {
 	public int getPlacement() {
 		return placement;
 	}
-	
+
 	public boolean isSilent() {
 		return silent;
 	}

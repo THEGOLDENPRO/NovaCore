@@ -13,7 +13,8 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.GameLobby;
 
 public abstract class GameLobbyReader {
 	/**
-	 * Try to load all JSON files from a directory as maps and add them to the lobby list
+	 * Try to load all JSON files from a directory as maps and add them to the lobby
+	 * list
 	 * 
 	 * @param directory      Directory to scan
 	 * @param worldDirectory The directory containing the worlds
@@ -30,12 +31,13 @@ public abstract class GameLobbyReader {
 	}
 
 	/**
-	 * Read {@link GameLobbyMapData} from a {@link File} list and add it to the active
-	 * {@link MapSelector} defined by {@link GameManager#getMapSelector()}
+	 * Read {@link GameLobbyMapData} from a {@link File} list and add it to the
+	 * active {@link MapSelector} defined by {@link GameManager#getMapSelector()}
 	 * 
 	 * @param file           The {@link File} to read
 	 * @param worldDirectory The directory containing the worlds
-	 * @return Instance of the {@link GameLobbyMapData} or <code>null</code> on failure
+	 * @return Instance of the {@link GameLobbyMapData} or <code>null</code> on
+	 *         failure
 	 */
 	public GameLobbyMapData readMap(File file, File worldDirectory) {
 		try {
@@ -60,7 +62,8 @@ public abstract class GameLobbyReader {
 	 * 
 	 * @param json           The {@link JSONObject} to read
 	 * @param worldDirectory The directory containing the worlds
-	 * @return Instance of the {@link GameLobbyMapData} or <code>null</code> on failure
+	 * @return Instance of the {@link GameLobbyMapData} or <code>null</code> on
+	 *         failure
 	 */
 	public abstract GameLobbyMapData readMap(JSONObject json, File worldDirectory);
 }

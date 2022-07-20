@@ -15,6 +15,7 @@ public class GameStartEvent extends GameEvent {
 	public GameStartEvent(Game game) {
 		super(game);
 	}
+
 	@Override
 	public HandlerList getHandlers() {
 		return HANDLERS_LIST;

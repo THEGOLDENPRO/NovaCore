@@ -20,8 +20,8 @@ public class InstantVoidKill extends MapModule {
 		super(json);
 
 		y = 0;
-		
-		if(!NovaCore.getInstance().isNoNMSMode()) {
+
+		if (!NovaCore.getInstance().isNoNMSMode()) {
 			y = VersionIndependentUtils.get().getMinY();
 		}
 

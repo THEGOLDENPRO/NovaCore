@@ -22,12 +22,13 @@ public class GameEndEvent extends GameEvent {
 
 	/**
 	 * Get the reason why the game ended
+	 * 
 	 * @return {@link GameEndReason}
 	 */
 	public GameEndReason getReason() {
 		return reason;
 	}
-	
+
 	@Override
 	public HandlerList getHandlers() {
 		return HANDLERS_LIST;

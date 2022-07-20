@@ -52,9 +52,9 @@ public abstract class GameCountdown {
 	 * @return the time left
 	 */
 	public abstract int getTimeLeft();
-	
+
 	public abstract void setTimeLeft(int timeLeft);
-	
+
 	/**
 	 * Check if the countdown has finished
 	 * 
@@ -63,7 +63,7 @@ public abstract class GameCountdown {
 	public boolean hasCountdownFinished() {
 		return this.finished;
 	}
-	
+
 	/**
 	 * Called when the countdown is finished
 	 * 

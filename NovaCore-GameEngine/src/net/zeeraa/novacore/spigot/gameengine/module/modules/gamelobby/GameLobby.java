@@ -59,13 +59,13 @@ public class GameLobby extends NovaModule implements Listener {
 	private int taskId;
 
 	private List<UUID> waitingPlayers;
-	
+
 	private List<GameLobbyMapData> maps;
 
 	public static GameLobby getInstance() {
 		return instance;
 	}
-	
+
 	public List<GameLobbyMapData> getMaps() {
 		return maps;
 	}
@@ -107,7 +107,7 @@ public class GameLobby extends NovaModule implements Listener {
 		this.waitingPlayers = new ArrayList<UUID>();
 
 		this.maps = new ArrayList<GameLobbyMapData>();
-		
+
 		this.taskId = -1;
 	}
 
@@ -245,7 +245,7 @@ public class GameLobby extends NovaModule implements Listener {
 	private void tpToLobby(Player player) {
 		player.teleport(activeMap.getSpawnLocation());
 
-		//player.getInventory().clear();
+		// player.getInventory().clear();
 
 		player.setGameMode(GameMode.ADVENTURE);
 		NovaCore.getInstance().getVersionIndependentUtils().setEntityMaxHealth(player, 20);

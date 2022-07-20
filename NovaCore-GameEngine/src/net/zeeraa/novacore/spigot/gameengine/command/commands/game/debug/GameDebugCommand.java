@@ -45,25 +45,25 @@ public class GameDebugCommand extends NovaSubCommand {
 
 				sender.sendMessage(ChatColor.GOLD + "Auto end: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().autoEndGame());
 				sender.sendMessage(ChatColor.GOLD + "Can start: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().canStart());
-				
-				if(GameManager.getInstance().getActiveGame() instanceof MapGame) {
+
+				if (GameManager.getInstance().getActiveGame() instanceof MapGame) {
 					MapGame mapGame = (MapGame) GameManager.getInstance().getActiveGame();
-					
+
 					sender.sendMessage(ChatColor.GOLD + "-= MAP DATA =-");
-					
-					sender.sendMessage(ChatColor.GOLD + "Has active map: " + ChatColor.AQUA + (mapGame.hasActiveMap() ? (ChatColor.GREEN +  "yes") : (ChatColor.RED + "no")));
-					
-					if(mapGame.hasActiveMap()) {
-						sender.sendMessage(ChatColor.GOLD + "Map name: "  + ChatColor.AQUA + mapGame.getActiveMap().getAbstractMapData().getMapName());
-						sender.sendMessage(ChatColor.GOLD + "Display name: "  + ChatColor.AQUA + mapGame.getActiveMap().getAbstractMapData().getDisplayName());
-						
+
+					sender.sendMessage(ChatColor.GOLD + "Has active map: " + ChatColor.AQUA + (mapGame.hasActiveMap() ? (ChatColor.GREEN + "yes") : (ChatColor.RED + "no")));
+
+					if (mapGame.hasActiveMap()) {
+						sender.sendMessage(ChatColor.GOLD + "Map name: " + ChatColor.AQUA + mapGame.getActiveMap().getAbstractMapData().getMapName());
+						sender.sendMessage(ChatColor.GOLD + "Display name: " + ChatColor.AQUA + mapGame.getActiveMap().getAbstractMapData().getDisplayName());
+
 						String modules = "";
-						
-						for(MapModule module : mapGame.getActiveMap().getMapData().getMapModules()) {
+
+						for (MapModule module : mapGame.getActiveMap().getMapData().getMapModules()) {
 							modules += module.getName() + " ";
 						}
-						
-						sender.sendMessage(ChatColor.GOLD + "Modules ("+mapGame.getActiveMap().getMapData().getMapModules().size()+"): " + modules);
+
+						sender.sendMessage(ChatColor.GOLD + "Modules (" + mapGame.getActiveMap().getMapData().getMapModules().size() + "): " + modules);
 					}
 				}
 

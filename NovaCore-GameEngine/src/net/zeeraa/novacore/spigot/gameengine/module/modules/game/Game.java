@@ -353,7 +353,7 @@ public abstract class Game {
 	 */
 	public final List<GameTrigger> getTriggersByFlags(TriggerFlag... flags) {
 		List<GameTrigger> result = new ArrayList<GameTrigger>();
-		
+
 		triggers.forEach(trigger -> {
 			for (TriggerFlag flag : flags) {
 				if (trigger.hasFlag(flag)) {
