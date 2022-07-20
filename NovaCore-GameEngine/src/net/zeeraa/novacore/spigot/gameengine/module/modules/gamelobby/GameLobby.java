@@ -59,9 +59,15 @@ public class GameLobby extends NovaModule implements Listener {
 	private int taskId;
 
 	private List<UUID> waitingPlayers;
+	
+	private List<GameLobbyMapData> maps;
 
 	public static GameLobby getInstance() {
 		return instance;
+	}
+	
+	public List<GameLobbyMapData> getMaps() {
+		return maps;
 	}
 
 	private boolean ignoreNoTeam;
@@ -100,6 +106,8 @@ public class GameLobby extends NovaModule implements Listener {
 
 		this.waitingPlayers = new ArrayList<UUID>();
 
+		this.maps = new ArrayList<GameLobbyMapData>();
+		
 		this.taskId = -1;
 	}
 

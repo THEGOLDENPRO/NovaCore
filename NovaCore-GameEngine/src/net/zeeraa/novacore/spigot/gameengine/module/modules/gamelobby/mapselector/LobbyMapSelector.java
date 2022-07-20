@@ -1,9 +1,10 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.mapselector;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.GameLobby;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.map.GameLobbyMapData;
 
 /**
@@ -12,19 +13,13 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.map.GameLo
  * @author Zeeraa
  */
 public abstract class LobbyMapSelector {
-	protected List<GameLobbyMapData> maps;
-
-	public LobbyMapSelector() {
-		this.maps = new ArrayList<GameLobbyMapData>();
-	}
-
 	/**
 	 * Get a list with all maps
 	 * 
 	 * @return {@link List} with {@link GameMapData}
 	 */
 	public List<GameLobbyMapData> getMaps() {
-		return maps;
+		return GameLobby.getInstance().getMaps();
 	}
 
 	/**
@@ -33,7 +28,8 @@ public abstract class LobbyMapSelector {
 	 * @param map The {@link GameLobbyMapData} to be added
 	 */
 	public void addMap(GameLobbyMapData map) {
-		maps.add(map);
+		Log.trace("LobbyMapSelector", "Adding map " + map.getMapName() + " to selector " + this);
+		GameLobby.getInstance().getMaps().add(map);
 	}
 
 	/**

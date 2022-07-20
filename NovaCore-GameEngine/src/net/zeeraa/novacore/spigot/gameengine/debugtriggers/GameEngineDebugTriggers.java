@@ -164,5 +164,50 @@ public class GameEngineDebugTriggers {
 				return AllowedSenders.PLAYERS;
 			}
 		});
+
+		DebugCommandRegistrator.getInstance().addDebugTrigger(new DebugTrigger() {
+			@Override
+			public void onExecute(CommandSender sender, String commandLabel, String[] args) {
+				if (GameManager.getInstance().isEnabled()) {
+					if (GameManager.getInstance().hasGame()) {
+						if (args.length > 0) {
+							Player player = Bukkit.getServer().getPlayer(args[0]);
+							if(player != null ) {
+								GameManager.getInstance().getActiveGame().addPlayer(player);
+								sender.sendMessage("Player added");
+							} else {
+								sender.sendMessage("Player not found");
+							}
+						} else {
+							sender.sendMessage("Provide a player");
+						}
+					} else {
+						sender.sendMessage("GameManager dest not have an active game");
+					}
+				} else {
+					sender.sendMessage("GameManager not enabled");
+				}
+			}
+
+			@Override
+			public PermissionDefault getPermissionDefault() {
+				return PermissionDefault.OP;
+			}
+
+			@Override
+			public String getPermission() {
+				return "novacore.debug.addplayertogame";
+			}
+
+			@Override
+			public String getName() {
+				return "addplayertogame";
+			}
+
+			@Override
+			public AllowedSenders getAllowedSenders() {
+				return AllowedSenders.PLAYERS;
+			}
+		});
 	}
 }
