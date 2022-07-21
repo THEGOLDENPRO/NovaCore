@@ -6,12 +6,14 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.plugin.Plugin;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -31,6 +33,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.Schedu
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.TriggerFlag;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 import net.zeeraa.novacore.spigot.teams.Team;
+import net.zeeraa.novacore.spigot.utils.PlayerUtils;
 
 /**
  * This class represents a game that {@link GameManager} can use
@@ -891,11 +894,21 @@ public abstract class Game {
 	}
 
 	/**
-	 * Set a player to spectator mode
+	 * Set a player to spectator mode. The default version of this just sets the
+	 * player to spectator, clears potion effects and teleports them if the game is
+	 * a map game
 	 * 
 	 * @param player the {@link Player} to set to spectator mode
 	 */
 	public void tpToSpectator(Player player) {
+		PlayerUtils.clearPlayerInventory(player);
+		player.setGameMode(GameMode.SPECTATOR);
+		if (this instanceof MapGame) {
+			MapGame game = (MapGame) this;
+			if (game.hasActiveMap()) {
+				player.teleport(game.getActiveMap().getSpectatorLocation(), TeleportCause.PLUGIN);
+			}
+		}
 	}
 
 	/**

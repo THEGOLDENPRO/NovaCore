@@ -250,9 +250,9 @@ public class ModuleManager {
 
 				NovaModule mod = ((NovaModule) module);
 
+				mod.setPlugin(owner);
 				mod.onLoad();
 				modules.put(mod.getClassName(), mod);
-				mod.setPlugin(owner);
 
 				if (enable) {
 					enable(clazz);
