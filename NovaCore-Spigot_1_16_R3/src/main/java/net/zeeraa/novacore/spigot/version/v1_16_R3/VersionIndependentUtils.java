@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.version.v1_16_R3;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -10,6 +11,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -673,5 +675,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public boolean isInteractEventMainHand(PlayerInteractEvent e) {
 		return e.getHand() == EquipmentSlot.HAND;
+	}
+
+	@Override
+	public Entity getEntityByUUID(UUID uuid) {
+		return Bukkit.getEntity(uuid);
 	}
 }

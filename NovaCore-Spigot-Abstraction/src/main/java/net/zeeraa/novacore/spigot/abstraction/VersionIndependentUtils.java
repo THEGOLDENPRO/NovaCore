@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.abstraction;
 
 import java.lang.reflect.Field;
+import java.util.UUID;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -9,6 +10,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -318,7 +320,7 @@ public abstract class VersionIndependentUtils {
 		item.setItemMeta(meta);
 		return item;
 	}
-
+	
 	public abstract void setCreatureItemInMainHand(Creature creature, ItemStack item);
 
 	public abstract float getPlayerBodyRotation(Player player);
@@ -328,4 +330,6 @@ public abstract class VersionIndependentUtils {
 	public abstract void setGameRule(World world, String rule, String value);
 
 	public abstract boolean isInteractEventMainHand(PlayerInteractEvent e);
+	
+	public abstract Entity getEntityByUUID(UUID uuid);
 }

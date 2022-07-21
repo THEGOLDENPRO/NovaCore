@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.map.MapView.Scale;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.zeeraa.novacore.commons.log.Log;
@@ -164,8 +165,9 @@ public class MapDisplay {
 
 		for (int i = 0; i < itemFrameUuids.length; i++) {
 			for (int j = 0; j < itemFrameUuids[i].length; j++) {
-				ItemFrame itemFrame = (ItemFrame) WorldUtils.getEntityByUUID(world, itemFrameUuids[i][j]);
-
+				//ItemFrame itemFrame = (ItemFrame) WorldUtils.getEntityByUUID(world, itemFrameUuids[i][j]);
+				ItemFrame itemFrame = (ItemFrame) VersionIndependentUtils.get().getEntityByUUID(uuid);
+				
 				if (itemFrame == null) {
 					throw new MissingItemFrameException("Could not find item frame with uuid " + itemFrameUuids[i][j].toString());
 				}

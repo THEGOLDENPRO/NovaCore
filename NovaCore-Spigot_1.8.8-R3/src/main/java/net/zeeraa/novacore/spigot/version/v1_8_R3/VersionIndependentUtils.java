@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -318,13 +319,13 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case LEVEL_UP:
 			return Sound.LEVEL_UP;
-			
+
 		case WITHER_SHOOT:
 			return Sound.WITHER_SHOOT;
 
 		case EAT:
 			return Sound.EAT;
-			
+
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_SOUND);
 			AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
@@ -436,7 +437,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case WOODEN_SWORD:
 			return Material.WOOD_SWORD;
-			
+
 		case WATCH:
 			return Material.WATCH;
 
@@ -497,7 +498,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public float getPlayerBodyRotation(Player player) {
 		// TODO Auto-generated method stub
-	EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+		EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
 		return nmsPlayer.aI;
 	}
 
@@ -505,15 +506,27 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public void setCustomModelData(ItemMeta meta, int data) {
 		// Does not exist for this version
 	}
-	
+
 	@Override
 	public void setGameRule(World world, String rule, String value) {
 		world.setGameRuleValue(rule, value);
 	}
-	
+
 	@Override
 	public boolean isInteractEventMainHand(PlayerInteractEvent e) {
 		// Player only has main hand
 		return true;
+	}
+
+	@Override
+	public Entity getEntityByUUID(UUID uuid) {
+		for (World world : Bukkit.getServer().getWorlds()) {
+			for (Entity entity : world.getEntities()) {
+				if (entity.getUniqueId().equals(uuid)) {
+					return entity;
+				}
+			}
+		}
+		return null;
 	}
 }
