@@ -1,8 +1,5 @@
 package net.zeeraa.novacore.spigot.command.commands.novacore.logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
@@ -31,6 +28,7 @@ public class NovaCoreSubCommandLogger extends NovaSubCommand {
 		this.setDescription("Set log level for player and console");
 		
 		this.setFilterAutocomplete(true);
+		this.setEmptyTabMode(true);
 	}
 
 	@Override
@@ -47,10 +45,5 @@ public class NovaCoreSubCommandLogger extends NovaSubCommand {
 		sender.sendMessage(ChatColor.GOLD + "Use "+ChatColor.AQUA+"/novacore logger help" + ChatColor.GOLD + " for help");
 		
 		return true;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }

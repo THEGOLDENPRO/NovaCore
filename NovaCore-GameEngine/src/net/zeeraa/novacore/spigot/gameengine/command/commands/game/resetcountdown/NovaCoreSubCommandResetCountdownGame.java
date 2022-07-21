@@ -1,8 +1,5 @@
 package net.zeeraa.novacore.spigot.gameengine.command.commands.game.resetcountdown;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
@@ -27,6 +24,7 @@ public class NovaCoreSubCommandResetCountdownGame extends NovaSubCommand {
 		this.addHelpSubCommand();
 
 		this.setFilterAutocomplete(true);
+		this.setEmptyTabMode(true);
 	}
 
 	@Override
@@ -55,10 +53,5 @@ public class NovaCoreSubCommandResetCountdownGame extends NovaSubCommand {
 			sender.sendMessage(ChatColor.RED + "GameManager is not enabled");
 		}
 		return false;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }

@@ -28,6 +28,7 @@ public class NovaCoreSubCommandModulesList extends NovaSubCommand {
 		this.setDescription("list modules");
 
 		this.setFilterAutocomplete(true);
+		this.setEmptyTabMode(true);
 	}
 
 	@Override
@@ -68,10 +69,5 @@ public class NovaCoreSubCommandModulesList extends NovaSubCommand {
 		sender.sendMessage(message);
 
 		return false;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }

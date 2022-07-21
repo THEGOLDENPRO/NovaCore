@@ -1,8 +1,5 @@
 package net.zeeraa.novacore.spigot.command.commands.novacore.whereami;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,8 +24,9 @@ public class NovaCoreSubCommandWhereAmI extends NovaSubCommand {
 		this.setAllowedSenders(AllowedSenders.PLAYERS);
 
 		this.setDescription("Show your location");
-		
+
 		this.setFilterAutocomplete(true);
+		this.setEmptyTabMode(true);
 	}
 
 	@Override
@@ -46,10 +44,5 @@ public class NovaCoreSubCommandWhereAmI extends NovaSubCommand {
 		}
 
 		return true;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }

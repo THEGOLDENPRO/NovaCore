@@ -27,10 +27,10 @@ public class DumpLanguageNodesCommand extends NovaCommand {
 
 		System.out.println("Color char: " + colorChar);
 
-		LanguageManager.getLanguages().keySet().forEach(key ->  {
+		LanguageManager.getLanguages().keySet().forEach(key -> {
 			Language language = LanguageManager.getLanguages().get(key);
 			System.out.println("----- Language: " + language.getDisplayName() + " (" + language.getLanguageCode() + ") -----");
-				
+
 			language.getContent().keySet().forEach(node -> System.out.println(node + " : " + language.getContent().get(node)));
 		});
 

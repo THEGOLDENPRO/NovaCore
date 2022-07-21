@@ -1,8 +1,5 @@
 package net.zeeraa.novacore.spigot.command.commands.novacore;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
@@ -40,16 +37,12 @@ public class NovaCoreCommand extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandGoToWorld());
 		
 		this.setFilterAutocomplete(true);
+		this.setEmptyTabMode(true);
 	}
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
 		sender.sendMessage(ChatColor.GOLD + "Use " + ChatColor.AQUA + "/novacore help" + ChatColor.GOLD + " to see all commands");
 		return false;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }

@@ -18,6 +18,7 @@ import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.loottable.LootTable;
 import net.zeeraa.novacore.spigot.loottable.LootTableLoader;
+import net.zeeraa.novacore.spigot.utils.BukkitSerailization;
 import net.zeeraa.novacore.spigot.version.v1_16_R3.ParsePotionEffect1_16;
 
 /**
@@ -48,11 +49,6 @@ public class LootTableLoaderV1 implements LootTableLoader {
 		for (int i = 0; i < items.length(); i++) {
 			JSONObject jsonItem = items.getJSONObject(i);
 			try {
-				if (!jsonItem.has("material")) {
-					Log.error("LootTableLoadedV1", "Entry missing material:\n " + jsonItem.toString(4));
-					continue;
-				}
-
 				LootEntryV1 entry = readLootEntry(jsonItem);
 
 				if (entry == null) {
@@ -77,8 +73,51 @@ public class LootTableLoaderV1 implements LootTableLoader {
 	}
 
 	private static LootEntryV1 readLootEntry(JSONObject itemJson) {
+		int chance = 1;
+
+		if (itemJson.has("chance")) {
+			chance = itemJson.getInt("chance");
+		}
+
+		if (itemJson.has("base64")) {
+			String base64 = itemJson.getString("base64");
+			try {
+				ItemStack item = BukkitSerailization.itemStackFromBase64(base64);
+				int minAmount = item.getAmount();
+				int maxAmount = item.getAmount();
+
+				if (itemJson.has("amount")) {
+					minAmount = itemJson.getInt("amount");
+					maxAmount = minAmount;
+				} else {
+					if (itemJson.has("min_amount")) {
+						minAmount = itemJson.getInt("min_amount");
+					}
+
+					if (itemJson.has("max_amount")) {
+						maxAmount = itemJson.getInt("max_amount");
+						if (minAmount > maxAmount) {
+							maxAmount = minAmount;
+						}
+					} else {
+						maxAmount = minAmount;
+					}
+				}
+
+				return new LootEntryV1(item, chance, minAmount, maxAmount, null);
+			} catch (Exception e) {
+				Log.error("LootTableLoaderV1", "Failed to parse base64 string. " + e.getClass().getName() + " " + e.getMessage());
+			}
+			return null;
+		}
+
 		ItemStack item;
 
+		if (!itemJson.has("material")) {
+			Log.error("LootTableLoadedV1", "Entry missing material:\n " + itemJson.toString(4));
+			return null;
+		}
+		
 		String material = itemJson.getString("material");
 
 		if (Material.getMaterial(material) == null) {
@@ -111,14 +150,14 @@ public class LootTableLoaderV1 implements LootTableLoader {
 
 			JSONObject potionData = itemJson.getJSONObject("potion_data");
 
-			if(NovaCore.getInstance().getVersionIndependentUtils().getNovaCoreGameVersion().isAfterOrEqual(NovaCoreGameVersion.V_1_16)) {
+			if (NovaCore.getInstance().getVersionIndependentUtils().getNovaCoreGameVersion().isAfterOrEqual(NovaCoreGameVersion.V_1_16)) {
 				ParsePotionEffect1_16.readBasePotionData(potionData.getJSONObject("base_potion_data"), meta);
 			} else {
 				if (potionData.has("main_effect")) {
 					JSONObject mainEffect = potionData.getJSONObject("main_effect");
 					PotionEffectType type = PotionEffectType.getByName(mainEffect.getString("type"));
 					meta.setMainEffect(type);
-				}	
+				}
 			}
 
 			if (potionData.has("custom_effects")) {
@@ -156,12 +195,6 @@ public class LootTableLoaderV1 implements LootTableLoader {
 
 				item.addUnsafeEnchantment(Enchantment.getByName(enchant), level);
 			}
-		}
-
-		int chance = 1;
-
-		if (itemJson.has("chance")) {
-			chance = itemJson.getInt("chance");
 		}
 
 		if (itemJson.has("display_name")) {

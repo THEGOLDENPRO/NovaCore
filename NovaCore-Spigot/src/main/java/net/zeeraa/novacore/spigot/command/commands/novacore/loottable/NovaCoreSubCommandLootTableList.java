@@ -1,8 +1,5 @@
 package net.zeeraa.novacore.spigot.command.commands.novacore.loottable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
@@ -24,8 +21,10 @@ public class NovaCoreSubCommandLootTableList extends NovaSubCommand {
 
 		this.setPermission("novacore.command.novacore.loottable.list");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
-		
+
 		this.setFilterAutocomplete(true);
+
+		this.setEmptyTabMode(true);
 	}
 
 	@Override
@@ -44,10 +43,5 @@ public class NovaCoreSubCommandLootTableList extends NovaSubCommand {
 		sender.sendMessage(message);
 
 		return false;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }

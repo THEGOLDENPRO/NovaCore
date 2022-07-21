@@ -3,6 +3,8 @@ package net.zeeraa.novacore.spigot.loottable.loottables.V1;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.inventory.ItemStack;
 
 import net.zeeraa.novacore.spigot.loottable.LootTable;
@@ -22,7 +24,7 @@ public class LootEntryV1 {
 	private Random random;
 	private List<LootEntryV1> extraItems;
 
-	public LootEntryV1(ItemStack item, int chance, int minAmount, int maxAmount, List<LootEntryV1> extraItems) {
+	public LootEntryV1(ItemStack item, int chance, int minAmount, int maxAmount, @Nullable List<LootEntryV1> extraItems) {
 		this.item = item;
 		this.minAmount = minAmount;
 		this.maxAmount = maxAmount;

@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.CommandRegistrator;
 
@@ -26,6 +27,7 @@ public class ReflectionBasedCommandRegistrator implements CommandRegistrator {
 
 			return scm;
 		} catch (Exception e) {
+			Log.error("ReflectionBasedCommandRegistrator", "getCommandMap() failed. " + e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;

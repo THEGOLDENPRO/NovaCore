@@ -1,8 +1,5 @@
 package net.zeeraa.novacore.spigot.gameengine.command.commands.game.lootdrop;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
@@ -31,6 +28,7 @@ public class NovaCoreSubCommandGameLootdrop extends NovaSubCommand {
 		this.addHelpSubCommand();
 
 		this.setFilterAutocomplete(true);
+		this.setEmptyTabMode(true);
 	}
 
 	@Override
@@ -71,10 +69,5 @@ public class NovaCoreSubCommandGameLootdrop extends NovaSubCommand {
 		}
 
 		return false;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }

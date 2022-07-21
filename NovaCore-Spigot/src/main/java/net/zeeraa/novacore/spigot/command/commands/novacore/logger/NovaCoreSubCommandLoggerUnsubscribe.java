@@ -1,8 +1,5 @@
 package net.zeeraa.novacore.spigot.command.commands.novacore.logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,6 +25,7 @@ public class NovaCoreSubCommandLoggerUnsubscribe extends NovaSubCommand {
 		this.setDescription("Disable all log messages");
 		
 		this.setFilterAutocomplete(true);
+		this.setEmptyTabMode(true);
 	}
 
 	@Override
@@ -42,10 +40,5 @@ public class NovaCoreSubCommandLoggerUnsubscribe extends NovaSubCommand {
 		}
 
 		return true;
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		return new ArrayList<String>();
 	}
 }
