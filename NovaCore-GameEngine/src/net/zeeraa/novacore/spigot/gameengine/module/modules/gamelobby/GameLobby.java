@@ -40,6 +40,7 @@ import net.zeeraa.novacore.spigot.language.LanguageManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.teams.Team;
+import net.zeeraa.novacore.spigot.utils.PlayerUtils;
 
 /**
  * This module creates a simple lobby where players wait for more players before
@@ -258,25 +259,30 @@ public class GameLobby extends NovaModule implements Listener {
 	// -- Join and quit --
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) {
+		final Player player = e.getPlayer();
 		if (hasActiveMap()) {
 			if (GameManager.getInstance().hasGame()) {
 				if (GameManager.getInstance().getActiveGame().hasStarted()) {
-					if (!GameManager.getInstance().getActiveGame().getPlayers().contains(e.getPlayer().getUniqueId())) {
-						GameManager.getInstance().getActiveGame().tpToSpectator(e.getPlayer());
+					if (!GameManager.getInstance().getActiveGame().getPlayers().contains(player.getUniqueId())) {
+						GameManager.getInstance().getActiveGame().tpToSpectator(player);
 					}
 				} else {
-					if (!waitingPlayers.contains(e.getPlayer().getUniqueId())) {
-						waitingPlayers.add(e.getPlayer().getUniqueId());
+					if (!waitingPlayers.contains(player.getUniqueId())) {
+						waitingPlayers.add(player.getUniqueId());
 					}
 
-					e.getPlayer().setGameMode(GameMode.SPECTATOR);
+					if (!GameManager.getInstance().getActiveGame().hasStarted()) {
+						PlayerUtils.clearPlayerInventory(player);
+					}
+
+					player.setGameMode(GameMode.SPECTATOR);
 					new BukkitRunnable() {
 						@Override
 						public void run() {
 							if (GameManager.getInstance().getActiveGame().hasStarted()) {
 								return;
 							}
-							e.getPlayer().teleport(activeMap.getSpawnLocation());
+							player.teleport(activeMap.getSpawnLocation());
 						}
 					}.runTaskLater(getPlugin(), 10L);
 
@@ -286,11 +292,11 @@ public class GameLobby extends NovaModule implements Listener {
 							if (GameManager.getInstance().getActiveGame().hasStarted()) {
 								return;
 							}
-							tpToLobby(e.getPlayer());
+							tpToLobby(player);
 						}
 					}.runTaskLater(getPlugin(), 20L);
 
-					Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinGameLobbyEvent(e.getPlayer()));
+					Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinGameLobbyEvent(player));
 				}
 			}
 		}
