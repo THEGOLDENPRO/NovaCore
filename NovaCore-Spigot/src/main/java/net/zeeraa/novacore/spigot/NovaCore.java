@@ -492,7 +492,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 				boolean selfTestResult = runVersionIndependentLayerSelftest();
 				if (selfTestResult) {
-					Log.info("NovaCore", "Self test did dot detect any errors");
+					Log.info("NovaCore", "Self test did not detect any errors");
 				} else {
 					Log.error("Novacore", "Errors where detected while running the selftest. Check console for more details. Some features of this plugin might not work as expected");
 				}

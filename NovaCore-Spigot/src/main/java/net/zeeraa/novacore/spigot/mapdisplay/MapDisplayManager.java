@@ -11,12 +11,14 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -34,6 +36,11 @@ import com.google.common.io.Files;
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
+import net.zeeraa.novacore.spigot.mapdisplay.event.MapDisplayLoadedEvent;
+import net.zeeraa.novacore.spigot.mapdisplay.event.MapDisplayWorldLoadedEvent;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.utils.LocationUtils;
 import net.zeeraa.novacore.spigot.utils.XYLocation;
@@ -42,6 +49,8 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	public MapDisplayManager() {
 		super("NovaCore.MapDisplayManager");
 	}
+
+	private List<World> protectedWorlds;
 
 	public static final HashMap<BlockFace, Vector> SCAN_DIRECTIONS = new HashMap<>();
 	static {
@@ -55,6 +64,8 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 	private boolean worldDataLoadingEnabled;
 	private boolean worldDataSavingDisabled;
+
+	private boolean usePreloadFix;
 
 	private List<UUID> processedWorlds;
 
@@ -78,6 +89,10 @@ public class MapDisplayManager extends NovaModule implements Listener {
 		return worldDataSavingDisabled;
 	}
 
+	public boolean isUsePreloadFix() {
+		return usePreloadFix;
+	}
+
 	private List<MapDisplay> mapDisplays;
 
 	@Override
@@ -87,6 +102,9 @@ public class MapDisplayManager extends NovaModule implements Listener {
 		worldDataSavingDisabled = false;
 		mapDisplays = new ArrayList<>();
 		processedWorlds = new ArrayList<>();
+		usePreloadFix = VersionIndependentUtils.get().getNovaCoreGameVersion().isAfterOrEqual(NovaCoreGameVersion.V_1_17);
+
+		protectedWorlds = new ArrayList<>();
 	}
 
 	@Override
@@ -103,10 +121,22 @@ public class MapDisplayManager extends NovaModule implements Listener {
 					}
 
 					for (World world : Bukkit.getServer().getWorlds()) {
-						if (NovaCommons.isExtendedDebugging()) {
-							Log.debug(getName(), "Loading initial world data for world " + world.getName());
+						if (usePreloadFix) {
+							protectedWorlds.add(world);
+							Log.debug(getName(), "Loading initial world data (delayed + pre loading) for world " + world.getName());
+							preLoadChunks(world);
+
+							new BukkitRunnable() {
+								@Override
+								public void run() {
+									readAllFromWorld(world);
+								}
+							}.runTaskLater(NovaCore.getInstance(), 100L);
+						} else {
+							Log.debug(getName(), "Loading initial world data (instant) for world " + world.getName());
+							readAllFromWorld(world);
 						}
-						readAllFromWorld(world);
+
 					}
 				}
 			}.runTaskLater(NovaCore.getInstance(), 1L);
@@ -253,6 +283,63 @@ public class MapDisplayManager extends NovaModule implements Listener {
 		return display;
 	}
 
+	public void preLoadChunks(World world) {
+		File dataFolder = getDataFolder(world);
+		if (!dataFolder.exists()) {
+			return;
+		}
+
+		File[] files = dataFolder.listFiles();
+
+		for (File file : files) {
+			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("dat")) {
+				try {
+					Log.trace("MapDisplayManager (Pre load)", "Found file " + file.getAbsolutePath());
+
+					byte[] bytes = FileUtils.readFileToByteArray(file);
+
+					ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
+
+					// Name
+					String name = in.readUTF();
+
+					// Size
+					int x = in.readInt();
+					int y = in.readInt();
+
+					// UUIDs
+					for (int i = 0; i < x; i++) {
+						for (int j = 0; j < y; j++) {
+							in.readUTF();
+						}
+					}
+
+					// Amount of chunks
+					int chunkCount = in.readInt();
+
+					// Chunks
+					List<Chunk> chunksToLoad = new ArrayList<>();
+
+					for (int i = 0; i < chunkCount; i++) {
+						int cx = in.readInt();
+						int cy = in.readInt();
+						Log.trace("MapDisplayManager (Pre load)", "Found chunk X: " + cx + " Y: " + cy);
+						chunksToLoad.add(world.getChunkAt(cx, cy));
+					}
+
+					Log.debug("MapDisplayManager (Pre load)", "Loading " + chunksToLoad.size() + " chunks for display " + name + " in world " + world.getName());
+					chunksToLoad.forEach(c -> {
+						ChunkLoader.getInstance().add(c);
+						c.load();
+					});
+				} catch (Exception e) {
+					Log.error("MapDisplayManager (Pre load)", "Failed to preload world. " + e.getClass().getName() + " " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	public void readAllFromWorld(World world) {
 		if (processedWorlds.contains(world.getUID())) {
 			return;
@@ -277,6 +364,9 @@ public class MapDisplayManager extends NovaModule implements Listener {
 			}
 		}
 		Log.debug("MapDisplayManager", world.getName() + " has " + count + " map display dat files");
+
+		List<MapDisplay> loadedDisplays = new ArrayList<>();
+		boolean errors = false;
 
 		for (File file : files) {
 			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("dat")) {
@@ -313,7 +403,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 						chunksToLoad.add(new XYLocation(in.readInt(), in.readInt()));
 					}
 
-					Log.trace("MapDisplayManager", "Data from file " + file.getAbsolutePath() + ": name:" + name + ". size: " + x + " " + y + ". chunk count: " + chunksToLoad.size());
+					Log.trace("MapDisplayManager", "Data from file " + file.getAbsolutePath() + ": name:" + name + ". size: " + y + "x" + x + ". chunk count: " + chunksToLoad.size());
 					// Init display
 					MapDisplay display = new MapDisplay(world, uuids, true, name, chunksToLoad);
 
@@ -321,7 +411,14 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 					display.setupMaps();
 					display.tryLoadFromCache();
+
+					Event event = new MapDisplayLoadedEvent(display);
+					Bukkit.getServer().getPluginManager().callEvent(event);
+
+					loadedDisplays.add(display);
 				} catch (IOException | MapDisplayNameAlreadyExistsException | MissingItemFrameException e) {
+					errors = true;
+
 					if (e instanceof MapDisplayNameAlreadyExistsException) {
 						Log.error(getName(), "Failed to load map display named " + name + " in world " + world + ". " + e.getClass().getName() + " " + e.getMessage());
 						continue;
@@ -338,6 +435,11 @@ public class MapDisplayManager extends NovaModule implements Listener {
 				}
 			}
 		}
+
+		Event event = new MapDisplayWorldLoadedEvent(world, loadedDisplays, errors);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+
+		protectedWorlds.remove(world);
 	}
 
 	public File getDataFolder(World world) {
@@ -367,17 +469,28 @@ public class MapDisplayManager extends NovaModule implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onWorldLoad(WorldLoadEvent e) {
 		if (worldDataLoadingEnabled) {
+			if (usePreloadFix) {
+				protectedWorlds.add(e.getWorld());
+				preLoadChunks(e.getWorld());
+			}
+
 			new BukkitRunnable() {
 				@Override
 				public void run() {
 					readAllFromWorld(e.getWorld());
 				}
-			}.runTaskLater(NovaCore.getInstance(), 1L);
+			}.runTaskLater(NovaCore.getInstance(), 100L);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onHangingBreak(HangingBreakEvent e) {
+		if (usePreloadFix) {
+			if (protectedWorlds.contains(e.getEntity().getWorld())) {
+				e.setCancelled(true);
+			}
+		}
+
 		if (e.getEntity().getType() == EntityType.ITEM_FRAME) {
 			mapDisplays.forEach(display -> {
 				if (display.isEntityPartOfDisplay(e.getEntity())) {
@@ -389,6 +502,12 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
+		if (usePreloadFix) {
+			if (protectedWorlds.contains(e.getRightClicked().getWorld())) {
+				e.setCancelled(true);
+			}
+		}
+
 		if (e.getRightClicked().getType() == EntityType.ITEM_FRAME) {
 			mapDisplays.forEach(display -> {
 				if (display.isEntityPartOfDisplay(e.getRightClicked())) {

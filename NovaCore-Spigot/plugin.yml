@@ -3,6 +3,6 @@ main: net.zeeraa.novacore.spigot.NovaCore
 description: A core plugin
 version: 2.0.0
 api-version: 1.13
-softdepend: [Netherboard, HolographicDisplays, ProtocolLib, Citizens]
+softdepend: [Netherboard, HolographicDisplays, ProtocolLib, Citizens, NovaCore1_17Plus]
 
 loadbefore: [NovaCoreGameEngine]

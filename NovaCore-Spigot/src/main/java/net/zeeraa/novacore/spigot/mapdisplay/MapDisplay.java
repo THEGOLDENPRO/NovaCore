@@ -24,8 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.map.MapView.Scale;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import net.coobird.thumbnailator.Thumbnails;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
@@ -34,7 +32,6 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.mapdisplay.renderer.DisplayRenderer;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 import net.zeeraa.novacore.spigot.utils.XYLocation;
-import net.zeeraa.novacore.spigot.world.WorldUtils;
 
 public class MapDisplay {
 	private World world;
@@ -150,9 +147,11 @@ public class MapDisplay {
 
 		Map<XYLocation, Boolean> intialChunkState = new HashMap<>();
 
-		chunks.forEach(xyl -> intialChunkState.put(xyl, world.isChunkLoaded(xyl.getX(), xyl.getY())));
+		if (!MapDisplayManager.getInstance().isUsePreloadFix()) {
+			chunks.forEach(xyl -> intialChunkState.put(xyl, world.isChunkLoaded(xyl.getX(), xyl.getY())));
 
-		chunks.forEach(xyl -> world.loadChunk(xyl.getX(), xyl.getY()));
+			chunks.forEach(xyl -> world.loadChunk(xyl.getX(), xyl.getY()));
+		}
 
 		this.cacheFile = new File(world.getWorldFolder().getPath() + File.separator + "novacore" + File.separator + "mapdisplays" + File.separator + "cache" + File.separator + name + ".png");
 
@@ -165,9 +164,8 @@ public class MapDisplay {
 
 		for (int i = 0; i < itemFrameUuids.length; i++) {
 			for (int j = 0; j < itemFrameUuids[i].length; j++) {
-				//ItemFrame itemFrame = (ItemFrame) WorldUtils.getEntityByUUID(world, itemFrameUuids[i][j]);
-				ItemFrame itemFrame = (ItemFrame) VersionIndependentUtils.get().getEntityByUUID(uuid);
-				
+				ItemFrame itemFrame = (ItemFrame) VersionIndependentUtils.get().getEntityByUUID(itemFrameUuids[i][j]);
+
 				if (itemFrame == null) {
 					throw new MissingItemFrameException("Could not find item frame with uuid " + itemFrameUuids[i][j].toString());
 				}
@@ -176,11 +174,13 @@ public class MapDisplay {
 			}
 		}
 
-		chunks.forEach(xyl -> {
-			if (!intialChunkState.get(xyl)) {
-				world.unloadChunk(xyl.getX(), xyl.getY());
-			}
-		});
+		if (!MapDisplayManager.getInstance().isUsePreloadFix()) {
+			chunks.forEach(xyl -> {
+				if (!intialChunkState.get(xyl)) {
+					world.unloadChunk(xyl.getX(), xyl.getY());
+				}
+			});
+		}
 
 		renderers = new DisplayRenderer[itemFrameUuids.length][itemFrameUuids[0].length];
 
