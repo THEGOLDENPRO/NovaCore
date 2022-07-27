@@ -40,11 +40,11 @@ public abstract class VersionIndependentUtils {
 	public final VersionIndependenceLayerError getLastError() {
 		return lastError;
 	}
-	
+
 	public final void resetLastError() {
 		this.lastError = VersionIndependenceLayerError.NONE;
 	}
-	
+
 	/**
 	 * Get the {@link ChunkLoader} implementation
 	 * 
@@ -320,16 +320,55 @@ public abstract class VersionIndependentUtils {
 		item.setItemMeta(meta);
 		return item;
 	}
-	
+
+	/**
+	 * Set the item in the main hand of a {@link Creature}
+	 * 
+	 * @param creature The {@link Creature} to use
+	 * @param item     The {@link ItemStack} to place in the main hand
+	 */
 	public abstract void setCreatureItemInMainHand(Creature creature, ItemStack item);
 
+	/**
+	 * Get the body rotation of a {@link Player} using NMS
+	 * 
+	 * @param player The {@link Player} to get the rotation of
+	 * @return Player body rotation
+	 */
 	public abstract float getPlayerBodyRotation(Player player);
 
+	/**
+	 * Set the custom model data int of {@link ItemMeta}. If the server does not
+	 * support custom model data this will get no oped
+	 * 
+	 * @param meta The {@link ItemMeta} to modify
+	 * @param data The custom model data
+	 */
 	public abstract void setCustomModelData(ItemMeta meta, int data);
 
+	/**
+	 * Secure way to modify gamerules since the 1.8 way got deprecated in newer
+	 * versions of spigot
+	 * 
+	 * @param world The {@link World} to set the rule in
+	 * @param rule  The rule to set
+	 * @param value The value of the game rule
+	 */
 	public abstract void setGameRule(World world, String rule, String value);
 
-	public abstract boolean isInteractEventMainHand(PlayerInteractEvent e);
-	
+	/**
+	 * Check if a {@link PlayerInteractEvent} is in the main hand
+	 * 
+	 * @param event The {@link PlayerInteractEvent} to check
+	 * @return <code>true</code> if the event was triggered by the main hand
+	 */
+	public abstract boolean isInteractEventMainHand(PlayerInteractEvent event);
+
+	/**
+	 * GEt an {@link Entity} by its {@link UUID}
+	 * 
+	 * @param uuid The {@link UUID} of the entity
+	 * @return The {@link Entity} or <code>null</code> if not found
+	 */
 	public abstract Entity getEntityByUUID(UUID uuid);
 }
