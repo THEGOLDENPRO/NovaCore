@@ -47,11 +47,6 @@
 			<id>novauniverse2</id>
 			<url>https://nexus2.novauniverse.net/repository/novauniverse-group/</url>
 		</repository>
-
-		<repository>
-			<id>craftbukkit</id>
-			<url>https://nexus2.novauniverse.net/repository/craftbukkit/</url>
-		</repository>
 	</repositories>
 
 	<dependencies>
