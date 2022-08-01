@@ -6,6 +6,7 @@ import org.bukkit.permissions.PermissionDefault;
 
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.NovaCommand;
+import net.zeeraa.novacore.spigot.command.commands.novacore.customitem.NovaCoreSubCommandGiveCustomItem;
 import net.zeeraa.novacore.spigot.command.commands.novacore.gotoworld.NovaCoreSubCommandGoToWorld;
 import net.zeeraa.novacore.spigot.command.commands.novacore.logger.NovaCoreSubCommandLogger;
 import net.zeeraa.novacore.spigot.command.commands.novacore.loottable.NovaCoreSubCommandLootTable;
@@ -28,14 +29,15 @@ public class NovaCoreCommand extends NovaCommand {
 
 		this.setPermission("novacore.command.novacore");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
-		
+
 		this.addHelpSubCommand();
 		this.addSubCommand(new NovaCoreSubCommandModules());
 		this.addSubCommand(new NovaCoreSubCommandLootTable());
 		this.addSubCommand(new NovaCoreSubCommandLogger());
 		this.addSubCommand(new NovaCoreSubCommandWhereAmI());
 		this.addSubCommand(new NovaCoreSubCommandGoToWorld());
-		
+		this.addSubCommand(new NovaCoreSubCommandGiveCustomItem());
+
 		this.setFilterAutocomplete(true);
 		this.setEmptyTabMode(true);
 	}
