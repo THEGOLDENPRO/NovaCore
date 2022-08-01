@@ -38,9 +38,9 @@ public class NovaCoreSubCommandGiveCustomItem extends NovaSubCommand {
 			return false;
 		}
 
-		String className = CustomItemManager.getInstance().getCustomItems().keySet().stream().filter(name -> name.equalsIgnoreCase(args[0])).findFirst().orElse(null);
+		String className = CustomItemManager.getInstance().getCustomItems().keySet().stream().filter(name -> name.startsWith(args[0])).findFirst().orElse(null);
 		if (className == null) {
-			player.sendMessage(ChatColor.RED + "Item named " + args[0] + " not found");
+			player.sendMessage(ChatColor.RED + "No items found with name matching " + args[0]);
 			return false;
 		}
 
