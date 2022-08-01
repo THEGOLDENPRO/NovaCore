@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.loottable;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -19,6 +20,16 @@ public class LootTableManager {
 	private Map<String, LootTableLoader> loaders;
 	private Map<String, LootTable> lootTables;
 
+	private static Random random = new Random();
+	
+	public static Random getRandom() {
+		return random;
+	}
+	
+	public static void setRandom(Random random) {
+		LootTableManager.random = random;
+	}
+	
 	public LootTableManager() {
 		this.loaders = new HashMap<String, LootTableLoader>();
 		this.lootTables = new HashMap<String, LootTable>();

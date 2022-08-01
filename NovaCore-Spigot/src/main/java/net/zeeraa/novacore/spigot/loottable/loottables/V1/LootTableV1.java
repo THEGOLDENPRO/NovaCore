@@ -2,12 +2,15 @@ package net.zeeraa.novacore.spigot.loottable.loottables.V1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 
 import net.zeeraa.novacore.spigot.loottable.LootTable;
+import net.zeeraa.novacore.spigot.loottable.loottables.V1.entry.implementation.ItemStackBasedLootEntryV1;
 
 /**
  * NovaCores default {@link LootTable} Version 1
@@ -17,8 +20,8 @@ import net.zeeraa.novacore.spigot.loottable.LootTable;
  * @author Zeeraa
  */
 public class LootTableV1 extends LootTable {
-	private HashMap<UUID, LootEntryV1> items = new HashMap<UUID, LootEntryV1>();
-	private ArrayList<UUID> lootChance = new ArrayList<UUID>();
+	private Map<UUID, LootEntryV1> items = new HashMap<UUID, LootEntryV1>();
+	private List<UUID> lootChance = new ArrayList<UUID>();
 
 	public void addItem(LootEntryV1 lootEntry) {
 		UUID uuid = UUID.randomUUID();
@@ -36,7 +39,7 @@ public class LootTableV1 extends LootTable {
 
 		UUID uuid = UUID.randomUUID();
 
-		LootEntryV1 lootEntry = new LootEntryV1(itemStack, chance, minAmount, maxAmount, extraItems);
+		LootEntryV1 lootEntry = new ItemStackBasedLootEntryV1(itemStack, chance, minAmount, maxAmount, extraItems);
 
 		items.put(uuid, lootEntry);
 		for (int i = 0; i < chance; i++) {
@@ -62,7 +65,11 @@ public class LootTableV1 extends LootTable {
 
 			LootEntryV1 entry = items.get(lootUuid);
 
-			result.add(entry.generateItem());
+			ItemStack item = entry.generateItem();
+
+			if (item != null) {
+				result.add(item);
+			}
 
 			if (entry.hasExtraItems()) {
 				result.addAll(getExtraItems(entry));

@@ -18,6 +18,8 @@ import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.loottable.LootTable;
 import net.zeeraa.novacore.spigot.loottable.LootTableLoader;
+import net.zeeraa.novacore.spigot.loottable.loottables.V1.entry.implementation.CustomItemLootTableEntry;
+import net.zeeraa.novacore.spigot.loottable.loottables.V1.entry.implementation.ItemStackBasedLootEntryV1;
 import net.zeeraa.novacore.spigot.utils.BukkitSerailization;
 import net.zeeraa.novacore.spigot.version.v1_16_R3.ParsePotionEffect1_16;
 
@@ -79,6 +81,41 @@ public class LootTableLoaderV1 implements LootTableLoader {
 			chance = itemJson.getInt("chance");
 		}
 
+		if (itemJson.has("custom_item")) {
+			String customItem = itemJson.getString("custom_item");
+
+			List<LootEntryV1> extraItems = null;
+
+			if (itemJson.has("extra_items")) {
+				extraItems = new ArrayList<LootEntryV1>();
+				JSONArray extraItemsJson = itemJson.getJSONArray("extra_items");
+
+				for (int i = 0; i < extraItemsJson.length(); i++) {
+					JSONObject extraItem = extraItemsJson.getJSONObject(i);
+
+					extraItems.add(readLootEntry(extraItem));
+				}
+			}
+
+			int minAmount = 0;
+			int maxAmount = 0;
+
+			if (itemJson.has("min_amount")) {
+				minAmount = itemJson.getInt("min_amount");
+			}
+
+			if (itemJson.has("max_amount")) {
+				maxAmount = itemJson.getInt("max_amount");
+				if (minAmount > maxAmount) {
+					maxAmount = minAmount;
+				}
+			} else {
+				maxAmount = minAmount;
+			}
+
+			return new CustomItemLootTableEntry(customItem, chance, minAmount, maxAmount, extraItems);
+		}
+
 		if (itemJson.has("base64")) {
 			String base64 = itemJson.getString("base64");
 			try {
@@ -104,7 +141,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 					}
 				}
 
-				return new LootEntryV1(item, chance, minAmount, maxAmount, null);
+				return new ItemStackBasedLootEntryV1(item, chance, minAmount, maxAmount, null);
 			} catch (Exception e) {
 				Log.error("LootTableLoaderV1", "Failed to parse base64 string. " + e.getClass().getName() + " " + e.getMessage());
 			}
@@ -117,7 +154,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 			Log.error("LootTableLoadedV1", "Entry missing material:\n " + itemJson.toString(4));
 			return null;
 		}
-		
+
 		String material = itemJson.getString("material");
 
 		if (Material.getMaterial(material) == null) {
@@ -219,7 +256,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 			}
 		}
 
-		LootEntryV1 entry = new LootEntryV1(item, chance, minAmount, maxAmount, extraItems);
+		LootEntryV1 entry = new ItemStackBasedLootEntryV1(item, chance, minAmount, maxAmount, extraItems);
 
 		return entry;
 	}
