@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.module.modules.lootdrop;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -24,7 +25,7 @@ public class LootDropEffect implements Runnable {
 	private boolean completed;
 	private double y;
 
-	private HashMap<Location, Material> removedBlocks;
+	private Map<Location, Material> removedBlocks;
 
 	public LootDropEffect(Location location, String lootTable) {
 		location.setX(location.getBlockX() + 0.5);
@@ -150,7 +151,7 @@ public class LootDropEffect implements Runnable {
 		return location.getWorld();
 	}
 
-	public HashMap<Location, Material> getRemovedBlocks() {
+	public Map<Location, Material> getRemovedBlocks() {
 		return removedBlocks;
 	}
 }

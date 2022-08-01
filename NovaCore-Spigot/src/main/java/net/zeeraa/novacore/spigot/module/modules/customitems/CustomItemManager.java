@@ -167,6 +167,10 @@ public class CustomItemManager extends NovaModule implements Listener {
 	 *         iscustomitem</code>
 	 */
 	public boolean isCustomItem(ItemStack item) {
+		if (item == null) {
+			return false;
+		}
+
 		return NBTEditor.contains(item, "novacore", "iscustomitem");
 	}
 
