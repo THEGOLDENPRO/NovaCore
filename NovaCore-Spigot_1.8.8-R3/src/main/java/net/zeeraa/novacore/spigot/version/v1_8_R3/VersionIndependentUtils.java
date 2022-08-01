@@ -326,6 +326,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case EAT:
 			return Sound.EAT;
 
+		case ANVIL_BREAK:
+			return Sound.ANVIL_BREAK;
+
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_SOUND);
 			AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
