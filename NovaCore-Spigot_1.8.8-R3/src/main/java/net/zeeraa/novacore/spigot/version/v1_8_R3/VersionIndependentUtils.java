@@ -328,6 +328,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case ANVIL_BREAK:
 			return Sound.ANVIL_BREAK;
+			
+		case FIZZ:
+			return Sound.FIZZ;
 
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_SOUND);
