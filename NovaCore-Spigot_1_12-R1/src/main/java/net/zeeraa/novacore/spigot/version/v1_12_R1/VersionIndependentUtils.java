@@ -328,7 +328,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case LEVEL_UP:
 			return Sound.ENTITY_PLAYER_LEVELUP;
-			
+
 		case WITHER_SHOOT:
 			return Sound.ENTITY_WITHER_SHOOT;
 
@@ -440,7 +440,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case WOODEN_SWORD:
 			return Material.WOOD_SWORD;
-			
+
 		case WATCH:
 			return Material.WATCH;
 
@@ -513,7 +513,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public void setGameRule(World world, String rule, String value) {
 		world.setGameRuleValue(rule, value);
 	}
-	
+
 	@Override
 	public boolean isInteractEventMainHand(PlayerInteractEvent e) {
 		return e.getHand() == EquipmentSlot.HAND;
@@ -522,5 +522,20 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public Entity getEntityByUUID(UUID uuid) {
 		return Bukkit.getEntity(uuid);
+	}
+
+	@SuppressWarnings("deprecation")
+	private MaterialData getDyeMaterialData(DyeColor color) {
+		return new MaterialData(Material.INK_SACK, color.getDyeData());
+	}
+
+	@Override
+	public void setShapedRecipeIngredientAsDye(ShapedRecipe recipe, char ingredient, DyeColor color) {
+		recipe.setIngredient(ingredient, getDyeMaterialData(color));
+	}
+
+	@Override
+	public void addShapelessRecipeIngredientAsDye(ShapelessRecipe recipe, int count, DyeColor color) {
+		recipe.addIngredient(count, getDyeMaterialData(color));
 	}
 }

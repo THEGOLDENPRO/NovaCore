@@ -684,4 +684,14 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public Entity getEntityByUUID(UUID uuid) {
 		return Bukkit.getEntity(uuid);
 	}
+
+	@Override
+	public void setShapedRecipeIngredientAsDye(ShapedRecipe recipe, char ingredient, DyeColor color) {
+		recipe.setIngredient(ingredient, DyeColorToMaterialMapper_1_16.dyeColorToMaterial(color));
+	}
+
+	@Override
+	public void addShapelessRecipeIngredientAsDye(ShapelessRecipe recipe, int count, DyeColor color) {
+		recipe.addIngredient(count, DyeColorToMaterialMapper_1_16.dyeColorToMaterial(color));
+	}
 }

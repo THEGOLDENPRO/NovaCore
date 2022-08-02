@@ -159,6 +159,10 @@ public abstract class VersionIndependentUtils {
 
 	public abstract void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color);
 
+	public abstract void setShapedRecipeIngredientAsDye(ShapedRecipe recipe, char ingredient, DyeColor color);
+
+	public abstract void addShapelessRecipeIngredientAsDye(ShapelessRecipe recipe, int count, DyeColor color);
+
 	public abstract ItemStack getColoredItem(DyeColor color, ColoredBlockType type);
 
 	public abstract ItemBuilderRecordList getItembBuilderRecordList();

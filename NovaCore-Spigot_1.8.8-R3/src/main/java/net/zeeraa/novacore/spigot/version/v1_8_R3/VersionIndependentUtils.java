@@ -532,4 +532,19 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		}
 		return null;
 	}
+
+	@SuppressWarnings("deprecation")
+	private MaterialData getDyeMaterialData(DyeColor color) {
+		return new MaterialData(Material.INK_SACK, color.getDyeData());
+	}
+
+	@Override
+	public void setShapedRecipeIngredientAsDye(ShapedRecipe recipe, char ingredient, DyeColor color) {
+		recipe.setIngredient(ingredient, getDyeMaterialData(color));
+	}
+
+	@Override
+	public void addShapelessRecipeIngredientAsDye(ShapelessRecipe recipe, int count, DyeColor color) {
+		recipe.addIngredient(count, getDyeMaterialData(color));
+	}
 }
