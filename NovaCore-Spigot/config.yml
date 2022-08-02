@@ -24,3 +24,6 @@ ExtendedDebugging: false
 # Enable this to allow this plugin to run on unsupported versions of spigot. This will disable all version independant usils and nms features 
 # Only enable this if you know what you are doing
 IgnoreMissingNMS: false
+
+# Set to true to disable bStats
+DisableMetrics: false

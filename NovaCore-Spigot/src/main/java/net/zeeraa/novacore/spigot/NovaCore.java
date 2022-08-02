@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot;
 import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
+
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONException;
 
+import net.novauniverse.novacore.bstats.Metrics;
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.ServerType;
 import net.zeeraa.novacore.commons.log.Log;
@@ -494,13 +496,20 @@ public class NovaCore extends JavaPlugin implements Listener {
 				if (selfTestResult) {
 					Log.info("NovaCore", "Self test did not detect any errors");
 				} else {
-					Log.error("Novacore", "Errors where detected while running the selftest. Check console for more details. Some features of this plugin might not work as expected");
+					Log.error("NovaCore", "Errors where detected while running the selftest. Check console for more details. Some features of this plugin might not work as expected");
 				}
 			}
 		}.runTaskLater(this, 1L);
 
 		if (NovaCommons.isExtendedDebugging()) {
-			Log.info("NovaCore", "Extended debigging enabled. You can disable this in plugins/NovaCore/config.yml");
+			Log.info("NovaCore", "Extended debugging enabled. You can disable this in plugins/NovaCore/config.yml");
+		}
+
+		if (getConfig().getBoolean("DisableMetrics")) {
+			Log.info("NovaCore", "Metrics disabled");
+		} else {
+			Log.info("NovaCore", "Starting metrics provided by bStats. This can be disabled in config.yml");
+			new Metrics(this, 15987);
 		}
 	}
 
