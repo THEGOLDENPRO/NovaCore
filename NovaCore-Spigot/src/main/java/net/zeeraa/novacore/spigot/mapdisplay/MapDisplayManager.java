@@ -120,7 +120,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 						Log.debug(getName(), "Initial worlds to load: " + Bukkit.getServer().getWorlds());
 					}
 
-					for (World world : Bukkit.getServer().getWorlds()) {
+					Bukkit.getServer().getWorlds().forEach(world -> {
 						if (usePreloadFix) {
 							protectedWorlds.add(world);
 							Log.debug(getName(), "Loading initial world data (delayed + pre loading) for world " + world.getName());
@@ -130,14 +130,14 @@ public class MapDisplayManager extends NovaModule implements Listener {
 								@Override
 								public void run() {
 									readAllFromWorld(world);
+									protectedWorlds.remove(world);
 								}
 							}.runTaskLater(NovaCore.getInstance(), 100L);
 						} else {
 							Log.debug(getName(), "Loading initial world data (instant) for world " + world.getName());
 							readAllFromWorld(world);
 						}
-
-					}
+					});
 				}
 			}.runTaskLater(NovaCore.getInstance(), 1L);
 		}
@@ -478,6 +478,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 				@Override
 				public void run() {
 					readAllFromWorld(e.getWorld());
+					protectedWorlds.remove(e.getWorld());
 				}
 			}.runTaskLater(NovaCore.getInstance(), 100L);
 		}
