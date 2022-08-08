@@ -91,7 +91,7 @@ public class RainbowText {
 		updateFancy();
 	}
 
-	public String getOrigonalText() {
+	public String getOriginalText() {
 		return this.text;
 	}
 
