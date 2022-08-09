@@ -14,6 +14,18 @@ public class APITests {
 		}
 		
 		try {
+			System.out.println(NovaUniverseAPI.nameToUUID("Jeb_"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			System.out.println(NovaUniverseAPI.nameToUUID("Testing-"));
+		} catch (Exception e) {
+			System.out.println("Illegal name exception");
+		}
+		
+		try {
 			System.out.println(NovaUniverseAPI.nameToUUID("Zeeraa01AAA"));
 		} catch (Exception e) {
 			e.printStackTrace();
