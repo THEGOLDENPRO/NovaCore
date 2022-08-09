@@ -9,7 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.api.novauniverse.callback.IAsyncNameToUUIDCallback;
