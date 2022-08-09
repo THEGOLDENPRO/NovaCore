@@ -12,15 +12,137 @@ import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 
-import net.zeeraa.novacore.commons.api.novauniverse.callbach.IAsyncNameToUUIDCallback;
+import net.zeeraa.novacore.commons.api.novauniverse.callback.IAsyncNameToUUIDCallback;
+import net.zeeraa.novacore.commons.api.novauniverse.callback.IAsyncProfileCallback;
+import net.zeeraa.novacore.commons.api.novauniverse.data.MojangPlayerProfile;
 import net.zeeraa.novacore.commons.async.AsyncManager;
 
 /**
+ * A utility class to interact with the novauniverse.net api.
+ * <p>
+ * Some parts of this can be redirected to a self hosted version using
+ * {@link NovaUniverseAPI#setMojangAPIProxyBaseURL(String)}
+ * <p>
+ * Repos needed for self hosting: <a href=
+ * "https://github.com/NovaUniverse/MojangAPIProxy">https://github.com/NovaUniverse/MojangAPIProxy</a>
  * 
  * @author Zeeraa
  * @since 2.0.0
  */
 public class NovaUniverseAPI {
+	private static String mojangAPIProxyBaseURL = "https://mojangapi.novauniverse.net";
+
+	/**
+	 * Get the base url used by the mojang api proxy. To self host this api check
+	 * out this github repo <a href=
+	 * "https://github.com/NovaUniverse/MojangAPIProxy">https://github.com/NovaUniverse/MojangAPIProxy</a>
+	 * 
+	 * @return The base url
+	 */
+	public static final String getMojangAPIProxyBaseURL() {
+		return mojangAPIProxyBaseURL;
+	}
+
+	/**
+	 * Set the base url used by the mojang api proxy. To self host this api check
+	 * out this github repo <a href=
+	 * "https://github.com/NovaUniverse/MojangAPIProxy">https://github.com/NovaUniverse/MojangAPIProxy</a>
+	 * 
+	 * @param mojangAPIProxyBaseURL The new base url
+	 * @throws IllegalArgumentException If the url is not valid
+	 */
+	public static final void setMojangAPIProxyBaseURL(String mojangAPIProxyBaseURL) {
+		if (mojangAPIProxyBaseURL.endsWith("/")) {
+			mojangAPIProxyBaseURL = mojangAPIProxyBaseURL.substring(0, mojangAPIProxyBaseURL.length() - 1);
+		}
+		try {
+			new URL(mojangAPIProxyBaseURL);
+		} catch (MalformedURLException malformedURLException) {
+			throw new IllegalArgumentException(mojangAPIProxyBaseURL + " is not a valid url");
+		}
+
+		NovaUniverseAPI.mojangAPIProxyBaseURL = mojangAPIProxyBaseURL;
+	}
+
+	/**
+	 * Get the {@link MojangPlayerProfile} by the players {@link UUID}
+	 * 
+	 * @param uuid The {@link UUID} of the player
+	 * @return The {@link MojangPlayerProfile} or <code>null</code> if not found
+	 * @throws IOException              On request failure
+	 * @throws IllegalArgumentException If the server side UUID validation fails
+	 * @since 2.0.0
+	 */
+	public static final MojangPlayerProfile getProfile(UUID uuid) throws IOException {
+		URL url = new URL(mojangAPIProxyBaseURL + "/profile/" + uuid.toString());
+
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestProperty("accept", "application/json");
+		connection.setRequestProperty("User-Agent", "NovaCore");
+		connection.connect();
+
+		int code = connection.getResponseCode();
+		if (code == 404) {
+			return null;
+		}
+
+		if (code == 400) {
+			throw new IllegalArgumentException("The server side UUID validation failed. Please verify that the uuid is valid");
+		}
+
+		InputStream responseStream = connection.getInputStream();
+
+		InputStreamReader isr = new InputStreamReader(responseStream);
+		BufferedReader rd = new BufferedReader(isr);
+		StringBuilder response = new StringBuilder();
+		String line;
+		while ((line = rd.readLine()) != null) {
+			response.append(line);
+			response.append('\r');
+		}
+		rd.close();
+		isr.close();
+		responseStream.close();
+		connection.disconnect();
+
+		JSONObject responseJson = new JSONObject(response.toString());
+
+		return MojangPlayerProfile.fromJSON(responseJson);
+	}
+
+	/**
+	 * Get the {@link MojangPlayerProfile} by the players {@link UUID}
+	 * @param uuid The {@link UUID} of the player
+	 * @param callback The {@link IAsyncProfileCallback} to call when done
+	 * @since 2.0.0
+	 */
+	public static final void getProfileAsync(UUID uuid, IAsyncProfileCallback callback) {
+		AsyncManager.runAsync(new Runnable() {
+			@Override
+			public void run() {
+				Exception exception = null;
+				MojangPlayerProfile profile = null;
+				try {
+					profile = NovaUniverseAPI.getProfile(uuid);
+					exception = null;
+				} catch (Exception e) {
+					profile = null;
+					exception = e;
+				}
+
+				final MojangPlayerProfile finalProfile = profile;
+				final Exception finalException = exception;
+
+				AsyncManager.runSync(new Runnable() {
+					@Override
+					public void run() {
+						callback.onResult(finalProfile, finalException);
+					}
+				});
+			}
+		});
+	}
+
 	/**
 	 * Get the {@link UUID} of a player by their user name
 	 * 
@@ -43,12 +165,17 @@ public class NovaUniverseAPI {
 			throw new IllegalArgumentException("Username contains invalid characters");
 		}
 
-		URL url = new URL("https://novauniverse.net/api/private/mojang/name_to_uuid/" + name);
+		URL url = new URL(mojangAPIProxyBaseURL + "/username_to_uuid/" + name);
 
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestProperty("accept", "application/json");
 		connection.setRequestProperty("User-Agent", "NovaCore");
 		connection.connect();
+
+		int code = connection.getResponseCode();
+		if (code == 404) {
+			return null;
+		}
 
 		InputStream responseStream = connection.getInputStream();
 
@@ -67,11 +194,7 @@ public class NovaUniverseAPI {
 
 		JSONObject responseJson = new JSONObject(response.toString());
 
-		if (responseJson.isNull("data")) {
-			return null;
-		}
-
-		return UUID.fromString(responseJson.getJSONObject("data").getString("full_uuid"));
+		return UUID.fromString(responseJson.getString("uuid"));
 	}
 
 	/**

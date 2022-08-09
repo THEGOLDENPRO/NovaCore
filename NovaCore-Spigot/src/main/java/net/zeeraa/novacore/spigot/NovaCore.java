@@ -24,8 +24,10 @@ import org.json.JSONException;
 import net.novauniverse.novacore.bstats.Metrics;
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.ServerType;
+import net.zeeraa.novacore.commons.api.novauniverse.NovaUniverseAPI;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.log.LogLevel;
+import net.zeeraa.novacore.commons.utils.Hastebin;
 import net.zeeraa.novacore.commons.utils.JSONFileType;
 import net.zeeraa.novacore.commons.utils.JSONFileUtils;
 import net.zeeraa.novacore.spigot.abstraction.CommandRegistrator;
@@ -95,6 +97,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private boolean loadingDone;
 
 	private boolean noNMSMode;
+
+	private Hastebin defaultHastebinInstance;
 
 	private ReflectionBasedCommandRegistrator reflectionBasedCommandRegistrator;
 
@@ -243,6 +247,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 		return reflectionBasedCommandRegistrator;
 	}
 
+	public Hastebin getHastebinInstance() {
+		return this.defaultHastebinInstance;
+	}
+
 	public boolean runVersionIndependentLayerSelftest() {
 		if (noNMSMode) {
 			Log.error("NovaCore", "Cant run selftest in no nms mode");
@@ -303,6 +311,15 @@ public class NovaCore extends JavaPlugin implements Listener {
 		NovaCommons.setExtendedDebugging(getConfig().getBoolean("ExtendedDebugging"));
 
 		Log.setConsoleLogLevel(LogLevel.INFO);
+
+		try {
+			String defaultHastebinURL = getConfig().getString("HastebinURL");
+			this.defaultHastebinInstance = new Hastebin(defaultHastebinURL);
+			Log.info("NovaCore", "Configured hastebin url is " + defaultHastebinInstance.getBaseUrl());
+		} catch (IllegalArgumentException e) {
+			Log.error("NovaCore", "The HastebinURL in config.yml is not valid. Using https://hastebin.novauniverse.net instead");
+			this.defaultHastebinInstance = new Hastebin("https://hastebin.novauniverse.net");
+		}
 
 		jumpPadFile = new File(this.getDataFolder().getPath() + File.separator + "jump_pads.json");
 
@@ -424,6 +441,12 @@ public class NovaCore extends JavaPlugin implements Listener {
 			LanguageReader.readFromJar(this.getClass(), "/lang/en-us.json");
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+
+		try {
+			NovaUniverseAPI.setMojangAPIProxyBaseURL(getConfig().getString("MojangAPIProxyURL"));
+		} catch (IllegalArgumentException e) {
+			Log.error("NovaCore", "The MojangAPIProxyURL in config.yml is not valid. Using https://mojangapi.novauniverse.net as the default one instead");
 		}
 
 		lootTableManager = new LootTableManager();

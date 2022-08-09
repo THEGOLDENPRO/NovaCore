@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.commons.api.novauniverse.callbach;
+package net.zeeraa.novacore.commons.api.novauniverse.callback;
 
 import java.util.UUID;
 

@@ -27,3 +27,13 @@ IgnoreMissingNMS: false
 
 # Set to true to disable bStats
 DisableMetrics: false
+
+# The url of the mojang api proxy to use
+# If you want to self host this check out https://github.com/NovaUniverse/MojangAPIProxy
+# You can also set it up as a docker container using
+# docker run --restart=unless-stopped --name mojangapiproxy -d -p 80:80 novauniverse/mojangapiproxy
+MojangAPIProxyURL: "https://mojangapi.novauniverse.net/"
+
+# The custom hastebin server to use for debugging and for the built in hastebin implementation. Note that this inly affects the hastebin instace from NovaCore#getHastebinInstance()
+# To self host this see https://hub.docker.com/r/rlister/hastebin or https://github.com/toptal/haste-server
+HastebinURL: "https://hastebin.novauniverse.net"
