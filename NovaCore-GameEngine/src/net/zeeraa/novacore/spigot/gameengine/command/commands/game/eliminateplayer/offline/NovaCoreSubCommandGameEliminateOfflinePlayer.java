@@ -33,7 +33,7 @@ public class NovaCoreSubCommandGameEliminateOfflinePlayer extends NovaSubCommand
 		if (GameManager.getInstance().hasGame()) {
 			if (GameManager.getInstance().getActiveGame().isRunning()) {
 				if (args.length > 0) {
-					sender.sendMessage(ChatColor.AQUA + "Please wait while we try to fetch the uuid of that player from the novauniverse api...");
+					sender.sendMessage(ChatColor.AQUA + "Please wait while we try to fetch the uuid of that player from the mojang api...");
 
 					try {
 						NovaUniverseAPI.nameToUUIDAsync(args[0], new IAsyncNameToUUIDCallback() {
