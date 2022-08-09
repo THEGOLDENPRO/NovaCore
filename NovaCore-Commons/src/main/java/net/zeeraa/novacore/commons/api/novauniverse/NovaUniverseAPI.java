@@ -161,7 +161,7 @@ public class NovaUniverseAPI {
 			throw new IllegalArgumentException(name.length() < 3 ? "Name has to bee more than 3 characters long" : "Name cant be more than 16 characters long");
 		}
 
-		if (!StringUtils.isAlphanumeric(name)) {
+		if (!name.matches("^[a-zA-Z0-9_]{2,16}$")) {
 			throw new IllegalArgumentException("Username contains invalid characters");
 		}
 
@@ -212,7 +212,7 @@ public class NovaUniverseAPI {
 			throw new IllegalArgumentException(name.length() < 3 ? "Name has to bee more than 3 characters long" : "Name cant be more than 16 characters long");
 		}
 
-		if (!StringUtils.isAlphanumeric(name)) {
+		if (!name.matches("^[a-zA-Z0-9_]{2,16}$")) {
 			throw new IllegalArgumentException("Username contains invalid characters");
 		}
 
