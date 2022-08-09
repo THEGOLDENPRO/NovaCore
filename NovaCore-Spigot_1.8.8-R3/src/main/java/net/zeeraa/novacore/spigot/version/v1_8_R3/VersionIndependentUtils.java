@@ -259,6 +259,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			material = Material.WOOL;
 			break;
 
+		case CLAY:
+			material = Material.STAINED_CLAY;
+			break;
+
 		default:
 			material = Material.STAINED_GLASS;
 			break;
@@ -328,7 +332,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case ANVIL_BREAK:
 			return Sound.ANVIL_BREAK;
-			
+
 		case FIZZ:
 			return Sound.FIZZ;
 
