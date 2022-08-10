@@ -18,15 +18,14 @@ public interface GUIClickCallback {
 	 * deny the interaction
 	 * 
 	 * @param clickedInventory The {@link Inventory} that was clicked
-	 * @param inventory The {@link Inventory}
-	 * @param entity The {@link HumanEntity} that clicked
-	 * @param clickedSlot The clicked slon number
-	 * @param slotType The clicked {@link SlotType}
-	 * @param clickType The {@link InventoryAction}
+	 * @param inventory        The {@link Inventory}
+	 * @param entity           The {@link HumanEntity} that clicked
+	 * @param clickedSlot      The clicked slot number
+	 * @param slotType         The clicked {@link SlotType}
+	 * @param clickType        The {@link InventoryAction}
 	 * @return return {@link GUIAction#NONE} or <code>null</code> to use the default
 	 *         outcome and deny the interaction. use the other values to either
 	 *         allow or deny the interaction
 	 */
-	public GUIAction onClick(Inventory clickedInventory, Inventory inventory, HumanEntity entity, int clickedSlot,
-			SlotType slotType, InventoryAction clickType);
+	public GUIAction onClick(Inventory clickedInventory, Inventory inventory, HumanEntity entity, int clickedSlot, SlotType slotType, InventoryAction clickType);
 }

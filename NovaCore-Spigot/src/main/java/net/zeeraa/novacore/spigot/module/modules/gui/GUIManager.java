@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.gui.callbacks.GUIClickCallback;
+import net.zeeraa.novacore.spigot.module.modules.gui.callbacks.GUIClickCallbackWithEvent;
 import net.zeeraa.novacore.spigot.module.modules.gui.holders.GUIHolder;
 import net.zeeraa.novacore.spigot.module.modules.gui.holders.GUIReadOnlyHolder;
 
@@ -54,10 +55,26 @@ public class GUIManager extends NovaModule implements Listener {
 								action = newAction;
 							}
 						}
+						
+						for (GUIClickCallbackWithEvent gcc : holder.getClickEventCallbacks()) {
+							GUIAction newAction = gcc.onClick(e);
+							if (!(newAction == null || newAction == GUIAction.NONE)) {
+								action = newAction;
+							}
+						}
 
 						if (holder.getSlotClickCallbacks().containsKey(e.getSlot())) {
 							for (GUIClickCallback gcc : holder.getSlotClickCallbacks().get(e.getSlot())) {
 								GUIAction newAction = gcc.onClick(e.getClickedInventory(), e.getInventory(), e.getWhoClicked(), e.getSlot(), e.getSlotType(), e.getAction());
+								if (!(newAction == null || newAction == GUIAction.NONE)) {
+									action = newAction;
+								}
+							}
+						}
+						
+						if (holder.getSlotClickEventCallbacks().containsKey(e.getSlot())) {
+							for (GUIClickCallbackWithEvent gcc : holder.getSlotClickEventCallbacks().get(e.getSlot())) {
+								GUIAction newAction = gcc.onClick(e);
 								if (!(newAction == null || newAction == GUIAction.NONE)) {
 									action = newAction;
 								}
