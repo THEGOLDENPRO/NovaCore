@@ -503,7 +503,7 @@ public class GameManager extends NovaModule implements Listener {
 
 		game.onLoad();
 		if (game instanceof Listener) {
-			Bukkit.getPluginManager().registerEvents((Listener) game, NovaCore.getInstance());
+			Bukkit.getPluginManager().registerEvents((Listener) game, game.getPlugin());
 		}
 
 		this.activeGame = game;
