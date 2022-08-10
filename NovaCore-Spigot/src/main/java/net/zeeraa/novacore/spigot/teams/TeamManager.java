@@ -30,12 +30,15 @@ public abstract class TeamManager {
 	}
 
 	public Team getPlayerTeam(UUID uuid) {
-		for (Team team : teams) {
-			if (team.isMember(uuid)) {
-				return team;
-			}
-		}
-		return null;
+		return teams.stream().filter(team -> team.isMember(uuid)).findFirst().orElse(null);
+	}
+
+	public boolean hasTeam(OfflinePlayer player) {
+		return getPlayerTeam(player.getUniqueId()) != null;
+	}
+
+	public boolean hasTeam(UUID uuid) {
+		return getPlayerTeam(uuid) != null;
 	}
 
 	public Team getTeamByTeamUUID(UUID uuid) {
