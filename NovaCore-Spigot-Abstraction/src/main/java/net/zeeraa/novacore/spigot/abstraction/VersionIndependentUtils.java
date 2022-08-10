@@ -375,4 +375,6 @@ public abstract class VersionIndependentUtils {
 	 * @return The {@link Entity} or <code>null</code> if not found
 	 */
 	public abstract Entity getEntityByUUID(UUID uuid);
+	
+	public abstract void setAI(LivingEntity entity, boolean ai);
 }

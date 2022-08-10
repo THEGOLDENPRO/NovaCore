@@ -767,4 +767,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public void addShapelessRecipeIngredientAsDye(ShapelessRecipe recipe, int count, DyeColor color) {
 		recipe.addIngredient(count, DyeColorToMaterialMapper_1_16.dyeColorToMaterial(color));
 	}
+
+	@Override
+	public void setAI(LivingEntity entity, boolean ai) {
+		entity.setAI(ai);
+	}
 }
