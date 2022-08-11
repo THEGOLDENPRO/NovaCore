@@ -28,19 +28,42 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 
+/**
+ * A utility to make your plugins support multiple versions of the game without
+ * using reflection. This class contains a lot of functions that changes between
+ * versions
+ * 
+ * @author zeeraa
+ */
 public abstract class VersionIndependentUtils {
 	private static VersionIndependentUtils instance;
 
 	private VersionIndependenceLayerError lastError = VersionIndependenceLayerError.NONE;
 
+	/**
+	 * Set the last error cause used for debugging purposes
+	 * 
+	 * @param error The last {@link VersionIndependenceLayerError} raised
+	 */
 	protected final void setLastError(VersionIndependenceLayerError error) {
 		this.lastError = error;
 	}
 
+	/**
+	 * GEt the last error type caused in the version independent layer. This will
+	 * return null if no errors was encountered or
+	 * {@link VersionIndependentUtils#resetLastError()} was called
+	 * 
+	 * @return The {@link VersionIndependenceLayerError} of <code>null</code> if no
+	 *         errors occurred
+	 */
 	public final VersionIndependenceLayerError getLastError() {
 		return lastError;
 	}
 
+	/**
+	 * Resets the last error variable
+	 */
 	public final void resetLastError() {
 		this.lastError = VersionIndependenceLayerError.NONE;
 	}
@@ -52,10 +75,22 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract ChunkLoader getChunkLoader();
 
+	/**
+	 * Get the {@link VersionIndependentUtils} instance that this server uses. Same
+	 * as {@link VersionIndependentUtils#getInstance()}
+	 * 
+	 * @return {@link VersionIndependentUtils} instance
+	 */
 	public static VersionIndependentUtils get() {
 		return instance;
 	}
 
+	/**
+	 * Get the {@link VersionIndependentUtils} instance that this server uses. Same
+	 * as {@link VersionIndependentUtils#get()}
+	 * 
+	 * @return {@link VersionIndependentUtils} instance
+	 */
 	public static VersionIndependentUtils getInstance() {
 		return instance;
 	}
@@ -64,6 +99,13 @@ public abstract class VersionIndependentUtils {
 		VersionIndependentUtils.instance = instance;
 	}
 
+	/**
+	 * Get the {@link LabyModProtocol} instance to use for this version. If the
+	 * server version is not supported by labymod this will return a fake instance
+	 * that does nothing
+	 * 
+	 * @return The {@link LabyModProtocol} instance to use
+	 */
 	public abstract LabyModProtocol getLabyModProtocol();
 
 	/**
@@ -73,6 +115,11 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract NovaCoreGameVersion getNovaCoreGameVersion();
 
+	/**
+	 * Set a block as a player skull
+	 * 
+	 * @param block The {@link Block} to change the type of
+	 */
 	public abstract void setBlockAsPlayerSkull(Block block);
 
 	/**
@@ -116,6 +163,15 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract int getPlayerPing(Player player);
 
+	/**
+	 * Attempt to damage a player with a specified reason. If this is not correctly
+	 * implemented the player will be damaged using {@link Player#damage(double)}
+	 * instead
+	 * 
+	 * @param player The player to damage
+	 * @param reason The {@link PlayerDamageReason} to use
+	 * @param damage The amount of damage to cause
+	 */
 	public abstract void damagePlayer(Player player, PlayerDamageReason reason, float damage);
 
 	/**
@@ -149,22 +205,85 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract double[] getRecentTps();
 
+	/**
+	 * Clones the data of 2 blocks
+	 * 
+	 * @param source The block to copy the data from
+	 * @param target The block to set the data of
+	 */
 	public abstract void cloneBlockData(Block source, Block target);
 
+	/**
+	 * Send text to display in the tab list
+	 * 
+	 * @param player The {@link Player} that should receive the text
+	 * @param header The top text
+	 * @param footer The bottom text
+	 */
 	public abstract void sendTabList(Player player, String header, String footer);
 
+	/**
+	 * Set a block to a {@link ColoredBlockType} with a {@link DyeColor}
+	 * 
+	 * @param block The {@link Block} to change
+	 * @param color The {@link DyeColor} to use
+	 * @param type  The {@link ColoredBlockType} to set the block as
+	 */
 	public abstract void setColoredBlock(Block block, DyeColor color, ColoredBlockType type);
 
+	/**
+	 * Used to add a colored block as ingredient of a {@link ShapedRecipe}
+	 * 
+	 * @param recipe     The {@link ShapedRecipe} to modify
+	 * @param ingredient The ingredient char
+	 * @param type       The {@link ColoredBlockType} to use
+	 * @param color      The {@link DyeColor} to use
+	 */
 	public abstract void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color);
 
+	/**
+	 * Used to add a colored block as ingredient of a {@link ShapelessRecipe}
+	 * 
+	 * @param recipe     The {@link ShapelessRecipe} to modify
+	 * @param ingredient The ingredient char
+	 * @param type       The {@link ColoredBlockType} to use
+	 * @param color      The {@link DyeColor} to use
+	 */
 	public abstract void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color);
 
+	/**
+	 * Used to add dyes in a {@link ShapedRecipe}
+	 * 
+	 * @param recipe     The {@link ShapedRecipe} to modify
+	 * @param ingredient The ingredient char
+	 * @param color      The {@link DyeColor} to use
+	 */
 	public abstract void setShapedRecipeIngredientAsDye(ShapedRecipe recipe, char ingredient, DyeColor color);
 
+	/**
+	 * Used to add dyes in a {@link ShapelessRecipe}
+	 * 
+	 * @param recipe     The {@link ShapelessRecipe} to modify
+	 * @param ingredient The ingredient char
+	 * @param color      The {@link DyeColor} to use
+	 */
 	public abstract void addShapelessRecipeIngredientAsDye(ShapelessRecipe recipe, int count, DyeColor color);
 
+	/**
+	 * Get an {@link ItemStack} of with the type provided in the form of
+	 * {@link ColoredBlockType}
+	 * 
+	 * @param color The {@link DyeColor}
+	 * @param type  The {@link ColoredBlockType}
+	 * @return An {@link ItemStack} of the {@link ColoredBlockType}
+	 */
 	public abstract ItemStack getColoredItem(DyeColor color, ColoredBlockType type);
 
+	/**
+	 * GEt the {@link ItemBuilderRecordList} for this verion
+	 * 
+	 * @return {@link ItemBuilderRecordList}
+	 */
 	public abstract ItemBuilderRecordList getItembBuilderRecordList();
 
 	/**
@@ -183,6 +302,12 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract MapView getAttachedMapView(ItemStack item);
 
+	/**
+	 * GEt the id number of a {@link MapView}
+	 * 
+	 * @param mapView The {@link MapView} to get the id of
+	 * @return id number of the provided {@link MapView}
+	 */
 	public abstract int getMapViewId(MapView mapView);
 
 	/**
@@ -261,8 +386,27 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract Sound getSound(VersionIndependentSound sound);
 
+	/**
+	 * Send a title to a player
+	 * 
+	 * @param player   The {@link Player} that should receive the title
+	 * @param title    The title text
+	 * @param subtitle The subtitle text
+	 * @param fadeIn   The amount of ticks for the fade in animation. Set to 0 to
+	 *                 disable
+	 * @param stay     The amount of ticks the text should stay
+	 * @param fadeOut  The amount of ticks for the fade out animation. Set to 0 to
+	 *                 disable
+	 */
 	public abstract void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut);
 
+	/**
+	 * Get an {@link ItemStack} with a skull that has its texture set to the
+	 * provided base64 string
+	 * 
+	 * @param b64stringtexture The base64 string containing texture data
+	 * @return {@link ItemStack} with a textured player skull
+	 */
 	public abstract ItemStack getPlayerSkullWithBase64Texture(String b64stringtexture);
 
 	public static <T> Field getField(Class<?> target, String name, Class<T> fieldType, int index) {
@@ -279,8 +423,20 @@ public abstract class VersionIndependentUtils {
 		throw new IllegalArgumentException("Cannot find field with type " + fieldType);
 	}
 
+	/**
+	 * Get the instance of {@link VersionIndependentItems} for this version of the
+	 * game
+	 * 
+	 * @return {@link VersionIndependentItems} instance
+	 */
 	public abstract VersionIndependentItems getVersionIndependantItems();
 
+	/**
+	 * Used to add a player skull as a ingredient in a {@link ShapedRecipe}
+	 * 
+	 * @param recipe     The {@link ShapedRecipe} to modify
+	 * @param ingredient The ingredient char
+	 */
 	public abstract void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient);
 
 	/**
@@ -291,6 +447,16 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract Material getMaterial(VersionIndependentMaterial material);
 
+	/**
+	 * Get an {@link ItemStack} with the material from a
+	 * {@link VersionIndependentMaterial}. Can return null if the
+	 * {@link VersionIndependentUtils} instance used is outdated. In case of missing
+	 * materials please contact the devs
+	 * 
+	 * @param material The {@link VersionIndependentMaterial} the item should be of
+	 * @return {@link ItemStack} of provided type or <code>null</code> if the
+	 *         material has not been implemented by the devs
+	 */
 	public ItemStack getItemStack(VersionIndependentMaterial material) {
 		Material mcMaterial = this.getMaterial(material);
 		if (mcMaterial == null) {
@@ -301,14 +467,31 @@ public abstract class VersionIndependentUtils {
 		return new ItemStack(mcMaterial);
 	}
 
+	/**
+	 * Get an {@link ItemStack} of a player skull
+	 * 
+	 * @return Player skull {@link ItemStack}
+	 */
 	public abstract ItemStack getPlayerSkullitem();
 
+	/**
+	 * Check if a block is a sign
+	 * 
+	 * @param block The block to check
+	 * @return <code>true</code> if the block is a sign
+	 */
 	public boolean isSign(Block block) {
 		return this.isSign(block.getType());
 	}
 
 	public abstract boolean isSign(Material material);
 
+	/**
+	 * Send a message to a player in their action bar
+	 * 
+	 * @param player  The {@link Player} that should receive the message
+	 * @param message The message to send
+	 */
 	public abstract void sendActionBarMessage(Player player, String message);
 
 	/**
@@ -316,6 +499,13 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract int getMinY();
 
+	/**
+	 * Modify the unbreakable parameter of the provided {@link ItemMeta}
+	 * 
+	 * @param meta        The {@link ItemMeta} to change
+	 * @param unbreakable <code>true</code> to make the item unbreakable
+	 * @return the {@link ItemMeta} instance
+	 */
 	public abstract ItemMeta setUnbreakable(ItemMeta meta, boolean unbreakable);
 
 	public ItemStack setUnbreakable(ItemStack item, boolean unbreakable) {
@@ -375,6 +565,12 @@ public abstract class VersionIndependentUtils {
 	 * @return The {@link Entity} or <code>null</code> if not found
 	 */
 	public abstract Entity getEntityByUUID(UUID uuid);
-	
+
+	/**
+	 * Set if the AI should be enabled or disabled on a {@link LivingEntity}
+	 * 
+	 * @param entity The entity
+	 * @param ai     <code>false</code> to disable the ai
+	 */
 	public abstract void setAI(LivingEntity entity, boolean ai);
 }
