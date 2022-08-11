@@ -20,10 +20,10 @@ import net.zeeraa.novacore.spigot.module.modules.gui.callbacks.GUICloseCallback;
  * @author Zeeraa
  */
 public class GUIHolder implements InventoryHolder {
-	private ArrayList<GUICloseCallback> closeCallbacks = new ArrayList<>();
+	private List<GUICloseCallback> closeCallbacks = new ArrayList<>();
 
-	private ArrayList<GUIClickCallback> clickCallbacks = new ArrayList<>();
-	private HashMap<Integer, ArrayList<GUIClickCallback>> slotClickCallbacks = new HashMap<Integer, ArrayList<GUIClickCallback>>();
+	private List<GUIClickCallback> clickCallbacks = new ArrayList<>();
+	private Map<Integer, List<GUIClickCallback>> slotClickCallbacks = new HashMap<Integer, List<GUIClickCallback>>();
 
 	private List<GUIClickCallbackWithEvent> clickEventCallbacks = new ArrayList<>();
 	private Map<Integer, ArrayList<GUIClickCallbackWithEvent>> slotClickEventCallbacks = new HashMap<Integer, ArrayList<GUIClickCallbackWithEvent>>();
@@ -31,18 +31,18 @@ public class GUIHolder implements InventoryHolder {
 	/**
 	 * Get close callback list
 	 * 
-	 * @return {@link ArrayList} with {@link GUICloseCallback}
+	 * @return {@link List} with {@link GUICloseCallback}
 	 */
-	public ArrayList<GUICloseCallback> getCloseCallbacks() {
+	public List<GUICloseCallback> getCloseCallbacks() {
 		return closeCallbacks;
 	}
 
 	/**
 	 * Get click callback list
 	 * 
-	 * @return {@link ArrayList} with {@link GUIClickCallback}
+	 * @return {@link List} with {@link GUIClickCallback}
 	 */
-	public ArrayList<GUIClickCallback> getClickCallbacks() {
+	public List<GUIClickCallback> getClickCallbacks() {
 		return clickCallbacks;
 	}
 
@@ -56,18 +56,18 @@ public class GUIHolder implements InventoryHolder {
 	}
 
 	/**
-	 * Get a {@link HashMap} with slot specific {@link GUIClickCallback}
+	 * Get a {@link Map} with slot specific {@link GUIClickCallback}s
 	 * 
-	 * @return {@link HashMap} with slot specific {@link GUIClickCallback}
+	 * @return {@link Map} with slot specific {@link GUIClickCallback}s
 	 */
-	public HashMap<Integer, ArrayList<GUIClickCallback>> getSlotClickCallbacks() {
+	public Map<Integer, List<GUIClickCallback>> getSlotClickCallbacks() {
 		return slotClickCallbacks;
 	}
 
 	/**
-	 * Get a {@link Map} with slot specific {@link GUIClickCallbackWithEvent}
+	 * Get a {@link Map} with slot specific {@link GUIClickCallbackWithEvent}s
 	 * 
-	 * @return {@link Map} with slot specific {@link GUIClickCallbackWithEvent}
+	 * @return {@link Map} with slot specific {@link GUIClickCallbackWithEvent}s
 	 */
 	public Map<Integer, ArrayList<GUIClickCallbackWithEvent>> getSlotClickEventCallbacks() {
 		return slotClickEventCallbacks;
