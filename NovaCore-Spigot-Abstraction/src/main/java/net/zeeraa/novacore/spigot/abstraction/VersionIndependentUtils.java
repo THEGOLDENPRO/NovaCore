@@ -286,9 +286,9 @@ public abstract class VersionIndependentUtils {
 	/**
 	 * Used to add dyes in a {@link ShapelessRecipe}
 	 * 
-	 * @param recipe     The {@link ShapelessRecipe} to modify
-	 * @param ingredient The ingredient char
-	 * @param color      The {@link DyeColor} to use
+	 * @param recipe The {@link ShapelessRecipe} to modify
+	 * @param count  The amount required
+	 * @param color  The {@link DyeColor} to use
 	 */
 	public abstract void addShapelessRecipeIngredientAsDye(ShapelessRecipe recipe, int count, DyeColor color);
 
