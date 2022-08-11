@@ -568,4 +568,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		tag.setInt("NoAI", ai ? 0 : 1);
 		nmsEntity.f(tag);
 	}
+	
+	@Override
+	public boolean isBed(Material material) {
+		// Faster implementation since 1.8 only have 1 type of bed
+		return material == Material.BED;
+	}
 }

@@ -1,6 +1,8 @@
 package net.zeeraa.novacore.spigot.abstraction;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.DyeColor;
@@ -37,6 +39,27 @@ import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
  */
 public abstract class VersionIndependentUtils {
 	private static VersionIndependentUtils instance;
+	protected static List<String> BED_MATERIALS = new ArrayList<>();
+
+	static {
+		BED_MATERIALS.add("BED");
+		BED_MATERIALS.add("BLACK_BED");
+		BED_MATERIALS.add("BLUE_BED");
+		BED_MATERIALS.add("BROWN_BED");
+		BED_MATERIALS.add("CYAN_BED");
+		BED_MATERIALS.add("GRAY_BED");
+		BED_MATERIALS.add("GREEN_BED");
+		BED_MATERIALS.add("LIGHT_BLUE_BED");
+		BED_MATERIALS.add("LIGHT_GRAY_BED");
+		BED_MATERIALS.add("LIME_BED");
+		BED_MATERIALS.add("MAGENTA_BED");
+		BED_MATERIALS.add("ORANGE_BED");
+		BED_MATERIALS.add("PINK_BED");
+		BED_MATERIALS.add("PURPLE_BED");
+		BED_MATERIALS.add("RED_BED");
+		BED_MATERIALS.add("WHITE_BED");
+		BED_MATERIALS.add("YELLOW_BED");
+	}
 
 	private VersionIndependenceLayerError lastError = VersionIndependenceLayerError.NONE;
 
@@ -573,4 +596,24 @@ public abstract class VersionIndependentUtils {
 	 * @param ai     <code>false</code> to disable the ai
 	 */
 	public abstract void setAI(LivingEntity entity, boolean ai);
+
+	/**
+	 * Check if a block is a bed
+	 * 
+	 * @param block The {@link Block} to check
+	 * @return <code>true</code> if its a bed
+	 */
+	public boolean isBed(Block block) {
+		return this.isBed(block.getType());
+	}
+
+	/**
+	 * Check if a material is a bed
+	 * 
+	 * @param material The {@link Material} to check
+	 * @return <code>true</code> if its a bed
+	 */
+	public boolean isBed(Material material) {
+		return BED_MATERIALS.contains(material.name());
+	}
 }
