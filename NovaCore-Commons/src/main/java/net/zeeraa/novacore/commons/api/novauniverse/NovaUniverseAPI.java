@@ -29,6 +29,7 @@ import net.zeeraa.novacore.commons.async.AsyncManager;
  * @since 2.0.0
  */
 public class NovaUniverseAPI {
+	private static int fetchTimeout = 10 * 1000;
 	private static String mojangAPIProxyBaseURL = "https://mojangapi.novauniverse.net";
 
 	/**
@@ -64,6 +65,24 @@ public class NovaUniverseAPI {
 	}
 
 	/**
+	 * Get the timeout before api request fails
+	 * 
+	 * @return The timeout in milliseconds
+	 */
+	public static int getFetchTimeout() {
+		return fetchTimeout;
+	}
+
+	/**
+	 * Set the timeout before api request fails
+	 * 
+	 * @param fetchTimeout The timeout in milliseconds
+	 */
+	public static void setFetchTimeout(int fetchTimeout) {
+		NovaUniverseAPI.fetchTimeout = fetchTimeout;
+	}
+
+	/**
 	 * Get the {@link MojangPlayerProfile} by the players {@link UUID}
 	 * 
 	 * @param uuid The {@link UUID} of the player
@@ -78,6 +97,10 @@ public class NovaUniverseAPI {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestProperty("accept", "application/json");
 		connection.setRequestProperty("User-Agent", "NovaCore");
+
+		connection.setConnectTimeout(fetchTimeout);
+		connection.setReadTimeout(fetchTimeout);
+
 		connection.connect();
 
 		int code = connection.getResponseCode();
@@ -111,7 +134,8 @@ public class NovaUniverseAPI {
 
 	/**
 	 * Get the {@link MojangPlayerProfile} by the players {@link UUID}
-	 * @param uuid The {@link UUID} of the player
+	 * 
+	 * @param uuid     The {@link UUID} of the player
 	 * @param callback The {@link IAsyncProfileCallback} to call when done
 	 * @since 2.0.0
 	 */
@@ -169,6 +193,10 @@ public class NovaUniverseAPI {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestProperty("accept", "application/json");
 		connection.setRequestProperty("User-Agent", "NovaCore");
+
+		connection.setConnectTimeout(fetchTimeout);
+		connection.setReadTimeout(fetchTimeout);
+
 		connection.connect();
 
 		int code = connection.getResponseCode();
