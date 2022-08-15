@@ -641,3 +641,5 @@ public class NovaCore extends JavaPlugin implements Listener {
 		}
 	}
 }
+
+// UwU
