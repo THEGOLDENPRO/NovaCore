@@ -17,8 +17,10 @@ Downloads can be found here https://jenkins.novauniverse.net/job/NovaCore/
     - [Enchants](#-enchants)
     - [Enchanted books.](#-enchanted-books)
     - [Tracker compasses.](#-tracker-compasses)
-  - [Map Data]()
-  - [Sending Players Back.]()
+  - [Map Data](#-map-data-structure)
+    - [Where to put the files.](#--where-to-put-the-files)
+    - [Map modules.](#--map-modules)
+  - [Sending Players Back](#-sending-players-back-to-the-lobby)
   
 <br>
 
@@ -257,6 +259,245 @@ Some of our games (Survival games and skywars being 2 examples) has a system whe
 	"min_amount": 1,
 	"display_name": "§6§lTracker compass"
 }
+```
+
+<br>
+
+## 🡺 Map data structure
+
+Below is a sample of a map
+
+```json
+{
+	"enabled": true,
+	"map_name": "sample_map",
+	"display_name": "Sample map",
+	"world_file": "sample_map",
+	
+	"description": "§6This is a sample map",
+	
+	"loader": "nova",
+
+	"map_modules": {
+	},
+	
+	"spectator_location": {
+		"x": 0,
+		"y": 67,
+		"z": 0
+	},
+	
+	"starter_locations": [
+	]
+}
+```
+
+map\_name: this is the internal name used by the server
+
+display\_name: this is the name shown to players
+
+world\_file: this is the name of the file in the worlds directory
+
+description: a description shown in the gui map voting
+
+### Loader
+
+loader can be used to change the map loader used. This is only used if you have a custom map loader. To use the built in one set this to **nova**.
+
+### Spectator location
+
+the spectator\_location is the x, y and z coordinates that spectators will spawn at
+
+### Setting up starter locations
+
+The easy way to generate the locations is to dowload both NovaCore and MapDesignToolkit from here <https://jenkins.novauniverse.net/job/NovaCore/lastBuild/> and running it on a local server with the world you are working on the typing the command **/cl -c -v** (-c = center block location -v = verbose) this copies the json object for the location to your clipboard so that you can paste it in the starter\_locations array.
+
+You could also make it manually like this but that takes a lot more time
+
+```json
+{
+	"x": 10.5,
+	"y": 9,
+	"z": -27.5,
+	"yaw": 20,
+	"pitch": 5
+}
+```
+
+## 🡺 🡺 Where to put the files
+
+The data folders can be found in /plugins/GAME/ (for sg this would be /plugins/NovaSurvivalGames)
+
+Loot table json files goes in LootTables
+
+World files foes in Worlds
+
+Map data json files goes in Maps
+
+## 🡺 🡺 Map modules
+
+Here is a list of map modules you can configure. To add a map module place the code from the samples below in the map\_modules json object
+
+#### Preventing building / destroying blocks
+
+```json
+"novacore.mapprotection": {
+	"mode": "WHITELIST",
+	"bypassed_gamemodes": [ "CREATIVE" ],
+
+	"break_whitelist": ["WOOD", "WOOL", "LEAVES", "LEAVES_2", "LOG", "WATER", "WHEAT", "CROPS","HAY_BLOCK", "WORKBENCH"],
+	"place_whitelist": ["WOOD", "WOOL", "LEAVES", "LEAVES_2", "LOG", "FIRE", "WATER", "CROPS","WHEAT", "HAY_BLOCK", "WORKBENCH"]
+}
+```
+
+Materials can be added to the break and place whitelist to allow players to place / break some blocks
+
+#### Chest loot
+
+The following can be used to add loot to chests and enderchests. To disable enderchest loot just remove **ender\_chest\_loot** from the json object
+
+```json
+"novacore.chestloot" : {
+	"chest_loot": "YOUR_LOOT_TABLE_HERE",
+	"ender_chest_loot": "YOUR_SLIGHLY_BETTER_LOOT_TABLE_HERE",
+	"min_refill_time": 240,
+	"max_refill_time": 1000,
+	"announce_refills": true
+}
+```
+
+#### **Grace period**
+
+time is in seconds, warnings will be announced in chat when time reaches the configured values
+
+```json
+"novacore.graceperiod" : {
+	"time": 60,
+	"warnings": [30, 10]
+}
+```
+
+#### Worldborder
+
+center\_x and center\_y is the center
+
+start\_size is the initial size
+
+end\_size is the final size
+
+shrink\_duration and start\_delay is in ticks
+
+WARNING: NEVER USE /worldborder WHILE THE BORDER IS MOVING. THIS MIGHT CAUSE THE BORDER TO MOVE IN AN UNCONTROLLED WAY KILLING A LOT OF PLAYERS
+
+```json
+"novacore.worldborder": {
+	"center_x": 0.5,
+	"center_z": 0.5,
+
+	"start_size": 501,
+
+	"end_size": 155,
+
+	"shrink_duration": 300,
+	"start_delay": 300,
+
+	"damage": 5,
+	"damage_buffer": 2,
+
+	"step_time": 30
+}
+```
+
+#### Hand crafting table
+
+To allow players to right click in the air with a crafting table to open the crafting gui use
+
+```json
+"novacore.handcraftingtable": {}
+```
+
+#### Setting time
+
+Set the initial time with
+
+```json
+"novacore.settime": {
+	"time": 1000
+}
+```
+
+#### Medical supply drops
+
+To randomly spawn red supply drops use the following
+
+```json
+"novauniverse.survivalgames.medicalsupplydrop" : {
+	"loot_table": "YOUR_LOOT_TABLE_HERE",
+	"min_drop_time": 240,
+	"max_drop_time": 1200,
+	"locations": [
+		{
+			"x": 21,
+			"y": 8,
+			"z": -57
+		}
+	]
+}
+```
+
+#### Loot drops
+
+To spawn white loot drops use
+
+```json
+"novacore.lootdrop" : {
+	"loot_table": "YOUR_LOOT_TABLE_HERE",
+	"min_drop_time": 240,
+	"max_drop_time": 1200,
+	"locations": [
+		{
+			"x": -44,
+			"y": 9,
+			"z": -61
+		}
+	]
+}
+```
+
+#### Lock weather
+
+```json
+"novacore.noweather": {}
+```
+
+#### Instantly killing players in the void
+
+```json
+"novacore.instantvoidkill": {
+	"y": 0
+}
+```
+
+#### Prevent jumping on farmland
+
+```json
+"novacore.farmlandprotection": {}
+```
+
+## Sample maps
+
+You can find samples from out rournament here <https://cloud.novauniverse.net/s/YCnXg98yzdwWiZX>
+
+<br>
+
+## 🡺 Sending players back to the lobby
+
+To send players back when the game is over listen to the GameEndEvent and send players back to the main server, note that this event fires instantly after the game ends so you might want to have a BukkitRunnable to delay the sending by 10 - 20 seconds so the players can see who won.
+
+To send players you can either use a plugin message to the bungeecord server or use our util BungeecordUtils like in the example below
+
+```java
+BungeecordUtils.sendToServer(player, "lobby");
 ```
 
 <br>
