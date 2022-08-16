@@ -258,3 +258,7 @@ Some of our games (Survival games and skywars being 2 examples) has a system whe
 	"display_name": "§6§lTracker compass"
 }
 ```
+
+<br>
+
+#### [Return To The Top 🡹](#novacore)
