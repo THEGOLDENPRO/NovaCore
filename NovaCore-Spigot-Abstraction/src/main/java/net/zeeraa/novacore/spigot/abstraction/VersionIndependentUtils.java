@@ -616,4 +616,6 @@ public abstract class VersionIndependentUtils {
 	public boolean isBed(Material material) {
 		return BED_MATERIALS.contains(material.name());
 	}
+	
+	public abstract void setSilent(LivingEntity entity, boolean silent);
 }

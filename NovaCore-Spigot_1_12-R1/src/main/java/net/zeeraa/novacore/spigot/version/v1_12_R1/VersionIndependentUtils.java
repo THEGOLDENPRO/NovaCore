@@ -556,4 +556,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		// Faster implementation since 1.12.2 only have 1 type of bed
 		return material == Material.BED;
 	}
+
+	@Override
+	public void setSilent(LivingEntity entity, boolean silent) {
+		entity.setSilent(silent);
+	}
 }

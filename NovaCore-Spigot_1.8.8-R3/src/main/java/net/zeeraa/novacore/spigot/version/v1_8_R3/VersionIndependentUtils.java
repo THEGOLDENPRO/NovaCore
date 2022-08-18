@@ -568,7 +568,13 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		tag.setInt("NoAI", ai ? 0 : 1);
 		nmsEntity.f(tag);
 	}
-	
+
+	@Override
+	public void setSilent(LivingEntity entity, boolean silent) {
+		// https://www.spigotmc.org/threads/silent-villager.106983/
+		((CraftEntity) entity).getHandle().b(silent);
+	}
+
 	@Override
 	public boolean isBed(Material material) {
 		// Faster implementation since 1.8 only have 1 type of bed
