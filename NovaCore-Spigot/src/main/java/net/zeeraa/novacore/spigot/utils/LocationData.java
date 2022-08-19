@@ -139,13 +139,51 @@ public class LocationData {
 	 * @return A {@link List} with bukkit {@link Location}s
 	 */
 	public static List<Location> toLocations(List<LocationData> locations, World world) {
-		ArrayList<Location> result = new ArrayList<Location>();
+		List<Location> result = new ArrayList<Location>();
 
 		for (LocationData locationData : locations) {
 			result.add(locationData.toLocation(world));
 		}
 
 		return result;
+	}
+
+	/**
+	 * Convert a {@link JSONObject} into a {@link LocationData} object
+	 * 
+	 * @param json The {@link JSONObject} containing location data
+	 * @return The {@link LocationData} object
+	 * @since 2.0.0
+	 */
+	public static LocationData fromJSON(JSONObject json) {
+		double x = 0D;
+		double y = 0D;
+		double z = 0D;
+
+		float yaw = 0F;
+		float pitch = 0F;
+
+		if (json.has("x")) {
+			x = json.getDouble("x");
+		}
+
+		if (json.has("y")) {
+			y = json.getDouble("y");
+		}
+
+		if (json.has("z")) {
+			z = json.getDouble("z");
+		}
+
+		if (json.has("yaw")) {
+			yaw = json.getFloat("yaw");
+		}
+
+		if (json.has("pitch")) {
+			pitch = json.getFloat("pitch");
+		}
+
+		return new LocationData(x, y, z, yaw, pitch);
 	}
 
 	public static double blockCenterLocation(int block) {
