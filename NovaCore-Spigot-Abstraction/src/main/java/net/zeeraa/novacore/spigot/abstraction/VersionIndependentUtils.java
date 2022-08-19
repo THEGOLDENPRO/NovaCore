@@ -43,6 +43,7 @@ public abstract class VersionIndependentUtils {
 
 	static {
 		BED_MATERIALS.add("BED");
+		BED_MATERIALS.add("BED_BLOCK");
 		BED_MATERIALS.add("BLACK_BED");
 		BED_MATERIALS.add("BLUE_BED");
 		BED_MATERIALS.add("BROWN_BED");
