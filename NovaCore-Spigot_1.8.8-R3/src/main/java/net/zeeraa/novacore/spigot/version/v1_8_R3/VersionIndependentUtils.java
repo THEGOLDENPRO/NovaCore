@@ -577,7 +577,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public boolean isBed(Material material) {
-		// Faster implementation since 1.8 only have 1 type of bed
-		return material == Material.BED_BLOCK;
+		// Faster implementation since 1.8 only have 2 types of bed
+		return material == Material.BED_BLOCK || material == Material.BED;
 	}
 }

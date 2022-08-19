@@ -550,11 +550,11 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public void setAI(LivingEntity entity, boolean ai) {
 		entity.setAI(ai);
 	}
-	
+
 	@Override
 	public boolean isBed(Material material) {
-		// Faster implementation since 1.12.2 only have 1 type of bed
-		return material == Material.BED_BLOCK;
+		// Faster implementation since 1.12.2 only have 2 types of bed
+		return material == Material.BED_BLOCK || material == Material.BED;
 	}
 
 	@Override
