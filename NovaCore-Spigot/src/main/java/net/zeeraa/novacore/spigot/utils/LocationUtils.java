@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.util.Vector;
 import org.json.JSONObject;
 
@@ -323,5 +324,16 @@ public class LocationUtils {
 		newLocation.setZ(LocationUtils.blockCenter(newLocation.getBlockZ()));
 
 		return newLocation;
+	}
+
+	/**
+	 * Modify a location by adding the values from a {@link BlockFace}
+	 * 
+	 * @param location  The {@link Location} to modify
+	 * @param blockFace The {@link BlockFace} to apply
+	 * @return Modified location
+	 */
+	public static Location addFaceMod(Location location, BlockFace blockFace) {
+		return location.add(blockFace.getModX(), blockFace.getModY(), blockFace.getModZ());
 	}
 }
