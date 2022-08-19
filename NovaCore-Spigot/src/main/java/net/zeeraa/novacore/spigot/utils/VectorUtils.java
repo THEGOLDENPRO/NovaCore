@@ -44,4 +44,11 @@ public class VectorUtils {
 
 		return new Vector(x, y, z);
 	}
+
+	/**
+	 * @return A vector with all values set to 0
+	 */
+	public static Vector getEmptyVector() {
+		return new Vector(0D, 0D, 0D);
+	}
 }
