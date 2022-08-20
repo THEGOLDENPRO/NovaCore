@@ -344,6 +344,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case FIZZ:
 			return Sound.BLOCK_FIRE_EXTINGUISH;
+			
+		case ENDERMAN_TELEPORT:
+			return Sound.ENTITY_ENDERMEN_TELEPORT;
 
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_SOUND);
