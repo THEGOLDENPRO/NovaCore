@@ -151,7 +151,6 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract ItemStack getItemInMainHand(Player player);
 
-	public abstract Color getColorByChatColor(ChatColor color);
 
 	/**
 	 * Set the item in a players main hand
