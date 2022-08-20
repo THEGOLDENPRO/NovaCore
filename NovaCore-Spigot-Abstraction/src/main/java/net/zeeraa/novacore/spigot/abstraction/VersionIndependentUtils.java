@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -153,6 +150,8 @@ public abstract class VersionIndependentUtils {
 	 * @return {@link ItemStack} from the players main hand
 	 */
 	public abstract ItemStack getItemInMainHand(Player player);
+
+	public abstract Color getColorByChatColor(ChatColor color);
 
 	/**
 	 * Set the item in a players main hand
