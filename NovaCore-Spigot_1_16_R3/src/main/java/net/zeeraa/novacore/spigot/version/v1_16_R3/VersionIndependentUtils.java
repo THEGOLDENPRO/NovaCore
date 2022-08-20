@@ -2,11 +2,8 @@ package net.zeeraa.novacore.spigot.version.v1_16_R3;
 
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
@@ -80,6 +77,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public ItemStack getItemInMainHand(Player player) {
 		return player.getInventory().getItemInMainHand();
 	}
+
+
 
 	@Override
 	public ItemStack getItemInOffHand(Player player) {
