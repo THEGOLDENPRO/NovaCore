@@ -6,33 +6,34 @@ import org.bukkit.DyeColor;
 
 public class ColorUtils {
     public static DyeColor getDyeColorByColor(Color color) {
-        if (color.equals(Color.WHITE)) {
+        int rgb = color.asRGB();
+        if (rgb == Color.WHITE.asRGB()) {
             return DyeColor.WHITE;
-        } else if (color.equals(Color.SILVER)) {
+        } else if (rgb == Color.SILVER.asRGB()) {
             return DyeColor.SILVER;
-        } else if (color.equals(Color.GRAY)) {
+        } else if (rgb == Color.GRAY.asRGB()) {
             return DyeColor.GRAY;
-        } else if (color.equals(Color.BLACK)) {
+        } else if (rgb == Color.BLACK.asRGB()) {
             return DyeColor.BLACK;
-        } else if (color.equals(Color.RED) || color.equals(Color.MAROON)) {
+        } else if (rgb == Color.RED.asRGB() || rgb ==  Color.MAROON.asRGB()) {
             return DyeColor.RED;
-        } else if (color.equals(Color.YELLOW) || color.equals(Color.OLIVE)) {
+        } else if (rgb == Color.YELLOW.asRGB() || rgb ==  Color.OLIVE.asRGB()) {
             return DyeColor.YELLOW;
-        } else if (color.equals(Color.LIME)) {
+        } else if (rgb == Color.LIME.asRGB()) {
             return DyeColor.LIME;
-        } else if (color.equals(Color.GREEN)) {
+        } else if (rgb == Color.GREEN.asRGB()) {
             return DyeColor.GREEN;
-        } else if (color.equals(Color.AQUA)) {
+        } else if (rgb == Color.AQUA.asRGB()) {
             return DyeColor.LIGHT_BLUE;
-        } else if (color.equals(Color.TEAL)) {
+        } else if (rgb == Color.TEAL.asRGB()) {
             return DyeColor.CYAN;
-        } else if (color.equals(Color.BLUE) || color.equals(Color.NAVY)) {
+        } else if (rgb == Color.BLUE.asRGB() || rgb ==  Color.NAVY.asRGB()) {
             return DyeColor.BLUE;
-        } else if (color.equals(Color.FUCHSIA)) {
+        } else if (rgb == Color.FUCHSIA.asRGB()) {
             return DyeColor.PINK;
-        } else if (color.equals(Color.PURPLE)) {
+        } else if (rgb == Color.PURPLE.asRGB()) {
             return DyeColor.PURPLE;
-        } else if (color.equals(Color.ORANGE)) {
+        } else if (rgb == Color.ORANGE.asRGB()) {
             return DyeColor.ORANGE;
         } else {
             return DyeColor.WHITE;
