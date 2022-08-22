@@ -169,8 +169,8 @@ public class VectorArea {
 		List<Vector> vectors = new ArrayList<Vector>();
 
 		for (int x = position1.getBlockX(); x <= position2.getBlockX(); x++) {
-			for (int y = position1.getBlockX(); y <= position2.getBlockX(); y++) {
-				for (int z = position1.getBlockX(); z <= position2.getBlockX(); z++) {
+			for (int y = position1.getBlockY(); y <= position2.getBlockY(); y++) {
+				for (int z = position1.getBlockZ(); z <= position2.getBlockZ(); z++) {
 					vectors.add(new Vector(x, y, z));
 				}
 			}
