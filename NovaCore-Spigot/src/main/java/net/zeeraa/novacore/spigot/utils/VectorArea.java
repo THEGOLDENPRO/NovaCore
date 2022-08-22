@@ -160,6 +160,26 @@ public class VectorArea {
 	}
 
 	/**
+	 * Get a list of all block within the {@link VectorArea} as a {@link List} of
+	 * {@link Vector}s
+	 * 
+	 * @return {@link List} with {@link Vector}s within
+	 */
+	public List<Vector> getAllVectors() {
+		List<Vector> vectors = new ArrayList<Vector>();
+
+		for (int x = position1.getBlockX(); x <= position2.getBlockX(); x++) {
+			for (int y = position1.getBlockX(); y <= position2.getBlockX(); y++) {
+				for (int z = position1.getBlockX(); z <= position2.getBlockX(); z++) {
+					vectors.add(new Vector(x, y, z));
+				}
+			}
+		}
+
+		return vectors;
+	}
+
+	/**
 	 * Get the amount of blocks this {@link VectorArea} contains. This inludes air
 	 * blocks
 	 * 
