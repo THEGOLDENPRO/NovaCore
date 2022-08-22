@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.utils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
+import org.bukkit.material.Dye;
 
 public class ColorUtils {
     public static DyeColor getDyeColorByColor(Color color) {
@@ -40,7 +41,40 @@ public class ColorUtils {
         }
     }
     public static DyeColor getDyeColorByChatColor(ChatColor color) {
-        return getDyeColorByColor(getColorByChatColor(color));
+        switch (color) {
+            case BLACK:
+                return DyeColor.BLACK;
+            case DARK_BLUE:
+            case BLUE:
+                return DyeColor.BLUE;
+            case DARK_GREEN:
+                return DyeColor.GREEN;
+            case DARK_AQUA:
+                return DyeColor.CYAN;
+            case DARK_RED:
+            case RED:
+                return DyeColor.RED;
+            case DARK_PURPLE:
+                return DyeColor.PURPLE;
+            case GOLD:
+                return DyeColor.ORANGE;
+            case GRAY:
+                return DyeColor.SILVER;
+            case DARK_GRAY:
+                return DyeColor.GRAY;
+            case GREEN:
+                return DyeColor.LIME;
+            case AQUA:
+                return DyeColor.LIGHT_BLUE;
+            case LIGHT_PURPLE:
+                return DyeColor.PINK;
+            case YELLOW:
+                return DyeColor.YELLOW;
+            case WHITE:
+                return DyeColor.WHITE;
+            default:
+                return DyeColor.WHITE;
+        }
     }
     public static Color getColorByDyeColor(DyeColor color) {
         switch (color) {
@@ -78,6 +112,41 @@ public class ColorUtils {
         }
     }
     public static Color getColorByChatColor(ChatColor color) {
-        return getColorByDyeColor(getDyeColorByChatColor(color));
+        switch (color) {
+            case BLACK:
+                return Color.BLACK;
+            case DARK_BLUE:
+                return Color.NAVY;
+            case BLUE:
+                return Color.BLUE;
+            case DARK_GREEN:
+                return Color.GREEN;
+            case DARK_AQUA:
+                return Color.TEAL;
+            case DARK_RED:
+                return Color.MAROON;
+            case RED:
+                return Color.RED;
+            case DARK_PURPLE:
+                return Color.PURPLE;
+            case GOLD:
+                return Color.ORANGE;
+            case GRAY:
+                return Color.SILVER;
+            case DARK_GRAY:
+                return Color.GRAY;
+            case GREEN:
+                return Color.LIME;
+            case AQUA:
+                return Color.AQUA;
+            case LIGHT_PURPLE:
+                return Color.FUCHSIA;
+            case YELLOW:
+                return Color.YELLOW;
+            case WHITE:
+                return Color.WHITE;
+            default:
+                return Color.WHITE;
+        }
     }
 }
