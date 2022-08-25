@@ -87,7 +87,7 @@ public abstract class NovaCommandBase {
 	}
 
 	/**
-	 * FSet the aliases for this command.
+	 * Set the aliases for this command.
 	 * {@link NovaCommandBase#generateAliasList(String...)} can be used to create
 	 * the list in one line
 	 * 
@@ -95,6 +95,16 @@ public abstract class NovaCommandBase {
 	 */
 	protected void setAliases(List<String> aliases) {
 		this.aliases = aliases;
+	}
+	
+	/**
+	 * Set the aliases for this command.
+	 * 
+	 * @param aliases The aliases to use
+	 * @since 2.0.0
+	 */
+	protected void setAliases(String... aliases) {
+		this.setAliases(NovaCommand.generateAliasList(aliases));
 	}
 
 	/**
