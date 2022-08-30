@@ -42,7 +42,7 @@ public class GlowManager extends NovaModule {
 	 * 
 	 * @param entity   entity to make glow
 	 * @param receiver player which will see the entity glowing
-	 * @throws ReflectiveOperationException
+	 * @throws ReflectiveOperationException can be thrown if the version is not supported
 	 */
 	public void setGlowing(Entity entity, Player receiver) throws ReflectiveOperationException {
 		if (!enabled) {
@@ -57,7 +57,7 @@ public class GlowManager extends NovaModule {
 	 * @param entity   entity to make glow
 	 * @param receiver player which will see the entity glowing
 	 * @param color    color of the glowing effect
-	 * @throws ReflectiveOperationException
+	 * @throws ReflectiveOperationException can be thrown if the version is not supported
 	 */
 	public void setGlowing(Entity entity, Player receiver, ChatColor color) throws ReflectiveOperationException {
 		if (!enabled) {
@@ -72,7 +72,7 @@ public class GlowManager extends NovaModule {
 	 * @param entityID entity id of the entity to make glow
 	 * @param teamID   internal string used to add the entity to a team
 	 * @param receiver player which will see the entity glowing
-	 * @throws ReflectiveOperationException
+	 * @throws ReflectiveOperationException can be thrown if the version is not supported
 	 */
 	public void setGlowing(int entityID, String teamID, Player receiver) throws ReflectiveOperationException {
 		if (!enabled) {
@@ -88,7 +88,7 @@ public class GlowManager extends NovaModule {
 	 * @param teamID   internal string used to add the entity to a team
 	 * @param receiver player which will see the entity glowing
 	 * @param color    color of the glowing effect
-	 * @throws ReflectiveOperationException
+	 * @throws ReflectiveOperationException can be thrown if the version is not supported
 	 */
 	public void setGlowing(int entityID, String teamID, Player receiver, ChatColor color) throws ReflectiveOperationException {
 		if (!enabled) {
@@ -109,7 +109,7 @@ public class GlowManager extends NovaModule {
 	 *                   See <a href=
 	 *                   "https://wiki.vg/Entity_metadata#Entity">wiki.vg</a> for
 	 *                   more informations.
-	 * @throws ReflectiveOperationException
+	 * @throws ReflectiveOperationException can be thrown if the version is not supported
 	 */
 	public void setGlowing(int entityID, String teamID, Player receiver, ChatColor color, byte otherFlags) throws ReflectiveOperationException {
 		if (!enabled) {
@@ -127,7 +127,7 @@ public class GlowManager extends NovaModule {
 	 * 
 	 * @param entity   entity to remove glowing effect from
 	 * @param receiver player which will no longer see the glowing effect
-	 * @throws ReflectiveOperationException
+	 * @throws ReflectiveOperationException can be thrown if the version is not supported
 	 */
 	public void unsetGlowing(Entity entity, Player receiver) throws ReflectiveOperationException {
 		if (!enabled) {
@@ -145,7 +145,7 @@ public class GlowManager extends NovaModule {
 	 * 
 	 * @param entityID entity id of the entity to remove glowing effect from
 	 * @param receiver player which will no longer see the glowing effect
-	 * @throws ReflectiveOperationException
+	 * @throws ReflectiveOperationException can be thrown if the version is not supported
 	 */
 	public void unsetGlowing(int entityID, Player receiver) throws ReflectiveOperationException {
 		if (!enabled) {
