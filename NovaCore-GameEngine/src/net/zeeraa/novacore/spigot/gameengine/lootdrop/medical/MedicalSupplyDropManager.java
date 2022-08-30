@@ -17,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -62,7 +63,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 		chests = new ArrayList<MedicalSupplyDrop>();
 		dropEffects = new ArrayList<MedicalSupplyDropEffect>();
 		particleEffects = new HashMap<UUID, LootdropParticleEffect>();
-		
+
 		this.defaultSpawnTimeTicks = 60 * 20 * 2;
 
 		this.particleTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
@@ -71,7 +72,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 				particleEffects.values().forEach(e -> e.update());
 			}
 		}, 2L);
-		
+
 		this.removeTask = new SimpleTask(NovaCore.getInstance(), () -> {
 			dropEffects.removeIf(e -> e.isCompleted());
 		}, 20L);
@@ -89,11 +90,11 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 		Task.tryStopTask(particleTask);
 		this.destroy();
 	}
-	
+
 	public int getDefaultSpawnTimeTicks() {
 		return defaultSpawnTimeTicks;
 	}
-	
+
 	public void setDefaultSpawnTimeTicks(int defaultSpawnTimeTicks) {
 		this.defaultSpawnTimeTicks = defaultSpawnTimeTicks;
 	}
@@ -300,7 +301,14 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onBlockPlace(BlockPlaceEvent e) {
+		if (dropEffects.stream().filter(ef -> ef.getWorld().equals(e.getBlock().getWorld())).filter(ef -> LocationUtils.isBlockXZMatching(ef.getLocation(), e.getBlock().getLocation())).findAny().isPresent()) {
+			e.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent e) {
 		for (MedicalSupplyDropEffect effect : dropEffects) {
 			for (Location location : effect.getRemovedBlocks().keySet()) {

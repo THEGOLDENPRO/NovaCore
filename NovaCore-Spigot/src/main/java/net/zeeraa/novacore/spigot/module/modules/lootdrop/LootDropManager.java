@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -371,7 +372,14 @@ public class LootDropManager extends NovaModule implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onBlockPlace(BlockPlaceEvent e) {
+		if (dropEffects.stream().filter(ef -> ef.getWorld().equals(e.getBlock().getWorld())).filter(ef -> LocationUtils.isBlockXZMatching(ef.getLocation(), e.getBlock().getLocation())).findAny().isPresent()) {
+			e.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent e) {
 		for (LootDropEffect effect : dropEffects) {
 			for (Location location : effect.getRemovedBlocks().keySet()) {

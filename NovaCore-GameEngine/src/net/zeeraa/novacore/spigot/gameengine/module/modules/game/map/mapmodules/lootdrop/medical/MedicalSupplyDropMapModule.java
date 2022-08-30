@@ -71,7 +71,7 @@ public class MedicalSupplyDropMapModule extends MapModule {
 			this.timeToSpawn = json.getInt("time_to_descend");
 		}
 
-		trigger = new DelayedGameTrigger("novauniverse.survivalgames.medicalsupplydrop", minDropTime, new TriggerCallback() {
+		trigger = new DelayedGameTrigger("novacore.medicalsupplydrop", minDropTime, new TriggerCallback() {
 			@Override
 			public void run(GameTrigger trigger2, TriggerFlag reason) {
 				onTrigger(reason);

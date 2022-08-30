@@ -336,4 +336,26 @@ public class LocationUtils {
 	public static Location addFaceMod(Location location, BlockFace blockFace) {
 		return location.add(blockFace.getModX(), blockFace.getModY(), blockFace.getModZ());
 	}
+
+	/**
+	 * Check if 2 {@link Location}s has the same X and Z block location
+	 * 
+	 * @param location1 First location to compare
+	 * @param location2 Second location to compare
+	 * @return <code>true</code> if block x and z is matching
+	 */
+	public static boolean isBlockXZMatching(Location location1, Location location2) {
+		return location1.getBlockX() == location2.getBlockX() && location1.getBlockZ() == location2.getBlockZ();
+	}
+
+	/**
+	 * Check if 2 {@link Vector}s has the same X and Z block location
+	 * 
+	 * @param vector1 First vector to compare
+	 * @param vector2 Second vector to compare
+	 * @return <code>true</code> if block x and z is matching
+	 */
+	public static boolean isBlockXZMatching(Vector vector1, Vector vector2) {
+		return vector1.getBlockX() == vector2.getBlockX() && vector1.getBlockZ() == vector2.getBlockZ();
+	}
 }
