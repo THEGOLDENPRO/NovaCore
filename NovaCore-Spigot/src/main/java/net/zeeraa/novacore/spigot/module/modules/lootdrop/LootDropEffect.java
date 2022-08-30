@@ -155,9 +155,9 @@ public class LootDropEffect implements Runnable {
 		double y = location.getBlockY();
 		double maxHeight = location.getWorld().getMaxHeight();
 		
-		double offset = MathUtil.lerp(maxHeight, y, progress);
+		double offset = MathUtil.lerp(y, maxHeight, progress);
 
-		return new Location(location.getWorld(), location.getX(), (double) 2 + offset, location.getZ());
+		return new Location(location.getWorld(), location.getX(), (double) offset, location.getZ());
 	}
 
 	public World getWorld() {
