@@ -48,8 +48,9 @@ public class LootDropManager extends NovaModule implements Listener {
 	private LootDropSpawnMessage spawnMessage;
 
 	private Task particleTask;
+	private Task removeTask;
 
-	private int taskId;
+	private int defaultSpawnTimeTicks;
 
 	private String lootDropTexture;
 
@@ -62,7 +63,7 @@ public class LootDropManager extends NovaModule implements Listener {
 	public static LootDropManager getInstance() {
 		return instance;
 	}
-	
+
 	public LootDropManager() {
 		super("NovaCore.LootDropManager");
 	}
@@ -94,8 +95,9 @@ public class LootDropManager extends NovaModule implements Listener {
 		this.dropEffects = new ArrayList<LootDropEffect>();
 		this.spawnMessage = new DefaultLootDropSpawnMessage();
 		this.particleEffects = new HashMap<UUID, LootdropParticleEffect>();
-		this.taskId = -1;
 		this.lootDropTexture = DEFAULT_LOOT_DROP_TEXTURE;
+
+		this.defaultSpawnTimeTicks = 60 * 20 * 2;
 
 		this.particleTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
@@ -104,21 +106,15 @@ public class LootDropManager extends NovaModule implements Listener {
 			}
 		}, 2L);
 
+		this.removeTask = new SimpleTask(NovaCore.getInstance(), () -> {
+			dropEffects.removeIf(e -> e.isCompleted());
+		}, 20L);
+
 	}
 
 	@Override
 	public void onEnable() {
-		taskId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				for (int i = dropEffects.size(); i > 0; i--) {
-					if (dropEffects.get(i - 1).isCompleted()) {
-						dropEffects.remove(i - 1);
-					}
-				}
-			}
-		}, 20L, 20L);
-
+		removeTask.start();
 		particleTask.start();
 	}
 
@@ -128,10 +124,16 @@ public class LootDropManager extends NovaModule implements Listener {
 		this.destroy();
 	}
 
+	public int getDefaultSpawnTimeTicks() {
+		return defaultSpawnTimeTicks;
+	}
+
+	public void setDefaultSpawnTimeTicks(int defaultSpawnTimeTicks) {
+		this.defaultSpawnTimeTicks = defaultSpawnTimeTicks;
+	}
+
 	public void destroy() {
-		if (taskId != -1) {
-			Bukkit.getScheduler().cancelTask(taskId);
-		}
+		Task.tryStopTask(removeTask);
 
 		dropEffects.forEach(effect -> effect.undoBlocks());
 

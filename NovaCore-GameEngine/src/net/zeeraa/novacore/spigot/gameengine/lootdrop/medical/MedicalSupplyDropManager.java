@@ -44,8 +44,9 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	private Map<UUID, LootdropParticleEffect> particleEffects;
 
 	private Task particleTask;
+	private Task removeTask;
 
-	private int taskId;
+	private int defaultSpawnTimeTicks;
 
 	public static MedicalSupplyDropManager getInstance() {
 		return instance;
@@ -61,7 +62,8 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 		chests = new ArrayList<MedicalSupplyDrop>();
 		dropEffects = new ArrayList<MedicalSupplyDropEffect>();
 		particleEffects = new HashMap<UUID, LootdropParticleEffect>();
-		taskId = -1;
+		
+		this.defaultSpawnTimeTicks = 60 * 20 * 2;
 
 		this.particleTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
@@ -69,35 +71,34 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 				particleEffects.values().forEach(e -> e.update());
 			}
 		}, 2L);
+		
+		this.removeTask = new SimpleTask(NovaCore.getInstance(), () -> {
+			dropEffects.removeIf(e -> e.isCompleted());
+		}, 20L);
 	}
 
 	@Override
 	public void onEnable() {
-		taskId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				for (int i = dropEffects.size(); i > 0; i--) {
-					if (dropEffects.get(i - 1).isCompleted()) {
-						dropEffects.remove(i - 1);
-					}
-				}
-			}
-		}, 20L, 20L);
-
+		removeTask.start();
 		particleTask.start();
 	}
 
 	@Override
 	public void onDisable() {
+		Task.tryStopTask(removeTask);
 		Task.tryStopTask(particleTask);
 		this.destroy();
 	}
+	
+	public int getDefaultSpawnTimeTicks() {
+		return defaultSpawnTimeTicks;
+	}
+	
+	public void setDefaultSpawnTimeTicks(int defaultSpawnTimeTicks) {
+		this.defaultSpawnTimeTicks = defaultSpawnTimeTicks;
+	}
 
 	public void destroy() {
-		if (taskId != -1) {
-			Bukkit.getScheduler().cancelTask(taskId);
-		}
-
 		dropEffects.forEach(effect -> effect.undoBlocks());
 
 		particleEffects.clear();
@@ -108,11 +109,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	}
 
 	public void removeFromWorld(World world) {
-		for (MedicalSupplyDropEffect effect : dropEffects) {
-			if (effect.getWorld().equals(world)) {
-				effect.undoBlocks();
-			}
-		}
+		dropEffects.stream().filter(e -> e.getWorld().equals(world)).forEach(e -> e.undoBlocks());
 
 		List<UUID> removeParticles = new ArrayList<UUID>();
 

@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.gameengine.lootdrop.medical;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -14,22 +15,34 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
+import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
+import net.zeeraa.novacore.spigot.module.ModuleManager;
+import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 
 public class MedicalSupplyDropEffect implements Runnable {
 	private Location location;
 	private String lootTable;
 
-	private int taskId;
 	private boolean completed;
-	private double y;
 
-	private HashMap<Location, Material> removedBlocks;
+	private Task task;
+	private int ticksLeft;
+
+	private Map<Location, Material> removedBlocks;
 
 	public Location getFireworkLocation() {
-		return new Location(location.getWorld(), location.getX(), (double) y, location.getZ());
+		MedicalSupplyDropManager module = (MedicalSupplyDropManager) ModuleManager.getModule(MedicalSupplyDropManager.class);
+
+		double progress = ((double) ticksLeft) / ((double) (module == null ? 60 * 20 * 2 : module.getDefaultSpawnTimeTicks()));
+		double y = location.getBlockY();
+		double maxHeight = location.getWorld().getMaxHeight();
+		double dist = maxHeight - y;
+		double offset = dist * progress;
+
+		return new Location(location.getWorld(), location.getX(), (double) 2 + offset, location.getZ());
 	}
 
 	public MedicalSupplyDropEffect(Location location, String lootTable) {
@@ -37,18 +50,25 @@ public class MedicalSupplyDropEffect implements Runnable {
 		location.setY(location.getBlockY());
 		location.setZ(location.getBlockZ() + 0.5);
 
-		this.taskId = -1;
+		this.task = new SimpleTask(NovaCore.getInstance(), this, 0L);
 
 		this.completed = false;
+
+		MedicalSupplyDropManager module = (MedicalSupplyDropManager) ModuleManager.getModule(MedicalSupplyDropManager.class);
+		this.ticksLeft = module == null ? 20 * 2 : module.getDefaultSpawnTimeTicks();
 
 		this.lootTable = lootTable;
 
 		this.removedBlocks = new HashMap<Location, Material>();
 		this.location = location;
 
-		this.y = location.getWorld().getMaxHeight();
+		Task.tryStartTask(task);
 
-		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), this, 5L, 5L);
+		// this.y = location.getWorld().getMaxHeight();
+
+		// this.taskId =
+		// Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), this,
+		// 5L, 5L);
 
 		for (int x = (int) location.getBlockX() - 1; x <= location.getBlockX() + 1; x++) {
 			for (int z = location.getBlockZ() - 1; z <= location.getBlockZ() + 1; z++) {
@@ -74,7 +94,7 @@ public class MedicalSupplyDropEffect implements Runnable {
 
 	@Override
 	public void run() {
-		if (this.y <= this.location.getBlockY()) {
+		if (ticksLeft <= 0) {
 			cancelTask();
 
 			Firework fw = (Firework) this.location.getWorld().spawnEntity(this.location, EntityType.FIREWORK);
@@ -96,35 +116,34 @@ public class MedicalSupplyDropEffect implements Runnable {
 			return;
 		}
 
-		Location fireworkLocation = new Location(this.location.getWorld(), this.location.getX(), this.y, this.location.getZ());
+		if (ticksLeft % 4 == 0) {
+			Location fireworkLocation = getFireworkLocation(); // new Location(this.location.getWorld(), 2 + this.location.getX(), offset,
+																// this.location.getZ());
 
-		Firework fw = (Firework) fireworkLocation.getWorld().spawnEntity(fireworkLocation, EntityType.FIREWORK);
-		FireworkMeta fwm = fw.getFireworkMeta();
+			Firework fw = (Firework) fireworkLocation.getWorld().spawnEntity(fireworkLocation, EntityType.FIREWORK);
+			FireworkMeta fwm = fw.getFireworkMeta();
 
-		fwm.setPower(1);
-		fwm.addEffect(FireworkEffect.builder().withColor(Color.RED).trail(true).build());
+			fwm.setPower(1);
+			fwm.addEffect(FireworkEffect.builder().withColor(Color.RED).trail(true).build());
 
-		fw.setFireworkMeta(fwm);
+			fw.setFireworkMeta(fwm);
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				fw.detonate();
-			}
-		}, 2L);
-
-		y -= 1;
+			Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					fw.detonate();
+				}
+			}, 2L);
+		}
+		ticksLeft--;
 	}
 
 	public void cancelTask() {
-		if (taskId != -1) {
-			Bukkit.getScheduler().cancelTask(taskId);
-			taskId = -1;
-		}
+		Task.tryStopTask(task);
 	}
 
 	public void stop() {
-		Bukkit.getScheduler().cancelTask(taskId);
+		Task.tryStopTask(task);
 		undoBlocks();
 		completed = true;
 	}
@@ -156,7 +175,7 @@ public class MedicalSupplyDropEffect implements Runnable {
 		return location.getWorld();
 	}
 
-	public HashMap<Location, Material> getRemovedBlocks() {
+	public Map<Location, Material> getRemovedBlocks() {
 		return removedBlocks;
 	}
 }
