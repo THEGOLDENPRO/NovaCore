@@ -15,6 +15,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import net.zeeraa.novacore.commons.tasks.Task;
+import net.zeeraa.novacore.commons.utils.MathUtil;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
@@ -28,6 +29,8 @@ public class LootDropEffect implements Runnable {
 
 	private Task task;
 	private int ticksLeft;
+
+	private int startTime;
 
 	private Map<Location, Material> removedBlocks;
 
@@ -44,7 +47,8 @@ public class LootDropEffect implements Runnable {
 		this.location = location;
 
 		LootDropManager module = (LootDropManager) ModuleManager.getModule(LootDropManager.class);
-		this.ticksLeft = module == null ? 20 * 2 : module.getDefaultSpawnTimeTicks();
+		startTime = module == null ? 20 * 2 : module.getDefaultSpawnTimeTicks();
+		this.ticksLeft = startTime;
 
 		this.task = new SimpleTask(NovaCore.getInstance(), this, 0L);
 		Task.tryStartTask(task);
@@ -147,13 +151,11 @@ public class LootDropEffect implements Runnable {
 	}
 
 	public Location getFireworkLocation() {
-		LootDropManager module = (LootDropManager) ModuleManager.getModule(LootDropManager.class);
-
-		double progress = ((double) ticksLeft) / ((double) (module == null ? 60 * 20 * 2 : module.getDefaultSpawnTimeTicks()));
+		double progress = ((double) ticksLeft) / ((double) startTime);
 		double y = location.getBlockY();
 		double maxHeight = location.getWorld().getMaxHeight();
-		double dist = maxHeight - y;
-		double offset = dist * progress;
+		
+		double offset = MathUtil.lerp(maxHeight, y, progress);
 
 		return new Location(location.getWorld(), location.getX(), (double) 2 + offset, location.getZ());
 	}
