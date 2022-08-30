@@ -3,7 +3,6 @@ package net.zeeraa.novacore.spigot.utils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.bukkit.material.Dye;
 
 public class ColorUtils {
     public static DyeColor getDyeColorByColor(Color color) {

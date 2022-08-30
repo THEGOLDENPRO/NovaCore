@@ -60,6 +60,7 @@ import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
 import net.zeeraa.novacore.spigot.module.modules.chestloot.ChestLootManager;
 import net.zeeraa.novacore.spigot.module.modules.compass.CompassTracker;
 import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
+import net.zeeraa.novacore.spigot.module.modules.glowmanager.GlowManager;
 import net.zeeraa.novacore.spigot.module.modules.gui.GUIManager;
 import net.zeeraa.novacore.spigot.module.modules.jumppad.JumpPadManager;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
@@ -477,6 +478,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		ModuleManager.loadModule(this, CompassTracker.class);
 		ModuleManager.loadModule(this, NetherBoardScoreboard.class);
 		ModuleManager.loadModule(this, JumpPadManager.class);
+		ModuleManager.loadModule(this, GlowManager.class);
 
 		// Modules that might be enabled depending on the configuration
 		ModuleManager.loadModule(this, CustomItemManager.class);
