@@ -14,16 +14,23 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
+import net.zeeraa.novacore.commons.tasks.Task;
+import net.zeeraa.novacore.commons.utils.MathUtil;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
+import net.zeeraa.novacore.spigot.module.ModuleManager;
+import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 
 public class LootDropEffect implements Runnable {
 	private Location location;
 	private String lootTable;
 
-	private int taskId;
 	private boolean completed;
-	private double y;
+
+	private Task task;
+	private int ticksLeft;
+
+	private int startTime;
 
 	private Map<Location, Material> removedBlocks;
 
@@ -32,8 +39,6 @@ public class LootDropEffect implements Runnable {
 		location.setY(location.getBlockY());
 		location.setZ(location.getBlockZ() + 0.5);
 
-		this.taskId = -1;
-
 		this.completed = false;
 
 		this.lootTable = lootTable;
@@ -41,9 +46,12 @@ public class LootDropEffect implements Runnable {
 		this.removedBlocks = new HashMap<Location, Material>();
 		this.location = location;
 
-		this.y = location.getWorld().getMaxHeight();
+		LootDropManager module = (LootDropManager) ModuleManager.getModule(LootDropManager.class);
+		startTime = module == null ? 20 * 2 : module.getDefaultSpawnTimeTicks();
+		this.ticksLeft = startTime;
 
-		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), this, 5L, 5L);
+		this.task = new SimpleTask(NovaCore.getInstance(), this, 0L);
+		Task.tryStartTask(task);
 
 		for (int x = (int) location.getBlockX() - 1; x <= location.getBlockX() + 1; x++) {
 			for (int z = location.getBlockZ() - 1; z <= location.getBlockZ() + 1; z++) {
@@ -64,7 +72,7 @@ public class LootDropEffect implements Runnable {
 
 	@Override
 	public void run() {
-		if (this.y <= this.location.getBlockY()) {
+		if (ticksLeft <= 0) {
 			cancelTask();
 
 			Firework fw = (Firework) this.location.getWorld().spawnEntity(this.location, EntityType.FIREWORK);
@@ -86,35 +94,34 @@ public class LootDropEffect implements Runnable {
 			return;
 		}
 
-		Location fireworkLocation = new Location(this.location.getWorld(), this.location.getX(), this.y, this.location.getZ());
+		if (ticksLeft % 4 == 0) {
+			Location fireworkLocation = getFireworkLocation();
 
-		Firework fw = (Firework) fireworkLocation.getWorld().spawnEntity(fireworkLocation, EntityType.FIREWORK);
-		FireworkMeta fwm = fw.getFireworkMeta();
+			Firework fw = (Firework) fireworkLocation.getWorld().spawnEntity(fireworkLocation, EntityType.FIREWORK);
+			FireworkMeta fwm = fw.getFireworkMeta();
 
-		fwm.setPower(1);
-		fwm.addEffect(FireworkEffect.builder().withColor(Color.YELLOW).trail(true).build());
+			fwm.setPower(1);
+			fwm.addEffect(FireworkEffect.builder().withColor(Color.YELLOW).trail(true).build());
 
-		fw.setFireworkMeta(fwm);
+			fw.setFireworkMeta(fwm);
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				fw.detonate();
-			}
-		}, 2L);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					fw.detonate();
+				}
+			}, 2L);
+		}
 
-		y -= 1;
+		ticksLeft--;
 	}
 
 	public void cancelTask() {
-		if (taskId != -1) {
-			Bukkit.getScheduler().cancelTask(taskId);
-			taskId = -1;
-		}
+		Task.tryStopTask(task);
 	}
 
 	public void stop() {
-		Bukkit.getScheduler().cancelTask(taskId);
+		Task.tryStopTask(task);
 		undoBlocks();
 		completed = true;
 	}
@@ -144,7 +151,13 @@ public class LootDropEffect implements Runnable {
 	}
 
 	public Location getFireworkLocation() {
-		return new Location(location.getWorld(), location.getX(), (double) y, location.getZ());
+		double progress = ((double) ticksLeft) / ((double) startTime);
+		double y = location.getBlockY();
+		double maxHeight = location.getWorld().getMaxHeight();
+		
+		double offset = MathUtil.lerp(y, maxHeight, progress);
+
+		return new Location(location.getWorld(), location.getX(), (double) offset, location.getZ());
 	}
 
 	public World getWorld() {

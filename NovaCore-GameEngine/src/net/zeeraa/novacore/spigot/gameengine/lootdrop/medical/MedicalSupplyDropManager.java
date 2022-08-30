@@ -17,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -44,8 +45,9 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	private Map<UUID, LootdropParticleEffect> particleEffects;
 
 	private Task particleTask;
+	private Task removeTask;
 
-	private int taskId;
+	private int defaultSpawnTimeTicks;
 
 	public static MedicalSupplyDropManager getInstance() {
 		return instance;
@@ -61,7 +63,8 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 		chests = new ArrayList<MedicalSupplyDrop>();
 		dropEffects = new ArrayList<MedicalSupplyDropEffect>();
 		particleEffects = new HashMap<UUID, LootdropParticleEffect>();
-		taskId = -1;
+
+		this.defaultSpawnTimeTicks = 60 * 20 * 2;
 
 		this.particleTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
 			@Override
@@ -69,35 +72,34 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 				particleEffects.values().forEach(e -> e.update());
 			}
 		}, 2L);
+
+		this.removeTask = new SimpleTask(NovaCore.getInstance(), () -> {
+			dropEffects.removeIf(e -> e.isCompleted());
+		}, 20L);
 	}
 
 	@Override
 	public void onEnable() {
-		taskId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				for (int i = dropEffects.size(); i > 0; i--) {
-					if (dropEffects.get(i - 1).isCompleted()) {
-						dropEffects.remove(i - 1);
-					}
-				}
-			}
-		}, 20L, 20L);
-
+		removeTask.start();
 		particleTask.start();
 	}
 
 	@Override
 	public void onDisable() {
+		Task.tryStopTask(removeTask);
 		Task.tryStopTask(particleTask);
 		this.destroy();
 	}
 
-	public void destroy() {
-		if (taskId != -1) {
-			Bukkit.getScheduler().cancelTask(taskId);
-		}
+	public int getDefaultSpawnTimeTicks() {
+		return defaultSpawnTimeTicks;
+	}
 
+	public void setDefaultSpawnTimeTicks(int defaultSpawnTimeTicks) {
+		this.defaultSpawnTimeTicks = defaultSpawnTimeTicks;
+	}
+
+	public void destroy() {
 		dropEffects.forEach(effect -> effect.undoBlocks());
 
 		particleEffects.clear();
@@ -108,11 +110,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	}
 
 	public void removeFromWorld(World world) {
-		for (MedicalSupplyDropEffect effect : dropEffects) {
-			if (effect.getWorld().equals(world)) {
-				effect.undoBlocks();
-			}
-		}
+		dropEffects.stream().filter(e -> e.getWorld().equals(world)).forEach(e -> e.undoBlocks());
 
 		List<UUID> removeParticles = new ArrayList<UUID>();
 
@@ -303,7 +301,14 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onBlockPlace(BlockPlaceEvent e) {
+		if (dropEffects.stream().filter(ef -> ef.getWorld().equals(e.getBlock().getWorld())).filter(ef -> LocationUtils.isBlockXZMatching(ef.getLocation(), e.getBlock().getLocation())).findAny().isPresent()) {
+			e.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent e) {
 		for (MedicalSupplyDropEffect effect : dropEffects) {
 			for (Location location : effect.getRemovedBlocks().keySet()) {

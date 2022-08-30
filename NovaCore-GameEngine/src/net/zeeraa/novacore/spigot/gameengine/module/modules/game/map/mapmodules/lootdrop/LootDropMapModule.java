@@ -32,6 +32,8 @@ public class LootDropMapModule extends MapModule {
 
 	private List<Location> locationsReal;
 
+	private int timeToSpawn;
+
 	public LootDropMapModule(JSONObject json) {
 		super(json);
 
@@ -62,6 +64,11 @@ public class LootDropMapModule extends MapModule {
 
 		if (minDropTime != -1 && maxDropTime == -1) {
 			maxDropTime = minDropTime;
+		}
+
+		this.timeToSpawn = 0;
+		if (json.has("time_to_descend")) {
+			this.timeToSpawn = json.getInt("time_to_descend");
 		}
 
 		trigger = new DelayedGameTrigger("novacore.lootdrop", minDropTime, new TriggerCallback() {
@@ -97,6 +104,10 @@ public class LootDropMapModule extends MapModule {
 		if (lootTable != null && minDropTime > 0) {
 			if (!LootDropManager.getInstance().isEnabled()) {
 				LootDropManager.getInstance().enable();
+			}
+			
+			if(timeToSpawn > 0) {
+				LootDropManager.getInstance().setDefaultSpawnTimeTicks(timeToSpawn);
 			}
 
 			locationsReal = LocationData.toLocations(locations, map.getWorld());

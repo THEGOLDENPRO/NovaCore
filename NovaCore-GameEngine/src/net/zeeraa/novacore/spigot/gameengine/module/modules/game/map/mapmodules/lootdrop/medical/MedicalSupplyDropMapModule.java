@@ -32,6 +32,8 @@ public class MedicalSupplyDropMapModule extends MapModule {
 
 	private List<Location> locationsReal;
 
+	private int timeToSpawn;
+
 	public MedicalSupplyDropMapModule(JSONObject json) {
 		super(json);
 
@@ -64,7 +66,12 @@ public class MedicalSupplyDropMapModule extends MapModule {
 			maxDropTime = minDropTime;
 		}
 
-		trigger = new DelayedGameTrigger("novauniverse.survivalgames.medicalsupplydrop", minDropTime, new TriggerCallback() {
+		this.timeToSpawn = 0;
+		if (json.has("time_to_descend")) {
+			this.timeToSpawn = json.getInt("time_to_descend");
+		}
+
+		trigger = new DelayedGameTrigger("novacore.medicalsupplydrop", minDropTime, new TriggerCallback() {
 			@Override
 			public void run(GameTrigger trigger2, TriggerFlag reason) {
 				onTrigger(reason);
@@ -97,6 +104,10 @@ public class MedicalSupplyDropMapModule extends MapModule {
 		if (lootTable != null && minDropTime > 0) {
 			if (!MedicalSupplyDropManager.getInstance().isEnabled()) {
 				MedicalSupplyDropManager.getInstance().enable();
+			}
+
+			if (timeToSpawn > 0) {
+				MedicalSupplyDropManager.getInstance().setDefaultSpawnTimeTicks(timeToSpawn);
 			}
 
 			locationsReal = LocationData.toLocations(locations, map.getWorld());
