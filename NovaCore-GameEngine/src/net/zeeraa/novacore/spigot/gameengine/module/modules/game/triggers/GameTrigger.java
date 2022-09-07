@@ -41,6 +41,10 @@ public class GameTrigger {
 		}
 	}
 
+	public TriggerType getType() {
+		return TriggerType.TRIGGER;
+	}
+	
 	/**
 	 * Get a list with all trigger flags
 	 * 
