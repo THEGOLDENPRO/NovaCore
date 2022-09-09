@@ -3,15 +3,14 @@ package net.zeeraa.novacore.spigot.version.v1_8_R3;
 import java.lang.reflect.Field;
 import java.util.UUID;
 
+import net.brunogamer.novacore.spigot.abstraction.enums.DeathType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -163,7 +162,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		switch (reason) {
 		case FALL:
 			source = DamageSource.FALL;
-
+			break;
 		case FALLING_BLOCK:
 			source = DamageSource.FALLING_BLOCK;
 			break;
@@ -369,9 +368,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		Class<?> headMetaClass = headMeta.getClass();
 		try {
 			getField(headMetaClass, "profile", GameProfile.class, 0).set(headMeta, profile);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		head.setItemMeta(headMeta);
@@ -514,6 +511,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void setCustomModelData(ItemMeta meta, int data) {
 		// Does not exist for this version
+		AbstractionLogger.getLogger().error("VersionIndependentUtils", "Current version does not have CustomModelData support.");
 	}
 
 	@Override
@@ -571,10 +569,145 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		// https://www.spigotmc.org/threads/silent-villager.106983/
 		((CraftEntity) entity).getHandle().b(silent);
 	}
-
 	@Override
 	public boolean isBed(Material material) {
 		// Faster implementation since 1.8 only have 2 types of bed
 		return material == Material.BED_BLOCK || material == Material.BED;
+	}
+
+	@Override
+	public DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager) {
+		switch (e.getCause()) {
+			case FIRE:
+				if (lastDamager != null) {
+					return DeathType.FIRE_SOURCE_COMBAT;
+				} else {
+					return DeathType.FIRE_SOURCE;
+				}
+			case LAVA:
+				if (lastDamager != null) {
+					return DeathType.LAVA_COMBAT;
+				} else {
+					return DeathType.LAVA;
+				}
+			case FALL:
+				if (e.getFinalDamage() <= 2.0) {
+					if (lastDamager != null) {
+						return DeathType.FALL_SMALL_COMBAT;
+					} else {
+						return DeathType.FALL_SMALL;
+					}
+				} else {
+					return DeathType.FALL_BIG;
+				}
+			case VOID:
+				if (lastDamager != null) {
+					return DeathType.VOID_COMBAT;
+				} else {
+					return DeathType.VOID;
+				}
+			case THORNS:
+				return DeathType.THORNS;
+			case WITHER:
+				if (lastDamager != null) {
+					return DeathType.EFFECT_WITHER_COMBAT;
+				} else {
+					return DeathType.EFFECT_WITHER;
+				}
+			case CONTACT:
+				if (lastDamager != null) {
+					return DeathType.CACTUS_COMBAT;
+				} else {
+					return DeathType.CACTUS;
+				}
+			case DROWNING:
+				if (lastDamager != null) {
+					return DeathType.DROWN_COMBAT;
+				} else {
+					return DeathType.DROWN;
+				}
+			case LIGHTNING:
+				if (lastDamager != null) {
+					return DeathType.LIGHTNING_COMBAT;
+				} else {
+					return DeathType.LIGHTNING;
+				}
+			case PROJECTILE:
+				if (lastDamager.getType() == EntityType.ARROW) {
+					return DeathType.PROJECTILE_ARROW;
+				}
+				return DeathType.PROJECTILE_OTHER;
+			case STARVATION:
+				if (lastDamager != null) {
+					return DeathType.STARVING_COMBAT;
+				} else {
+					return DeathType.STARVING;
+				}
+			case SUFFOCATION:
+				if (lastDamager != null) {
+					return DeathType.SUFFOCATION_COMBAT;
+				} else {
+					return DeathType.SUFFOCATION;
+				}
+			case ENTITY_ATTACK:
+				switch (lastDamager.getType()) {
+					case WITHER:
+						return DeathType.COMBAT_WITHER;
+					case FIREBALL:
+					case SMALL_FIREBALL:
+						return DeathType.COMBAT_FIREBALL;
+					default:
+						return DeathType.COMBAT_NORMAL;
+				}
+			case FALLING_BLOCK:
+				return DeathType.BLOCK_FALL_COMBAT;
+			case BLOCK_EXPLOSION:
+			case ENTITY_EXPLOSION:
+				if (lastDamager != null) {
+					return DeathType.EXPLOSION_COMBAT;
+				} else {
+					return DeathType.EXPLOSION;
+				}
+
+			case FIRE_TICK:
+				if (lastDamager != null) {
+					return DeathType.FIRE_NATURAL_COMBAT;
+				} else {
+					return DeathType.FIRE_NATURAL;
+				}
+			case MAGIC:
+				if (lastDamager != null) {
+					if (lastDamager instanceof ThrownPotion) {
+						ThrownPotion potion = (ThrownPotion) lastDamager;
+						if (potion.getShooter() instanceof Entity) {
+							Entity thrower = (Entity) potion.getShooter();
+							Entity finalDamager = null;
+							if (e.getEntity() instanceof Player) {
+								if (((Player) e.getEntity()).getKiller() == null) {
+									finalDamager = thrower;
+								} else {
+									finalDamager = ((Player) e.getEntity()).getKiller();
+								}
+							}
+							if (thrower.getUniqueId().toString().equalsIgnoreCase(finalDamager.getUniqueId().toString())) {
+								return DeathType.MAGIC_COMBAT;
+							} else {
+								return DeathType.MAGIC_COMBAT_ACCIDENT;
+							}
+						} else {
+							return DeathType.MAGIC_COMBAT_ACCIDENT;
+						}
+					}
+				} else {
+					return DeathType.MAGIC;
+				}
+
+			default:
+				if (lastDamager != null) {
+					return DeathType.GENERIC_COMBAT;
+				} else {
+					return DeathType.GENERIC;
+				}
+		}
 	}
 }
