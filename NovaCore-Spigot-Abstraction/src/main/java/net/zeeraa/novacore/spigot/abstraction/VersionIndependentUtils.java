@@ -5,17 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.brunogamer.novacore.spigot.abstraction.enums.DeathType;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -621,7 +616,4 @@ public abstract class VersionIndependentUtils {
 	}
 	
 	public abstract void setSilent(LivingEntity entity, boolean silent);
-
-
-	public abstract DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager);
 }
