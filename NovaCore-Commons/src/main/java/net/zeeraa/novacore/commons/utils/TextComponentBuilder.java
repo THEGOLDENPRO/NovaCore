@@ -77,4 +77,9 @@ public class TextComponentBuilder {
 	public TextComponent build() {
 		return component;
 	}
+
+	@Override
+	public String toString() {
+		return component.toLegacyText();
+	}
 }
