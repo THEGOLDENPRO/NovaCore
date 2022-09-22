@@ -13,10 +13,10 @@ import net.zeeraa.novacore.commons.async.AsyncManager;
 
 public class IPFetcher {
 	public static int fetchTimeout = 10 * 1000;
-
-	public static final String getIPv4Sync() throws IOException {
-		URL url = new URL("https://ipv4.myip.wtf/json");
-
+	
+	private static final String getFromEndpoint(String endpoint) throws IOException {
+		URL url = new URL(endpoint);
+		
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestProperty("accept", "application/json");
 		connection.setRequestProperty("User-Agent", "NovaCore");
@@ -46,36 +46,12 @@ public class IPFetcher {
 		return responseJson.getString("YourFuckingIPAddress");
 	}
 
+	public static final String getIPv4Sync() throws IOException {
+		return IPFetcher.getFromEndpoint("https://ipv4.myip.wtf/json");
+	}
+
 	public static final String getIPSync() throws IOException {
-		URL url = new URL("https://myip.wtf/json");
-
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		connection.setRequestProperty("accept", "application/json");
-		connection.setRequestProperty("User-Agent", "NovaCore");
-
-		connection.setConnectTimeout(fetchTimeout);
-		connection.setReadTimeout(fetchTimeout);
-
-		connection.connect();
-
-		InputStream responseStream = connection.getInputStream();
-
-		InputStreamReader isr = new InputStreamReader(responseStream);
-		BufferedReader rd = new BufferedReader(isr);
-		StringBuilder response = new StringBuilder();
-		String line;
-		while ((line = rd.readLine()) != null) {
-			response.append(line);
-			response.append('\r');
-		}
-		rd.close();
-		isr.close();
-		responseStream.close();
-		connection.disconnect();
-
-		JSONObject responseJson = new JSONObject(response.toString());
-
-		return responseJson.getString("YourFuckingIPAddress");
+		return IPFetcher.getFromEndpoint("https://myip.wtf/json");
 	}
 
 	public static final void getIPv4Async(IAsyncIPCallback callback) {
