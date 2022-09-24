@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.UUID;
 
 import net.brunogamer.novacore.spigot.abstraction.enums.DeathType;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -564,76 +563,64 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager) {
 		switch (e.getCause()) {
 			case FIRE:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.FIRE_SOURCE_COMBAT;
-				} else {
 					return DeathType.FIRE_SOURCE;
-				}
+
 			case LAVA:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.LAVA_COMBAT;
-				} else {
 					return DeathType.LAVA;
-				}
+
 			case FALL:
-				if (e.getFinalDamage() <= 2.0) {
-					if (lastDamager != null) {
+				if (e.getFinalDamage() <= 2.0)
+					if (lastDamager != null)
 						return DeathType.FALL_SMALL_COMBAT;
-					} else {
+					else
 						return DeathType.FALL_SMALL;
-					}
-				} else {
+
 					return DeathType.FALL_BIG;
-				}
+
 			case VOID:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.VOID_COMBAT;
-				} else {
 					return DeathType.VOID;
-				}
+
 			case THORNS:
 				return DeathType.THORNS;
 			case WITHER:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.EFFECT_WITHER_COMBAT;
-				} else {
 					return DeathType.EFFECT_WITHER;
-				}
+
 			case CONTACT:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.CACTUS_COMBAT;
-				} else {
 					return DeathType.CACTUS;
-				}
+
 			case DROWNING:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.DROWN_COMBAT;
-				} else {
 					return DeathType.DROWN;
-				}
+
 			case LIGHTNING:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.LIGHTNING_COMBAT;
-				} else {
 					return DeathType.LIGHTNING;
-				}
+
 			case PROJECTILE:
-				if (lastDamager.getType() == EntityType.ARROW) {
+				if (lastDamager.getType() == EntityType.ARROW)
 					return DeathType.PROJECTILE_ARROW;
-				}
 				return DeathType.PROJECTILE_OTHER;
 			case STARVATION:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.STARVING_COMBAT;
-				} else {
 					return DeathType.STARVING;
-				}
 			case SUFFOCATION:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.SUFFOCATION_COMBAT;
-				} else {
 					return DeathType.SUFFOCATION;
-				}
+
 			case ENTITY_ATTACK:
 			case ENTITY_SWEEP_ATTACK:
 				switch (lastDamager.getType()) {
@@ -649,18 +636,16 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 				return DeathType.BLOCK_FALL_COMBAT;
 			case BLOCK_EXPLOSION:
 			case ENTITY_EXPLOSION:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.EXPLOSION_COMBAT;
-				} else {
 					return DeathType.EXPLOSION;
-				}
+
 
 			case FIRE_TICK:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.FIRE_NATURAL_COMBAT;
-				} else {
 					return DeathType.FIRE_NATURAL;
-				}
+
 			case MAGIC:
 				if (lastDamager != null) {
 					if (lastDamager instanceof ThrownPotion) {
@@ -688,36 +673,57 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 					return DeathType.MAGIC;
 				}
 			case CRAMMING:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.SUFFOCATION_CRAMMING_COMBAT;
-				} else {
 					return DeathType.SUFFOCATION_COMBAT;
-				}
+
 			case HOT_FLOOR:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.MAGMA_BLOCK_COMBAT;
-				} else {
 					return DeathType.MAGMA_BLOCK;
-				}
+
 			case DRAGON_BREATH:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.DRAGON_BREATH_COMBAT;
-				} else {
 					return DeathType.DRAGON_BREATH;
-				}
+
 			case FLY_INTO_WALL:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.ELYTRA_WALL_COMBAT;
-				} else {
 					return DeathType.ELYTRA_WALL;
-				}
+
 			default:
-				if (lastDamager != null) {
+				if (lastDamager != null)
 					return DeathType.GENERIC_COMBAT;
-				} else {
 					return DeathType.GENERIC;
-				}
+
 
 		}
 	}
+
+	@Override
+	public String colorize(Color color, String message) {
+		// does not work on 1.15 and below
+		return message;
+	}
+
+	@Override
+	public String colorizeGradient(Color[] colors, String message) {
+		// does not work on 1.15 and below
+		return message;
+	}
+
+	@Override
+	public String colorizeRainbow(Color[] colors, int charsPerColor, String message) {
+		// does not work on 1.15 and below
+		return message;
+	}
+
+	@Override
+	public String asChatColor(String rgb) {
+		// does not work on 1.15 and below
+		return rgb;
+	}
+
+
 }

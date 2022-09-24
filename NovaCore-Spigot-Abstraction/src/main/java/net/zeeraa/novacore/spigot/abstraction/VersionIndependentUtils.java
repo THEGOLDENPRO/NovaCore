@@ -6,15 +6,12 @@ import java.util.List;
 import java.util.UUID;
 
 import net.brunogamer.novacore.spigot.abstraction.enums.DeathType;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -624,4 +621,11 @@ public abstract class VersionIndependentUtils {
 
 
 	public abstract DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager);
+
+	public abstract String colorize(Color color, String message);
+	public abstract String colorizeGradient(Color[] colors, String message);
+
+	public abstract String colorizeRainbow(Color[] colors, int charsPerColor, String message);
+
+	public abstract String asChatColor(String rgb);
 }
