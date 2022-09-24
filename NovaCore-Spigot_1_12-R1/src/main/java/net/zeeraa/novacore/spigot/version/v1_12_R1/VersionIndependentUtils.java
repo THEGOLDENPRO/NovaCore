@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -633,7 +634,22 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 						return DeathType.COMBAT_NORMAL;
 				}
 			case FALLING_BLOCK:
-				return DeathType.BLOCK_FALL_COMBAT;
+				if (e instanceof EntityDamageByEntityEvent) {
+					EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
+					if (entityEvent.getDamager() instanceof FallingBlock) {
+						FallingBlock block = (FallingBlock) entityEvent.getDamager();
+						switch (block.getMaterial()) {
+							case ANVIL:
+								if (lastDamager != null)
+									return DeathType.ANVIL_FALL_COMBAT;
+								return DeathType.ANVIL_FALL;
+							default:
+								if (lastDamager != null)
+									return DeathType.BLOCK_FALL_COMBAT;
+								return DeathType.BLOCK_FALL;
+						}
+					}
+				}
 			case BLOCK_EXPLOSION:
 			case ENTITY_EXPLOSION:
 				if (lastDamager != null)
@@ -691,7 +707,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 				if (lastDamager != null)
 					return DeathType.ELYTRA_WALL_COMBAT;
 					return DeathType.ELYTRA_WALL;
-
+			case POISON:
+			case MELTING:
+			case CUSTOM:
+			case SUICIDE:
 			default:
 				if (lastDamager != null)
 					return DeathType.GENERIC_COMBAT;
