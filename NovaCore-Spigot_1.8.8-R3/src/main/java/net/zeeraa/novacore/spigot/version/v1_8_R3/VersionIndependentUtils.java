@@ -3,12 +3,14 @@ package net.zeeraa.novacore.spigot.version.v1_8_R3;
 import java.lang.reflect.Field;
 import java.util.UUID;
 
+import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -571,5 +573,141 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public boolean isBed(Material material) {
 		// Faster implementation since 1.8 only have 2 types of bed
 		return material == Material.BED_BLOCK || material == Material.BED;
+	}
+
+	@Override
+	public DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager) {
+		switch (e.getCause()) {
+			case FIRE:
+				if (lastDamager != null)
+					return DeathType.FIRE_SOURCE_COMBAT;
+					return DeathType.FIRE_SOURCE;
+
+			case LAVA:
+				if (lastDamager != null)
+					return DeathType.LAVA_COMBAT;
+					return DeathType.LAVA;
+
+			case FALL:
+				if (e.getFinalDamage() <= 2.0)
+					if (lastDamager != null)
+						return DeathType.FALL_SMALL_COMBAT;
+					 else
+						return DeathType.FALL_SMALL;
+					return DeathType.FALL_BIG;
+			case VOID:
+				if (lastDamager != null)
+					return DeathType.VOID_COMBAT;
+					return DeathType.VOID;
+
+			case THORNS:
+				return DeathType.THORNS;
+			case WITHER:
+				if (lastDamager != null)
+					return DeathType.EFFECT_WITHER_COMBAT;
+					return DeathType.EFFECT_WITHER;
+
+			case CONTACT:
+				if (lastDamager != null)
+					return DeathType.CACTUS_COMBAT;
+					return DeathType.CACTUS;
+			case DROWNING:
+				if (lastDamager != null)
+					return DeathType.DROWN_COMBAT;
+					return DeathType.DROWN;
+			case LIGHTNING:
+				if (lastDamager != null)
+					return DeathType.LIGHTNING_COMBAT;
+					return DeathType.LIGHTNING;
+			case PROJECTILE:
+				if (lastDamager.getType() == EntityType.ARROW) {
+					return DeathType.PROJECTILE_ARROW;
+				}
+				return DeathType.PROJECTILE_OTHER;
+			case STARVATION:
+				if (lastDamager != null)
+					return DeathType.STARVING_COMBAT;
+					return DeathType.STARVING;
+			case SUFFOCATION:
+				if (lastDamager != null)
+					return DeathType.SUFFOCATION_COMBAT;
+					return DeathType.SUFFOCATION;
+			case ENTITY_ATTACK:
+				switch (lastDamager.getType()) {
+					case WITHER:
+						return DeathType.COMBAT_WITHER;
+					case FIREBALL:
+					case SMALL_FIREBALL:
+						return DeathType.COMBAT_FIREBALL;
+					default:
+						return DeathType.COMBAT_NORMAL;
+				}
+			case FALLING_BLOCK:
+				return DeathType.BLOCK_FALL_COMBAT;
+			case BLOCK_EXPLOSION:
+			case ENTITY_EXPLOSION:
+				if (lastDamager != null)
+					return DeathType.EXPLOSION_COMBAT;
+					return DeathType.EXPLOSION;
+			case FIRE_TICK:
+				if (lastDamager != null)
+					return DeathType.FIRE_NATURAL_COMBAT;
+					return DeathType.FIRE_NATURAL;
+			case MAGIC:
+				if (lastDamager != null) {
+					if (lastDamager instanceof ThrownPotion) {
+						ThrownPotion potion = (ThrownPotion) lastDamager;
+						if (potion.getShooter() instanceof Entity) {
+							Entity thrower = (Entity) potion.getShooter();
+							Entity finalDamager = null;
+							if (e.getEntity() instanceof Player) {
+								if (((Player) e.getEntity()).getKiller() == null) {
+									finalDamager = thrower;
+								} else {
+									finalDamager = ((Player) e.getEntity()).getKiller();
+								}
+							}
+							if (thrower.getUniqueId().toString().equalsIgnoreCase(finalDamager.getUniqueId().toString())) {
+								return DeathType.MAGIC_COMBAT;
+							} else {
+								return DeathType.MAGIC_COMBAT_ACCIDENT;
+							}
+						} else {
+							return DeathType.MAGIC_COMBAT_ACCIDENT;
+						}
+					}
+				} else {
+					return DeathType.MAGIC;
+				}
+
+			default:
+				if (lastDamager != null)
+					return DeathType.GENERIC_COMBAT;
+					return DeathType.GENERIC;
+		}
+	}
+
+	@Override
+	public String colorize(Color color, String message) {
+		// does not work on 1.15 and below
+		return message;
+	}
+
+	@Override
+	public String colorizeGradient(Color[] colors, String message) {
+		// does not work on 1.15 and below
+		return message;
+	}
+
+	@Override
+	public String colorizeRainbow(Color[] colors, int charsPerColor, String message) {
+		// does not work on 1.15 and below
+		return message;
+	}
+
+	@Override
+	public String asChatColor(String rgb) {
+		// does not work on 1.15 and below
+		return rgb;
 	}
 }
