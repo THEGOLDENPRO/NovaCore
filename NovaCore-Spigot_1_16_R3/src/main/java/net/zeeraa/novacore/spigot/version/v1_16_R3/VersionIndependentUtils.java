@@ -3,8 +3,8 @@ package net.zeeraa.novacore.spigot.version.v1_16_R3;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-import net.brunogamer.novacore.spigot.abstraction.enums.DeathType;
-import net.brunogamer.novacore.spigot.abstraction.utils.LoopableIterator;
+import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
+import net.zeeraa.novacore.spigot.abstraction.commons.LoopableIterator;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -139,7 +139,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		switch (reason) {
 		case FALL:
 			source = DamageSource.FALL;
-
+			break;
 		case FALLING_BLOCK:
 			source = DamageSource.FALLING_BLOCK;
 			break;

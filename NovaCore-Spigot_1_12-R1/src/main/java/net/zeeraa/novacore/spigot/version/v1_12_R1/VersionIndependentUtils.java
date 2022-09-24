@@ -3,7 +3,7 @@ package net.zeeraa.novacore.spigot.version.v1_12_R1;
 import java.lang.reflect.Field;
 import java.util.UUID;
 
-import net.brunogamer.novacore.spigot.abstraction.enums.DeathType;
+import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -165,7 +165,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		switch (reason) {
 		case FALL:
 			source = DamageSource.FALL;
-
+			break;
 		case FALLING_BLOCK:
 			source = DamageSource.FALLING_BLOCK;
 			break;

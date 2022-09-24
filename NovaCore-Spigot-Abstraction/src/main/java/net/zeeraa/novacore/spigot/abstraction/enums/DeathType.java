@@ -1,4 +1,4 @@
-package net.brunogamer.novacore.spigot.abstraction.enums;
+package net.zeeraa.novacore.spigot.abstraction.enums;
 
 import org.bukkit.event.entity.PlayerDeathEvent;
 

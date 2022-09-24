@@ -3,7 +3,7 @@ package net.zeeraa.novacore.spigot.version.v1_8_R3;
 import java.lang.reflect.Field;
 import java.util.UUID;
 
-import net.brunogamer.novacore.spigot.abstraction.enums.DeathType;
+import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;

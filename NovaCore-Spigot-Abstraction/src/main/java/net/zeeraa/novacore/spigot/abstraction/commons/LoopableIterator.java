@@ -1,7 +1,8 @@
-package net.brunogamer.novacore.spigot.abstraction.utils;
+package net.zeeraa.novacore.spigot.abstraction.commons;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * An utility to get the next value on a list, like an {@link Iterator} but loopable
