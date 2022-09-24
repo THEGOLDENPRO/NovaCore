@@ -10,7 +10,7 @@ import net.zeeraa.novacore.commons.tasks.Task;
  * @author Zeeraa
  *
  */
-public class RepeatingGameTrigger extends ScheduledGameTrigger {
+public class RepeatingGameTrigger extends ScheduledGameTrigger implements ITickingGameTrigger {
 	private long delay;
 	private long period;
 
@@ -36,6 +36,11 @@ public class RepeatingGameTrigger extends ScheduledGameTrigger {
 
 	public RepeatingGameTrigger(String name, long delay) {
 		this(name, delay, null);
+	}
+	
+	@Override
+	public TriggerType getType() {
+		return TriggerType.REPEATING;
 	}
 
 	/**
@@ -130,6 +135,7 @@ public class RepeatingGameTrigger extends ScheduledGameTrigger {
 		return false;
 	}
 
+	@Override
 	public long getTicksLeft() {
 		return ticksLeft;
 	}

@@ -14,7 +14,7 @@ import net.zeeraa.novacore.spigot.timers.BasicTimer;
  * @author Zeeraa
  *
  */
-public class DelayedGameTrigger extends ScheduledGameTrigger {
+public class DelayedGameTrigger extends ScheduledGameTrigger implements ITickingGameTrigger {
 	private long delay;
 
 	private BasicTimer timer;
@@ -30,6 +30,11 @@ public class DelayedGameTrigger extends ScheduledGameTrigger {
 
 	public DelayedGameTrigger(String name, long delay) {
 		this(name, delay, null);
+	}
+	
+	@Override
+	public TriggerType getType() {
+		return TriggerType.DELAYED;
 	}
 
 	/**
@@ -124,6 +129,7 @@ public class DelayedGameTrigger extends ScheduledGameTrigger {
 	 * 
 	 * @return the time left in ticks
 	 */
+	@Override
 	public long getTicksLeft() {
 		if (isRunning()) {
 			return timer.getTimeLeft();

@@ -724,6 +724,4 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		// does not work on 1.15 and below
 		return rgb;
 	}
-
-
 }

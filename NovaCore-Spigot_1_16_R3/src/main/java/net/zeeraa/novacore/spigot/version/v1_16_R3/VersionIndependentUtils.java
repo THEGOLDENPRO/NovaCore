@@ -1,21 +1,29 @@
 package net.zeeraa.novacore.spigot.version.v1_16_R3;
 
-import java.util.*;
-
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
 import net.brunogamer.novacore.spigot.abstraction.enums.DeathType;
 import net.brunogamer.novacore.spigot.abstraction.utils.LoopableIterator;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_16_R3.*;
-import org.bukkit.*;
+import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
+import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
+import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
+import net.zeeraa.novacore.spigot.abstraction.enums.*;
+import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
-import org.bukkit.entity.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -26,23 +34,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.properties.PropertyMap;
-
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
-import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
-import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
-import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerError;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
-import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
-import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
-import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
-import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
+import java.util.Collections;
+import java.util.UUID;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -779,7 +772,6 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public void setSilent(LivingEntity entity, boolean silent) {
 		entity.setSilent(silent);
 	}
-
 	@Override
 	public DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager) {
 

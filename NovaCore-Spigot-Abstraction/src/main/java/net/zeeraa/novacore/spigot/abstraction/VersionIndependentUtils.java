@@ -33,7 +33,7 @@ import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
  * using reflection. This class contains a lot of functions that changes between
  * versions
  * 
- * @author zeeraa
+ * @author Zeeraa, Bruno
  */
 public abstract class VersionIndependentUtils {
 	private static VersionIndependentUtils instance;
@@ -66,6 +66,7 @@ public abstract class VersionIndependentUtils {
 	 * Set the last error cause used for debugging purposes
 	 * 
 	 * @param error The last {@link VersionIndependenceLayerError} raised
+	 * @author Zeeraa
 	 */
 	protected final void setLastError(VersionIndependenceLayerError error) {
 		this.lastError = error;
@@ -78,6 +79,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @return The {@link VersionIndependenceLayerError} of <code>null</code> if no
 	 *         errors occurred
+	 * @author Zeeraa
 	 */
 	public final VersionIndependenceLayerError getLastError() {
 		return lastError;
@@ -85,6 +87,7 @@ public abstract class VersionIndependentUtils {
 
 	/**
 	 * Resets the last error variable
+	 * @author Zeeraa
 	 */
 	public final void resetLastError() {
 		this.lastError = VersionIndependenceLayerError.NONE;
@@ -94,6 +97,7 @@ public abstract class VersionIndependentUtils {
 	 * Get the {@link ChunkLoader} implementation
 	 * 
 	 * @return {@link ChunkLoader} to use
+	 * @author Zeeraa
 	 */
 	public abstract ChunkLoader getChunkLoader();
 
@@ -102,6 +106,7 @@ public abstract class VersionIndependentUtils {
 	 * as {@link VersionIndependentUtils#getInstance()}
 	 * 
 	 * @return {@link VersionIndependentUtils} instance
+	 * @author Zeeraa
 	 */
 	public static VersionIndependentUtils get() {
 		return instance;
@@ -112,6 +117,7 @@ public abstract class VersionIndependentUtils {
 	 * as {@link VersionIndependentUtils#get()}
 	 * 
 	 * @return {@link VersionIndependentUtils} instance
+	 * @author Zeeraa
 	 */
 	public static VersionIndependentUtils getInstance() {
 		return instance;
@@ -127,6 +133,7 @@ public abstract class VersionIndependentUtils {
 	 * that does nothing
 	 * 
 	 * @return The {@link LabyModProtocol} instance to use
+	 * @author Zeeraa
 	 */
 	public abstract LabyModProtocol getLabyModProtocol();
 
@@ -134,6 +141,7 @@ public abstract class VersionIndependentUtils {
 	 * Get the {@link NovaCoreGameVersion} nova core is using for the server
 	 * 
 	 * @return The {@link NovaCoreGameVersion} for thie server
+	 * @author Zeeraa
 	 */
 	public abstract NovaCoreGameVersion getNovaCoreGameVersion();
 
@@ -141,6 +149,7 @@ public abstract class VersionIndependentUtils {
 	 * Set a block as a player skull
 	 * 
 	 * @param block The {@link Block} to change the type of
+	 * @author Zeeraa
 	 */
 	public abstract void setBlockAsPlayerSkull(Block block);
 
@@ -149,6 +158,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param player The player to get item from
 	 * @return {@link ItemStack} from the players main hand
+	 * @author Zeeraa
 	 */
 	public abstract ItemStack getItemInMainHand(Player player);
 
@@ -158,6 +168,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param player The player
 	 * @param item   The item so place the the players hand
+	 * @author Zeeraa
 	 */
 	public abstract void setItemInMainHand(Player player, ItemStack item);
 
@@ -167,6 +178,7 @@ public abstract class VersionIndependentUtils {
 	 * @param player The player to get item from
 	 * @return {@link ItemStack} or <code>null</code> if the server version does not
 	 *         have a off hand
+	 * @author Zeeraa
 	 */
 	public abstract ItemStack getItemInOffHand(Player player);
 
@@ -175,6 +187,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param player The player
 	 * @param item   The item so place the the players hand
+	 * @author Zeeraa
 	 */
 	public abstract void setItemInOffHand(Player player, ItemStack item);
 
@@ -183,6 +196,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param player The player to get the ping of
 	 * @return ping
+	 * @author Zeeraa
 	 */
 	public abstract int getPlayerPing(Player player);
 
@@ -194,6 +208,7 @@ public abstract class VersionIndependentUtils {
 	 * @param player The player to damage
 	 * @param reason The {@link PlayerDamageReason} to use
 	 * @param damage The amount of damage to cause
+	 * @author Zeeraa
 	 */
 	public abstract void damagePlayer(Player player, PlayerDamageReason reason, float damage);
 
@@ -203,6 +218,7 @@ public abstract class VersionIndependentUtils {
 	 * @param livingEntity The entity to get the max health from
 	 * 
 	 * @return The max health of the player
+	 * @author Zeeraa
 	 */
 	public abstract double getEntityMaxHealth(LivingEntity livingEntity);
 
@@ -211,6 +227,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param livingEntity The entity to reset the set health of
 	 * @param health       The new health value
+	 * @author Zeeraa
 	 */
 	public abstract void setEntityMaxHealth(LivingEntity livingEntity, double health);
 
@@ -218,6 +235,7 @@ public abstract class VersionIndependentUtils {
 	 * Reset the max heath of a {@link LivingEntity}
 	 * 
 	 * @param livingEntity The entity to reset the max health of
+	 * @author Zeeraa
 	 */
 	public abstract void resetEntityMaxHealth(LivingEntity livingEntity);
 
@@ -225,6 +243,7 @@ public abstract class VersionIndependentUtils {
 	 * Get the recent server TPS
 	 * 
 	 * @return Array with recent TPS
+	 * @author Zeeraa
 	 */
 	public abstract double[] getRecentTps();
 
@@ -233,6 +252,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param source The block to copy the data from
 	 * @param target The block to set the data of
+	 * @author Zeeraa
 	 */
 	public abstract void cloneBlockData(Block source, Block target);
 
@@ -242,6 +262,7 @@ public abstract class VersionIndependentUtils {
 	 * @param player The {@link Player} that should receive the text
 	 * @param header The top text
 	 * @param footer The bottom text
+	 * @author Zeeraa
 	 */
 	public abstract void sendTabList(Player player, String header, String footer);
 
@@ -251,6 +272,7 @@ public abstract class VersionIndependentUtils {
 	 * @param block The {@link Block} to change
 	 * @param color The {@link DyeColor} to use
 	 * @param type  The {@link ColoredBlockType} to set the block as
+	 * @author Zeeraa
 	 */
 	public abstract void setColoredBlock(Block block, DyeColor color, ColoredBlockType type);
 
@@ -261,6 +283,7 @@ public abstract class VersionIndependentUtils {
 	 * @param ingredient The ingredient char
 	 * @param type       The {@link ColoredBlockType} to use
 	 * @param color      The {@link DyeColor} to use
+	 * @author Zeeraa
 	 */
 	public abstract void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color);
 
@@ -271,6 +294,7 @@ public abstract class VersionIndependentUtils {
 	 * @param ingredient The ingredient char
 	 * @param type       The {@link ColoredBlockType} to use
 	 * @param color      The {@link DyeColor} to use
+	 * @author Zeeraa
 	 */
 	public abstract void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color);
 
@@ -280,6 +304,7 @@ public abstract class VersionIndependentUtils {
 	 * @param recipe     The {@link ShapedRecipe} to modify
 	 * @param ingredient The ingredient char
 	 * @param color      The {@link DyeColor} to use
+	 * @author Zeeraa
 	 */
 	public abstract void setShapedRecipeIngredientAsDye(ShapedRecipe recipe, char ingredient, DyeColor color);
 
@@ -289,6 +314,7 @@ public abstract class VersionIndependentUtils {
 	 * @param recipe The {@link ShapelessRecipe} to modify
 	 * @param count  The amount required
 	 * @param color  The {@link DyeColor} to use
+	 * @author Zeeraa
 	 */
 	public abstract void addShapelessRecipeIngredientAsDye(ShapelessRecipe recipe, int count, DyeColor color);
 
@@ -299,6 +325,7 @@ public abstract class VersionIndependentUtils {
 	 * @param color The {@link DyeColor}
 	 * @param type  The {@link ColoredBlockType}
 	 * @return An {@link ItemStack} of the {@link ColoredBlockType}
+	 * @author Zeeraa
 	 */
 	public abstract ItemStack getColoredItem(DyeColor color, ColoredBlockType type);
 
@@ -306,6 +333,7 @@ public abstract class VersionIndependentUtils {
 	 * GEt the {@link ItemBuilderRecordList} for this verion
 	 * 
 	 * @return {@link ItemBuilderRecordList}
+	 * @author Zeeraa
 	 */
 	public abstract ItemBuilderRecordList getItembBuilderRecordList();
 
@@ -314,6 +342,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param item    The {@link ItemStack} to set the map view of
 	 * @param mapView The {@link MapView} to apply
+	 * @author Zeeraa
 	 */
 	public abstract void attachMapView(ItemStack item, MapView mapView);
 
@@ -322,14 +351,16 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param item The {@link ItemStack} to get the map view of
 	 * @return mapView The {@link MapView} used for that item
+	 * @author Zeeraa
 	 */
 	public abstract MapView getAttachedMapView(ItemStack item);
 
 	/**
-	 * GEt the id number of a {@link MapView}
+	 * Get the id number of a {@link MapView}
 	 * 
 	 * @param mapView The {@link MapView} to get the id of
 	 * @return id number of the provided {@link MapView}
+	 * @author Zeeraa
 	 */
 	public abstract int getMapViewId(MapView mapView);
 
@@ -341,6 +372,7 @@ public abstract class VersionIndependentUtils {
 	 * @param sound    The {@link VersionIndependentSound} to play
 	 * @return <code>true</code> on success. <code>false</code> if the sound is not
 	 *         configured
+	 * @author Zeeraa
 	 */
 	public boolean playSound(Player player, Location location, VersionIndependentSound sound) {
 		return this.playSound(player, location, sound, 1F, 1F);
@@ -356,6 +388,7 @@ public abstract class VersionIndependentUtils {
 	 * @param pitch    The pitch of the sound
 	 * @return <code>true</code> on success. <code>false</code> if the sound is not
 	 *         configured
+	 * @author Zeeraa
 	 */
 	public boolean playSound(Player player, Location location, VersionIndependentSound sound, float volume, float pitch) {
 		Sound realSound = this.getSound(sound);
@@ -375,6 +408,7 @@ public abstract class VersionIndependentUtils {
 	 * @param sound    The {@link VersionIndependentSound} to play
 	 * @return <code>true</code> on success. <code>false</code> if the sound is not
 	 *         configured
+	 * @author Zeeraa
 	 */
 	public boolean playSound(Location location, VersionIndependentSound sound) {
 		return this.playSound(location, sound, 1F, 1F);
@@ -389,6 +423,7 @@ public abstract class VersionIndependentUtils {
 	 * @param pitch    The pitch of the sound
 	 * @return <code>true</code> on success. <code>false</code> if the sound is not
 	 *         configured
+	 * @author Zeeraa
 	 */
 	public boolean playSound(Location location, VersionIndependentSound sound, float volume, float pitch) {
 		Sound realSound = this.getSound(sound);
@@ -406,6 +441,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param sound The {@link VersionIndependentSound} to get
 	 * @return resulting {@link Sound}
+	 * @author Zeeraa
 	 */
 	public abstract Sound getSound(VersionIndependentSound sound);
 
@@ -420,6 +456,7 @@ public abstract class VersionIndependentUtils {
 	 * @param stay     The amount of ticks the text should stay
 	 * @param fadeOut  The amount of ticks for the fade out animation. Set to 0 to
 	 *                 disable
+	 * @author Zeeraa
 	 */
 	public abstract void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut);
 
@@ -429,6 +466,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param b64stringtexture The base64 string containing texture data
 	 * @return {@link ItemStack} with a textured player skull
+	 * @author Zeeraa
 	 */
 	public abstract ItemStack getPlayerSkullWithBase64Texture(String b64stringtexture);
 
@@ -451,6 +489,7 @@ public abstract class VersionIndependentUtils {
 	 * game
 	 * 
 	 * @return {@link VersionIndependentItems} instance
+	 * @author Zeeraa
 	 */
 	public abstract VersionIndependentItems getVersionIndependantItems();
 
@@ -459,6 +498,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param recipe     The {@link ShapedRecipe} to modify
 	 * @param ingredient The ingredient char
+	 * @author Zeeraa
 	 */
 	public abstract void setShapedRecipeIngredientAsPlayerSkull(ShapedRecipe recipe, char ingredient);
 
@@ -467,6 +507,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param material The {@link VersionIndependentMaterial}
 	 * @return The minecraft {@link Material}
+	 * @author Zeeraa
 	 */
 	public abstract Material getMaterial(VersionIndependentMaterial material);
 
@@ -479,6 +520,7 @@ public abstract class VersionIndependentUtils {
 	 * @param material The {@link VersionIndependentMaterial} the item should be of
 	 * @return {@link ItemStack} of provided type or <code>null</code> if the
 	 *         material has not been implemented by the devs
+	 * @author Zeeraa
 	 */
 	public ItemStack getItemStack(VersionIndependentMaterial material) {
 		Material mcMaterial = this.getMaterial(material);
@@ -494,6 +536,7 @@ public abstract class VersionIndependentUtils {
 	 * Get an {@link ItemStack} of a player skull
 	 * 
 	 * @return Player skull {@link ItemStack}
+	 * @author Zeeraa
 	 */
 	public abstract ItemStack getPlayerSkullitem();
 
@@ -502,6 +545,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param block The block to check
 	 * @return <code>true</code> if the block is a sign
+	 * @author Zeeraa
 	 */
 	public boolean isSign(Block block) {
 		return this.isSign(block.getType());
@@ -514,11 +558,13 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param player  The {@link Player} that should receive the message
 	 * @param message The message to send
+	 * @author Zeeraa
 	 */
 	public abstract void sendActionBarMessage(Player player, String message);
 
 	/**
 	 * @return The minimum y level blocks can exist at
+	 * @author Zeeraa
 	 */
 	public abstract int getMinY();
 
@@ -528,6 +574,7 @@ public abstract class VersionIndependentUtils {
 	 * @param meta        The {@link ItemMeta} to change
 	 * @param unbreakable <code>true</code> to make the item unbreakable
 	 * @return the {@link ItemMeta} instance
+	 * @author Zeeraa
 	 */
 	public abstract ItemMeta setUnbreakable(ItemMeta meta, boolean unbreakable);
 
@@ -543,6 +590,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param creature The {@link Creature} to use
 	 * @param item     The {@link ItemStack} to place in the main hand
+	 * @author Zeeraa
 	 */
 	public abstract void setCreatureItemInMainHand(Creature creature, ItemStack item);
 
@@ -551,6 +599,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param player The {@link Player} to get the rotation of
 	 * @return Player body rotation
+	 * @author Zeeraa
 	 */
 	public abstract float getPlayerBodyRotation(Player player);
 
@@ -560,6 +609,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param meta The {@link ItemMeta} to modify
 	 * @param data The custom model data
+	 * @author Bruno
 	 */
 	public abstract void setCustomModelData(ItemMeta meta, int data);
 
@@ -570,6 +620,7 @@ public abstract class VersionIndependentUtils {
 	 * @param world The {@link World} to set the rule in
 	 * @param rule  The rule to set
 	 * @param value The value of the game rule
+	 * @author Zeeraa
 	 */
 	public abstract void setGameRule(World world, String rule, String value);
 
@@ -578,6 +629,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param event The {@link PlayerInteractEvent} to check
 	 * @return <code>true</code> if the event was triggered by the main hand
+	 * @author Zeeraa
 	 */
 	public abstract boolean isInteractEventMainHand(PlayerInteractEvent event);
 
@@ -586,6 +638,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param uuid The {@link UUID} of the entity
 	 * @return The {@link Entity} or <code>null</code> if not found
+	 * @author Zeeraa
 	 */
 	public abstract Entity getEntityByUUID(UUID uuid);
 
@@ -594,6 +647,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param entity The entity
 	 * @param ai     <code>false</code> to disable the ai
+	 * @author Zeeraa
 	 */
 	public abstract void setAI(LivingEntity entity, boolean ai);
 
@@ -602,6 +656,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param block The {@link Block} to check
 	 * @return <code>true</code> if its a bed
+	 * @author Zeeraa
 	 */
 	public boolean isBed(Block block) {
 		return this.isBed(block.getType());
@@ -612,6 +667,7 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param material The {@link Material} to check
 	 * @return <code>true</code> if its a bed
+	 * @author Zeeraa
 	 */
 	public boolean isBed(Material material) {
 		return BED_MATERIALS.contains(material.name());
@@ -621,6 +677,7 @@ public abstract class VersionIndependentUtils {
 	 * Sets an entity as silent
 	 * @param entity The {@link LivingEntity}
 	 * @param silent boolean
+	 * @author Zeeraa
 	 */
 	public abstract void setSilent(LivingEntity entity, boolean silent);
 
@@ -628,7 +685,7 @@ public abstract class VersionIndependentUtils {
 	 * Predicts what {@link DeathType} would get if they died from that damage
 	 * @param e The {@link EntityDamageEvent} (could be any of its children)
 	 * @param lastDamager The last damager
-	 *
+	 * @author Bruno
 	 */
 	public abstract DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager);
 
