@@ -616,16 +616,52 @@ public abstract class VersionIndependentUtils {
 	public boolean isBed(Material material) {
 		return BED_MATERIALS.contains(material.name());
 	}
-	
+
+	/**
+	 * Sets an entity as silent
+	 * @param entity The {@link LivingEntity}
+	 * @param silent boolean
+	 */
 	public abstract void setSilent(LivingEntity entity, boolean silent);
 
-
+	/**
+	 * Predicts what {@link DeathType} would get if they died from that damage
+	 * @param e The {@link EntityDamageEvent} (could be any of its children)
+	 * @param lastDamager The last damager
+	 *
+	 */
 	public abstract DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager);
 
+	/**
+	 * Colorizes the message with one of 16 million RGB colors
+	 * @param color The {@link Color}
+	 * @param message The message
+	 * @author Bruno
+	 */
 	public abstract String colorize(Color color, String message);
+
+
+	/**
+	 * Colorizes the message as a gradient (transitioning from the start of the {@link Color[]} array to the end)
+	 * @param colors The {@link Color[]} array
+	 * @param message The message
+	 * @author Bruno
+	 */
 	public abstract String colorizeGradient(Color[] colors, String message);
 
+	/**
+	 * Colorizes the message in a rainbow pattern (changes from 1 color to another, always looping) with changeable intervals between them
+	 * @param colors The {@link Color[]} array
+	 * @param charsPerColor How many characters before going to next color
+	 * @param message The message
+	 * @author Bruno
+	 */
 	public abstract String colorizeRainbow(Color[] colors, int charsPerColor, String message);
 
+	/**
+	 * Converts RGB color to ChatColor
+	 * @param rgb RGB value
+	 * @author Bruno
+	 */
 	public abstract String asChatColor(String rgb);
 }

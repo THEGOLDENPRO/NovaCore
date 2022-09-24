@@ -5,7 +5,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 /**
  * A utility to get the death cause from a {@link PlayerDeathEvent}
  * 
- * @author BrunoGamer
+ * @author Bruno
  * @since 2.0.0
  */
 public enum DeathType {

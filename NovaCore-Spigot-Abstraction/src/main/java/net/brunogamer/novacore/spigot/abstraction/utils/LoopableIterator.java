@@ -3,6 +3,12 @@ package net.brunogamer.novacore.spigot.abstraction.utils;
 
 import java.util.*;
 
+/**
+ * An utility to get the next value on a list, like an {@link Iterator} but loopable
+ *
+ * @author Bruno
+ * @since 2.0.0
+ */
 public class LoopableIterator<T> extends ArrayList<T> {
 
     private int currentObject = Integer.MIN_VALUE;
