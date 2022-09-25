@@ -111,7 +111,7 @@ public enum DeathType {
 		} else if (death.contains("was shot by a skull from")) {
 			return COMBAT_WITHER;
 		} else if (death.contains("was obliterated by a sonically-charged shriek")) {
-			return COMBAT_WARDEN;
+			return SONIC_BOOM;
 		} else if (death.contains("starved to death whilst fighting")) {
 			return STARVING_COMBAT;
 		} else if (death.contains("starved to death")) {

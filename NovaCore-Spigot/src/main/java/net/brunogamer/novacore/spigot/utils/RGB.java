@@ -7,20 +7,17 @@ public class RGB {
     private final int r;
     private final int g;
     private final int b;
-    private final int a;
 
     public RGB(Color color) {
         this.r = color.getRed();
         this.g = color.getGreen();
         this.b = color.getBlue();
-        this.a = color.getAlpha();
     }
 
-    public RGB(int r, int g, int b, int a) {
+    public RGB(int r, int g, int b) {
         this.r = r;
         this.g = g;
         this.b = b;
-        this.a = a;
     }
 
 
@@ -34,9 +31,5 @@ public class RGB {
 
     public int getBlue() {
         return b;
-    }
-
-    public int getAlpha() {
-        return a;
     }
 }

@@ -148,26 +148,23 @@ public class ColorUtils {
                 return Color.WHITE;
         }
     }
-    public static java.awt.Color[] gradientFromColors(RGB color1, RGB color2, int lenght) throws Exception {
+    public static Color[] gradientFromColors(RGB color1, RGB color2, int lenght) throws Exception {
         if (lenght <= 1) {
             throw new Exception("can not be 1 or lower");
         }
-        java.awt.Color[] colors = new java.awt.Color[lenght];
+        Color[] colors = new Color[lenght];
 
         int redDif = color2.getRed() - color1.getRed();
         int blueDif = color2.getBlue() - color1.getBlue();
         int greenDif = color2.getGreen() - color1.getGreen();
-        int alphaDif = color2.getAlpha() - color1.getAlpha();
         double parcelledRed = (double) redDif/(lenght - 1);
         double parcelledBlue = (double) blueDif/(lenght - 1);
         double parcelledGreen = (double) greenDif/(lenght - 1);
-        double parcelledAlpha = (double) alphaDif/(lenght - 1);
         for (int i = 0; i < lenght; i++) {
             int currentRed = color1.getRed() +  (int) (Math.round(parcelledRed * i));
             int currentBlue = color1.getBlue() + (int) (Math.round(parcelledBlue * i));
             int currentGreen = color1.getGreen() + (int) (Math.round(parcelledGreen * i));
-            int currentAlpha = color1.getAlpha() + (int) (Math.round(parcelledAlpha * i));
-            colors[i] = new java.awt.Color(currentRed, currentGreen, currentBlue, currentAlpha);
+            colors[i] = Color.fromRGB(currentRed, currentGreen, currentBlue);
         }
         return colors;
     }
