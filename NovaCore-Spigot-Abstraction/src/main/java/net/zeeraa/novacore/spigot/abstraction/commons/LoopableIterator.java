@@ -11,8 +11,9 @@ import java.util.Iterator;
  * @since 2.0.0
  */
 public class LoopableIterator<T> extends ArrayList<T> {
-
-    private int currentObject = Integer.MIN_VALUE;
+	private static final long serialVersionUID = -2981470985384815799L;
+	
+	private int currentObject = Integer.MIN_VALUE;
     public T next() {
         if (currentObject == Integer.MIN_VALUE || currentObject == size() - 1)
             currentObject = 0;
