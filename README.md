@@ -488,7 +488,7 @@ To spawn white loot drops use
 
 ## Sample maps
 
-You can find samples from out rournament here <https://cloud.novauniverse.net/s/YCnXg98yzdwWiZX>
+You can find samples from out tournament here <https://cloud.novauniverse.net/s/YCnXg98yzdwWiZX>
 
 <br>
 
