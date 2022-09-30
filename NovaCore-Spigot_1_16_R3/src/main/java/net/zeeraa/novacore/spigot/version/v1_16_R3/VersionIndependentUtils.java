@@ -886,31 +886,23 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 					return DeathType.FIRE_NATURAL;
 
 			case MAGIC:
+                DeathType type = DeathType.MAGIC;
 				if (lastDamager != null) {
-					if (lastDamager instanceof ThrownPotion) {
-						ThrownPotion potion = (ThrownPotion) lastDamager;
-						if (potion.getShooter() instanceof Entity) {
-							Entity thrower = (Entity) potion.getShooter();
-							Entity finalDamager = null;
-							if (e.getEntity() instanceof Player) {
-								if (((Player) e.getEntity()).getKiller() == null) {
-									finalDamager = thrower;
-								} else {
-									finalDamager = ((Player) e.getEntity()).getKiller();
-								}
-							}
-							if (thrower.getUniqueId().toString().equalsIgnoreCase(finalDamager.getUniqueId().toString())) {
-								return DeathType.MAGIC_COMBAT;
-							} else {
-								return DeathType.MAGIC_COMBAT_ACCIDENT;
-							}
-						} else {
-							return DeathType.MAGIC_COMBAT_ACCIDENT;
-						}
-					}
-				} else {
-					return DeathType.MAGIC;
+                    if (e instanceof EntityDamageByEntityEvent) {
+                        EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
+                        if (entityEvent.getDamager() instanceof ThrownPotion) {
+                            ThrownPotion potion = (ThrownPotion) entityEvent.getDamager();
+                            if (potion.getShooter() instanceof Entity) {
+                                if (((Entity) potion.getShooter()).getUniqueId().toString().equalsIgnoreCase(lastDamager.getUniqueId().toString())) {
+                                    type = DeathType.MAGIC_COMBAT;
+                                } else {
+                                    type = DeathType.MAGIC_COMBAT_ACCIDENT;
+                                }
+                            }
+                        }
+                    }
 				}
+                return type;
 			case CRAMMING:
 				if (lastDamager != null)
 					return DeathType.SUFFOCATION_CRAMMING_COMBAT;
