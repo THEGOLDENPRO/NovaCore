@@ -238,7 +238,7 @@ public abstract class NovaModule {
 	 * @return Call name of the module
 	 * @since 1.0
 	 */
-	public String getClassName() {
+	public final String getClassName() {
 		return this.getClass().getName();
 	}
 
@@ -248,7 +248,7 @@ public abstract class NovaModule {
 	 * @return <code>true</code> if the module has been enabled
 	 * @since 1.0
 	 */
-	public boolean isEnabled() {
+	public final boolean isEnabled() {
 		return this.enabled;
 	}
 
@@ -260,7 +260,7 @@ public abstract class NovaModule {
 	 * @return <code>true</code> if the module has ever been enabled
 	 * @since 1.0
 	 */
-	public boolean hasBeenEnabled() {
+	public final boolean hasBeenEnabled() {
 		return hasBeenEnabled;
 	}
 
@@ -272,7 +272,7 @@ public abstract class NovaModule {
 	 * @return The name of the missing plugin
 	 * @since 1.1
 	 */
-	public String getMissingPluginName() {
+	public final String getMissingPluginName() {
 		return missingPluginName;
 	}
 
