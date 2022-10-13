@@ -463,6 +463,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case GRILLED_PORK:
 			return Material.GRILLED_PORK;
 
+		case EXP_BOTTLE:
+			return Material.EXP_BOTTLE;
+			
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
 			AbstractionLogger.getLogger().warning("VersionIndependentUtils", "Unknown version Independent material: " + material.name());
