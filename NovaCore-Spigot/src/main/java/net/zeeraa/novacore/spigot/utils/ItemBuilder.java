@@ -350,6 +350,27 @@ public class ItemBuilder {
 	public static ItemStack materialToItemStack(Material material, int size) {
 		return new ItemBuilder(material).setAmount(size).build();
 	}
+	
+	/**
+	 * Create an item stack of the provided {@link VersionIndependentMaterial} with 1 item
+	 * 
+	 * @param material The {@link VersionIndependentMaterial} of the item stack
+	 * @return {@link ItemStack} of the provided material
+	 */
+	public static ItemStack materialToItemStack(VersionIndependentMaterial material) {
+		return ItemBuilder.materialToItemStack(material.toBukkitVersion(), 1);
+	}
+
+	/**
+	 * Create an item stack of the provided {@link VersionIndependentMaterial} and size
+	 * 
+	 * @param material The {@link VersionIndependentMaterial} of the item stack
+	 * @param size     The size of the item stack
+	 * @return {@link ItemStack} of the provided material and size
+	 */
+	public static ItemStack materialToItemStack(VersionIndependentMaterial material, int size) {
+		return new ItemBuilder(material.toBukkitVersion()).setAmount(size).build();
+	}
 
 	/**
 	 * Get a {@link List} with all available record names
