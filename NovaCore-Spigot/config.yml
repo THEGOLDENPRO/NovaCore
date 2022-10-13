@@ -37,3 +37,8 @@ MojangAPIProxyURL: "https://mojangapi.novauniverse.net/"
 # The custom hastebin server to use for debugging and for the built in hastebin implementation. Note that this inly affects the hastebin instace from NovaCore#getHastebinInstance()
 # To self host this see https://hub.docker.com/r/rlister/hastebin or https://github.com/toptal/haste-server
 HastebinURL: "https://hastebin.novauniverse.net"
+
+# By default the MultiverseManager will try to reload AdvancedGUIs if it detects the plugin
+# RTo disable this set the following value to true
+DisableAdvancedGUIAupport: false
+AdvancedGUIMultiverseReloadDelay: 20

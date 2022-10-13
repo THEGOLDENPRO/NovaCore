@@ -15,7 +15,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
 
@@ -189,6 +192,19 @@ public class MultiverseManager extends NovaModule implements Listener {
 		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world, unloadOption, PlayerUnloadOption.KICK, true, false);
 
 		worlds.put(multiverseWorld.getName(), multiverseWorld);
+
+		if (Bukkit.getServer().getPluginManager().getPlugin("AdvancedGUI") != null) {
+			if (!NovaCore.getInstance().isAdvancedGUISupportDisabled()) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						Log.debug("MultiverseManager", "Reloading AdvancedGUI");
+						Log.warn("MultiverseManager", "Are are supposed to reload advanced gui but since their maven server is down we cant pull the depencendy needed. We are instead using the ugly soulution of executing a command instead as console");
+						Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ag reload");
+					}
+				}.runTaskLater(NovaCore.getInstance(), NovaCore.getInstance().getAdvancedGUIMultiverseReloadDelay());
+			}
+		}
 
 		return multiverseWorld;
 	}

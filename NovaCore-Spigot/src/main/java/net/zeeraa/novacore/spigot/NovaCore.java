@@ -99,6 +99,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	private boolean noNMSMode;
 
+	private boolean disableAdvancedGUISupport;
+	private int advancedGUIMultiverseReloadDelay;
+
 	private Hastebin defaultHastebinInstance;
 
 	private ReflectionBasedCommandRegistrator reflectionBasedCommandRegistrator;
@@ -252,6 +255,14 @@ public class NovaCore extends JavaPlugin implements Listener {
 		return this.defaultHastebinInstance;
 	}
 
+	public boolean isAdvancedGUISupportDisabled() {
+		return disableAdvancedGUISupport;
+	}
+
+	public int getAdvancedGUIMultiverseReloadDelay() {
+		return advancedGUIMultiverseReloadDelay;
+	}
+	
 	public boolean runVersionIndependentLayerSelftest() {
 		if (noNMSMode) {
 			Log.error("NovaCore", "Cant run selftest in no nms mode");
@@ -504,6 +515,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 		if (Bukkit.getServer().getPluginManager().getPlugin("Citizens") != null) {
 			citizensUtils = new CitizensUtils();
 		}
+
+		disableAdvancedGUISupport = getConfig().getBoolean("DisableAdvancedGUIAupport");
+		advancedGUIMultiverseReloadDelay = getConfig().getInt("AdvancedGUIMultiverseReloadDelay");
 
 		CommandRegistry.registerCommand(new NovaCoreCommand());
 		CommandRegistry.registerCommand(new MapDisplayCommand());
