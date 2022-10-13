@@ -52,6 +52,7 @@ import net.zeeraa.novacore.spigot.logger.SpigotAbstractionLogger;
 import net.zeeraa.novacore.spigot.loottable.LootTableManager;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1;
 import net.zeeraa.novacore.spigot.loottable.loottables.V1.LootTableLoaderV1Legacy;
+import net.zeeraa.novacore.spigot.loottable.loottables.randomiser.RandomizerLootTableLoader;
 import net.zeeraa.novacore.spigot.mapdisplay.MapDisplayManager;
 import net.zeeraa.novacore.spigot.mapdisplay.command.MapDisplayCommand;
 import net.zeeraa.novacore.spigot.module.ModuleManager;
@@ -262,7 +263,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 	public int getAdvancedGUIMultiverseReloadDelay() {
 		return advancedGUIMultiverseReloadDelay;
 	}
-	
+
 	public boolean runVersionIndependentLayerSelftest() {
 		if (noNMSMode) {
 			Log.error("NovaCore", "Cant run selftest in no nms mode");
@@ -465,6 +466,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		lootTableManager.addLoader(new LootTableLoaderV1());
 		lootTableManager.addLoader(new LootTableLoaderV1Legacy());
+		lootTableManager.addLoader(new RandomizerLootTableLoader());
 
 		Log.info("NovaCore", "Loading loot tables from: " + lootTableFolder.getPath());
 		lootTableManager.loadAll(lootTableFolder);
