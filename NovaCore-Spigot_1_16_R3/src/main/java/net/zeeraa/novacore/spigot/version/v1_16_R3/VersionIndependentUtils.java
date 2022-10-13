@@ -785,6 +785,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public void setSilent(LivingEntity entity, boolean silent) {
 		entity.setSilent(silent);
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	public DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager) {
 
