@@ -87,7 +87,8 @@ public enum VersionIndependentMaterial {
 	GOLD_HELMET,
 	GOLD_CHESTPLATE,
 	GOLD_LEGGINGS, 
-	GOLD_BOOTS;
+	GOLD_BOOTS,
+	GRILLED_PORK;
 
 	/**
 	 * Get the bukkit {@link Material} for the currently used version of the game

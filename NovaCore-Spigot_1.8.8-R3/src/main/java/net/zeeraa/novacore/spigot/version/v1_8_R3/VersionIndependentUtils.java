@@ -459,6 +459,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			
 		case GOLD_BOOTS:
 			return Material.GOLD_BOOTS;
+			
+		case GRILLED_PORK:
+			return Material.GRILLED_PORK;
 
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
