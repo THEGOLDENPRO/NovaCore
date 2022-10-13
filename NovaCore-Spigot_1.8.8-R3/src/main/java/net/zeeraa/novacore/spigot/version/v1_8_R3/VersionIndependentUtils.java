@@ -447,6 +447,18 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case WATCH:
 			return Material.WATCH;
+			
+		case GOLD_HELMET:
+			return Material.GOLD_HELMET;
+			
+		case GOLD_CHESTPLATE:
+			return Material.GOLD_CHESTPLATE;
+			
+		case GOLD_LEGGINGS:
+			return Material.GOLD_LEGGINGS;
+			
+		case GOLD_BOOTS:
+			return Material.GOLD_BOOTS;
 
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
