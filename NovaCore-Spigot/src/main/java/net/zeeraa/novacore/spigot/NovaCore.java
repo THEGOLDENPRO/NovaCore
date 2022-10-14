@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
 
+import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -383,9 +384,12 @@ public class NovaCore extends JavaPlugin implements Listener {
 				} else {
 					VersionIndependentUtils.setInstance(versionIndependentUtils);
 				}
+				VersionIndependentUtils.get().getPacketManager().registerOnlinePlayers();
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
 				Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getChunkLoader(), this);
+				Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
+
 			} else {
 				throw new InvalidClassException(clazz.getName() + " is not assignable from " + VersionIndependantLoader.class.getName());
 			}
@@ -540,6 +544,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
+		VersionIndependentUtils.get().getPacketManager().removeOnlinePlayers();
 		// Cancel scheduler tasks
 		Bukkit.getScheduler().cancelTasks(this);
 
@@ -625,12 +630,12 @@ public class NovaCore extends JavaPlugin implements Listener {
 		int permissionLevelCount = 0;
 
 		// Used to list permissions on error
-		String perms = "";
+		StringBuilder perms = new StringBuilder();
 
 		// Register permissions for log levels
 		for (LogLevel ll : LogLevel.values()) {
 			if (player.hasPermission("novacore.loglevel.auto." + ll.name().toLowerCase())) {
-				perms += "novacore.loglevel.auto." + ll.name().toLowerCase() + " ";
+				perms.append("novacore.loglevel.auto.").append(ll.name().toLowerCase()).append(" ");
 
 				Log.debug("NovaCore", "Set " + player.getName() + "s log level to " + ll.name() + " because they have the novacore.loglevel.auto." + ll.name().toLowerCase() + " permission");
 				Log.getSubscribedPlayers().put(player.getUniqueId(), ll);
