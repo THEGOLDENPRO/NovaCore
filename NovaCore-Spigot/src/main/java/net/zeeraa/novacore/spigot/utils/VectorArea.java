@@ -128,7 +128,7 @@ public class VectorArea {
 	}
 	
 	public Vector getDifferential() {
-		return new Vector(position1.getX() - position2.getX(), position1.getY() - position2.getY(), position1.getZ() - position2.getZ());
+		return VectorUtils.getDifferential(position1, position2);
 	}
 
 	public List<Vector> getOutline(double distance) {
