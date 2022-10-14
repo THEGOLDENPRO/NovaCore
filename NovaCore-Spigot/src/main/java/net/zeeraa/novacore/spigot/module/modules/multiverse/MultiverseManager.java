@@ -199,7 +199,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 					@Override
 					public void run() {
 						Log.debug("MultiverseManager", "Reloading AdvancedGUI");
-						Log.warn("MultiverseManager", "Are are supposed to reload advanced gui but since their maven server is down we cant pull the depencendy needed. We are instead using the ugly soulution of executing a command instead as console");
+						Log.warn("MultiverseManager", "TODO: use api instead of command for ag reload");
 						Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ag reload");
 					}
 				}.runTaskLater(NovaCore.getInstance(), NovaCore.getInstance().getAdvancedGUIMultiverseReloadDelay());
