@@ -1,16 +1,14 @@
 package net.zeeraa.novacore.spigot.tasks;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
 
 /**
- * This creates a task using the
- * {@link BukkitScheduler#scheduleSyncRepeatingTask(Plugin, org.bukkit.scheduler.BukkitRunnable, long, long)}
- * function
+ * This creates a task using the {@link BukkitRunnable} class
  * 
  * @author Anton
  */
@@ -19,52 +17,117 @@ public class SimpleTask extends Task {
 	protected Plugin plugin;
 	protected long delay;
 	protected long period;
-	protected int taskId;
+
+	protected BukkitTask bukkitTask;
+
+	protected TaskExecutionMode taskExecutionMode;
+
+	public SimpleTask(Runnable runnable, long period, TaskExecutionMode taskExecutionMode) {
+		this(NovaCore.getInstance(), runnable, period, period, taskExecutionMode);
+	}
 
 	public SimpleTask(Runnable runnable, long period) {
-		this(NovaCore.getInstance(), runnable, period, period);
+		this(NovaCore.getInstance(), runnable, period, period, TaskExecutionMode.SYNCHRONOUS);
 	}
 
 	public SimpleTask(Plugin plugin, Runnable runnable, long period) {
-		this(plugin, runnable, period, period);
+		this(plugin, runnable, period, period, TaskExecutionMode.SYNCHRONOUS);
 	}
 
 	public SimpleTask(Runnable runnable, long delay, long period) {
-		this(NovaCore.getInstance(), runnable, delay, period);
+		this(NovaCore.getInstance(), runnable, delay, period, TaskExecutionMode.SYNCHRONOUS);
 	}
 
 	public SimpleTask(Plugin plugin, Runnable runnable, long delay, long period) {
-		this.taskId = -1;
+		this(plugin, runnable, delay, period, TaskExecutionMode.SYNCHRONOUS);
+	}
+
+	public SimpleTask(Plugin plugin, Runnable runnable, long delay, long period, TaskExecutionMode taskExecutionMode) {
+		this.bukkitTask = null;
 
 		this.plugin = plugin;
 		this.runnable = runnable;
 		this.delay = delay;
 		this.period = period;
+
+		if (taskExecutionMode == null) {
+			throw new IllegalArgumentException("TaskExecutionMode cant be null");
+		}
+
+		this.taskExecutionMode = taskExecutionMode;
+	}
+
+	/**
+	 * GEt the {@link TaskExecutionMode}
+	 * 
+	 * @return {@link TaskExecutionMode} the has been set, not that this might not
+	 *         correctly reflect the active execution mode since if the mode was
+	 *         changed after the task started the new mode wont be used until the
+	 *         task has restarted
+	 */
+	public TaskExecutionMode getTaskExecutionMode() {
+		return taskExecutionMode;
+	}
+
+	/**
+	 * Change the {@link TaskExecutionMode}. The task needs to restart to apply the
+	 * mode, see {@link Task#restart()}
+	 * 
+	 * @param taskExecutionMode The new {@link TaskExecutionMode} to use
+	 */
+	public void setTaskExecutionMode(TaskExecutionMode taskExecutionMode) {
+		if (taskExecutionMode == null) {
+			throw new IllegalArgumentException("TaskExecutionMode cant be null");
+		}
+
+		this.taskExecutionMode = taskExecutionMode;
 	}
 
 	@Override
 	public boolean start() {
-		if (taskId != -1) {
+		if (bukkitTask != null) {
 			return false;
 		}
 
-		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, runnable, delay, period);
+		switch (taskExecutionMode) {
+		case ASYNCHRONOUS:
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					runnable.run();
+				}
+			}.runTaskTimerAsynchronously(plugin, delay, period);
+			break;
+
+		case SYNCHRONOUS:
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					runnable.run();
+				}
+			}.runTaskTimer(plugin, delay, period);
+
+			break;
+
+		default:
+			break;
+		}
 
 		return true;
 	}
 
 	@Override
 	public boolean stop() {
-		if (taskId == -1) {
+		if (bukkitTask == null) {
 			return false;
 		}
-		Bukkit.getScheduler().cancelTask(taskId);
-		taskId = -1;
+		bukkitTask.cancel();
+		bukkitTask = null;
 		return true;
 	}
 
 	@Override
 	public boolean isRunning() {
-		return taskId != -1;
+		return bukkitTask != null;
 	}
 }

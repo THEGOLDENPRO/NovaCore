@@ -66,19 +66,6 @@ public class AdvancedTask extends Task {
 	}
 
 	/**
-	 * Stop the timer and start it again
-	 * 
-	 * @return <code>true</code> on success
-	 */
-	public boolean restart() {
-		if (isRunning()) {
-			stop();
-		}
-
-		return start();
-	}
-
-	/**
 	 * Modify the {@link TimeUnit} used for the task
 	 * <p>
 	 * To apply the new settings call {@link AdvancedTask#restart()}

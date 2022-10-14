@@ -28,6 +28,14 @@ public abstract class Task {
 	public abstract boolean isRunning();
 
 	/**
+	 * Restart the task. This is the same as calling {@link Task#stop()} and then {@link Task#start()}
+	 */
+	public void restart() {
+		this.stop();
+		this.start();
+	}
+	
+	/**
 	 * Stop the task if its running.
 	 * <p>
 	 * This will call {@link Task#stop()} if {@link Task#isRunning()} is
