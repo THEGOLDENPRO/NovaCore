@@ -1,21 +1,20 @@
 package net.zeeraa.novacore.spigot.abstraction.enums;
 
 public enum MainHand {
-    LEFT("a"), RIGHT("b");
+	LEFT("a"), RIGHT("b");
 
+	public String nmsValue;
 
-    public String nmsValue;
+	MainHand(String s) {
+		this.nmsValue = s;
+	}
 
-     MainHand(String s) {
-        this.nmsValue = s;
-    }
-
-    public static MainHand valueOfNMS(String s) {
-         for (MainHand mainHand : MainHand.values()) {
-             if (mainHand.nmsValue.equals(s)) {
-                 return mainHand;
-             }
-         }
-         return null;
-    }
+	public static MainHand valueOfNMS(String s) {
+		for (MainHand mainHand : MainHand.values()) {
+			if (mainHand.nmsValue.equals(s)) {
+				return mainHand;
+			}
+		}
+		return null;
+	}
 }

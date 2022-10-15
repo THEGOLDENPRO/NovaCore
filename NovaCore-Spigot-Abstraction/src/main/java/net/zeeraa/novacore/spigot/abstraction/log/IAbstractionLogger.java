@@ -12,7 +12,7 @@ public interface IAbstractionLogger {
 	public void info(String message);
 
 	public void info(String source, String message);
-	
+
 	public void success(String message);
 
 	public void success(String source, String message);

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 
 /**
  * This is used to get the NMS version
+ * 
  * @author Zeeraa
  */
 public class NovaCoreAbstraction {

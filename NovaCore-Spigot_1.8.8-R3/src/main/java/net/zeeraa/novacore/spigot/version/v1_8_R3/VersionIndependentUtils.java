@@ -329,7 +329,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case FIZZ:
 			return Sound.FIZZ;
-			
+
 		case ENDERMAN_TELEPORT:
 			return Sound.ENDERMAN_TELEPORT;
 
@@ -445,25 +445,25 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case WATCH:
 			return Material.WATCH;
-			
+
 		case GOLD_HELMET:
 			return Material.GOLD_HELMET;
-			
+
 		case GOLD_CHESTPLATE:
 			return Material.GOLD_CHESTPLATE;
-			
+
 		case GOLD_LEGGINGS:
 			return Material.GOLD_LEGGINGS;
-			
+
 		case GOLD_BOOTS:
 			return Material.GOLD_BOOTS;
-			
+
 		case GRILLED_PORK:
 			return Material.GRILLED_PORK;
 
 		case EXP_BOTTLE:
 			return Material.EXP_BOTTLE;
-			
+
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
 			AbstractionLogger.getLogger().warning("VersionIndependentUtils", "Unknown version Independent material: " + material.name());
@@ -586,6 +586,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		// https://www.spigotmc.org/threads/silent-villager.106983/
 		((CraftEntity) entity).getHandle().b(silent);
 	}
+
 	@Override
 	public boolean isBed(Material material) {
 		// Faster implementation since 1.8 only have 2 types of bed
@@ -595,123 +596,123 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager) {
 		switch (e.getCause()) {
-			case FIRE:
-				if (lastDamager != null)
-					return DeathType.FIRE_SOURCE_COMBAT;
-					return DeathType.FIRE_SOURCE;
+		case FIRE:
+			if (lastDamager != null)
+				return DeathType.FIRE_SOURCE_COMBAT;
+			return DeathType.FIRE_SOURCE;
 
-			case LAVA:
-				if (lastDamager != null)
-					return DeathType.LAVA_COMBAT;
-					return DeathType.LAVA;
+		case LAVA:
+			if (lastDamager != null)
+				return DeathType.LAVA_COMBAT;
+			return DeathType.LAVA;
 
-			case FALL:
-				if (e.getFinalDamage() <= 2.0)
-					if (lastDamager != null)
-						return DeathType.FALL_SMALL_COMBAT;
-					 else
-						return DeathType.FALL_SMALL;
-					return DeathType.FALL_BIG;
-			case VOID:
+		case FALL:
+			if (e.getFinalDamage() <= 2.0)
 				if (lastDamager != null)
-					return DeathType.VOID_COMBAT;
-					return DeathType.VOID;
+					return DeathType.FALL_SMALL_COMBAT;
+				else
+					return DeathType.FALL_SMALL;
+			return DeathType.FALL_BIG;
+		case VOID:
+			if (lastDamager != null)
+				return DeathType.VOID_COMBAT;
+			return DeathType.VOID;
 
-			case THORNS:
-				return DeathType.THORNS;
+		case THORNS:
+			return DeathType.THORNS;
+		case WITHER:
+			if (lastDamager != null)
+				return DeathType.EFFECT_WITHER_COMBAT;
+			return DeathType.EFFECT_WITHER;
+
+		case CONTACT:
+			if (lastDamager != null)
+				return DeathType.CACTUS_COMBAT;
+			return DeathType.CACTUS;
+		case DROWNING:
+			if (lastDamager != null)
+				return DeathType.DROWN_COMBAT;
+			return DeathType.DROWN;
+		case LIGHTNING:
+			if (lastDamager != null)
+				return DeathType.LIGHTNING_COMBAT;
+			return DeathType.LIGHTNING;
+		case PROJECTILE:
+			if (lastDamager.getType() == EntityType.ARROW) {
+				return DeathType.PROJECTILE_ARROW;
+			}
+			return DeathType.PROJECTILE_OTHER;
+		case STARVATION:
+			if (lastDamager != null)
+				return DeathType.STARVING_COMBAT;
+			return DeathType.STARVING;
+		case SUFFOCATION:
+			if (lastDamager != null)
+				return DeathType.SUFFOCATION_COMBAT;
+			return DeathType.SUFFOCATION;
+		case ENTITY_ATTACK:
+			switch (lastDamager.getType()) {
 			case WITHER:
-				if (lastDamager != null)
-					return DeathType.EFFECT_WITHER_COMBAT;
-					return DeathType.EFFECT_WITHER;
-
-			case CONTACT:
-				if (lastDamager != null)
-					return DeathType.CACTUS_COMBAT;
-					return DeathType.CACTUS;
-			case DROWNING:
-				if (lastDamager != null)
-					return DeathType.DROWN_COMBAT;
-					return DeathType.DROWN;
-			case LIGHTNING:
-				if (lastDamager != null)
-					return DeathType.LIGHTNING_COMBAT;
-					return DeathType.LIGHTNING;
-			case PROJECTILE:
-				if (lastDamager.getType() == EntityType.ARROW) {
-					return DeathType.PROJECTILE_ARROW;
-				}
-				return DeathType.PROJECTILE_OTHER;
-			case STARVATION:
-				if (lastDamager != null)
-					return DeathType.STARVING_COMBAT;
-					return DeathType.STARVING;
-			case SUFFOCATION:
-				if (lastDamager != null)
-					return DeathType.SUFFOCATION_COMBAT;
-					return DeathType.SUFFOCATION;
-			case ENTITY_ATTACK:
-				switch (lastDamager.getType()) {
-					case WITHER:
-						return DeathType.COMBAT_WITHER;
-					case FIREBALL:
-					case SMALL_FIREBALL:
-						return DeathType.COMBAT_FIREBALL;
+				return DeathType.COMBAT_WITHER;
+			case FIREBALL:
+			case SMALL_FIREBALL:
+				return DeathType.COMBAT_FIREBALL;
+			default:
+				return DeathType.COMBAT_NORMAL;
+			}
+		case FALLING_BLOCK:
+			if (e instanceof EntityDamageByEntityEvent) {
+				EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
+				if (entityEvent.getDamager() instanceof FallingBlock) {
+					FallingBlock block = (FallingBlock) entityEvent.getDamager();
+					switch (block.getMaterial()) {
+					case ANVIL:
+						if (lastDamager != null)
+							return DeathType.ANVIL_FALL_COMBAT;
+						return DeathType.ANVIL_FALL;
 					default:
-						return DeathType.COMBAT_NORMAL;
-				}
-			case FALLING_BLOCK:
-				if (e instanceof EntityDamageByEntityEvent) {
-					EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
-					if (entityEvent.getDamager() instanceof FallingBlock) {
-						FallingBlock block = (FallingBlock) entityEvent.getDamager();
-						switch (block.getMaterial()) {
-							case ANVIL:
-								if (lastDamager != null)
-									return DeathType.ANVIL_FALL_COMBAT;
-								return DeathType.ANVIL_FALL;
-							default:
-								if (lastDamager != null)
-									return DeathType.BLOCK_FALL_COMBAT;
-								return DeathType.BLOCK_FALL;
-						}
+						if (lastDamager != null)
+							return DeathType.BLOCK_FALL_COMBAT;
+						return DeathType.BLOCK_FALL;
 					}
 				}
-				return DeathType.BLOCK_FALL_COMBAT;
-			case BLOCK_EXPLOSION:
-			case ENTITY_EXPLOSION:
-				if (lastDamager != null)
-					return DeathType.EXPLOSION_COMBAT;
-					return DeathType.EXPLOSION;
-			case FIRE_TICK:
-				if (lastDamager != null)
-					return DeathType.FIRE_NATURAL_COMBAT;
-					return DeathType.FIRE_NATURAL;
-			case MAGIC:
-				DeathType type = DeathType.MAGIC;
-				if (lastDamager != null) {
-					if (e instanceof EntityDamageByEntityEvent) {
-						EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
-						if (entityEvent.getDamager() instanceof ThrownPotion) {
-							ThrownPotion potion = (ThrownPotion) entityEvent.getDamager();
-							if (potion.getShooter() instanceof Entity) {
-								if (((Entity) potion.getShooter()).getUniqueId().toString().equalsIgnoreCase(lastDamager.getUniqueId().toString())) {
-									type = DeathType.MAGIC_COMBAT;
-								} else {
-									type = DeathType.MAGIC_COMBAT_ACCIDENT;
-								}
+			}
+			return DeathType.BLOCK_FALL_COMBAT;
+		case BLOCK_EXPLOSION:
+		case ENTITY_EXPLOSION:
+			if (lastDamager != null)
+				return DeathType.EXPLOSION_COMBAT;
+			return DeathType.EXPLOSION;
+		case FIRE_TICK:
+			if (lastDamager != null)
+				return DeathType.FIRE_NATURAL_COMBAT;
+			return DeathType.FIRE_NATURAL;
+		case MAGIC:
+			DeathType type = DeathType.MAGIC;
+			if (lastDamager != null) {
+				if (e instanceof EntityDamageByEntityEvent) {
+					EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
+					if (entityEvent.getDamager() instanceof ThrownPotion) {
+						ThrownPotion potion = (ThrownPotion) entityEvent.getDamager();
+						if (potion.getShooter() instanceof Entity) {
+							if (((Entity) potion.getShooter()).getUniqueId().toString().equalsIgnoreCase(lastDamager.getUniqueId().toString())) {
+								type = DeathType.MAGIC_COMBAT;
+							} else {
+								type = DeathType.MAGIC_COMBAT_ACCIDENT;
 							}
 						}
 					}
 				}
-				return type;
-			case CUSTOM:
-			case SUICIDE:
-			case MELTING:
-			case POISON:
-			default:
-				if (lastDamager != null)
-					return DeathType.GENERIC_COMBAT;
-					return DeathType.GENERIC;
+			}
+			return type;
+		case CUSTOM:
+		case SUICIDE:
+		case MELTING:
+		case POISON:
+		default:
+			if (lastDamager != null)
+				return DeathType.GENERIC_COMBAT;
+			return DeathType.GENERIC;
 		}
 	}
 
@@ -746,7 +747,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean canBreakBlock(ItemStack item, Material block)  {
+	public boolean canBreakBlock(ItemStack item, Material block) {
 		net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound nbtTag = nmsItem.getTag();
 		NBTTagList list = nbtTag.getList("CanDestroy", 8);

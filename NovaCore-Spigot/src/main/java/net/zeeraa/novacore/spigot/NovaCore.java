@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
 
-import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -400,7 +399,6 @@ public class NovaCore extends JavaPlugin implements Listener {
 					Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getChunkLoader(), this);
 					Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
 				}
-
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
 
