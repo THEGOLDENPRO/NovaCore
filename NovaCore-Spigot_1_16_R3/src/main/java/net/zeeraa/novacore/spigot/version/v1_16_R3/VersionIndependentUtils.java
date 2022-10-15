@@ -15,7 +15,6 @@ import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
-import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.*;
@@ -997,10 +996,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		return ChatColor.of(rgb).toString();
 	}
 
-	@Override
+	/*@Override
 	public PacketManager getPacketManager() {
 		return new net.zeeraa.novacore.spigot.version.v1_16_R3.packet.PacketManager();
-	}
+	}*/
 
 	@Override
 	@SuppressWarnings("unchecked")

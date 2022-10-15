@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import net.minecraft.server.v1_8_R3.*;
 import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
-import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.*;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -740,10 +739,11 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		return rgb;
 	}
 
+	/*
 	@Override
 	public PacketManager getPacketManager() {
 		return new net.zeeraa.novacore.spigot.version.v1_8_R3.packet.PacketManager();
-	}
+	}*/
 
 	@Override
 	@SuppressWarnings("unchecked")

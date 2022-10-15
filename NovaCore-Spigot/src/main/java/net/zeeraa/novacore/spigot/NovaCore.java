@@ -395,9 +395,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 					Log.warn("NovaCore", "Could not register events from ChunkLoader and PacketManager");
 				} else {
 					VersionIndependentUtils.setInstance(versionIndependentUtils);
-					VersionIndependentUtils.get().getPacketManager().registerOnlinePlayers();
+					//VersionIndependentUtils.get().getPacketManager().registerOnlinePlayers();
 					Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getChunkLoader(), this);
-					Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
+					//TODO: Fix crash issue
+					//Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
 				}
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
@@ -560,7 +561,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
-		VersionIndependentUtils.get().getPacketManager().removeOnlinePlayers();
+		// VersionIndependentUtils.get().getPacketManager().removeOnlinePlayers();
 		// Cancel scheduler tasks
 		Bukkit.getScheduler().cancelTasks(this);
 
