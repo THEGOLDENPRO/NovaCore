@@ -34,7 +34,7 @@ import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
  * using reflection. This class contains a lot of functions that changes between
  * versions
  * 
- * @author Zeeraa, Bruno
+ * @authors Zeeraa, Bruno
  */
 public abstract class VersionIndependentUtils {
 	private static VersionIndependentUtils instance;

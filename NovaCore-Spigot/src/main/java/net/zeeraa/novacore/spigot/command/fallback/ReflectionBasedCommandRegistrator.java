@@ -20,12 +20,9 @@ public class ReflectionBasedCommandRegistrator implements CommandRegistrator {
 		try {
 			String version = NovaCore.getInstance().getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
 			String name = "org.bukkit.craftbukkit." + version + ".CraftServer";
-			Class<?> craftserver = null;
+			Class<?> craftserver;
 			craftserver = Class.forName(name);
-
-			SimpleCommandMap scm = (SimpleCommandMap) craftserver.cast(NovaCore.getInstance().getServer()).getClass().getMethod("getCommandMap").invoke(NovaCore.getInstance().getServer());
-
-			return scm;
+			return (SimpleCommandMap) craftserver.cast(NovaCore.getInstance().getServer()).getClass().getMethod("getCommandMap").invoke(NovaCore.getInstance().getServer());
 		} catch (Exception e) {
 			Log.error("ReflectionBasedCommandRegistrator", "getCommandMap() failed. " + e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();

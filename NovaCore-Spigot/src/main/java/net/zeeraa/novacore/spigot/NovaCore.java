@@ -381,14 +381,16 @@ public class NovaCore extends JavaPlugin implements Listener {
 				versionIndependentUtils = versionIndependantLoader.getVersionIndependentUtils();
 				if (versionIndependentUtils == null) {
 					Log.warn("NovaCore", "VersionIndependentUtils is not supported for this version");
+					Log.warn("NovaCore", "Could not register events from ChunkLoader and PacketManager");
 				} else {
 					VersionIndependentUtils.setInstance(versionIndependentUtils);
+					VersionIndependentUtils.get().getPacketManager().registerOnlinePlayers();
+					Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getChunkLoader(), this);
+					Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
 				}
-				VersionIndependentUtils.get().getPacketManager().registerOnlinePlayers();
+
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
-				Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getChunkLoader(), this);
-				Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
 
 			} else {
 				throw new InvalidClassException(clazz.getName() + " is not assignable from " + VersionIndependantLoader.class.getName());
