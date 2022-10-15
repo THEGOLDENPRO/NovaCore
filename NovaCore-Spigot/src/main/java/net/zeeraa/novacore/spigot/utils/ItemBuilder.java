@@ -228,6 +228,19 @@ public class ItemBuilder {
 	/**
 	 * Add multiple lines of lore to the item
 	 * 
+	 * @param strings The text that should be added
+	 * @return The item builder instance
+	 */
+	public ItemBuilder addLore(String... strings) {
+		for (int i = 0; i < strings.length; i++) {
+			this.addLore(strings[i]);
+		}
+		return this;
+	}
+
+	/**
+	 * Add multiple lines of lore to the item
+	 * 
 	 * @param lines The lines to add
 	 * @return The item builder instance
 	 * @since 2.0.0
@@ -350,9 +363,10 @@ public class ItemBuilder {
 	public static ItemStack materialToItemStack(Material material, int size) {
 		return new ItemBuilder(material).setAmount(size).build();
 	}
-	
+
 	/**
-	 * Create an item stack of the provided {@link VersionIndependentMaterial} with 1 item
+	 * Create an item stack of the provided {@link VersionIndependentMaterial} with
+	 * 1 item
 	 * 
 	 * @param material The {@link VersionIndependentMaterial} of the item stack
 	 * @return {@link ItemStack} of the provided material
@@ -362,7 +376,8 @@ public class ItemBuilder {
 	}
 
 	/**
-	 * Create an item stack of the provided {@link VersionIndependentMaterial} and size
+	 * Create an item stack of the provided {@link VersionIndependentMaterial} and
+	 * size
 	 * 
 	 * @param material The {@link VersionIndependentMaterial} of the item stack
 	 * @param size     The size of the item stack
