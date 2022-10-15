@@ -15,12 +15,14 @@ import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
+import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
@@ -35,7 +37,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 
+import java.lang.reflect.Field;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
@@ -991,5 +995,33 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public String asChatColor(String rgb) {
 		return ChatColor.of(rgb).toString();
+	}
+
+	@Override
+	public PacketManager getPacketManager() {
+		return new net.zeeraa.novacore.spigot.version.v1_16_R3.packet.PacketManager();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean canBreakBlock(ItemStack item, Material block) {
+		net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		NBTTagCompound nbtTag = nmsItem.getTag();
+		NBTTagList list = nbtTag.getList("CanDestroy", 8);
+		if (list == null) {
+			return false;
+		}
+		try {
+			Field f = NBTTagList.class.getDeclaredField("list");
+			f.setAccessible(true);
+
+			for (NBTTagCompound nbt : (List<NBTTagCompound>) f.get(list)) {
+				return Material.matchMaterial(nbt.toString()) == block;
+			}
+		} catch (Exception ignored) {
+			return false;
+		}
+
+		return false;
 	}
 }

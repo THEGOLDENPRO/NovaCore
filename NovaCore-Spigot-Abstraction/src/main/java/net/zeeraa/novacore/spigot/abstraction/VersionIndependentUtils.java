@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
+import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creature;
@@ -33,7 +34,7 @@ import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
  * using reflection. This class contains a lot of functions that changes between
  * versions
  * 
- * @author Zeeraa, Bruno
+ * @authors Zeeraa, Bruno
  */
 public abstract class VersionIndependentUtils {
 	private static VersionIndependentUtils instance;
@@ -721,4 +722,8 @@ public abstract class VersionIndependentUtils {
 	 * @author Bruno
 	 */
 	public abstract String asChatColor(String rgb);
+
+	public abstract PacketManager getPacketManager();
+
+	public abstract boolean canBreakBlock(ItemStack item, Material material);
 }

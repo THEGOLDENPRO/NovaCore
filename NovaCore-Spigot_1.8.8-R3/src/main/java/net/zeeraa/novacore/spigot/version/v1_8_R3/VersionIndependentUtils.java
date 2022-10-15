@@ -1,15 +1,22 @@
 package net.zeeraa.novacore.spigot.version.v1_8_R3;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.server.v1_8_R3.*;
 import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
+import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.*;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -23,17 +30,8 @@ import org.bukkit.material.MaterialData;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-import net.minecraft.server.v1_8_R3.DamageSource;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
@@ -739,5 +737,30 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public String asChatColor(String rgb) {
 		// does not work on 1.15 and below
 		return rgb;
+	}
+
+	@Override
+	public PacketManager getPacketManager() {
+		return new net.zeeraa.novacore.spigot.version.v1_8_R3.packet.PacketManager();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean canBreakBlock(ItemStack item, Material block)  {
+		net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		NBTTagCompound nbtTag = nmsItem.getTag();
+		NBTTagList list = nbtTag.getList("CanDestroy", 8);
+		try {
+			Field f = NBTTagList.class.getDeclaredField("list");
+			f.setAccessible(true);
+
+			for (NBTTagCompound nbt : (List<NBTTagCompound>) f.get(list)) {
+				return Material.matchMaterial(nbt.toString()) == block;
+			}
+		} catch (Exception ignored) {
+			return false;
+		}
+
+		return false;
 	}
 }
