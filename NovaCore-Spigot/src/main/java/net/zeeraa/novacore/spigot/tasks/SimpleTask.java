@@ -91,7 +91,7 @@ public class SimpleTask extends Task {
 
 		switch (taskExecutionMode) {
 		case ASYNCHRONOUS:
-			new BukkitRunnable() {
+			bukkitTask = new BukkitRunnable() {
 				@Override
 				public void run() {
 					runnable.run();
@@ -100,7 +100,7 @@ public class SimpleTask extends Task {
 			break;
 
 		case SYNCHRONOUS:
-			new BukkitRunnable() {
+			bukkitTask = new BukkitRunnable() {
 				@Override
 				public void run() {
 					runnable.run();
