@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.abstraction.commons;
+package net.zeeraa.novacore.commons.utils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
