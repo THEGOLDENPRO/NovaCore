@@ -70,7 +70,13 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 	public void showPlayer(Player player) {
 		if (!playerVoteInventory.containsKey(player.getUniqueId())) {
-			Inventory voteInventory = Bukkit.createInventory(new MapVoteInventoryHolder(), 9, ChatColor.GOLD + "" + ChatColor.BOLD + LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote_for_map"));
+			int slots = 9;
+			
+			while(slots < getMaps().size()) {
+				slots += 9;
+			}
+			
+			Inventory voteInventory = Bukkit.createInventory(new MapVoteInventoryHolder(), slots, ChatColor.GOLD + "" + ChatColor.BOLD + LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote_for_map"));
 			playerVoteInventory.put(player.getUniqueId(), voteInventory);
 
 			this.updateInventory(player);
