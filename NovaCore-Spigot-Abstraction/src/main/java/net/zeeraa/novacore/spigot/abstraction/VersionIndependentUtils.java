@@ -88,6 +88,7 @@ public abstract class VersionIndependentUtils {
 
 	/**
 	 * Resets the last error variable
+	 * 
 	 * @author Zeeraa
 	 */
 	public final void resetLastError() {
@@ -162,7 +163,6 @@ public abstract class VersionIndependentUtils {
 	 * @author Zeeraa
 	 */
 	public abstract ItemStack getItemInMainHand(Player player);
-
 
 	/**
 	 * Set the item in a players main hand
@@ -676,6 +676,7 @@ public abstract class VersionIndependentUtils {
 
 	/**
 	 * Sets an entity as silent
+	 * 
 	 * @param entity The {@link LivingEntity}
 	 * @param silent boolean
 	 * @author Zeeraa
@@ -684,7 +685,9 @@ public abstract class VersionIndependentUtils {
 
 	/**
 	 * Predicts what {@link DeathType} would get if they died from that damage
-	 * @param e The {@link EntityDamageEvent} (could be any of its children)
+	 * 
+	 * @param e           The {@link EntityDamageEvent} (could be any of its
+	 *                    children)
 	 * @param lastDamager The last damager
 	 * @author Bruno
 	 */
@@ -692,32 +695,37 @@ public abstract class VersionIndependentUtils {
 
 	/**
 	 * Colorizes the message with one of 16 million RGB colors
-	 * @param color The {@link Color}
+	 * 
+	 * @param color   The {@link Color}
 	 * @param message The message
 	 * @author Bruno
 	 */
 	public abstract String colorize(Color color, String message);
 
-
 	/**
-	 * Colorizes the message as a gradient (transitioning from the start of the {@link Color[]} array to the end)
-	 * @param colors The {@link Color[]} array
+	 * Colorizes the message as a gradient (transitioning from the start of the
+	 * {@link Color[]} array to the end)
+	 * 
+	 * @param colors  The {@link Color[]} array
 	 * @param message The message
 	 * @author Bruno
 	 */
 	public abstract String colorizeGradient(Color[] colors, String message);
 
 	/**
-	 * Colorizes the message in a rainbow pattern (changes from 1 color to another, always looping) with changeable intervals between them
-	 * @param colors The {@link Color[]} array
+	 * Colorizes the message in a rainbow pattern (changes from 1 color to another,
+	 * always looping) with changeable intervals between them
+	 * 
+	 * @param colors        The {@link Color[]} array
 	 * @param charsPerColor How many characters before going to next color
-	 * @param message The message
+	 * @param message       The message
 	 * @author Bruno
 	 */
 	public abstract String colorizeRainbow(Color[] colors, int charsPerColor, String message);
 
 	/**
 	 * Converts RGB color to ChatColor
+	 * 
 	 * @param rgb RGB value
 	 * @author Bruno
 	 */

@@ -11,49 +11,46 @@ import org.bukkit.entity.Player;
 import java.util.Set;
 
 public class PlayerSwingEvent extends PacketEvent {
-    private long timestamp;
-    private Hand hand;
+	private long timestamp;
+	private Hand hand;
 
+	public PlayerSwingEvent(Player player, long timestamp, Hand hand) {
+		super(player);
+		this.timestamp = timestamp;
+		this.hand = hand;
+		try {
+			if (canBreak(player, player.getTargetBlock((Set<Material>) null, 5))) {
+				Bukkit.getPluginManager().callEvent(new PlayerAttemptDestroyBlockEvent(player, timestamp, player.getTargetBlock((Set<Material>) null, 5)));
+			}
+		} catch (Exception ignored) {
+		}
+	}
 
-    public PlayerSwingEvent(Player player, long timestamp, Hand hand) {
-        super(player);
-        this.timestamp = timestamp;
-        this.hand = hand;
-        try {
+	public long getTimestamp() {
+		return timestamp;
+	}
 
-            if (canBreak(player, player.getTargetBlock((Set<Material>) null, 5))) {
-                Bukkit.getPluginManager().callEvent(new PlayerAttemptDestroyBlockEvent(player, timestamp, player.getTargetBlock((Set<Material>) null, 5)));
-            }
-        } catch (Exception ignored) {}
+	public Hand getHand() {
+		return hand;
+	}
 
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public Hand getHand() {
-        return hand;
-    }
-
-    private boolean canBreak(Player player, Block block) {
-        if (hand != Hand.MAIN_HAND) {
-            return false;
-        }
-        if (block.getType() == Material.AIR) {
-            return false;
-        }
-        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
-            return false;
-        }
-        if (player.getGameMode() == GameMode.SURVIVAL) {
-            return true;
-        }
-        try {
-            return VersionIndependentUtils.get().canBreakBlock(player.getItemInHand(), block.getType());
-        } catch (Exception ignored) {
-            return false;
-        }
-    }
-
+	private boolean canBreak(Player player, Block block) {
+		if (hand != Hand.MAIN_HAND) {
+			return false;
+		}
+		if (block.getType() == Material.AIR) {
+			return false;
+		}
+		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+			return false;
+		}
+		if (player.getGameMode() == GameMode.SURVIVAL) {
+			return true;
+		}
+		try {
+			return VersionIndependentUtils.get().canBreakBlock(player.getItemInHand(), block.getType());
+		} catch (Exception ignored) {
+			return false;
+		}
+	}
 }
