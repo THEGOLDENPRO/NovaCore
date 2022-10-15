@@ -117,18 +117,6 @@ public abstract class NovaCommandBase {
 	}
 
 	/**
-	 * Deprecated: Spelling mistake. Use {@link NovaCommandBase#setUsage(String)}
-	 * instead. This will be removed in a future update
-	 * 
-	 * @param usage Command usage
-	 */
-	@Deprecated
-	protected void setUseage(String usage) {
-		Log.warn("NovaCommandBase", this.getClass().getName() + " is using the deprecated function setUseage instead of setUsage. This function will soon be removed due to a spelling mistake");
-		this.usage = usage;
-	}
-
-	/**
 	 * @param usage Command usage
 	 */
 	protected void setUsage(String usage) {
