@@ -14,6 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -34,7 +35,8 @@ import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
  * using reflection. This class contains a lot of functions that changes between
  * versions
  * 
- * @authors Zeeraa, Bruno
+ * @author Zeeraa
+ * @author Bruno
  */
 public abstract class VersionIndependentUtils {
 	private static VersionIndependentUtils instance;
@@ -690,6 +692,8 @@ public abstract class VersionIndependentUtils {
 	 *                    children)
 	 * @param lastDamager The last damager
 	 * @author Bruno
+	 * 
+	 * @return DeathType from {@link EntityDeathEvent}
 	 */
 	public abstract DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager);
 
@@ -699,6 +703,8 @@ public abstract class VersionIndependentUtils {
 	 * @param color   The {@link Color}
 	 * @param message The message
 	 * @author Bruno
+	 * 
+	 * @return Colorized message
 	 */
 	public abstract String colorize(Color color, String message);
 
@@ -709,6 +715,8 @@ public abstract class VersionIndependentUtils {
 	 * @param colors  The {@link Color[]} array
 	 * @param message The message
 	 * @author Bruno
+	 * 
+	 * @return Colorized message
 	 */
 	public abstract String colorizeGradient(Color[] colors, String message);
 
@@ -720,6 +728,8 @@ public abstract class VersionIndependentUtils {
 	 * @param charsPerColor How many characters before going to next color
 	 * @param message       The message
 	 * @author Bruno
+	 * 
+	 * @return Colorized message
 	 */
 	public abstract String colorizeRainbow(Color[] colors, int charsPerColor, String message);
 
@@ -728,6 +738,8 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param rgb RGB value
 	 * @author Bruno
+	 * 
+	 * @return ChatColor
 	 */
 	public abstract String asChatColor(String rgb);
 
