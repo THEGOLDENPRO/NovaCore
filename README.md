@@ -1,4 +1,4 @@
-# NovaCore
+# 👨‍💻 NovaCore
 A plugin with a lot of useful features to make plugins with less code and better compatibility between versions
 
 Downloads can be found here https://jenkins.novauniverse.net/job/NovaCore/
@@ -7,8 +7,9 @@ If you run 1.17 or later you also need the 1.17 support plugin that can wither b
 
 <br>
 
-## 📔 Documentation
-
+<details>
+  <summary> <b>📔 Documentation <tt>CLICK FOR MENU</tt> </b> </summary>
+  
 - ### [Nova Game Engine](https://github.com/NovaUniverse/NovaCore/tree/master/NovaCore-GameEngine)
   - [Starting and Using the game lobby module.](#-using-the-game-lobby-module)
     - [Maps and starting.](#--maps-and-starting)
@@ -23,8 +24,8 @@ If you run 1.17 or later you also need the 1.17 support plugin that can wither b
     - [Where to put the files.](#--where-to-put-the-files)
     - [Map modules.](#--map-modules)
   - [Sending Players Back](#-sending-players-back-to-the-lobby)
-  
-<br>
+
+</details>
 
 ## 🡺 Using the game lobby module
 
