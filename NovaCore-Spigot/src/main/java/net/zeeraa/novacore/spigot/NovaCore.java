@@ -101,6 +101,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	private boolean noNMSMode;
 
+	private boolean packetManagerEnabled;
+
 	private boolean disableAdvancedGUISupport;
 	private int advancedGUIMultiverseReloadDelay;
 
@@ -304,6 +306,35 @@ public class NovaCore extends JavaPlugin implements Listener {
 		return ok;
 	}
 
+	/**
+	 * Check if the packet manager is enabled
+	 * 
+	 * @return <code>true</code> if packet manager is enabled
+	 */
+	public boolean isPacketManagerEnabled() {
+		return packetManagerEnabled;
+	}
+
+	/**
+	 * Enable the packet manager. If the packet manager is already enabled this wont
+	 * do anything
+	 * 
+	 * @return <code>false</code> if the packet manager could not be started
+	 */
+	public boolean enablePacketManager() {
+		if (noNMSMode) {
+			Log.error("NovaCore", "Could not enable packet manager since we are running in NoNMS mode");
+			return false;
+		}
+
+		if (packetManagerEnabled) {
+			return true;
+		}
+		Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
+		packetManagerEnabled = true;
+		return true;
+	}
+
 	@Override
 	public void onEnable() {
 		NovaCore.instance = this;
@@ -396,10 +427,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 					Log.warn("NovaCore", "Could not register events from ChunkLoader and PacketManager");
 				} else {
 					VersionIndependentUtils.setInstance(versionIndependentUtils);
-					//VersionIndependentUtils.get().getPacketManager().registerOnlinePlayers();
 					Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getChunkLoader(), this);
-					//TODO: Fix crash issue
-					//Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
 				}
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
@@ -430,6 +458,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 		} else {
 			this.hologramsSupport = false;
 			Log.warn("NovaCore", "Hologram support disabled due to HolographicDisplays not being installed");
+		}
+
+		if (getConfig().getBoolean("EnablePacketManager")) {
+			this.enablePacketManager();
 		}
 
 		// Register permissions for log levels
@@ -666,11 +698,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 		}
 	}
 
-	@EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlaceBlock(BlockPlaceEvent e) {
 
 	}
-
 
 }
 

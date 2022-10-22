@@ -39,6 +39,10 @@ MojangAPIProxyURL: "https://mojangapi.novauniverse.net/"
 HastebinURL: "https://hastebin.novauniverse.net"
 
 # By default the MultiverseManager will try to reload AdvancedGUIs if it detects the plugin
-# RTo disable this set the following value to true
+# To disable this set the following value to true
 DisableAdvancedGUIAupport: false
 AdvancedGUIMultiverseReloadDelay: 20
+
+# By default the packet manager is turned off until another plugin calls NovaCore#enablePacketManager()
+# By setting this to true the packet manager will be enabled on start
+EnablePacketManager: false

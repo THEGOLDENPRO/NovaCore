@@ -5,14 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,46 +16,47 @@ import java.util.List;
  * @author Bruno
  */
 public abstract class PacketManager implements Listener {
-	@EventHandler(priority = EventPriority.LOWEST)
+
+	private final List<Player> playersDigging;
+
+	public PacketManager() {
+		playersDigging = new ArrayList<>();
+	}
+
+	public List<Player> getPlayersDigging() {
+		return playersDigging;
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		this.registerPlayer(e.getPlayer());
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerLeave(PlayerQuitEvent e) {
 		this.removePlayer(e.getPlayer());
 	}
 
-    private final List<Player> playersDigging;
+	/**
+	 * Registers/injects all online {@link Player}s.
+	 */
+	public void registerOnlinePlayers() {
+		Bukkit.getOnlinePlayers().forEach(this::registerPlayer);
+	}
 
+	/**
+	 * Registers/injects specific {@link Player}.
+	 * 
+	 * @param player {@link Player}.
+	 */
+	public abstract void registerPlayer(Player player);
 
-    public PacketManager() {
-        playersDigging = new ArrayList<>();
-    }
-
-    public List<Player> getPlayersDigging() {
-        return playersDigging;
-    }
-
-
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        this.registerPlayer(e.getPlayer());
-    }
-
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerLeave(PlayerQuitEvent e) {
-        this.removePlayer(e.getPlayer());
-    }
-
-
-    /**
-     * Registers/injects all online {@link Player}s.
-     */
-    public void registerOnlinePlayers() {
-        Bukkit.getOnlinePlayers().forEach(this::registerPlayer);
-    }
+	/**
+	 * Removes all online {@link Player}s
+	 */
+	public void removeOnlinePlayers() {
+		Bukkit.getOnlinePlayers().forEach(this::removePlayer);
+	}
 
 	/**
 	 * Removes specific {@link Player}
@@ -68,4 +64,5 @@ public abstract class PacketManager implements Listener {
 	 * @param player {@link Player}.
 	 */
 	public abstract void removePlayer(Player player);
+
 }

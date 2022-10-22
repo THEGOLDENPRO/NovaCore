@@ -28,6 +28,7 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerErro
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
+import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 
 /**
  * A utility to make your plugins support multiple versions of the game without
@@ -742,7 +743,7 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract String asChatColor(String rgb);
 
-	//public abstract PacketManager getPacketManager();
+	public abstract PacketManager getPacketManager();
 
 	public abstract boolean canBreakBlock(ItemStack item, Material material);
 

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
  * WARNING: This event is Asynchronous and might be dangerous to use
  */
 public class PlayerSettingsEvent extends AsyncPacketEvent {
-
+	private final String language;
 	private final int chunkDistance;
 	private final ChatVisibility chatVisibility;
 	private final boolean chatColored;
