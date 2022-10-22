@@ -331,6 +331,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 			return true;
 		}
 		Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
+		Log.info("NovaCore", "Packet manager enabled");
 		packetManagerEnabled = true;
 		return true;
 	}
