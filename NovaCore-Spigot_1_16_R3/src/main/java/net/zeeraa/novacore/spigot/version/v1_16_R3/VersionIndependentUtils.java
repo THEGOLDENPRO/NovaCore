@@ -1001,8 +1001,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		return new net.zeeraa.novacore.spigot.version.v1_16_R3.packet.PacketManager();
 	}*/
 
-	@Override
 	@SuppressWarnings("unchecked")
+	@Override
 	public boolean canBreakBlock(ItemStack item, Material block) {
 		net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound nbtTag = nmsItem.getTag();
