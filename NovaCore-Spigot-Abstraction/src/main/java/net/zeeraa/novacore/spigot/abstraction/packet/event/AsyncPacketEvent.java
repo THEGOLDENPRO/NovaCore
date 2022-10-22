@@ -2,13 +2,19 @@ package net.zeeraa.novacore.spigot.abstraction.packet.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 
-public class PacketEvent extends PlayerEvent implements Cancellable {
+public class AsyncPacketEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
+    protected Player who;
+
     private boolean cancelled;
+
+    public Player getPlayer() {
+        return who;
+    }
 
     @Override
     public boolean isCancelled() {
@@ -28,7 +34,11 @@ public class PacketEvent extends PlayerEvent implements Cancellable {
         return handlers;
     }
 
-    public PacketEvent(Player player) {
-        super(player);
+
+
+
+    public AsyncPacketEvent(Player player) {
+        super(true);
+        who = player;
     }
 }

@@ -3,9 +3,13 @@ package net.zeeraa.novacore.spigot.abstraction.packet.event;
 import net.zeeraa.novacore.spigot.abstraction.enums.ChatVisibility;
 import net.zeeraa.novacore.spigot.abstraction.enums.MainHand;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 
-public class PlayerSettingsEvent extends PacketEvent {
+/**
+ * Check if player modified their settings
+ *
+ * WARNING: This event is Asynchronous and might be dangerous to use
+ */
+public class PlayerSettingsEvent extends AsyncPacketEvent {
 
 
     private final String language;

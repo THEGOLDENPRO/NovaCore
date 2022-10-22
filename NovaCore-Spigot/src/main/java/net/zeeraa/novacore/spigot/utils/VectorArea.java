@@ -29,8 +29,8 @@ public class VectorArea {
 	}
 
 	public VectorArea(Vector position1, Vector position2) {
-		this.position1 = new Vector((position1.getX() < position2.getX() ? position1.getX() : position2.getX()), (position1.getY() < position2.getY() ? position1.getY() : position2.getY()), (position1.getZ() < position2.getZ() ? position1.getZ() : position2.getZ()));
-		this.position2 = new Vector((position1.getX() > position2.getX() ? position1.getX() : position2.getX()), (position1.getY() > position2.getY() ? position1.getY() : position2.getY()), (position1.getZ() > position2.getZ() ? position1.getZ() : position2.getZ()));
+		this.position1 = new Vector((Math.min(position1.getX(), position2.getX())), (Math.min(position1.getY(), position2.getY())), (Math.min(position1.getZ(), position2.getZ())));
+		this.position2 = new Vector((Math.max(position1.getX(), position2.getX())), (Math.max(position1.getY(), position2.getY())), (Math.max(position1.getZ(), position2.getZ())));
 	}
 
 	public VectorArea(int x1, int y1, int z1, int x2, int y2, int z2) {
@@ -67,9 +67,7 @@ public class VectorArea {
 
 		if (x >= x1 && x <= x2) {
 			if (y >= y1 && y <= y2) {
-				if (z >= z1 && z <= z2) {
-					return true;
-				}
+				return z >= z1 && z <= z2;
 			}
 		}
 
@@ -118,9 +116,7 @@ public class VectorArea {
 
 		if (x >= x1 && x <= x2) {
 			if (y >= y1 && y <= y2) {
-				if (z >= z1 && z <= z2) {
-					return true;
-				}
+				return z >= z1 && z <= z2;
 			}
 		}
 

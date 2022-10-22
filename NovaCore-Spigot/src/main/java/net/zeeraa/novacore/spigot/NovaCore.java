@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
 
-import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
@@ -649,6 +649,13 @@ public class NovaCore extends JavaPlugin implements Listener {
 			Log.warn("NovaCore", player.getName() + " has multiple log level set permissions. Please remove permissions until they only have one of the following: " + perms);
 		}
 	}
+
+	@EventHandler (priority = EventPriority.MONITOR)
+	public void onPlaceBlock(BlockPlaceEvent e) {
+
+	}
+
+
 }
 
 // UwU

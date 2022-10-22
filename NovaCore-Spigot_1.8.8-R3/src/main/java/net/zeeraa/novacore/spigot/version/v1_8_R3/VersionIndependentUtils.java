@@ -2,9 +2,12 @@ package net.zeeraa.novacore.spigot.version.v1_8_R3;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.server.v1_8_R3.*;
+import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.*;
@@ -32,7 +35,6 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
@@ -40,12 +42,11 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerErro
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
-import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
-import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
-import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
+	private MaterialNameList materialNameList;
+	private PacketManager packetManager;
 
 	private ChunkLoader chunkLoader;
 
@@ -59,10 +60,11 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	public VersionIndependentUtils() {
 		itemBuilderRecordList = new ItemBuilderRecordList1_8();
+		materialNameList = MaterialNameList1_8.get();
 	}
 
 	@Override
-	public ItemBuilderRecordList getItembBuilderRecordList() {
+	public ItemBuilderRecordList getItemBuilderRecordList() {
 		return itemBuilderRecordList;
 	}
 
@@ -634,7 +636,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case ENTITY_ATTACK:
 				switch (lastDamager.getType()) {
 					case WITHER:
-						return DeathType.COMBAT_WITHER;
+						return DeathType.COMBAT_WITHER_SKULL;
 					case FIREBALL:
 					case SMALL_FIREBALL:
 						return DeathType.COMBAT_FIREBALL;
@@ -723,26 +725,65 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public PacketManager getPacketManager() {
-		return new net.zeeraa.novacore.spigot.version.v1_8_R3.packet.PacketManager();
+		if (packetManager == null) packetManager = new net.zeeraa.novacore.spigot.version.v1_8_R3.packet.PacketManager();
+		return packetManager;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean canBreakBlock(ItemStack item, Material block)  {
+
 		net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		if (nmsItem == null) {
+			return false;
+		}
 		NBTTagCompound nbtTag = nmsItem.getTag();
+		if (nbtTag == null) {
+			return false;
+		}
 		NBTTagList list = nbtTag.getList("CanDestroy", 8);
 		try {
 			Field f = NBTTagList.class.getDeclaredField("list");
 			f.setAccessible(true);
 
-			for (NBTTagCompound nbt : (List<NBTTagCompound>) f.get(list)) {
-				return Material.matchMaterial(nbt.toString()) == block;
+			for (NBTTagString nbt : (List<NBTTagString>) f.get(list)) {
+				boolean b = getMaterialFromName(nbt.a_()) == block;
+
+				if (b) {
+					return true;
+				}
 			}
-		} catch (Exception ignored) {
+		} catch (Exception e1) {
 			return false;
 		}
 
 		return false;
 	}
+
+	@Override
+	public MaterialNameList getMaterialNameList() {
+		return materialNameList;
+	}
+
+	@Override
+	public Material getMaterialFromName(String name) {
+		try {
+			int value = Integer.parseInt(name);
+			for (Material material: Material.values()) {
+				if (value == material.getId()) {
+					return material;
+				}
+			}
+			return null;
+		} catch (Exception ignored) {}
+
+		if (Material.matchMaterial(name) == null) {
+			String updatedname = name.replace("minecraft:", "").toLowerCase(Locale.ROOT);
+			return materialNameList.getMaterialMap().getOrDefault(updatedname, null);
+		} else {
+			return Material.matchMaterial(name);
+		}
+	}
+
+
 }

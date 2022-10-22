@@ -56,6 +56,7 @@
 									</reports>
 								</reportSet>
 							</reportSets>
+
 							<configuration>
 								<!-- Here you can add special configurations for your javadoc, if needed -->
 							</configuration>

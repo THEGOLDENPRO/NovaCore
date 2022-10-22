@@ -357,7 +357,7 @@ public class ItemBuilder {
 	 * @return List with all available record names
 	 */
 	public static List<String> getAvailableRecordNames() {
-		return new ArrayList<>(NovaCore.getInstance().getVersionIndependentUtils().getItembBuilderRecordList().getRecordMap().keySet());
+		return new ArrayList<>(NovaCore.getInstance().getVersionIndependentUtils().getItemBuilderRecordList().getRecordMap().keySet());
 	}
 
 	/**
@@ -367,7 +367,7 @@ public class ItemBuilder {
 	 * @return <code>true</code> if the record exits
 	 */
 	public static boolean hasRecordName(String name) {
-		for (String s : NovaCore.getInstance().getVersionIndependentUtils().getItembBuilderRecordList().getRecordMap().keySet()) {
+		for (String s : NovaCore.getInstance().getVersionIndependentUtils().getItemBuilderRecordList().getRecordMap().keySet()) {
 			if (s.equalsIgnoreCase(name)) {
 				return true;
 			}
@@ -389,9 +389,9 @@ public class ItemBuilder {
 	public static ItemBuilder getRecordItemBuilder(String recordName) {
 		Material material = null;
 
-		for (String key : NovaCore.getInstance().getVersionIndependentUtils().getItembBuilderRecordList().getRecordMap().keySet()) {
+		for (String key : NovaCore.getInstance().getVersionIndependentUtils().getItemBuilderRecordList().getRecordMap().keySet()) {
 			if (key.equalsIgnoreCase(recordName)) {
-				material = NovaCore.getInstance().getVersionIndependentUtils().getItembBuilderRecordList().getRecordMap().get(key);
+				material = NovaCore.getInstance().getVersionIndependentUtils().getItemBuilderRecordList().getRecordMap().get(key);
 				break;
 			}
 		}

@@ -14,7 +14,7 @@ public class Language {
 		this.languageCode = languageCode;
 		this.displayName = displayName;
 
-		this.content = new HashMap<String, String>();
+		this.content = new HashMap<>();
 	}
 
 	/**

@@ -3,7 +3,13 @@ package net.zeeraa.novacore.spigot.abstraction.packet;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler {
 
@@ -28,4 +34,29 @@ public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler
     }
 
     public abstract boolean readPacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException;
+
+    protected boolean canBreak(Player player, Block block) {
+
+
+        if (block.getType() == Material.AIR) {
+
+            return false;
+        }
+        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+
+            return false;
+        }
+
+        List<Player> playersDigging = VersionIndependentUtils.get().getPacketManager().getPlayersDigging();
+
+        if (playersDigging.stream().noneMatch(pl -> player.getUniqueId().equals(player.getUniqueId()))) {
+            return false;
+        }
+
+        if (player.getGameMode() == GameMode.SURVIVAL) {
+            return true;
+        }
+
+        return VersionIndependentUtils.get().canBreakBlock(player.getItemInHand(), block.getType());
+    }
 }

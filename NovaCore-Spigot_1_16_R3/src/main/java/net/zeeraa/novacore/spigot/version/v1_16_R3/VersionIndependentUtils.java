@@ -3,16 +3,13 @@ package net.zeeraa.novacore.spigot.version.v1_16_R3;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
+import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
 import net.zeeraa.novacore.spigot.abstraction.commons.LoopableIterator;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_16_R3.*;
-import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
-import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
-import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
@@ -38,12 +35,11 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
+	private PacketManager packetManager;
 
 	private ChunkLoader chunkLoader;
 
@@ -60,7 +56,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public ItemBuilderRecordList getItembBuilderRecordList() {
+	public ItemBuilderRecordList getItemBuilderRecordList() {
 		return itemBuilderRecordList;
 	}
 
@@ -852,7 +848,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case ENTITY_SWEEP_ATTACK:
 				switch (lastDamager.getType()) {
 					case WITHER:
-						return DeathType.COMBAT_WITHER;
+						return DeathType.COMBAT_WITHER_SKULL;
 					case FIREBALL:
 					case SMALL_FIREBALL:
 						return DeathType.COMBAT_FIREBALL;
@@ -980,7 +976,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public PacketManager getPacketManager() {
-		return new net.zeeraa.novacore.spigot.version.v1_16_R3.packet.PacketManager();
+		if (packetManager == null) packetManager = new net.zeeraa.novacore.spigot.version.v1_16_R3.packet.PacketManager();
+		return packetManager;
 	}
 
 	@Override
@@ -996,13 +993,39 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			Field f = NBTTagList.class.getDeclaredField("list");
 			f.setAccessible(true);
 
-			for (NBTTagCompound nbt : (List<NBTTagCompound>) f.get(list)) {
-				return Material.matchMaterial(nbt.toString()) == block;
+			for (NBTTagString nbt : (List<NBTTagString>) f.get(list)) {
+				boolean b = getMaterialFromName(nbt.asString()) == block;
+
+				if (b) {
+					return true;
+				}
 			}
-		} catch (Exception ignored) {
+		} catch (Exception e1) {
 			return false;
 		}
 
 		return false;
+	}
+
+	@Override
+	public MaterialNameList getMaterialNameList() {
+		// I believe 1.16+ has all names mirror their Material type, if not tell me
+		return null;
+	}
+
+	@Override
+	public Material getMaterialFromName(String name) {
+		try {
+			int value = Integer.parseInt(name);
+			for (Material material: Material.values()) {
+				if (value == material.getId()) {
+					return material;
+				}
+			}
+			return null;
+		} catch (Exception ignored) {}
+
+		return Material.matchMaterial(name.replace("minecraft:", "").toLowerCase(Locale.ROOT));
+
 	}
 }

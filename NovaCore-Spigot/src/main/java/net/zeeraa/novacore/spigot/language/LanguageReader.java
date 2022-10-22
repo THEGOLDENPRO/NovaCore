@@ -4,21 +4,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import org.json.JSONObject;
 
 public class LanguageReader {
-	public static void readFromJar(Class<? extends Object> clazz, String name) throws IOException {
+	public static void readFromJar(Class<?> clazz, String name) throws IOException {
 		InputStream in = clazz.getResourceAsStream(name);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
 
 		String line;
-		String lines = "";
+		StringBuilder lines = new StringBuilder();
 		while ((line = reader.readLine()) != null) {
-			lines += line;
+			lines.append(line);
 		}
 
-		JSONObject json = new JSONObject(lines);
+		JSONObject json = new JSONObject(lines.toString());
 
 		LanguageReader.read(json);
 	}
