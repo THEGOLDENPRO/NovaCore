@@ -41,6 +41,7 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerErro
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
+import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -102,8 +103,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void resetEntityMaxHealth(LivingEntity livingEntity) {
-		livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH)
-				.setBaseValue(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
+		livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
 	}
 
 	@SuppressWarnings("deprecation")
@@ -164,47 +164,47 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		DamageSource source;
 
 		switch (reason) {
-			case FALL:
-				source = DamageSource.FALL;
-				break;
-			case FALLING_BLOCK:
-				source = DamageSource.FALLING_BLOCK;
-				break;
-			case OUT_OF_WORLD:
-				source = DamageSource.OUT_OF_WORLD;
-				break;
+		case FALL:
+			source = DamageSource.FALL;
+			break;
+		case FALLING_BLOCK:
+			source = DamageSource.FALLING_BLOCK;
+			break;
+		case OUT_OF_WORLD:
+			source = DamageSource.OUT_OF_WORLD;
+			break;
 
-			case BURN:
-				source = DamageSource.BURN;
-				break;
+		case BURN:
+			source = DamageSource.BURN;
+			break;
 
-			case LIGHTNING:
-				source = DamageSource.LIGHTNING;
-				break;
+		case LIGHTNING:
+			source = DamageSource.LIGHTNING;
+			break;
 
-			case MAGIC:
-				source = DamageSource.MAGIC;
-				break;
+		case MAGIC:
+			source = DamageSource.MAGIC;
+			break;
 
-			case DROWN:
-				source = DamageSource.DROWN;
-				break;
+		case DROWN:
+			source = DamageSource.DROWN;
+			break;
 
-			case STARVE:
-				source = DamageSource.STARVE;
-				break;
+		case STARVE:
+			source = DamageSource.STARVE;
+			break;
 
-			case LAVA:
-				source = DamageSource.LAVA;
-				break;
+		case LAVA:
+			source = DamageSource.LAVA;
+			break;
 
-			case GENERIC:
-				source = DamageSource.GENERIC;
-				break;
+		case GENERIC:
+			source = DamageSource.GENERIC;
+			break;
 
-			default:
-				source = DamageSource.GENERIC;
-				break;
+		default:
+			source = DamageSource.GENERIC;
+			break;
 		}
 
 		((CraftPlayer) player).getHandle().damageEntity(source, damage);
@@ -225,25 +225,25 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		Material material = null;
 
 		switch (type) {
-			case GLASS_PANE:
-				material = Material.STAINED_GLASS_PANE;
-				break;
+		case GLASS_PANE:
+			material = Material.STAINED_GLASS_PANE;
+			break;
 
-			case GLASS_BLOCK:
-				material = Material.STAINED_GLASS;
-				break;
+		case GLASS_BLOCK:
+			material = Material.STAINED_GLASS;
+			break;
 
-			case WOOL:
-				material = Material.WOOL;
-				break;
+		case WOOL:
+			material = Material.WOOL;
+			break;
 
-			case CLAY:
-				material = Material.STAINED_CLAY;
-				break;
+		case CLAY:
+			material = Material.STAINED_CLAY;
+			break;
 
-			default:
-				material = Material.STAINED_GLASS;
-				break;
+		default:
+			material = Material.STAINED_GLASS;
+			break;
 		}
 
 		MaterialData data = new MaterialData(material, color.getWoolData());
@@ -252,16 +252,14 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type,
-			DyeColor color) {
+	public void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
 		MaterialData data = getColoredBlockMaterialData(color, type);
 
 		recipe.setIngredient(ingredient, data);
 	}
 
 	@Override
-	public void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient,
-			ColoredBlockType type, DyeColor color) {
+	public void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
 		MaterialData data = getColoredBlockMaterialData(color, type);
 
 		recipe.addIngredient(ingredient, data);
@@ -300,56 +298,55 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public Sound getSound(VersionIndependentSound sound) {
 		switch (sound) {
-			case NOTE_PLING:
-				return Sound.BLOCK_NOTE_PLING;
+		case NOTE_PLING:
+			return Sound.BLOCK_NOTE_PLING;
 
-			case NOTE_HAT:
-				return Sound.BLOCK_NOTE_HAT;
+		case NOTE_HAT:
+			return Sound.BLOCK_NOTE_HAT;
 
-			case WITHER_DEATH:
-				return Sound.ENTITY_WITHER_DEATH;
+		case WITHER_DEATH:
+			return Sound.ENTITY_WITHER_DEATH;
 
-			case WITHER_HURT:
-				return Sound.ENTITY_WITHER_HURT;
+		case WITHER_HURT:
+			return Sound.ENTITY_WITHER_HURT;
 
-			case ITEM_BREAK:
-				return Sound.ENTITY_ITEM_BREAK;
+		case ITEM_BREAK:
+			return Sound.ENTITY_ITEM_BREAK;
 
-			case ITEM_PICKUP:
-				return Sound.ENTITY_ITEM_PICKUP;
+		case ITEM_PICKUP:
+			return Sound.ENTITY_ITEM_PICKUP;
 
-			case ORB_PICKUP:
-				return Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
+		case ORB_PICKUP:
+			return Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
 
-			case ANVIL_LAND:
-				return Sound.BLOCK_ANVIL_LAND;
+		case ANVIL_LAND:
+			return Sound.BLOCK_ANVIL_LAND;
 
-			case EXPLODE:
-				return Sound.ENTITY_GENERIC_EXPLODE;
+		case EXPLODE:
+			return Sound.ENTITY_GENERIC_EXPLODE;
 
-			case LEVEL_UP:
-				return Sound.ENTITY_PLAYER_LEVELUP;
+		case LEVEL_UP:
+			return Sound.ENTITY_PLAYER_LEVELUP;
 
-			case WITHER_SHOOT:
-				return Sound.ENTITY_WITHER_SHOOT;
+		case WITHER_SHOOT:
+			return Sound.ENTITY_WITHER_SHOOT;
 
-			case EAT:
-				return Sound.ENTITY_GENERIC_EAT;
+		case EAT:
+			return Sound.ENTITY_GENERIC_EAT;
 
-			case ANVIL_BREAK:
-				return Sound.BLOCK_ANVIL_BREAK;
+		case ANVIL_BREAK:
+			return Sound.BLOCK_ANVIL_BREAK;
 
-			case FIZZ:
-				return Sound.BLOCK_FIRE_EXTINGUISH;
+		case FIZZ:
+			return Sound.BLOCK_FIRE_EXTINGUISH;
 
-			case ENDERMAN_TELEPORT:
-				return Sound.ENTITY_ENDERMEN_TELEPORT;
+		case ENDERMAN_TELEPORT:
+			return Sound.ENTITY_ENDERMEN_TELEPORT;
 
-			default:
-				setLastError(VersionIndependenceLayerError.MISSING_SOUND);
-				AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name()
-						+ " is not defined in this version. Please add it to " + this.getClass().getName());
-				return null;
+		default:
+			setLastError(VersionIndependenceLayerError.MISSING_SOUND);
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
+			return null;
 		}
 	}
 
@@ -398,83 +395,82 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public Material getMaterial(VersionIndependentMaterial material) {
 		switch (material) {
-			case FILLED_MAP:
-				return Material.MAP;
+		case FILLED_MAP:
+			return Material.MAP;
 
-			case END_STONE:
-				return Material.ENDER_STONE;
+		case END_STONE:
+			return Material.ENDER_STONE;
 
-			case WORKBENCH:
-				return Material.WORKBENCH;
+		case WORKBENCH:
+			return Material.WORKBENCH;
 
-			case OAK_BOAT:
-				return Material.BOAT;
+		case OAK_BOAT:
+			return Material.BOAT;
 
-			case DIAMOND_SHOVEL:
-				return Material.DIAMOND_SPADE;
+		case DIAMOND_SHOVEL:
+			return Material.DIAMOND_SPADE;
 
-			case SNOWBALL:
-				return Material.SNOW_BALL;
+		case SNOWBALL:
+			return Material.SNOW_BALL;
 
-			case FARMLAND:
-				return Material.SOIL;
+		case FARMLAND:
+			return Material.SOIL;
 
-			case GOLDEN_AXE:
-				return Material.GOLD_AXE;
+		case GOLDEN_AXE:
+			return Material.GOLD_AXE;
 
-			case GOLDEN_HOE:
-				return Material.GOLD_HOE;
+		case GOLDEN_HOE:
+			return Material.GOLD_HOE;
 
-			case GOLDEN_PICKAXE:
-				return Material.GOLD_PICKAXE;
+		case GOLDEN_PICKAXE:
+			return Material.GOLD_PICKAXE;
 
-			case GOLDEN_SHOVEL:
-				return Material.GOLD_SPADE;
+		case GOLDEN_SHOVEL:
+			return Material.GOLD_SPADE;
 
-			case GOLDEN_SWORD:
-				return Material.GOLD_SWORD;
+		case GOLDEN_SWORD:
+			return Material.GOLD_SWORD;
 
-			case WOODEN_AXE:
-				return Material.WOOD_AXE;
+		case WOODEN_AXE:
+			return Material.WOOD_AXE;
 
-			case WOODEN_HOE:
-				return Material.WOOD_HOE;
+		case WOODEN_HOE:
+			return Material.WOOD_HOE;
 
-			case WOODEN_PICKAXE:
-				return Material.WOOD_PICKAXE;
+		case WOODEN_PICKAXE:
+			return Material.WOOD_PICKAXE;
 
-			case WOODEN_SHOVEL:
-				return Material.WOOD_SPADE;
+		case WOODEN_SHOVEL:
+			return Material.WOOD_SPADE;
 
-			case WOODEN_SWORD:
-				return Material.WOOD_SWORD;
+		case WOODEN_SWORD:
+			return Material.WOOD_SWORD;
 
-			case WATCH:
-				return Material.WATCH;
+		case WATCH:
+			return Material.WATCH;
 
-			case GOLD_HELMET:
-				return Material.GOLD_HELMET;
+		case GOLD_HELMET:
+			return Material.GOLD_HELMET;
 
-			case GOLD_CHESTPLATE:
-				return Material.GOLD_CHESTPLATE;
+		case GOLD_CHESTPLATE:
+			return Material.GOLD_CHESTPLATE;
 
-			case GOLD_LEGGINGS:
-				return Material.GOLD_LEGGINGS;
+		case GOLD_LEGGINGS:
+			return Material.GOLD_LEGGINGS;
 
-			case GOLD_BOOTS:
-				return Material.GOLD_BOOTS;
+		case GOLD_BOOTS:
+			return Material.GOLD_BOOTS;
 
-			case GRILLED_PORK:
-				return Material.GRILLED_PORK;
+		case GRILLED_PORK:
+			return Material.GRILLED_PORK;
 
-			case EXP_BOTTLE:
-				return Material.EXP_BOTTLE;
+		case EXP_BOTTLE:
+			return Material.EXP_BOTTLE;
 
-			default:
-				setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
-				AbstractionLogger.getLogger().warning("VersionIndependentUtils",
-						"Unknown version Independent material: " + material.name());
-				return null;
+		default:
+			setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
+			AbstractionLogger.getLogger().warning("VersionIndependentUtils", "Unknown version Independent material: " + material.name());
+			return null;
 		}
 	}
 
@@ -505,8 +501,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void sendActionBarMessage(Player player, String message) {
-		PacketPlayOutChat packet = new PacketPlayOutChat(
-				ChatSerializer.a("{\"text\":\"" + message.replace("&", "§") + "\"}"), ChatMessageType.GAME_INFO);
+		PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + message.replace("&", "§") + "\"}"), ChatMessageType.GAME_INFO);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 
@@ -586,150 +581,149 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public DeathType getDeathTypeFromDamage(EntityDamageEvent e, Entity lastDamager) {
 		switch (e.getCause()) {
-			case FIRE:
+		case FIRE:
+			if (lastDamager != null)
+				return DeathType.FIRE_SOURCE_COMBAT;
+			return DeathType.FIRE_SOURCE;
+
+		case LAVA:
+			if (lastDamager != null)
+				return DeathType.LAVA_COMBAT;
+			return DeathType.LAVA;
+
+		case FALL:
+			if (e.getFinalDamage() <= 2.0)
 				if (lastDamager != null)
-					return DeathType.FIRE_SOURCE_COMBAT;
-				return DeathType.FIRE_SOURCE;
+					return DeathType.FALL_SMALL_COMBAT;
+				else
+					return DeathType.FALL_SMALL;
 
-			case LAVA:
-				if (lastDamager != null)
-					return DeathType.LAVA_COMBAT;
-				return DeathType.LAVA;
+			return DeathType.FALL_BIG;
 
-			case FALL:
-				if (e.getFinalDamage() <= 2.0)
-					if (lastDamager != null)
-						return DeathType.FALL_SMALL_COMBAT;
-					else
-						return DeathType.FALL_SMALL;
+		case VOID:
+			if (lastDamager != null)
+				return DeathType.VOID_COMBAT;
+			return DeathType.VOID;
 
-				return DeathType.FALL_BIG;
+		case THORNS:
+			return DeathType.THORNS;
+		case WITHER:
+			if (lastDamager != null)
+				return DeathType.EFFECT_WITHER_COMBAT;
+			return DeathType.EFFECT_WITHER;
 
-			case VOID:
-				if (lastDamager != null)
-					return DeathType.VOID_COMBAT;
-				return DeathType.VOID;
+		case CONTACT:
+			if (lastDamager != null)
+				return DeathType.CACTUS_COMBAT;
+			return DeathType.CACTUS;
 
-			case THORNS:
-				return DeathType.THORNS;
+		case DROWNING:
+			if (lastDamager != null)
+				return DeathType.DROWN_COMBAT;
+			return DeathType.DROWN;
+
+		case LIGHTNING:
+			if (lastDamager != null)
+				return DeathType.LIGHTNING_COMBAT;
+			return DeathType.LIGHTNING;
+
+		case PROJECTILE:
+			if (lastDamager.getType() == EntityType.ARROW)
+				return DeathType.PROJECTILE_ARROW;
+			return DeathType.PROJECTILE_OTHER;
+		case STARVATION:
+			if (lastDamager != null)
+				return DeathType.STARVING_COMBAT;
+			return DeathType.STARVING;
+		case SUFFOCATION:
+			if (lastDamager != null)
+				return DeathType.SUFFOCATION_COMBAT;
+			return DeathType.SUFFOCATION;
+
+		case ENTITY_ATTACK:
+		case ENTITY_SWEEP_ATTACK:
+			switch (lastDamager.getType()) {
 			case WITHER:
-				if (lastDamager != null)
-					return DeathType.EFFECT_WITHER_COMBAT;
-				return DeathType.EFFECT_WITHER;
-
-			case CONTACT:
-				if (lastDamager != null)
-					return DeathType.CACTUS_COMBAT;
-				return DeathType.CACTUS;
-
-			case DROWNING:
-				if (lastDamager != null)
-					return DeathType.DROWN_COMBAT;
-				return DeathType.DROWN;
-
-			case LIGHTNING:
-				if (lastDamager != null)
-					return DeathType.LIGHTNING_COMBAT;
-				return DeathType.LIGHTNING;
-
-			case PROJECTILE:
-				if (lastDamager.getType() == EntityType.ARROW)
-					return DeathType.PROJECTILE_ARROW;
-				return DeathType.PROJECTILE_OTHER;
-			case STARVATION:
-				if (lastDamager != null)
-					return DeathType.STARVING_COMBAT;
-				return DeathType.STARVING;
-			case SUFFOCATION:
-				if (lastDamager != null)
-					return DeathType.SUFFOCATION_COMBAT;
-				return DeathType.SUFFOCATION;
-
-			case ENTITY_ATTACK:
-			case ENTITY_SWEEP_ATTACK:
-				switch (lastDamager.getType()) {
-					case WITHER:
-						return DeathType.COMBAT_WITHER_SKULL;
-					case FIREBALL:
-					case SMALL_FIREBALL:
-						return DeathType.COMBAT_FIREBALL;
+				return DeathType.COMBAT_WITHER_SKULL;
+			case FIREBALL:
+			case SMALL_FIREBALL:
+				return DeathType.COMBAT_FIREBALL;
+			default:
+				return DeathType.COMBAT_NORMAL;
+			}
+		case FALLING_BLOCK:
+			if (e instanceof EntityDamageByEntityEvent) {
+				EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
+				if (entityEvent.getDamager() instanceof FallingBlock) {
+					FallingBlock block = (FallingBlock) entityEvent.getDamager();
+					switch (block.getMaterial()) {
+					case ANVIL:
+						if (lastDamager != null)
+							return DeathType.ANVIL_FALL_COMBAT;
+						return DeathType.ANVIL_FALL;
 					default:
-						return DeathType.COMBAT_NORMAL;
-				}
-			case FALLING_BLOCK:
-				if (e instanceof EntityDamageByEntityEvent) {
-					EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
-					if (entityEvent.getDamager() instanceof FallingBlock) {
-						FallingBlock block = (FallingBlock) entityEvent.getDamager();
-						switch (block.getMaterial()) {
-							case ANVIL:
-								if (lastDamager != null)
-									return DeathType.ANVIL_FALL_COMBAT;
-								return DeathType.ANVIL_FALL;
-							default:
-								if (lastDamager != null)
-									return DeathType.BLOCK_FALL_COMBAT;
-								return DeathType.BLOCK_FALL;
-						}
+						if (lastDamager != null)
+							return DeathType.BLOCK_FALL_COMBAT;
+						return DeathType.BLOCK_FALL;
 					}
 				}
-			case BLOCK_EXPLOSION:
-			case ENTITY_EXPLOSION:
-				if (lastDamager != null)
-					return DeathType.EXPLOSION_COMBAT;
-				return DeathType.EXPLOSION;
+			}
+		case BLOCK_EXPLOSION:
+		case ENTITY_EXPLOSION:
+			if (lastDamager != null)
+				return DeathType.EXPLOSION_COMBAT;
+			return DeathType.EXPLOSION;
 
-			case FIRE_TICK:
-				if (lastDamager != null)
-					return DeathType.FIRE_NATURAL_COMBAT;
-				return DeathType.FIRE_NATURAL;
+		case FIRE_TICK:
+			if (lastDamager != null)
+				return DeathType.FIRE_NATURAL_COMBAT;
+			return DeathType.FIRE_NATURAL;
 
-			case MAGIC:
-				DeathType type = DeathType.MAGIC;
-				if (lastDamager != null) {
-					if (e instanceof EntityDamageByEntityEvent) {
-						EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
-						if (entityEvent.getDamager() instanceof ThrownPotion) {
-							ThrownPotion potion = (ThrownPotion) entityEvent.getDamager();
-							if (potion.getShooter() instanceof Entity) {
-								if (((Entity) potion.getShooter()).getUniqueId().toString()
-										.equalsIgnoreCase(lastDamager.getUniqueId().toString())) {
-									type = DeathType.MAGIC_COMBAT;
-								} else {
-									type = DeathType.MAGIC_COMBAT_ACCIDENT;
-								}
+		case MAGIC:
+			DeathType type = DeathType.MAGIC;
+			if (lastDamager != null) {
+				if (e instanceof EntityDamageByEntityEvent) {
+					EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) e;
+					if (entityEvent.getDamager() instanceof ThrownPotion) {
+						ThrownPotion potion = (ThrownPotion) entityEvent.getDamager();
+						if (potion.getShooter() instanceof Entity) {
+							if (((Entity) potion.getShooter()).getUniqueId().toString().equalsIgnoreCase(lastDamager.getUniqueId().toString())) {
+								type = DeathType.MAGIC_COMBAT;
+							} else {
+								type = DeathType.MAGIC_COMBAT_ACCIDENT;
 							}
 						}
 					}
 				}
-				return type;
-			case CRAMMING:
-				if (lastDamager != null)
-					return DeathType.SUFFOCATION_CRAMMING_COMBAT;
-				return DeathType.SUFFOCATION_COMBAT;
+			}
+			return type;
+		case CRAMMING:
+			if (lastDamager != null)
+				return DeathType.SUFFOCATION_CRAMMING_COMBAT;
+			return DeathType.SUFFOCATION_COMBAT;
 
-			case HOT_FLOOR:
-				if (lastDamager != null)
-					return DeathType.MAGMA_BLOCK_COMBAT;
-				return DeathType.MAGMA_BLOCK;
+		case HOT_FLOOR:
+			if (lastDamager != null)
+				return DeathType.MAGMA_BLOCK_COMBAT;
+			return DeathType.MAGMA_BLOCK;
 
-			case DRAGON_BREATH:
-				if (lastDamager != null)
-					return DeathType.DRAGON_BREATH_COMBAT;
-				return DeathType.DRAGON_BREATH;
+		case DRAGON_BREATH:
+			if (lastDamager != null)
+				return DeathType.DRAGON_BREATH_COMBAT;
+			return DeathType.DRAGON_BREATH;
 
-			case FLY_INTO_WALL:
-				if (lastDamager != null)
-					return DeathType.ELYTRA_WALL_COMBAT;
-				return DeathType.ELYTRA_WALL;
-			case POISON:
-			case MELTING:
-			case CUSTOM:
-			case SUICIDE:
-			default:
-				if (lastDamager != null)
-					return DeathType.GENERIC_COMBAT;
-				return DeathType.GENERIC;
+		case FLY_INTO_WALL:
+			if (lastDamager != null)
+				return DeathType.ELYTRA_WALL_COMBAT;
+			return DeathType.ELYTRA_WALL;
+		case POISON:
+		case MELTING:
+		case CUSTOM:
+		case SUICIDE:
+		default:
+			if (lastDamager != null)
+				return DeathType.GENERIC_COMBAT;
+			return DeathType.GENERIC;
 
 		}
 	}
@@ -801,6 +795,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		return materialNameList;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Material getMaterialFromName(String name) {
 		try {

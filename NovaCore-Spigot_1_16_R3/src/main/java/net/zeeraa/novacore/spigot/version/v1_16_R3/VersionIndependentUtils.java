@@ -3,6 +3,8 @@ package net.zeeraa.novacore.spigot.version.v1_16_R3;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
+
+import net.zeeraa.novacore.commons.utils.LoopableIterator;
 import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
 import net.md_5.bungee.api.ChatColor;
@@ -11,6 +13,8 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_16_R3.*;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
+import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.*;
@@ -1041,6 +1045,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Material getMaterialFromName(String name) {
 		try {
