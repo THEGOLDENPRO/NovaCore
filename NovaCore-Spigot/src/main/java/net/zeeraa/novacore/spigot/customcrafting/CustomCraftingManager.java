@@ -1,10 +1,7 @@
 package net.zeeraa.novacore.spigot.customcrafting;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.utils.RecipeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -17,8 +14,9 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Recipe;
 
-import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.spigot.utils.RecipeUtils;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Used to register {@link CustomRecipe}s and limit the amount of times they can
@@ -42,11 +40,11 @@ public class CustomCraftingManager implements Listener {
 	public CustomCraftingManager() {
 		CustomCraftingManager.instance = this;
 
-		this.recipes = new HashMap<String, CustomRecipe>();
-		this.craftingLimit = new HashMap<UUID, Map<String, Integer>>();
+		this.recipes = new HashMap<>();
+		this.craftingLimit = new HashMap<>();
 
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-			craftingLimit.put(p.getUniqueId(), new HashMap<String, Integer>());
+			craftingLimit.put(p.getUniqueId(), new HashMap<>());
 		}
 	}
 
@@ -76,7 +74,7 @@ public class CustomCraftingManager implements Listener {
 		try {
 			CustomRecipe recipe = (CustomRecipe) clazz.getConstructor().newInstance(new Object[] {});
 			return this.addRecipe(recipe);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -166,7 +164,7 @@ public class CustomCraftingManager implements Listener {
 		Player p = e.getPlayer();
 
 		if (!craftingLimit.containsKey(p.getUniqueId())) {
-			craftingLimit.put(p.getUniqueId(), new HashMap<String, Integer>());
+			craftingLimit.put(p.getUniqueId(), new HashMap<>());
 		}
 	}
 }

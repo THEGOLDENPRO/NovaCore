@@ -337,7 +337,7 @@ public abstract class VersionIndependentUtils {
 	 * @return {@link ItemBuilderRecordList}
 	 * @author Zeeraa
 	 */
-	public abstract ItemBuilderRecordList getItembBuilderRecordList();
+	public abstract ItemBuilderRecordList getItemBuilderRecordList();
 
 	/**
 	 * Set the {@link MapView} of a map {@link ItemStack}
@@ -745,4 +745,8 @@ public abstract class VersionIndependentUtils {
 	//public abstract PacketManager getPacketManager();
 
 	public abstract boolean canBreakBlock(ItemStack item, Material material);
+
+	public abstract MaterialNameList getMaterialNameList();
+
+	public abstract Material getMaterialFromName(String name);
 }

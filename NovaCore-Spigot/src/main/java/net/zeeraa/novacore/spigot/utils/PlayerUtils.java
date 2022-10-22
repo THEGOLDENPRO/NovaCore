@@ -110,9 +110,7 @@ public class PlayerUtils {
 	 */
 	public boolean existsAndIsOnline(Player player) {
 		if (player != null) {
-			if (player.isOnline()) {
-				return true;
-			}
+			return player.isOnline();
 		}
 		return false;
 	}

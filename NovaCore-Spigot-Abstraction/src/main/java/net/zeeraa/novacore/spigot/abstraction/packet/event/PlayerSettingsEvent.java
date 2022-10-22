@@ -4,8 +4,12 @@ import net.zeeraa.novacore.spigot.abstraction.enums.ChatVisibility;
 import net.zeeraa.novacore.spigot.abstraction.enums.MainHand;
 import org.bukkit.entity.Player;
 
-public class PlayerSettingsEvent extends PacketEvent {
-	private final String language;
+/**
+ * Check if player modified their settings
+ *
+ * WARNING: This event is Asynchronous and might be dangerous to use
+ */
+public class PlayerSettingsEvent extends AsyncPacketEvent {
 
 	private final int chunkDistance;
 	private final ChatVisibility chatVisibility;

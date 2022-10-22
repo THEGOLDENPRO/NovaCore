@@ -2,9 +2,11 @@ package net.zeeraa.novacore.spigot.version.v1_12_R1;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import net.minecraft.server.v1_12_R1.*;
+import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
 import org.bukkit.*;
 import org.bukkit.Material;
@@ -32,7 +34,6 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 
 import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependentItems;
 import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
@@ -40,12 +41,11 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerErro
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
-import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
-import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
-import net.zeeraa.novacore.spigot.abstraction.LabyModProtocol;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
+	private MaterialNameList materialNameList;
+	private PacketManager packetManager;
 
 	private ChunkLoader chunkLoader;
 
@@ -59,10 +59,11 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	public VersionIndependentUtils() {
 		itemBuilderRecordList = new ItemBuilderRecordList1_12();
+		materialNameList = MaterialNameList1_12.get();
 	}
 
 	@Override
-	public ItemBuilderRecordList getItembBuilderRecordList() {
+	public ItemBuilderRecordList getItemBuilderRecordList() {
 		return itemBuilderRecordList;
 	}
 
@@ -101,7 +102,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void resetEntityMaxHealth(LivingEntity livingEntity) {
-		livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
+		livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH)
+				.setBaseValue(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
 	}
 
 	@SuppressWarnings("deprecation")
@@ -162,47 +164,47 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		DamageSource source;
 
 		switch (reason) {
-		case FALL:
-			source = DamageSource.FALL;
-			break;
-		case FALLING_BLOCK:
-			source = DamageSource.FALLING_BLOCK;
-			break;
-		case OUT_OF_WORLD:
-			source = DamageSource.OUT_OF_WORLD;
-			break;
+			case FALL:
+				source = DamageSource.FALL;
+				break;
+			case FALLING_BLOCK:
+				source = DamageSource.FALLING_BLOCK;
+				break;
+			case OUT_OF_WORLD:
+				source = DamageSource.OUT_OF_WORLD;
+				break;
 
-		case BURN:
-			source = DamageSource.BURN;
-			break;
+			case BURN:
+				source = DamageSource.BURN;
+				break;
 
-		case LIGHTNING:
-			source = DamageSource.LIGHTNING;
-			break;
+			case LIGHTNING:
+				source = DamageSource.LIGHTNING;
+				break;
 
-		case MAGIC:
-			source = DamageSource.MAGIC;
-			break;
+			case MAGIC:
+				source = DamageSource.MAGIC;
+				break;
 
-		case DROWN:
-			source = DamageSource.DROWN;
-			break;
+			case DROWN:
+				source = DamageSource.DROWN;
+				break;
 
-		case STARVE:
-			source = DamageSource.STARVE;
-			break;
+			case STARVE:
+				source = DamageSource.STARVE;
+				break;
 
-		case LAVA:
-			source = DamageSource.LAVA;
-			break;
+			case LAVA:
+				source = DamageSource.LAVA;
+				break;
 
-		case GENERIC:
-			source = DamageSource.GENERIC;
-			break;
+			case GENERIC:
+				source = DamageSource.GENERIC;
+				break;
 
-		default:
-			source = DamageSource.GENERIC;
-			break;
+			default:
+				source = DamageSource.GENERIC;
+				break;
 		}
 
 		((CraftPlayer) player).getHandle().damageEntity(source, damage);
@@ -223,25 +225,25 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		Material material = null;
 
 		switch (type) {
-		case GLASS_PANE:
-			material = Material.STAINED_GLASS_PANE;
-			break;
+			case GLASS_PANE:
+				material = Material.STAINED_GLASS_PANE;
+				break;
 
-		case GLASS_BLOCK:
-			material = Material.STAINED_GLASS;
-			break;
+			case GLASS_BLOCK:
+				material = Material.STAINED_GLASS;
+				break;
 
-		case WOOL:
-			material = Material.WOOL;
-			break;
+			case WOOL:
+				material = Material.WOOL;
+				break;
 
-		case CLAY:
-			material = Material.STAINED_CLAY;
-			break;
+			case CLAY:
+				material = Material.STAINED_CLAY;
+				break;
 
-		default:
-			material = Material.STAINED_GLASS;
-			break;
+			default:
+				material = Material.STAINED_GLASS;
+				break;
 		}
 
 		MaterialData data = new MaterialData(material, color.getWoolData());
@@ -250,14 +252,16 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
+	public void setShapedRecipeIngredientAsColoredBlock(ShapedRecipe recipe, char ingredient, ColoredBlockType type,
+			DyeColor color) {
 		MaterialData data = getColoredBlockMaterialData(color, type);
 
 		recipe.setIngredient(ingredient, data);
 	}
 
 	@Override
-	public void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient, ColoredBlockType type, DyeColor color) {
+	public void addShapelessRecipeIngredientAsColoredBlock(ShapelessRecipe recipe, char ingredient,
+			ColoredBlockType type, DyeColor color) {
 		MaterialData data = getColoredBlockMaterialData(color, type);
 
 		recipe.addIngredient(ingredient, data);
@@ -296,55 +300,56 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public Sound getSound(VersionIndependentSound sound) {
 		switch (sound) {
-		case NOTE_PLING:
-			return Sound.BLOCK_NOTE_PLING;
+			case NOTE_PLING:
+				return Sound.BLOCK_NOTE_PLING;
 
-		case NOTE_HAT:
-			return Sound.BLOCK_NOTE_HAT;
+			case NOTE_HAT:
+				return Sound.BLOCK_NOTE_HAT;
 
-		case WITHER_DEATH:
-			return Sound.ENTITY_WITHER_DEATH;
+			case WITHER_DEATH:
+				return Sound.ENTITY_WITHER_DEATH;
 
-		case WITHER_HURT:
-			return Sound.ENTITY_WITHER_HURT;
+			case WITHER_HURT:
+				return Sound.ENTITY_WITHER_HURT;
 
-		case ITEM_BREAK:
-			return Sound.ENTITY_ITEM_BREAK;
+			case ITEM_BREAK:
+				return Sound.ENTITY_ITEM_BREAK;
 
-		case ITEM_PICKUP:
-			return Sound.ENTITY_ITEM_PICKUP;
+			case ITEM_PICKUP:
+				return Sound.ENTITY_ITEM_PICKUP;
 
-		case ORB_PICKUP:
-			return Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
+			case ORB_PICKUP:
+				return Sound.ENTITY_EXPERIENCE_ORB_PICKUP;
 
-		case ANVIL_LAND:
-			return Sound.BLOCK_ANVIL_LAND;
+			case ANVIL_LAND:
+				return Sound.BLOCK_ANVIL_LAND;
 
-		case EXPLODE:
-			return Sound.ENTITY_GENERIC_EXPLODE;
+			case EXPLODE:
+				return Sound.ENTITY_GENERIC_EXPLODE;
 
-		case LEVEL_UP:
-			return Sound.ENTITY_PLAYER_LEVELUP;
+			case LEVEL_UP:
+				return Sound.ENTITY_PLAYER_LEVELUP;
 
-		case WITHER_SHOOT:
-			return Sound.ENTITY_WITHER_SHOOT;
+			case WITHER_SHOOT:
+				return Sound.ENTITY_WITHER_SHOOT;
 
-		case EAT:
-			return Sound.ENTITY_GENERIC_EAT;
+			case EAT:
+				return Sound.ENTITY_GENERIC_EAT;
 
-		case ANVIL_BREAK:
-			return Sound.BLOCK_ANVIL_BREAK;
+			case ANVIL_BREAK:
+				return Sound.BLOCK_ANVIL_BREAK;
 
-		case FIZZ:
-			return Sound.BLOCK_FIRE_EXTINGUISH;
-			
-		case ENDERMAN_TELEPORT:
-			return Sound.ENTITY_ENDERMEN_TELEPORT;
+			case FIZZ:
+				return Sound.BLOCK_FIRE_EXTINGUISH;
 
-		default:
-			setLastError(VersionIndependenceLayerError.MISSING_SOUND);
-			AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
-			return null;
+			case ENDERMAN_TELEPORT:
+				return Sound.ENTITY_ENDERMEN_TELEPORT;
+
+			default:
+				setLastError(VersionIndependenceLayerError.MISSING_SOUND);
+				AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name()
+						+ " is not defined in this version. Please add it to " + this.getClass().getName());
+				return null;
 		}
 	}
 
@@ -393,82 +398,83 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public Material getMaterial(VersionIndependentMaterial material) {
 		switch (material) {
-		case FILLED_MAP:
-			return Material.MAP;
+			case FILLED_MAP:
+				return Material.MAP;
 
-		case END_STONE:
-			return Material.ENDER_STONE;
+			case END_STONE:
+				return Material.ENDER_STONE;
 
-		case WORKBENCH:
-			return Material.WORKBENCH;
+			case WORKBENCH:
+				return Material.WORKBENCH;
 
-		case OAK_BOAT:
-			return Material.BOAT;
+			case OAK_BOAT:
+				return Material.BOAT;
 
-		case DIAMOND_SHOVEL:
-			return Material.DIAMOND_SPADE;
+			case DIAMOND_SHOVEL:
+				return Material.DIAMOND_SPADE;
 
-		case SNOWBALL:
-			return Material.SNOW_BALL;
+			case SNOWBALL:
+				return Material.SNOW_BALL;
 
-		case FARMLAND:
-			return Material.SOIL;
+			case FARMLAND:
+				return Material.SOIL;
 
-		case GOLDEN_AXE:
-			return Material.GOLD_AXE;
+			case GOLDEN_AXE:
+				return Material.GOLD_AXE;
 
-		case GOLDEN_HOE:
-			return Material.GOLD_HOE;
+			case GOLDEN_HOE:
+				return Material.GOLD_HOE;
 
-		case GOLDEN_PICKAXE:
-			return Material.GOLD_PICKAXE;
+			case GOLDEN_PICKAXE:
+				return Material.GOLD_PICKAXE;
 
-		case GOLDEN_SHOVEL:
-			return Material.GOLD_SPADE;
+			case GOLDEN_SHOVEL:
+				return Material.GOLD_SPADE;
 
-		case GOLDEN_SWORD:
-			return Material.GOLD_SWORD;
+			case GOLDEN_SWORD:
+				return Material.GOLD_SWORD;
 
-		case WOODEN_AXE:
-			return Material.WOOD_AXE;
+			case WOODEN_AXE:
+				return Material.WOOD_AXE;
 
-		case WOODEN_HOE:
-			return Material.WOOD_HOE;
+			case WOODEN_HOE:
+				return Material.WOOD_HOE;
 
-		case WOODEN_PICKAXE:
-			return Material.WOOD_PICKAXE;
+			case WOODEN_PICKAXE:
+				return Material.WOOD_PICKAXE;
 
-		case WOODEN_SHOVEL:
-			return Material.WOOD_SPADE;
+			case WOODEN_SHOVEL:
+				return Material.WOOD_SPADE;
 
-		case WOODEN_SWORD:
-			return Material.WOOD_SWORD;
+			case WOODEN_SWORD:
+				return Material.WOOD_SWORD;
 
-		case WATCH:
-			return Material.WATCH;
-			
-		case GOLD_HELMET:
-			return Material.GOLD_HELMET;
-			
-		case GOLD_CHESTPLATE:
-			return Material.GOLD_CHESTPLATE;
-			
-		case GOLD_LEGGINGS:
-			return Material.GOLD_LEGGINGS;
-			
-		case GOLD_BOOTS:
-			return Material.GOLD_BOOTS;
-			
-		case GRILLED_PORK:
-			return Material.GRILLED_PORK;
+			case WATCH:
+				return Material.WATCH;
 
-		case EXP_BOTTLE:
-			return Material.EXP_BOTTLE;
+			case GOLD_HELMET:
+				return Material.GOLD_HELMET;
 
-		default:
-			setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
-			AbstractionLogger.getLogger().warning("VersionIndependentUtils", "Unknown version Independent material: " + material.name());
-			return null;
+			case GOLD_CHESTPLATE:
+				return Material.GOLD_CHESTPLATE;
+
+			case GOLD_LEGGINGS:
+				return Material.GOLD_LEGGINGS;
+
+			case GOLD_BOOTS:
+				return Material.GOLD_BOOTS;
+
+			case GRILLED_PORK:
+				return Material.GRILLED_PORK;
+
+			case EXP_BOTTLE:
+				return Material.EXP_BOTTLE;
+
+			default:
+				setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
+				AbstractionLogger.getLogger().warning("VersionIndependentUtils",
+						"Unknown version Independent material: " + material.name());
+				return null;
 		}
 	}
 
@@ -499,7 +505,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void sendActionBarMessage(Player player, String message) {
-		PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + message.replace("&", "§") + "\"}"), ChatMessageType.GAME_INFO);
+		PacketPlayOutChat packet = new PacketPlayOutChat(
+				ChatSerializer.a("{\"text\":\"" + message.replace("&", "§") + "\"}"), ChatMessageType.GAME_INFO);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 
@@ -582,12 +589,12 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case FIRE:
 				if (lastDamager != null)
 					return DeathType.FIRE_SOURCE_COMBAT;
-					return DeathType.FIRE_SOURCE;
+				return DeathType.FIRE_SOURCE;
 
 			case LAVA:
 				if (lastDamager != null)
 					return DeathType.LAVA_COMBAT;
-					return DeathType.LAVA;
+				return DeathType.LAVA;
 
 			case FALL:
 				if (e.getFinalDamage() <= 2.0)
@@ -596,34 +603,34 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 					else
 						return DeathType.FALL_SMALL;
 
-					return DeathType.FALL_BIG;
+				return DeathType.FALL_BIG;
 
 			case VOID:
 				if (lastDamager != null)
 					return DeathType.VOID_COMBAT;
-					return DeathType.VOID;
+				return DeathType.VOID;
 
 			case THORNS:
 				return DeathType.THORNS;
 			case WITHER:
 				if (lastDamager != null)
 					return DeathType.EFFECT_WITHER_COMBAT;
-					return DeathType.EFFECT_WITHER;
+				return DeathType.EFFECT_WITHER;
 
 			case CONTACT:
 				if (lastDamager != null)
 					return DeathType.CACTUS_COMBAT;
-					return DeathType.CACTUS;
+				return DeathType.CACTUS;
 
 			case DROWNING:
 				if (lastDamager != null)
 					return DeathType.DROWN_COMBAT;
-					return DeathType.DROWN;
+				return DeathType.DROWN;
 
 			case LIGHTNING:
 				if (lastDamager != null)
 					return DeathType.LIGHTNING_COMBAT;
-					return DeathType.LIGHTNING;
+				return DeathType.LIGHTNING;
 
 			case PROJECTILE:
 				if (lastDamager.getType() == EntityType.ARROW)
@@ -632,17 +639,17 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case STARVATION:
 				if (lastDamager != null)
 					return DeathType.STARVING_COMBAT;
-					return DeathType.STARVING;
+				return DeathType.STARVING;
 			case SUFFOCATION:
 				if (lastDamager != null)
 					return DeathType.SUFFOCATION_COMBAT;
-					return DeathType.SUFFOCATION;
+				return DeathType.SUFFOCATION;
 
 			case ENTITY_ATTACK:
 			case ENTITY_SWEEP_ATTACK:
 				switch (lastDamager.getType()) {
 					case WITHER:
-						return DeathType.COMBAT_WITHER;
+						return DeathType.COMBAT_WITHER_SKULL;
 					case FIREBALL:
 					case SMALL_FIREBALL:
 						return DeathType.COMBAT_FIREBALL;
@@ -670,13 +677,12 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case ENTITY_EXPLOSION:
 				if (lastDamager != null)
 					return DeathType.EXPLOSION_COMBAT;
-					return DeathType.EXPLOSION;
-
+				return DeathType.EXPLOSION;
 
 			case FIRE_TICK:
 				if (lastDamager != null)
 					return DeathType.FIRE_NATURAL_COMBAT;
-					return DeathType.FIRE_NATURAL;
+				return DeathType.FIRE_NATURAL;
 
 			case MAGIC:
 				DeathType type = DeathType.MAGIC;
@@ -686,7 +692,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 						if (entityEvent.getDamager() instanceof ThrownPotion) {
 							ThrownPotion potion = (ThrownPotion) entityEvent.getDamager();
 							if (potion.getShooter() instanceof Entity) {
-								if (((Entity) potion.getShooter()).getUniqueId().toString().equalsIgnoreCase(lastDamager.getUniqueId().toString())) {
+								if (((Entity) potion.getShooter()).getUniqueId().toString()
+										.equalsIgnoreCase(lastDamager.getUniqueId().toString())) {
 									type = DeathType.MAGIC_COMBAT;
 								} else {
 									type = DeathType.MAGIC_COMBAT_ACCIDENT;
@@ -699,22 +706,22 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			case CRAMMING:
 				if (lastDamager != null)
 					return DeathType.SUFFOCATION_CRAMMING_COMBAT;
-					return DeathType.SUFFOCATION_COMBAT;
+				return DeathType.SUFFOCATION_COMBAT;
 
 			case HOT_FLOOR:
 				if (lastDamager != null)
 					return DeathType.MAGMA_BLOCK_COMBAT;
-					return DeathType.MAGMA_BLOCK;
+				return DeathType.MAGMA_BLOCK;
 
 			case DRAGON_BREATH:
 				if (lastDamager != null)
 					return DeathType.DRAGON_BREATH_COMBAT;
-					return DeathType.DRAGON_BREATH;
+				return DeathType.DRAGON_BREATH;
 
 			case FLY_INTO_WALL:
 				if (lastDamager != null)
 					return DeathType.ELYTRA_WALL_COMBAT;
-					return DeathType.ELYTRA_WALL;
+				return DeathType.ELYTRA_WALL;
 			case POISON:
 			case MELTING:
 			case CUSTOM:
@@ -722,8 +729,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			default:
 				if (lastDamager != null)
 					return DeathType.GENERIC_COMBAT;
-					return DeathType.GENERIC;
-
+				return DeathType.GENERIC;
 
 		}
 	}
@@ -752,31 +758,67 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		return rgb;
 	}
 
-	/*@Override
+	@Override
 	public PacketManager getPacketManager() {
-		return new net.zeeraa.novacore.spigot.version.v1_12_R1.packet.PacketManager();
-	}*/
+		if (packetManager == null)
+			packetManager = new net.zeeraa.novacore.spigot.version.v1_12_R1.packet.PacketManager();
+		return packetManager;
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean canBreakBlock(ItemStack item, Material block) {
+
 		net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-		NBTTagCompound nbtTag = nmsItem.getTag();
-		NBTTagList list = nbtTag.getList("CanDestroy", 8);
-		if (list == null) {
+		if (nmsItem == null) {
 			return false;
 		}
+		NBTTagCompound nbtTag = nmsItem.getTag();
+		if (nbtTag == null) {
+			return false;
+		}
+		NBTTagList list = nbtTag.getList("CanDestroy", 8);
 		try {
 			Field f = NBTTagList.class.getDeclaredField("list");
 			f.setAccessible(true);
 
-			for (NBTTagCompound nbt : (List<NBTTagCompound>) f.get(list)) {
-				return Material.matchMaterial(nbt.toString()) == block;
+			for (NBTTagString nbt : (List<NBTTagString>) f.get(list)) {
+				boolean b = getMaterialFromName(nbt.c_()) == block;
+
+				if (b) {
+					return true;
+				}
 			}
-		} catch (Exception ignored) {
+		} catch (Exception e1) {
 			return false;
 		}
 
 		return false;
+	}
+
+	@Override
+	public MaterialNameList getMaterialNameList() {
+		return materialNameList;
+	}
+
+	@Override
+	public Material getMaterialFromName(String name) {
+		try {
+			int value = Integer.parseInt(name);
+			for (Material material : Material.values()) {
+				if (value == material.getId()) {
+					return material;
+				}
+			}
+			return null;
+		} catch (Exception ignored) {
+		}
+
+		if (Material.matchMaterial(name) == null) {
+			String updatedname = name.replace("minecraft:", "").toLowerCase(Locale.ROOT);
+			return materialNameList.getMaterialMap().getOrDefault(updatedname, null);
+		} else {
+			return Material.matchMaterial(name);
+		}
 	}
 }

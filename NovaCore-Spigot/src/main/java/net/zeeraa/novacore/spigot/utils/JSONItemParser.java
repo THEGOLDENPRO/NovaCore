@@ -31,12 +31,12 @@ public class JSONItemParser {
 	 * @throws JSONException if any keys are missing
 	 */
 	@SuppressWarnings("deprecation")
-	public static ItemStack itemFromJSON(JSONObject json) throws IOException, IOException {
+	public static ItemStack itemFromJSON(JSONObject json) throws IOException {
 		if (json.has("base64")) {
 			return BukkitSerailization.itemStackFromBase64(json.getString("base64"));
 		}
 
-		ItemBuilder builder = null;
+		ItemBuilder builder;
 
 		if (json.has("record")) {
 			builder = ItemBuilder.getRecordItemBuilder(json.getString("record"));

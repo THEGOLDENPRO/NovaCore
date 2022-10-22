@@ -50,8 +50,7 @@ public class ProjectileUtils {
 	public static Location getEstimatedHitLocation(Projectile projectile) {
 		Location loc = projectile.getLocation();
 		Vector vec = projectile.getVelocity();
-		Location hitLocation = new Location(loc.getWorld(), loc.getX() + vec.getX(), loc.getY() + vec.getY(), loc.getZ() + vec.getZ());
-		return hitLocation;
+		return new Location(loc.getWorld(), loc.getX() + vec.getX(), loc.getY() + vec.getY(), loc.getZ() + vec.getZ());
 	}
 
 	/**

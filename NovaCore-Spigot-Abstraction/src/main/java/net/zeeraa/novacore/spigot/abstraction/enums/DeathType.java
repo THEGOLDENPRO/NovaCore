@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.abstraction.enums;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 /**
@@ -9,157 +10,127 @@ import org.bukkit.event.entity.PlayerDeathEvent;
  * @since 2.0.0
  */
 public enum DeathType {
-	PROJECTILE_ARROW, PROJECTILE_OTHER, CACTUS, CACTUS_COMBAT, DROWN, DROWN_COMBAT, ELYTRA_WALL, ELYTRA_WALL_COMBAT, EXPLOSION, EXPLOSION_COMBAT, INTENTIONAL_GAME_DESIGN, FALL_SMALL, FALL_SMALL_COMBAT, FALL_BIG, FALL_CLIMBING_LADDER, FALL_CLIMBING_VINE, FALL_CLIMBING_WEEPING_VINE, FALL_CLIMBING_TWISTING_VINES, FALL_CLIMBING_SCAFFOLDING, FALL_CLIMBING_OTHER, FALL_WATER, FALL_STALAGMITE, FALL_STALAGMITE_COMBAT, ANVIL_FALL, ANVIL_FALL_COMBAT, BLOCK_FALL, BLOCK_FALL_COMBAT, STALAGTITE_FALL, STALAGTITE_FALL_COMBAT, FIRE_SOURCE, FIRE_SOURCE_COMBAT, FIRE_NATURAL, FIRE_NATURAL_COMBAT, ROCKET_EXPLOSION, ROCKET_EXPLOSION_COMBAT_RENAMED, LAVA, LAVA_COMBAT, LIGHTNING, LIGHTNING_COMBAT, MAGMA_BLOCK, MAGMA_BLOCK_COMBAT, MAGIC, MAGIC_COMBAT_ACCIDENT, MAGIC_COMBAT, FROZEN, FROZEN_COMBAT, COMBAT_NORMAL, COMBAT_FIREBALL, COMBAT_BEE, COMBAT_WITHER, SONIC_BOOM, STARVING, STARVING_COMBAT, SUFFOCATION, SUFFOCATION_COMBAT, SUFFOCATION_CRAMMING, SUFFOCATION_CRAMMING_COMBAT, BUSH, BUSH_COMBAT, THORNS, TRIDENT, VOID, VOID_COMBAT, EFFECT_WITHER, EFFECT_WITHER_COMBAT, DEHYDRATION, DEHYDRATION_COMBAT, GENERIC, GENERIC_COMBAT, PROJECTILE_FALL, PROJECTILE_FALL_COMBAT, DRAGON_BREATH, DRAGON_BREATH_COMBAT;
+	PROJECTILE_ARROW("was shot by", true), PROJECTILE_OTHER("was pummeled by", true), CACTUS("was pricked to death", false), CACTUS_COMBAT("walked into a cactus whilst trying to escape", true), DROWN("drowned", false), DROWN_COMBAT("drowned whilst trying to escape", true),
+	ELYTRA_WALL("experienced kinetic energy", false), ELYTRA_WALL_COMBAT("experienced kinetic energy whilst trying to escape", true),
+	EXPLOSION("blew up", false), EXPLOSION_COMBAT("was blown up by", true), INTENTIONAL_GAME_DESIGN("was killed by [Intentional Game Design]", false),
+	FALL_SMALL("hit the ground too hard", false), FALL_SMALL_COMBAT("hit the ground too hard whilst trying to escape", true), FALL_BIG("fell from a high place", false),
+	FALL_CLIMBING_LADDER("fell off a ladder", false), FALL_CLIMBING_VINE("fell off some vines", false), FALL_CLIMBING_WEEPING_VINE("fell off some weeping vines", false),
+	FALL_CLIMBING_TWISTING_VINES("fell off some twisting vines", false), FALL_CLIMBING_SCAFFOLDING("fell off scaffolding", false),
+	FALL_CLIMBING_OTHER("fell while climbing",false), FALL_WATER(new String[]{"death.fell.accident.water", "fell out of the water"}, false),
+	FALL_STALAGMITE("was impaled on a stalagmite", false), FALL_STALAGMITE_COMBAT("was impaled on a stalagmite whilst fighting", true),
+	ANVIL_FALL("was squashed by a falling anvil", false), ANVIL_FALL_COMBAT("was squashed by a falling anvil whilst fighting", true), BLOCK_FALL("was squashed by a falling block", false),
+	BLOCK_FALL_COMBAT("was squashed by a falling block whilst fighting", true), STALAGTITE_FALL("was skewered by a falling stalactite", false), STALAGTITE_FALL_COMBAT("was skewered by a falling stalactite whilst fighting", true),
+	FIRE_SOURCE("went up in flames", false), FIRE_SOURCE_COMBAT("walked into fire whilst fighting", true), FIRE_NATURAL("burned to death", false), FIRE_NATURAL_COMBAT("was burnt to a crisp whilst fighting", true),
+	ROCKET_EXPLOSION("went off with a bang", false), ROCKET_EXPLOSION_COMBAT_RENAMED("went off with a bang due to a firework fired from", true), LAVA("tried to swim in lava", false),
+	LAVA_COMBAT("tried to swim in lava to escape", true), LIGHTNING("was struck by lightning", false), LIGHTNING_COMBAT("was struck by lightning whilst fighting", true),
+	MAGMA_BLOCK("discovered the floor was lava", false), MAGMA_BLOCK_COMBAT("walked into danger zone due to", true), MAGIC("was killed by magic", false),
+	MAGIC_COMBAT_ACCIDENT("was killed by magic whilst trying to escape", true), MAGIC_COMBAT("was killed by", true), FROZEN("froze to death", false),
+	FROZEN_COMBAT("was frozen to death by", true), COMBAT_NORMAL("was slain by", true), COMBAT_FIREBALL("was fireballed by", true), COMBAT_BEE("was stung to death", true, false),
+	COMBAT_WITHER_SKULL(new String[]{"was shot by a skull from", "death.attack.witherSkull.item"}, true), SONIC_BOOM("was obliterated by a sonically-charged shriek", true, false),
+	STARVING("starved to death", false), STARVING_COMBAT("starved to death whilst fighting", true), SUFFOCATION("suffocated in a wall", false),
+	SUFFOCATION_COMBAT("suffocated in a wall whilst fighting", true), SUFFOCATION_CRAMMING("was squished too much", false), SUFFOCATION_CRAMMING_COMBAT("was squashed by", true),
+	BUSH("was poked to death by a sweet berry bush", false), BUSH_COMBAT("was poked to death by a sweet berry bush whilst trying to escape", true),
+	THORNS("was killed trying to hurt", true), TRIDENT("was impaled by", true), VOID("fell out of the world", false), VOID_COMBAT("didn't want to live in the same world as", true),
+	EFFECT_WITHER("withered away", false), EFFECT_WITHER_COMBAT("withered away whilst fighting", true), GENERIC("died", true), GENERIC_COMBAT("died because of", true), PROJECTILE_FALL("was doomed to fall", false),
+	PROJECTILE_FALL_COMBAT("was doomed to fall by", true), DRAGON_BREATH("was roasted in dragon breath", false), DRAGON_BREATH_COMBAT("was roasted in dragon breath by", true);
 
-	public static DeathType getDeathFromString(String death) {
-		if (death.contains("was shot by")) {
-			return PROJECTILE_ARROW;
-		} else if (death.contains("was pummeled by")) {
-			return PROJECTILE_OTHER;
-		} else if (death.contains("was pricked to death")) {
-			return CACTUS;
-		} else if (death.contains("walked into a cactus whilst trying to escape")) {
-			return CACTUS_COMBAT;
-		} else if (death.contains("drowned whilst trying to escape")) {
-			return DROWN_COMBAT;
-		} else if (death.contains("drowned")) {
-			return DROWN;
-		} else if (death.contains("experienced kinetic energy whilst trying to escape")) {
-			return ELYTRA_WALL_COMBAT;
-		} else if (death.contains("experienced kinetic energy")) {
-			return ELYTRA_WALL;
-		} else if (death.contains("blew up")) {
-			return EXPLOSION;
-		} else if (death.contains("was blown up by")) {
-			return EXPLOSION_COMBAT;
-		} else if (death.contains("hit the ground too hard whilst trying to escape")) {
-			return FALL_SMALL_COMBAT;
-		} else if (death.contains("hit the ground too hard")) {
-			return FALL_SMALL;
-		} else if (death.contains("fell from a high place")) {
-			return FALL_BIG;
-		} else if (death.contains("fell off a ladder")) {
-			return FALL_CLIMBING_LADDER;
-		} else if (death.contains("fell off some vines")) {
-			return FALL_CLIMBING_VINE;
-		} else if (death.contains("fell off some weeping vines")) {
-			return FALL_CLIMBING_WEEPING_VINE;
-		} else if (death.contains("fell off some twisting vines")) {
-			return FALL_CLIMBING_TWISTING_VINES;
-		} else if (death.contains("fell off scaffolding")) {
-			return FALL_CLIMBING_SCAFFOLDING;
-		} else if (death.contains("fell while climbing")) {
-			return FALL_CLIMBING_OTHER;
-		} else if (death.contains("death.fell.accident.water") || death.contains("fell out of the water")) {
-			return FALL_WATER;
-		} else if (death.contains("was impaled on a stalagmite whilst fighting")) {
-			return FALL_STALAGMITE_COMBAT;
-		} else if (death.contains("was impaled on a stalagmite")) {
-			return FALL_STALAGMITE;
-		} else if (death.contains("was squashed by a falling anvil whilst fighting")) {
-			return ANVIL_FALL_COMBAT;
-		} else if (death.contains("was squashed by a falling anvil")) {
-			return ANVIL_FALL;
-		} else if (death.contains("was squashed by a falling block whilst fighting")) {
-			return BLOCK_FALL_COMBAT;
-		} else if (death.contains("was squashed by a falling block")) {
-			return BLOCK_FALL;
-		} else if (death.contains("was skewered by a falling stalactite whilst fighting")) {
-			return STALAGTITE_FALL_COMBAT;
-		} else if (death.contains("was skewered by a falling stalactite")) {
-			return STALAGTITE_FALL;
-		} else if (death.contains("went up in flames")) {
-			return FIRE_SOURCE;
-		} else if (death.contains("walked into fire whilst fighting")) {
-			return FIRE_SOURCE_COMBAT;
-		} else if (death.contains("burned to death")) {
-			return FIRE_NATURAL;
-		} else if (death.contains("was burnt to a crisp whilst fighting")) {
-			return FIRE_NATURAL_COMBAT;
-		} else if (death.contains("went off with a bang due to a firework fired from")) {
-			return ROCKET_EXPLOSION_COMBAT_RENAMED;
-		} else if (death.contains("went off with a bang")) {
-			return ROCKET_EXPLOSION;
-		} else if (death.contains("tried to swim in lava to escape")) {
-			return LAVA_COMBAT;
-		} else if (death.contains("tried to swim in lava")) {
-			return LAVA;
-		} else if (death.contains("was struck by lightning whilst fighting")) {
-			return LIGHTNING_COMBAT;
-		} else if (death.contains("was struck by lightning")) {
-			return LIGHTNING;
-		} else if (death.contains("discovered the floor was lava")) {
-			return MAGMA_BLOCK;
-		} else if (death.contains("walked into danger zone due to")) {
-			return MAGMA_BLOCK_COMBAT;
-		} else if (death.contains("was killed by magic whilst trying to escape")) {
-			return MAGIC_COMBAT_ACCIDENT;
-		} else if (death.contains("was killed by magic")) {
-			return MAGIC;
-		} else if (death.contains("was killed by")) {
-			return MAGIC_COMBAT;
-		} else if (death.contains("froze to death")) {
-			return FROZEN;
-		} else if (death.contains("was frozen to death by")) {
-			return FROZEN_COMBAT;
-		} else if (death.contains("was slain by")) {
-			return COMBAT_NORMAL;
-		} else if (death.contains("was fireballed by")) {
-			return COMBAT_FIREBALL;
-		} else if (death.contains("was stung to death")) {
-			return COMBAT_BEE;
-		} else if (death.contains("was shot by a skull from")) {
-			return COMBAT_WITHER;
-		} else if (death.contains("was obliterated by a sonically-charged shriek")) {
-			return SONIC_BOOM;
-		} else if (death.contains("starved to death whilst fighting")) {
-			return STARVING_COMBAT;
-		} else if (death.contains("starved to death")) {
-			return STARVING;
-		} else if (death.contains("suffocated in a wall whilst fighting")) {
-			return SUFFOCATION_COMBAT;
-		} else if (death.contains("was squished too much")) {
-			return SUFFOCATION_CRAMMING;
-		} else if (death.contains("was squashed by")) {
-			return SUFFOCATION_CRAMMING_COMBAT;
-		} else if (death.contains("was poked to death by a sweet berry bush whilst trying to escape")) {
-			return BUSH_COMBAT;
-		} else if (death.contains("was poked to death by a sweet berry bush")) {
-			return BUSH;
-		} else if (death.contains("trying to hurt")) {
-			return THORNS;
-		} else if (death.contains("was impaled by")) {
-			return TRIDENT;
-		} else if (death.contains("fell out of the world")) {
-			return VOID;
-		} else if (death.contains("didn't want to live in the same world as")) {
-			return VOID_COMBAT;
-		} else if (death.contains("withered away whilst fighting")) {
-			return EFFECT_WITHER_COMBAT;
-		} else if (death.contains("withered away")) {
-			return EFFECT_WITHER;
-		} else if (death.contains("died from dehydration whilst trying to escape")) {
-			return DEHYDRATION_COMBAT;
-		} else if (death.contains("died from dehydration")) {
-			return DEHYDRATION;
-		} else if (death.contains("died because of")) {
-			return GENERIC_COMBAT;
-		} else if (death.contains("was doomed to fall by")) {
-			return PROJECTILE_FALL_COMBAT;
-		} else if (death.contains("was doomed to fall")) {
-			return PROJECTILE_FALL;
-		} else if (death.contains("was roasted in dragon breath by")) {
-			return DRAGON_BREATH_COMBAT;
-		} else if (death.contains("was roasted in dragon breath")) {
-			return DRAGON_BREATH;
-		} else if (death.contains("died")) {
-			return GENERIC;
-		} else {
-			return GENERIC;
-		}
+	private final String identifier;
+	private final boolean combat;
+	private final boolean addsKiller;
+	private final boolean hasMultipleIdentifiers;
+	private final String[] identifiers;
+	DeathType(String identifier, boolean combat) {
+		this.identifier = identifier;
+		this.combat = combat;
+		this.identifiers = new String[]{};
+		this.hasMultipleIdentifiers = false;
+		this.addsKiller = combat;
+	}
+	DeathType(String[] identifiers, boolean combat) {
+		this.identifier = "";
+		this.combat = combat;
+		this.identifiers = identifiers;
+		this.hasMultipleIdentifiers = true;
+		this.addsKiller = combat;
+	}
+	DeathType(String identifier, boolean combat, boolean addsKiller) {
+		this.identifier = identifier;
+		this.combat = combat;
+		this.identifiers = new String[]{};
+		this.hasMultipleIdentifiers = false;
+		this.addsKiller = addsKiller;
 	}
 
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public boolean isCombat() {
+		return combat;
+	}
+
+	public boolean addsKiller() {
+		return addsKiller;
+	}
+
+	public boolean hasMultipleIdentifiers() {
+		return hasMultipleIdentifiers;
+	}
+
+	public String[] getIdentifiers() {
+		return identifiers;
+	}
+
+
 	public static DeathType getDeathFromEvent(PlayerDeathEvent e) {
-		return getDeathFromString(e.getDeathMessage());
+		return getDeathFromEvent(e, null);
+	}
+
+	public static DeathType getDeathFromEvent(PlayerDeathEvent e, Entity customLastDamager) {
+
+		String death = e.getDeathMessage().replace(e.getEntity().getName(), "");
+		if (customLastDamager != null) {
+			death = death.replace(customLastDamager.getName(), "");
+		} else if (e.getEntity().getKiller() != null) {
+				death = death.replace(e.getEntity().getKiller().getName(), "");
+			}
+
+
+
+		while (death.contains("  ")) {
+			death = death.replace("  ", " ");
+		}
+		if (death.startsWith(" ")) {
+			death = death.substring(1);
+		}
+		if (death.endsWith(" ")) {
+			death = death.substring(0, death.length() - 1);
+		}
+		String withoutUsing = death.split(" using ")[0];
+
+		String thornsExeption = "was killed trying " + death.split(" trying ")[1];
+		for (DeathType type : DeathType.values()) {
+			if (type.hasMultipleIdentifiers()) {
+				for (String identifier : type.getIdentifiers()) {
+					if (death.equalsIgnoreCase(identifier)) {
+						return type;
+					}  else if (withoutUsing.equalsIgnoreCase(identifier)) {
+						return type;
+					} else if (thornsExeption.equalsIgnoreCase(identifier)) {
+						return type;
+					}
+				}
+			} else {
+				if (death.equalsIgnoreCase(type.getIdentifier())) {
+					return type;
+				}  else if (withoutUsing.equalsIgnoreCase(type.getIdentifier())) {
+					return type;
+				} else if (thornsExeption.equalsIgnoreCase(type.getIdentifier())) {
+					return type;
+				}
+			}
+
+		}
+		return GENERIC;
 	}
 }

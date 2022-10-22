@@ -8,6 +8,10 @@ import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 public class ItemBuilderRecordList1_12 implements ItemBuilderRecordList {
 	private HashMap<String, Material> recordMap;
 
+	public static ItemBuilderRecordList1_12 get() {
+		return new ItemBuilderRecordList1_12();
+	}
+
 	@Override
 	public HashMap<String, Material> getRecordMap() {
 		return recordMap;

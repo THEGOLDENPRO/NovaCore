@@ -2,15 +2,18 @@ package net.zeeraa.novacore.spigot.abstraction.packet.event;
 
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.Hand;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-
 import java.util.Set;
 
-public class PlayerSwingEvent extends PacketEvent {
+/**
+ * Check if player swinged their arm
+ *
+ * WARNING: This event is Asynchronous and might be dangerous to use
+ */
+public class PlayerSwingEvent extends AsyncPacketEvent {
 	private long timestamp;
 	private Hand hand;
 
@@ -20,7 +23,8 @@ public class PlayerSwingEvent extends PacketEvent {
 		this.hand = hand;
 		try {
 			if (canBreak(player, player.getTargetBlock((Set<Material>) null, 5))) {
-				Bukkit.getPluginManager().callEvent(new PlayerAttemptDestroyBlockEvent(player, timestamp, player.getTargetBlock((Set<Material>) null, 5)));
+				Bukkit.getPluginManager().callEvent(new PlayerAttemptDestroyBlockEvent(player, timestamp,
+						player.getTargetBlock((Set<Material>) null, 5)));
 			}
 		} catch (Exception ignored) {
 		}
@@ -32,6 +36,12 @@ public class PlayerSwingEvent extends PacketEvent {
 
 	public Hand getHand() {
 		return hand;
+	}
+
+	public PlayerSwingEvent(Player player, long timestamp, Hand hand) {
+		super(player);
+		this.timestamp = timestamp;
+		this.hand = hand;
 	}
 
 	private boolean canBreak(Player player, Block block) {
