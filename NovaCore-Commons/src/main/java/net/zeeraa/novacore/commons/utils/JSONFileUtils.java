@@ -9,8 +9,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.json.JSONObject;
 
-import net.zeeraa.novacore.spigot.language.LanguageReader;
-
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
