@@ -1,10 +1,16 @@
 package net.zeeraa.novacore.commons.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 import org.json.JSONObject;
+
+import net.zeeraa.novacore.spigot.language.LanguageReader;
+
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -137,5 +143,34 @@ public class JSONFileUtils {
 
 	private static void saveJson(File file, String content) throws IOException {
 		FileUtils.write(file, content, StandardCharsets.UTF_8, false);
+	}
+
+	public static JSONObject readJSONObjectFromJar(Class<?> clazz, String name) throws IOException {
+		String content = readStringResource(clazz, name);
+
+		JSONObject json = new JSONObject(content);
+
+		return json;
+	}
+
+	public static JSONArray readJSONArrayFromJar(Class<?> clazz, String name) throws IOException {
+		String content = readStringResource(clazz, name);
+
+		JSONArray json = new JSONArray(content);
+
+		return json;
+	}
+
+	private static String readStringResource(Class<?> clazz, String name) throws IOException {
+		InputStream in = clazz.getResourceAsStream(name);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+
+		String line;
+		StringBuilder lines = new StringBuilder();
+		while ((line = reader.readLine()) != null) {
+			lines.append(line);
+		}
+
+		return lines.toString();
 	}
 }
