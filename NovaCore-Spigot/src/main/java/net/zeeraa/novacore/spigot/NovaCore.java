@@ -106,8 +106,6 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private boolean disableAdvancedGUISupport;
 	private int advancedGUIMultiverseReloadDelay;
 
-	private Hastebin defaultHastebinInstance;
-
 	private ReflectionBasedCommandRegistrator reflectionBasedCommandRegistrator;
 
 	private LogLevel defaultOpLogLevel = LogLevel.ERROR;
@@ -256,7 +254,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 	}
 
 	public Hastebin getHastebinInstance() {
-		return this.defaultHastebinInstance;
+		return NovaCommons.getDefaultHastebinInstance();
 	}
 
 	public boolean isAdvancedGUISupportDisabled() {
@@ -358,14 +356,16 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		Log.setConsoleLogLevel(LogLevel.INFO);
 
+		Hastebin defaultHastebinInstance;
 		try {
 			String defaultHastebinURL = getConfig().getString("HastebinURL");
-			this.defaultHastebinInstance = new Hastebin(defaultHastebinURL);
+			defaultHastebinInstance = new Hastebin(defaultHastebinURL);
 			Log.info("NovaCore", "Configured hastebin url is " + defaultHastebinInstance.getBaseUrl());
 		} catch (IllegalArgumentException e) {
 			Log.error("NovaCore", "The HastebinURL in config.yml is not valid. Using https://hastebin.novauniverse.net instead");
-			this.defaultHastebinInstance = new Hastebin("https://hastebin.novauniverse.net");
+			defaultHastebinInstance = new Hastebin("https://hastebin.novauniverse.net");
 		}
+		NovaCommons.setDefaultHastebinInstance(defaultHastebinInstance);
 
 		jumpPadFile = new File(this.getDataFolder().getPath() + File.separator + "jump_pads.json");
 

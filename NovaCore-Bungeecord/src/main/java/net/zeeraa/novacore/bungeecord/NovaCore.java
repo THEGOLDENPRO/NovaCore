@@ -2,7 +2,6 @@ package net.zeeraa.novacore.bungeecord;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.apache.commons.io.FileUtils;
 
 import net.md_5.bungee.api.ProxyServer;
@@ -14,14 +13,16 @@ import net.zeeraa.novacore.bungeecord.abstraction.AbstractBungeecordConsoleSende
 import net.zeeraa.novacore.bungeecord.abstraction.AbstractBungeecordPlayerMessageSender;
 import net.zeeraa.novacore.bungeecord.abstraction.BungeecordAsyncManager;
 import net.zeeraa.novacore.bungeecord.abstraction.BungeecordSimpleTaskCreator;
+import net.zeeraa.novacore.bungeecord.novaplugin.NovaPlugin;
 import net.zeeraa.novacore.bungeecord.platformindependent.BungeePlatformIndependentBungeecordAPI;
 import net.zeeraa.novacore.bungeecord.platformindependent.BungeecordPlatformIndependentPlayerAPI;
 import net.zeeraa.novacore.commons.NovaCommons;
 import net.zeeraa.novacore.commons.ServerType;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.log.LogLevel;
+import net.zeeraa.novacore.commons.utils.Hastebin;
 
-public class NovaCore extends Plugin {
+public class NovaCore extends NovaPlugin {
 	private static NovaCore instance;
 
 	public static NovaCore getInstance() {
@@ -44,6 +45,8 @@ public class NovaCore extends Plugin {
 
 	@Override
 	public void onEnable() {
+		saveDefaultConfiguration();
+
 		NovaCore.instance = this;
 
 		NovaCommons.setAbstractSimpleTaskCreator(new BungeecordSimpleTaskCreator());
@@ -53,7 +56,7 @@ public class NovaCore extends Plugin {
 		NovaCommons.setPlatformIndependentBungeecordAPI(new BungeePlatformIndependentBungeecordAPI());
 		NovaCommons.setPlatformIndependentPlayerAPI(new BungeecordPlatformIndependentPlayerAPI());
 		NovaCommons.setServerType(ServerType.BUNGEECORD);
-		
+
 		try {
 			FileUtils.forceMkdir(this.getDataFolder());
 
@@ -84,7 +87,20 @@ public class NovaCore extends Plugin {
 			Log.fatal("NovaCore", "Failed to setup data directory");
 			return;
 		}
-		
+
+		String hastebinUrl = "https://hastebin.novauniverse.net";
+		try {
+			Configuration configuration = getConfig();
+
+			if (configuration.contains("HastebinURL")) {
+				hastebinUrl = configuration.getString("HastebinURL");
+			}
+		} catch (Exception e) {
+			Log.error("NovaCore", "Failed to read config.yml");
+		}
+		NovaCommons.setDefaultHastebinInstance(new Hastebin(hastebinUrl));
+		Log.debug("Novacore", "Using hastebin url " + hastebinUrl);
+
 		Log.info("NovaCore", "LogLevel: " + Log.getConsoleLogLevel().name());
 		Log.info("NovaCore", "NovaCore Bungeecord has been enabled");
 	}

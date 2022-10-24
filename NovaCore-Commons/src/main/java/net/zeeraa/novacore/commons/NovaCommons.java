@@ -5,6 +5,7 @@ import net.zeeraa.novacore.commons.log.AbstractConsoleSender;
 import net.zeeraa.novacore.commons.log.AbstractPlayerMessageSender;
 import net.zeeraa.novacore.commons.platformindependent.PlatformIndependentBungeecordAPI;
 import net.zeeraa.novacore.commons.tasks.AbstractSimpleTaskCreator;
+import net.zeeraa.novacore.commons.utils.Hastebin;
 import net.zeeraa.novacore.commons.utils.platformindependent.PlatformIndependentPlayerAPI;
 
 public class NovaCommons {
@@ -16,6 +17,7 @@ public class NovaCommons {
 	private static PlatformIndependentPlayerAPI platformIndependentPlayerAPI = null;
 	private static ServerType serverType = null;
 	private static boolean extendedDebugging = false;
+	private static Hastebin defaultHastebinInstance;
 
 	public static AbstractPlayerMessageSender getAbstractPlayerMessageSender() {
 		return abstractPlayerMessageSender;
@@ -79,5 +81,13 @@ public class NovaCommons {
 
 	public static boolean isExtendedDebugging() {
 		return extendedDebugging;
+	}
+
+	public static Hastebin getDefaultHastebinInstance() {
+		return defaultHastebinInstance;
+	}
+
+	public static void setDefaultHastebinInstance(Hastebin defaultHastebinInstance) {
+		NovaCommons.defaultHastebinInstance = defaultHastebinInstance;
 	}
 }

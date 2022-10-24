@@ -1,0 +1,3 @@
+# The custom hastebin server to use for debugging and for the built in hastebin implementation. Note that this only affects the hastebin instace from NovaCore#getHastebinInstance() and NovaCommons
+# To self host this see https://hub.docker.com/r/rlister/hastebin or https://github.com/toptal/haste-server
+HastebinURL: "https://hastebin.novauniverse.net"
