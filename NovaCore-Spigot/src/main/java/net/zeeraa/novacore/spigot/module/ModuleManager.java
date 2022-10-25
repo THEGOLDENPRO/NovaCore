@@ -305,15 +305,14 @@ public class ModuleManager {
 	 * {@link NovaAutoLoad} annotation
 	 * 
 	 * @param plugin   The plugin that owns the package
-	 * @param packagee The package to scan in (Its called packagee since java does
-	 *                 not allow you to name it package)
+	 * @param packageToScan The package to scan in
 	 * @since 1.1
 	 */
 	@SuppressWarnings("unchecked")
-	public static void scanForModules(Plugin plugin, String packagee) {
-		Log.info("ModuleManager", "Scanning for nova modules in package " + packagee + " of plugin " + plugin.getName());
+	public static void scanForModules(Plugin plugin, String packageToScan) {
+		Log.info("ModuleManager", "Scanning for nova modules in package " + packageToScan + " of plugin " + plugin.getName());
 
-		Set<Class<?>> classes = ClassFinder.getClasses(FileUtils.toFile(plugin.getClass().getProtectionDomain().getCodeSource().getLocation()), packagee);
+		Set<Class<?>> classes = ClassFinder.getClasses(FileUtils.toFile(plugin.getClass().getProtectionDomain().getCodeSource().getLocation()), packageToScan);
 		for (Class<?> clazz : classes) {
 
 			// Ignore anonymous classes
