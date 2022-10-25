@@ -47,9 +47,13 @@ public class NovaCoreGameEngine extends NovaPlugin {
 	public static NovaCoreGameEngine getInstance() {
 		return instance;
 	}
+	
+	private File requestedGameDataDirectory;
 
 	@Override
 	public void onEnable() {
+		requestedGameDataDirectory = null;
+		
 		this.getDataFolder().mkdir();
 
 		Log.info("NovaCoreGameEngine", "Loading language files...");
@@ -116,5 +120,17 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		}
 
 		Log.success("NovaCoreGameEngine", "Game engine enabled");
+	}
+	
+	public File getRequestedGameDataDirectory() {
+		return requestedGameDataDirectory;
+	}
+	
+	public void setRequestedGameDataDirectory(File requestedGameDataDirectory) {
+		this.requestedGameDataDirectory = requestedGameDataDirectory;
+	}
+	
+	public boolean hasRequestedDataDirectory() {
+		return this.getRequestedGameDataDirectory() != null;
 	}
 }
