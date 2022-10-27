@@ -43,6 +43,8 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 
+import java.awt.Color;
+
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
 	private MaterialNameList materialNameList;
@@ -744,12 +746,6 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public String colorizeRainbow(Color[] colors, int charsPerColor, String message) {
 		// does not work on 1.15 and below
 		return message;
-	}
-
-	@Override
-	public String asChatColor(String rgb) {
-		// does not work on 1.15 and below
-		return rgb;
 	}
 
 	@Override

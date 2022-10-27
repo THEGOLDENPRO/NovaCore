@@ -38,6 +38,7 @@ import org.bukkit.map.MapView;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.awt.Color;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -965,19 +966,14 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public String colorize(Color color, String message) {
-
-		String thing = "&x" +
-				asChatColor(color.getRed() + "" + color.getGreen() + "" + color.getBlue()) +
-				message;
-
-		return org.bukkit.ChatColor.translateAlternateColorCodes('&', thing);
+		return ChatColor.of(color).toString() + message;
 	}
 
 	@Override
 	public String colorizeGradient(Color[] colors, String message) {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < message.length(); i++) {
-			builder.append(asChatColor(colors[i].getRed() + "" + colors[i].getGreen() + "" + colors[i].getBlue()))
+			builder.append(ChatColor.of(new Color(colors[i].getRed(), colors[i].getGreen(), colors[i].getBlue())))
 					.append(message.toCharArray()[i]);
 		}
 		return builder.toString();
@@ -998,11 +994,6 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		}
 		return finalBuild.toString();
-	}
-
-	@Override
-	public String asChatColor(String rgb) {
-		return ChatColor.of(rgb).toString();
 	}
 
 	@Override
