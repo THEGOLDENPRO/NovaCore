@@ -30,6 +30,8 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 
+import java.awt.Color;
+
 /**
  * A utility to make your plugins support multiple versions of the game without
  * using reflection. This class contains a lot of functions that changes between
@@ -733,15 +735,6 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract String colorizeRainbow(Color[] colors, int charsPerColor, String message);
 
-	/**
-	 * Converts RGB color to ChatColor
-	 * 
-	 * @param rgb RGB value
-	 * @author Bruno
-	 * 
-	 * @return ChatColor
-	 */
-	public abstract String asChatColor(String rgb);
 
 	public abstract PacketManager getPacketManager();
 
