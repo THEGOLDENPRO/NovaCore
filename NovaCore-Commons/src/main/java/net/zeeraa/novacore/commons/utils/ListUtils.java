@@ -1,8 +1,6 @@
 package net.zeeraa.novacore.commons.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ListUtils {
 	/**
@@ -16,9 +14,7 @@ public class ListUtils {
 	public static <T> List<T> cloneList(List<T> list) {
 		List<T> result = new ArrayList<T>();
 
-		for (T t : list) {
-			result.add(t);
-		}
+		result.addAll(list);
 
 		return result;
 	}
@@ -33,9 +29,7 @@ public class ListUtils {
 	public static <T> List<T> createList(@SuppressWarnings("unchecked") T... elements) {
 		List<T> result = new ArrayList<>();
 
-		for (T element : elements) {
-			result.add(element);
-		}
+		Collections.addAll(result, elements);
 
 		return result;
 	}
@@ -55,4 +49,16 @@ public class ListUtils {
 
 		return list;
 	}
+
+	public static <T> List<T> removeDuplicates(Collection<T> list) {
+		Set<T> checker = new HashSet<>();
+		List<T> newList = new ArrayList<>();
+		list.forEach(t -> {
+			if (checker.add(t)) {
+				newList.add(t);
+			}
+		});
+		return newList;
+	}
+
 }

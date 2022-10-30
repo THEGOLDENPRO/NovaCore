@@ -1,13 +1,17 @@
 package net.zeeraa.novacore.spigot.version.v1_8_R3;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 import net.minecraft.server.v1_8_R3.*;
+import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.commons.utils.RandomGenerator;
 import net.zeeraa.novacore.spigot.abstraction.*;
-import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
+import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
+import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import org.bukkit.*;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -33,16 +37,11 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
-import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
-import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
-import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerError;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 
 import java.awt.Color;
+import java.util.stream.Stream;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -800,6 +799,57 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		} else {
 			return Material.matchMaterial(name);
 		}
+	}
+
+	@Override
+	public void sendPacket(Player player, Object packet) {
+		if (packet instanceof Packet) {
+			((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);
+		} else {
+			Log.warn("NovaCore", "Packet sent isnt instance of " + Packet.class.getCanonicalName());
+		}
+
+	}
+
+	@Override
+	public ItemStack addAttribute(ItemStack item, AttributeInfo attributeInfo) {
+		net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		NBTTagCompound compound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
+
+		switch (attributeInfo.getAttribute()) {
+			case GENERIC_MAX_HEALTH:
+			case GENERIC_FOLLOW_RANGE:
+			case GENERIC_KNOCKBACK_RESISTANCE:
+			case GENERIC_MOVEMENT_SPEED:
+			case GENERIC_ATTACK_DAMAGE:
+			case HORSE_JUMP_STRENGTH:
+			case ZOMBIE_SPAWN_REINFORCEMENTS:
+				break;
+			default:
+				Log.error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
+				return item;
+		}
+
+
+		if (!attributeInfo.getEquipmentSlots().contains(EquipmentSlot.ALL)) {
+			Log.info("VersionIndependentUtils", "equipmentSlot set to ALL since in 1.8 theres only this option");
+		}
+
+		NBTTagList modifiers = new NBTTagList();
+		NBTTagCompound attributeTag = new NBTTagCompound();
+
+		UUID id = UUID.randomUUID();
+
+		attributeTag.set("AttributeName", new NBTTagString(attributeInfo.getAttribute().getPre1_16Key()));
+		attributeTag.set("Name", new NBTTagString(attributeInfo.getAttribute().getPre1_16Key()));
+		attributeTag.set("Amount", new NBTTagDouble(attributeInfo.getValue()));
+		attributeTag.set("Operation", new NBTTagInt(attributeInfo.getOperation().getValue()));
+		attributeTag.set("UUIDLeast", new NBTTagInt(((Long) id.getLeastSignificantBits()).intValue()));
+		attributeTag.set("UUIDMost", new NBTTagInt(((Long) id.getMostSignificantBits()).intValue()));
+		modifiers.add(attributeTag);
+		compound.set("AttributeModifiers", modifiers);
+		nmsItem.setTag(compound);
+		return CraftItemStack.asBukkitCopy(nmsItem);
 	}
 
 }

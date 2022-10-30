@@ -1,8 +1,12 @@
 package net.zeeraa.novacore.spigot.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
+import net.zeeraa.novacore.spigot.abstraction.enums.Attribute;
+import net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -312,8 +316,36 @@ public class ItemBuilder {
 		return this;
 	}
 
+	/**
+	 * Sets the items CustomModelData
+	 *
+	 * @param data The <code>int</code> value for the CustomModelData
+	 * @return The item builder instance
+	 */
 	public ItemBuilder setCustomModelData(int data) {
 		VersionIndependentUtils.get().setCustomModelData(meta, data);
+		return this;
+	}
+
+	/**
+	 * Adds an attribute to the item
+	 * @param attributeInfo The attribute's info
+	 * @return The item builder instance
+	 */
+	public ItemBuilder addAttribute(AttributeInfo attributeInfo) {
+		item = VersionIndependentUtils.get().addAttribute(item, attributeInfo);
+		return this;
+	}
+
+	/**
+	 * Adds multiple attribute to the item
+	 * @param attributeInfos Array of attribute info
+	 * @return The item builder instance
+	 */
+	public ItemBuilder addAttribute(AttributeInfo... attributeInfos) {
+		for (AttributeInfo info : attributeInfos) {
+			item = VersionIndependentUtils.get().addAttribute(item, info);
+		}
 		return this;
 	}
 
@@ -324,14 +356,7 @@ public class ItemBuilder {
 	 * @return {@link List} containing all lines
 	 */
 	public static List<String> generateLoreList(String... lines) {
-		List<String> lore = new ArrayList<String>();
-
-		for (String line : lines) {
-			lore.add(line);
-		}
-
-		return lore;
-
+		return new ArrayList<>(Arrays.asList(lines));
 	}
 
 	/**

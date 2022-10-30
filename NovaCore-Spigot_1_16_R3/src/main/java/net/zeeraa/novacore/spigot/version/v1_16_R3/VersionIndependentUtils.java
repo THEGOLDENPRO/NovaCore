@@ -4,8 +4,10 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.LoopableIterator;
 import net.zeeraa.novacore.spigot.abstraction.*;
+import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -35,6 +37,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.attribute.AttributeModifier;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -1052,5 +1055,32 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		return Material.matchMaterial(name.replace("minecraft:", "").toLowerCase(Locale.ROOT));
 
+	}
+
+	@Override
+	public void sendPacket(Player player, Object packet) {
+		if (packet instanceof Packet) {
+			((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);
+		} else {
+			Log.warn("NovaCore", "Packet sent isnt instance of " + Packet.class.getCanonicalName());
+		}
+	}
+
+	@Override
+	public ItemStack addAttribute(ItemStack item, AttributeInfo attributeInfo) {
+		if (attributeInfo.getEquipmentSlots().contains(net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot.ALL)) {
+			if (!item.getItemMeta().addAttributeModifier(Attribute.valueOf(attributeInfo.getAttribute().name()), new AttributeModifier(UUID.randomUUID(), attributeInfo.getAttribute().getKey(), attributeInfo.getValue(), AttributeModifier.Operation.valueOf(attributeInfo.getOperation().name())))) {
+				Log.warn("NovaCore", "Something went wrong when adding attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getKey() + ") with value " + attributeInfo.getValue());
+			}
+		} else {
+			for (net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot eSlot : attributeInfo.getEquipmentSlots()) {
+				if (!item.getItemMeta().addAttributeModifier(Attribute.valueOf(attributeInfo.getAttribute().name()), new AttributeModifier(UUID.randomUUID(), attributeInfo.getAttribute().getKey(), attributeInfo.getValue(), AttributeModifier.Operation.valueOf(attributeInfo.getOperation().name()), EquipmentSlot.valueOf(eSlot.name())))) {
+					Log.warn("NovaCore", "Something went wrong when adding attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getKey() + ") with value " + attributeInfo.getValue());
+				}
+			}
+
+		}
+
+		return item;
 	}
 }
