@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
+import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
+import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creature;
@@ -21,12 +22,6 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 
-import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
-import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
-import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerError;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 
@@ -743,4 +738,8 @@ public abstract class VersionIndependentUtils {
 	public abstract MaterialNameList getMaterialNameList();
 
 	public abstract Material getMaterialFromName(String name);
+
+	public abstract void sendPacket(Player player, Object packet);
+
+	public abstract ItemStack addAttribute(ItemStack item, AttributeInfo attributeInfo);
 }

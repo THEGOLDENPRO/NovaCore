@@ -1,12 +1,17 @@
 package net.zeeraa.novacore.spigot.version.v1_12_R1;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 import net.minecraft.server.v1_12_R1.*;
+import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.commons.utils.ListUtils;
+import net.zeeraa.novacore.commons.utils.RandomGenerator;
 import net.zeeraa.novacore.spigot.abstraction.*;
+import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
 import org.bukkit.*;
 import org.bukkit.Material;
@@ -44,6 +49,8 @@ import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 
 import java.awt.Color;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -811,5 +818,75 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		} else {
 			return Material.matchMaterial(name);
 		}
+	}
+
+	@Override
+	public void sendPacket(Player player, Object packet) {
+		if (packet instanceof Packet) {
+			((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);
+		} else {
+			Log.warn("NovaCore", "Packet sent isnt instance of " + Packet.class.getCanonicalName());
+		}
+	}
+
+	@Override
+	public ItemStack addAttribute(ItemStack item, AttributeInfo attributeInfo) {
+		net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		NBTTagCompound compound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
+
+
+		switch (attributeInfo.getAttribute()) {
+			case GENERIC_MAX_HEALTH:
+			case GENERIC_FOLLOW_RANGE:
+			case GENERIC_KNOCKBACK_RESISTANCE:
+			case GENERIC_MOVEMENT_SPEED:
+			case GENERIC_FLYING_SPEED:
+			case GENERIC_ATTACK_DAMAGE:
+			case GENERIC_ATTACK_SPEED:
+			case GENERIC_ARMOR:
+			case GENERIC_ARMOR_TOUGHNESS:
+			case GENERIC_LUCK:
+			case HORSE_JUMP_STRENGTH:
+			case ZOMBIE_SPAWN_REINFORCEMENTS:
+				break;
+			default:
+				Log.error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
+				return item;
+		}
+
+		List<net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot> newList = ListUtils.removeDuplicates(attributeInfo.getEquipmentSlots());
+
+		if (newList.containsAll(Arrays.stream(net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot.values()).filter(es -> es != net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot.ALL).collect(Collectors.toList()))) {
+			newList.clear();
+			newList.add(net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot.ALL);
+		}
+
+		NBTTagList modifiers = new NBTTagList();
+		NBTTagCompound attributeTag = new NBTTagCompound();
+
+		UUID id = UUID.randomUUID();
+
+		attributeTag.set("AttributeName", new NBTTagString(attributeInfo.getAttribute().getPre1_16Key()));
+		attributeTag.set("Name", new NBTTagString(attributeInfo.getAttribute().getPre1_16Key()));
+		attributeTag.set("Amount", new NBTTagDouble(attributeInfo.getValue()));
+		attributeTag.set("Operation", new NBTTagInt(attributeInfo.getOperation().getValue()));
+		attributeTag.set("UUIDLeast", new NBTTagInt(((Long) id.getLeastSignificantBits()).intValue()));
+		attributeTag.set("UUIDMost", new NBTTagInt(((Long) id.getMostSignificantBits()).intValue()));
+
+
+		if (!newList.contains(net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot.ALL)) {
+			for (net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot eSlot : newList) {
+				NBTTagCompound extra = (NBTTagCompound) attributeTag.clone();
+				extra.set("Slot", new NBTTagString(eSlot.getValue()));
+				modifiers.add(extra);
+			}
+
+		} else {
+			modifiers.add(attributeTag);
+		}
+
+		compound.set("AttributeModifiers", modifiers);
+		nmsItem.setTag(compound);
+		return CraftItemStack.asBukkitCopy(nmsItem);
 	}
 }
