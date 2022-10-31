@@ -333,7 +333,9 @@ public class ItemBuilder {
 	 * @return The item builder instance
 	 */
 	public ItemBuilder addAttribute(AttributeInfo attributeInfo) {
-		item = VersionIndependentUtils.get().addAttribute(item, attributeInfo);
+		ItemStack newItem = VersionIndependentUtils.get().addAttribute(item, attributeInfo);
+		meta = newItem.getItemMeta();
+		item = newItem;
 		return this;
 	}
 

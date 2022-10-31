@@ -1069,16 +1069,21 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public ItemStack addAttribute(ItemStack item, AttributeInfo attributeInfo) {
 		if (attributeInfo.getEquipmentSlots().contains(net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot.ALL)) {
-			if (!item.getItemMeta().addAttributeModifier(Attribute.valueOf(attributeInfo.getAttribute().name()), new AttributeModifier(UUID.randomUUID(), attributeInfo.getAttribute().getKey(), attributeInfo.getValue(), AttributeModifier.Operation.valueOf(attributeInfo.getOperation().name())))) {
-				Log.warn("NovaCore", "Something went wrong when adding attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getKey() + ") with value " + attributeInfo.getValue());
-			}
+			AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), attributeInfo.getAttribute().getKey(),
+					attributeInfo.getValue(), AttributeModifier.Operation.valueOf(attributeInfo.getOperation().name()));
+
+			ItemMeta meta = item.getItemMeta();
+			meta.addAttributeModifier(Attribute.valueOf(attributeInfo.getAttribute().name()), modifier);
+			item.setItemMeta(meta);
 		} else {
 			for (net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot eSlot : attributeInfo.getEquipmentSlots()) {
-				if (!item.getItemMeta().addAttributeModifier(Attribute.valueOf(attributeInfo.getAttribute().name()), new AttributeModifier(UUID.randomUUID(), attributeInfo.getAttribute().getKey(), attributeInfo.getValue(), AttributeModifier.Operation.valueOf(attributeInfo.getOperation().name()), EquipmentSlot.valueOf(eSlot.name())))) {
-					Log.warn("NovaCore", "Something went wrong when adding attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getKey() + ") with value " + attributeInfo.getValue());
-				}
-			}
+				AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), attributeInfo.getAttribute().getKey(),
+						attributeInfo.getValue(), AttributeModifier.Operation.valueOf(attributeInfo.getOperation().name()), EquipmentSlot.valueOf(eSlot.name()));
 
+				ItemMeta meta = item.getItemMeta();
+				meta.addAttributeModifier(Attribute.valueOf(attributeInfo.getAttribute().name()), modifier);
+				item.setItemMeta(meta);
+			}
 		}
 
 		return item;
