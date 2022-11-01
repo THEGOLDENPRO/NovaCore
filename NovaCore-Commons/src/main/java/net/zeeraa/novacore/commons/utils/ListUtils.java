@@ -1,6 +1,10 @@
 package net.zeeraa.novacore.commons.utils;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class ListUtils {
 	/**
@@ -51,13 +55,33 @@ public class ListUtils {
 	}
 
 	public static <T> List<T> removeDuplicates(Collection<T> list) {
-		Set<T> checker = new HashSet<>();
 		List<T> newList = new ArrayList<>();
 		list.forEach(t -> {
-			if (checker.add(t)) {
+			if (!newList.contains(t)) {
 				newList.add(t);
 			}
 		});
+		return newList;
+	}
+
+	public static <T> List<T> removeDuplicates(Collection<T> list, BiPredicate<T, T> predicate) {
+		if (predicate == null) {
+			return removeDuplicates(list);
+		}
+		List<T> newList = new ArrayList<>(list);
+		List<T> loopList = new ArrayList<>(list);
+		while (!loopList.isEmpty()) {
+			List<T> placeholderList = new ArrayList<>(loopList);
+			placeholderList.remove(loopList.get(0));
+
+			for (T val1 : placeholderList) {
+				if (predicate.test(loopList.get(0), val1)) {
+				newList.remove(val1);
+				}
+
+			}
+			loopList.remove(0);
+		}
 		return newList;
 	}
 

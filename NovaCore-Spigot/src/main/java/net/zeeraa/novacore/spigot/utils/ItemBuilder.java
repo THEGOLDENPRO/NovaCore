@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
@@ -333,20 +334,23 @@ public class ItemBuilder {
 	 * @return The item builder instance
 	 */
 	public ItemBuilder addAttribute(AttributeInfo attributeInfo) {
-		ItemStack newItem = VersionIndependentUtils.get().addAttribute(item, attributeInfo);
-		meta = newItem.getItemMeta();
-		item = newItem;
+		VersionIndependentUtils.get().addAttribute(item, meta, attributeInfo);
 		return this;
 	}
 
 	/**
 	 * Adds multiple attribute to the item
+	 * @param atributeInfo Attribute info (to differenciate)
 	 * @param attributeInfos Array of attribute info
 	 * @return The item builder instance
 	 */
-	public ItemBuilder addAttribute(AttributeInfo... attributeInfos) {
-		for (AttributeInfo info : attributeInfos) {
-			item = VersionIndependentUtils.get().addAttribute(item, info);
+	public ItemBuilder addAttribute(AttributeInfo atributeInfo, AttributeInfo... attributeInfos) {
+		List<AttributeInfo> list = new ArrayList<>();
+		list.add(atributeInfo);
+		Collections.addAll(list, attributeInfos);
+
+		for (AttributeInfo info : list) {
+			VersionIndependentUtils.get().addAttribute(item, meta, info);
 		}
 		return this;
 	}
@@ -367,7 +371,7 @@ public class ItemBuilder {
 	 * @return An empty {@link List}
 	 */
 	public static List<String> generateLoreList() {
-		return new ArrayList<String>();
+		return new ArrayList<>();
 	}
 
 	/**

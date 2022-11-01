@@ -1,10 +1,7 @@
 package net.zeeraa.novacore.spigot.version.v1_12_R1;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 import net.minecraft.server.v1_12_R1.*;
 import net.zeeraa.novacore.commons.log.Log;
@@ -830,7 +827,18 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public ItemStack addAttribute(ItemStack item, AttributeInfo attributeInfo) {
+	@SuppressWarnings("unchecked")
+	public void addAttribute(ItemStack item, ItemMeta meta, AttributeInfo attributeInfo) {
+		if (attributeInfo == null) {
+			Log.error("VersionIndependentUtils", "AttributeInfo is null");
+			return;
+		}
+
+		if (attributeInfo.getAttribute() == null) {
+			Log.error("VersionIndependentUtils", "Attribute is null");
+			return;
+		}
+
 		net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound compound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
 
@@ -851,7 +859,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 				break;
 			default:
 				Log.error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
-				return item;
+				return;
 		}
 
 		List<net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot> newList = ListUtils.removeDuplicates(attributeInfo.getEquipmentSlots());
@@ -861,6 +869,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			newList.add(net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot.ALL);
 		}
 
+		List<NBTTagCompound> compoundList = new ArrayList<>();
 		NBTTagList modifiers = new NBTTagList();
 		NBTTagCompound attributeTag = new NBTTagCompound();
 
@@ -874,19 +883,56 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		attributeTag.set("UUIDMost", new NBTTagInt(((Long) id.getMostSignificantBits()).intValue()));
 
 
+
+
 		if (!newList.contains(net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot.ALL)) {
 			for (net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot eSlot : newList) {
 				NBTTagCompound extra = (NBTTagCompound) attributeTag.clone();
 				extra.set("Slot", new NBTTagString(eSlot.getValue()));
-				modifiers.add(extra);
+				compoundList.add(extra);
 			}
 
 		} else {
-			modifiers.add(attributeTag);
+			compoundList.add(attributeTag);
 		}
 
-		compound.set("AttributeModifiers", modifiers);
+		for (NBTTagCompound tagCompound : compoundList) {
+			modifiers.add(tagCompound);
+		}
+
+		NBTTagList attributeModifiers = (NBTTagList) compound.get("AttributeModifiers");
+		if (attributeModifiers == null || attributeModifiers.isEmpty()) {
+			compound.set("AttributeModifiers", modifiers);
+		} else {
+			attributeModifiers.add(modifiers);
+		}
+
+
 		nmsItem.setTag(compound);
-		return CraftItemStack.asBukkitCopy(nmsItem);
+		ItemStack newItem = CraftItemStack.asBukkitCopy(nmsItem);
+
+		try {
+			Class<?> clazz = Class.forName("org.bukkit.craftbukkit.v1_12_R1.inventory.CraftMetaItem");
+			Field field = clazz.getDeclaredField("unhandledTags");
+			field.setAccessible(true);
+			Map<String, NBTBase> map = (Map<String, NBTBase>) field.get(newItem.getItemMeta());
+			Map<String, NBTBase> map1 = (Map<String, NBTBase>) field.get(meta);
+			if (map1.containsKey("AttributeModifiers")) {
+				NBTTagList attributeMods = (NBTTagList) map1.get("AttributeModifiers");
+				for (NBTTagCompound tagCompound : compoundList) {
+					attributeMods.add(tagCompound);
+				}
+				map1.put("AttributeModifiers", attributeMods);
+			} else {
+				map1.putAll(map);
+			}
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+
+		meta.serialize();
+
+
 	}
 }

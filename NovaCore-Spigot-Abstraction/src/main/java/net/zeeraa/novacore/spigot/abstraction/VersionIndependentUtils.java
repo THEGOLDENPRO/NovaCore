@@ -741,5 +741,6 @@ public abstract class VersionIndependentUtils {
 
 	public abstract void sendPacket(Player player, Object packet);
 
-	public abstract ItemStack addAttribute(ItemStack item, AttributeInfo attributeInfo);
+
+	public abstract void addAttribute(ItemStack item, ItemMeta meta, AttributeInfo attributeInfo);
 }

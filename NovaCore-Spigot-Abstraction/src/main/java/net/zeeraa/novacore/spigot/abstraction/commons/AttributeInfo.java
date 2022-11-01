@@ -16,7 +16,8 @@ public class AttributeInfo {
 
 
     public AttributeInfo(Attribute attribute, double value, Operation operation) {
-        this(attribute, value, operation, EquipmentSlot.ALL);
+        // defaulting to HAND, but if you want to change to ALL go for it
+        this(attribute, value, operation, EquipmentSlot.HAND);
     }
 
     public AttributeInfo(Attribute attribute, double value, Operation operation, EquipmentSlot... equipmentSlots) {
@@ -27,7 +28,17 @@ public class AttributeInfo {
         this.attribute = attribute;
         this.value = value;
         this.operation = operation;
+        if (operation == null) {
+            this.operation = Operation.ADD_NUMBER;
+        }
         this.equipmentSlots = equipmentSlots;
+        if (equipmentSlots == null || equipmentSlots.isEmpty()) {
+            List<EquipmentSlot> al = new ArrayList<>();
+            al.add(EquipmentSlot.ALL);
+            this.equipmentSlots = al;
+        }
+
+
     }
 
 
