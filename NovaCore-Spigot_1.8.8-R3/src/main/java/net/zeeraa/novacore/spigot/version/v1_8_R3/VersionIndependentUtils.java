@@ -1,27 +1,29 @@
 package net.zeeraa.novacore.spigot.version.v1_8_R3;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
 import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.commons.utils.RandomGenerator;
 import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
-import org.bukkit.*;
+import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
+import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.entity.*;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftMetaBook;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -32,16 +34,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.properties.PropertyMap;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
-import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
-import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
-
 import java.awt.Color;
-import java.util.stream.Stream;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -812,7 +810,20 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public ItemStack addAttribute(ItemStack item, AttributeInfo attributeInfo) {
+	@SuppressWarnings("unchecked")
+	public void addAttribute(ItemStack item, ItemMeta meta, AttributeInfo attributeInfo) {
+
+		if (attributeInfo == null) {
+			Log.error("VersionIndependentUtils", "AttributeInfo is null");
+			return;
+		}
+
+		if (attributeInfo.getAttribute() == null) {
+			Log.error("VersionIndependentUtils", "Attribute is null");
+			return;
+		}
+
+
 		net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound compound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
 
@@ -827,7 +838,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 				break;
 			default:
 				Log.error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
-				return item;
+				return;
 		}
 
 
@@ -847,9 +858,38 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		attributeTag.set("UUIDLeast", new NBTTagInt(((Long) id.getLeastSignificantBits()).intValue()));
 		attributeTag.set("UUIDMost", new NBTTagInt(((Long) id.getMostSignificantBits()).intValue()));
 		modifiers.add(attributeTag);
-		compound.set("AttributeModifiers", modifiers);
+
+		NBTTagList attributeModifiers = (NBTTagList) compound.get("AttributeModifiers");
+		if (attributeModifiers == null || attributeModifiers.isEmpty()) {
+			compound.set("AttributeModifiers", modifiers);
+		} else {
+			attributeModifiers.add(modifiers);
+		}
 		nmsItem.setTag(compound);
-		return CraftItemStack.asBukkitCopy(nmsItem);
+		ItemStack newItem = CraftItemStack.asBukkitCopy(nmsItem);
+
+		try {
+			Class<?> clazz = Class.forName("org.bukkit.craftbukkit.v1_8_R3.inventory.CraftMetaItem");
+			Field field = clazz.getDeclaredField("unhandledTags");
+			field.setAccessible(true);
+			Map<String, NBTBase> map = (Map<String, NBTBase>) field.get(newItem.getItemMeta());
+			Map<String, NBTBase> map1 = (Map<String, NBTBase>) field.get(meta);
+			if (map1.containsKey("AttributeModifiers")) {
+				NBTTagList attributeMods = (NBTTagList) map1.get("AttributeModifiers");
+				attributeMods.add(attributeTag);
+				map1.put("AttributeModifiers", attributeMods);
+			} else {
+				map1.putAll(map);
+			}
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+
+		meta.serialize();
+
+
+		return;
 	}
 
 }
