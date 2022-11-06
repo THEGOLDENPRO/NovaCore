@@ -26,4 +26,14 @@ public class RandomProvidedNumber {
 	public static final float randomProvidedFloat(float... numbers) {
 		return RandomProvidedNumber.randomProvidedFloat(new Random(), numbers);
 	}
+
+	public static final long randomProvidedLong(Random random, long... numbers) {
+		return numbers[random.nextInt(numbers.length)];
+	}
+
+	public static final long randomProvidedLong(long... numbers) {
+		return RandomProvidedNumber.randomProvidedLong(new Random(), numbers);
+	}
+
+
 }
