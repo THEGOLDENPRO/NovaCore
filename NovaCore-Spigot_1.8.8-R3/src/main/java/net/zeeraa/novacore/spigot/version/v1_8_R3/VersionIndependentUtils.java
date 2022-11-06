@@ -887,9 +887,6 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		}
 
 		meta.serialize();
-
-
-		return;
 	}
 
 }
