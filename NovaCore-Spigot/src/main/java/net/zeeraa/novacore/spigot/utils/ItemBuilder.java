@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.List;
 
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
-import net.zeeraa.novacore.spigot.abstraction.enums.Attribute;
-import net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
