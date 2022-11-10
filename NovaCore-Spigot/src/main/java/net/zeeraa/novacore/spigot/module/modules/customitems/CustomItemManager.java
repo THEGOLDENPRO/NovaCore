@@ -41,7 +41,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 	@Override
 	public void onLoad() {
 		CustomItemManager.instance = this;
-		customItems = new HashMap<String, CustomItem>();
+		customItems = new HashMap<>();
 	}
 
 	@Override
@@ -75,10 +75,25 @@ public class CustomItemManager extends NovaModule implements Listener {
 	 */
 	public boolean addCustomItem(Class<? extends CustomItem> clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		if (!hasCustomItem(clazz)) {
-			CustomItem custonItem = clazz.getConstructor().newInstance();
+			CustomItem customItem = clazz.getConstructor().newInstance();
 
-			customItems.put(custonItem.getClass().getName(), custonItem);
+			customItems.put(customItem.getClass().getName(), customItem);
 
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Add a custom item that has been initialized, for items of same type
+	 *
+	 * @param name The {@link CustomItem} name, to diferentiate multiple custom items
+	 * @param customItem The initialized {@link CustomItem}
+	 * @return <code>true</code> on success
+	 */
+	public boolean addCustomItem(String name, CustomItem customItem) {
+		if (!hasCustomItem(customItem.getClass().getName() + "." + name)) {
+			customItems.put(customItem.getClass().getName() + "." + name, customItem);
 			return true;
 		}
 		return false;

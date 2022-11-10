@@ -146,17 +146,13 @@ public class JSONFileUtils {
 	public static JSONObject readJSONObjectFromJar(Class<?> clazz, String name) throws IOException {
 		String content = readStringResource(clazz, name);
 
-		JSONObject json = new JSONObject(content);
-
-		return json;
+		return new JSONObject(content);
 	}
 
 	public static JSONArray readJSONArrayFromJar(Class<?> clazz, String name) throws IOException {
 		String content = readStringResource(clazz, name);
 
-		JSONArray json = new JSONArray(content);
-
-		return json;
+		return new JSONArray(content);
 	}
 
 	private static String readStringResource(Class<?> clazz, String name) throws IOException {
