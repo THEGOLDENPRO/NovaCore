@@ -55,7 +55,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 		return worlds;
 	}
 
-	public MultiverseWorld createWorld(WorldOptions options) {
+	public MultiverseWorld createWorld(WorldOptions options, WorldLoadingFlags... loadFlags) {
 		WorldCreator worldCreator = new WorldCreator(options.getName());
 
 		if (options.hasSeed()) {
@@ -72,9 +72,13 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 		World world = worldCreator.createWorld();
 
-		MultiverseWorld multiverseWorld = new MultiverseWorld(options.getName(), world, options.getUnloadOption(), options.getPlayerUnloadOption(), options.isSaveOnUnload(), options.isLockWeather());
+		MultiverseWorld multiverseWorld = new MultiverseWorld(options.getName(), world, options.getUnloadOption(), options.getPlayerUnloadOption(), options.isSaveOnUnload(), options.isLockWeather(), loadFlags);
 
 		worlds.put(options.getName(), multiverseWorld);
+
+		if (!WorldLoadingFlags.hasFlag(loadFlags, WorldLoadingFlags.PREVENT_AG_RELOAD)) {
+			runAGReload();
+		}
 
 		return multiverseWorld;
 	}
@@ -88,6 +92,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 	 * 
 	 * @param worldFile    The world {@link File}
 	 * @param unloadOption The {@link WorldUnloadOption} to use
+	 * @param loadFlags    Settings for loading the world
 	 * @return The {@link MultiverseWorld} that was loaded
 	 * @throws IOException           An {@link IOException} can occur due to the
 	 *                               world already existing, failing to unload the
@@ -95,10 +100,10 @@ public class MultiverseManager extends NovaModule implements Listener {
 	 * @throws FileNotFoundException A {@link FileNotFoundException} if the world
 	 *                               file does not exist
 	 */
-	public MultiverseWorld createFromFile(File worldFile, WorldUnloadOption unloadOption) throws IOException {
+	public MultiverseWorld createFromFile(File worldFile, WorldUnloadOption unloadOption, WorldLoadingFlags... loadFlags) throws IOException {
 		String worldName = worldFile.getName();
 
-		return this.createFromFile(worldFile, worldName, unloadOption, true);
+		return this.createFromFile(worldFile, worldName, unloadOption, true, loadFlags);
 	}
 
 	/**
@@ -112,6 +117,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 	 * @param unloadOption  The {@link WorldUnloadOption} to use
 	 * @param deleteUidFile <code>true</code> to delete the <code>uid.dat</code>
 	 *                      file
+	 * @param loadFlags     Settings for loading the world
 	 * @return The {@link MultiverseWorld} that was loaded
 	 * @throws IOException           An {@link IOException} can occur due to the
 	 *                               world already existing, failing to unload the
@@ -119,10 +125,10 @@ public class MultiverseManager extends NovaModule implements Listener {
 	 * @throws FileNotFoundException A {@link FileNotFoundException} if the world
 	 *                               file does not exist
 	 */
-	public MultiverseWorld createFromFile(File worldFile, WorldUnloadOption unloadOption, boolean deleteUidFile) throws IOException {
+	public MultiverseWorld createFromFile(File worldFile, WorldUnloadOption unloadOption, boolean deleteUidFile, WorldLoadingFlags... loadFlags) throws IOException {
 		String worldName = worldFile.getName();
 
-		return this.createFromFile(worldFile, worldName, unloadOption, deleteUidFile);
+		return this.createFromFile(worldFile, worldName, unloadOption, deleteUidFile, loadFlags);
 	}
 
 	/**
@@ -135,6 +141,8 @@ public class MultiverseManager extends NovaModule implements Listener {
 	 * @param worldFile    The world {@link File}
 	 * @param name         The name the world should be loaded as
 	 * @param unloadOption The {@link WorldUnloadOption} to use
+	 * @param loadFlags    Settings for loading the world
+	 * 
 	 * @return The {@link MultiverseWorld} that was loaded
 	 * @throws IOException           An {@link IOException} can occur due to the
 	 *                               world already existing, failing to unload the
@@ -142,8 +150,8 @@ public class MultiverseManager extends NovaModule implements Listener {
 	 * @throws FileNotFoundException A {@link FileNotFoundException} if the world
 	 *                               file does not exist
 	 */
-	public MultiverseWorld createFromFile(File worldFile, String name, WorldUnloadOption unloadOption) throws IOException {
-		return this.createFromFile(worldFile, name, unloadOption, true);
+	public MultiverseWorld createFromFile(File worldFile, String name, WorldUnloadOption unloadOption, WorldLoadingFlags... loadFlags) throws IOException {
+		return this.createFromFile(worldFile, name, unloadOption, true, loadFlags);
 	}
 
 	/**
@@ -154,6 +162,8 @@ public class MultiverseManager extends NovaModule implements Listener {
 	 * @param unloadOption  The {@link WorldUnloadOption} to use
 	 * @param deleteUidFile <code>true</code> to delete the <code>uid.dat</code>
 	 *                      file
+	 * @param loadFlags     Settings for loading the world
+	 * 
 	 * @return The {@link MultiverseWorld} that was loaded
 	 * @throws IOException           An {@link IOException} can occur due to the
 	 *                               world already existing, failing to unload the
@@ -161,7 +171,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 	 * @throws FileNotFoundException A {@link FileNotFoundException} if the world
 	 *                               file does not exist
 	 */
-	public MultiverseWorld createFromFile(File worldFile, String name, WorldUnloadOption unloadOption, boolean deleteUidFile) throws IOException {
+	public MultiverseWorld createFromFile(File worldFile, String name, WorldUnloadOption unloadOption, boolean deleteUidFile, WorldLoadingFlags... loadFlags) throws IOException {
 		if (!worldFile.exists()) {
 			throw new FileNotFoundException("Could not find world file: " + worldFile.getPath());
 		}
@@ -189,10 +199,36 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 		World world = Bukkit.getServer().createWorld(new WorldCreator(name));
 
-		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world, unloadOption, PlayerUnloadOption.KICK, true, false);
+		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world, unloadOption, PlayerUnloadOption.KICK, true, false, loadFlags);
 
 		worlds.put(multiverseWorld.getName(), multiverseWorld);
 
+		if (!WorldLoadingFlags.hasFlag(loadFlags, WorldLoadingFlags.PREVENT_AG_RELOAD)) {
+			runAGReload();
+		}
+
+		return multiverseWorld;
+	}
+
+	public MultiverseWorld cloneWorld(World world, String name, WorldUnloadOption unloadOption, WorldLoadingFlags... loadFlags) {
+		WorldCreator worldCreator = new WorldCreator(name);
+
+		worldCreator.copy(world);
+
+		World world2 = worldCreator.createWorld();
+
+		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world2, unloadOption, PlayerUnloadOption.KICK, true, false, loadFlags);
+
+		worlds.put(name, multiverseWorld);
+
+		if (!WorldLoadingFlags.hasFlag(loadFlags, WorldLoadingFlags.PREVENT_AG_RELOAD)) {
+			runAGReload();
+		}
+
+		return multiverseWorld;
+	}
+
+	private void runAGReload() {
 		if (Bukkit.getServer().getPluginManager().getPlugin("AdvancedGUI") != null) {
 			if (!NovaCore.getInstance().isAdvancedGUISupportDisabled()) {
 				new BukkitRunnable() {
@@ -205,22 +241,6 @@ public class MultiverseManager extends NovaModule implements Listener {
 				}.runTaskLater(NovaCore.getInstance(), NovaCore.getInstance().getAdvancedGUIMultiverseReloadDelay());
 			}
 		}
-
-		return multiverseWorld;
-	}
-
-	public MultiverseWorld cloneWorld(World world, String name, WorldUnloadOption unloadOption) {
-		WorldCreator worldCreator = new WorldCreator(name);
-
-		worldCreator.copy(world);
-
-		World world2 = worldCreator.createWorld();
-
-		MultiverseWorld multiverseWorld = new MultiverseWorld(name, world2, unloadOption, PlayerUnloadOption.KICK, true, false);
-
-		worlds.put(name, multiverseWorld);
-
-		return multiverseWorld;
 	}
 
 	public MultiverseWorld getWorld(String name) {

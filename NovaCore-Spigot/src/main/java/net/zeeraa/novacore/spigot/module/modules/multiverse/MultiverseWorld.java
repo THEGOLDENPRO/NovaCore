@@ -7,16 +7,18 @@ public class MultiverseWorld {
 	private World world;
 	private WorldUnloadOption unloadOption;
 	private PlayerUnloadOption playerUnloadOptions;
+	private WorldLoadingFlags[] loadFlags;
 	private boolean saveOnUnload;
 	private boolean lockWeather;
 
-	public MultiverseWorld(String name, World world, WorldUnloadOption unloadOption, PlayerUnloadOption playerUnloadOptions, boolean saveOnUnload, boolean lockWeather) {
+	public MultiverseWorld(String name, World world, WorldUnloadOption unloadOption, PlayerUnloadOption playerUnloadOptions, boolean saveOnUnload, boolean lockWeather, WorldLoadingFlags[] loadFlags) {
 		this.name = name;
 		this.world = world;
 		this.unloadOption = unloadOption;
 		this.playerUnloadOptions = playerUnloadOptions;
 		this.saveOnUnload = saveOnUnload;
 		this.lockWeather = lockWeather;
+		this.loadFlags = loadFlags;
 	}
 
 	public World getWorld() {
@@ -66,5 +68,9 @@ public class MultiverseWorld {
 
 	public boolean isLockWeather() {
 		return lockWeather;
+	}
+
+	public WorldLoadingFlags[] getLoadFlags() {
+		return loadFlags;
 	}
 }
