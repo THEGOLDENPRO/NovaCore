@@ -84,11 +84,8 @@ public class MultiverseManager extends NovaModule implements Listener {
 	}
 
 	/**
-	 * Load a world from a file
-	 * <p>
-	 * This will call
-	 * {@link MultiverseManager#createFromFile(File, String, WorldUnloadOption, boolean)}
-	 * with the file name as the world name and with deleteUidFile as true
+	 * Load a world from a file. This version of the function will also delete the
+	 * uid file
 	 * 
 	 * @param worldFile    The world {@link File}
 	 * @param unloadOption The {@link WorldUnloadOption} to use
@@ -108,10 +105,6 @@ public class MultiverseManager extends NovaModule implements Listener {
 
 	/**
 	 * Load a world from a file
-	 * <p>
-	 * This will call
-	 * {@link MultiverseManager#createFromFile(File, String, WorldUnloadOption, boolean)}
-	 * with the file name as the world name
 	 * 
 	 * @param worldFile     The world {@link File}
 	 * @param unloadOption  The {@link WorldUnloadOption} to use
@@ -132,11 +125,8 @@ public class MultiverseManager extends NovaModule implements Listener {
 	}
 
 	/**
-	 * Load a world from a file
-	 * <p>
-	 * This will call
-	 * {@link MultiverseManager#createFromFile(File, String, WorldUnloadOption, boolean)}
-	 * with deleteUidFile as true
+	 * Load a world from a file. This version of the function will also delete the
+	 * uid file
 	 * 
 	 * @param worldFile    The world {@link File}
 	 * @param name         The name the world should be loaded as
