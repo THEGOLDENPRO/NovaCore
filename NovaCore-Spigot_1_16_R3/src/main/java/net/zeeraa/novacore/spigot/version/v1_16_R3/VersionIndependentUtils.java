@@ -24,11 +24,14 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftFallingBlock;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_16_R3.util.CraftMagicNumbers;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -45,6 +48,7 @@ import org.bukkit.attribute.AttributeModifier;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.awt.Color;
+import java.util.function.Consumer;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -1118,6 +1122,19 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		ignore.add(Material.LAVA);
 		ignore.add(Material.WATER);
 		return getTargetBlockExact(entity, 5, ignore);
+	}
+
+	@Override
+	public FallingBlock spawnFallingBlock(Location location, Material material, Consumer<FallingBlock> consumer) {
+		EntityFallingBlock fb = new EntityFallingBlock(((CraftWorld)location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ(), CraftMagicNumbers.getBlock(material).getBlockData());
+		if (fb.getBukkitEntity() instanceof CraftFallingBlock) {
+			CraftFallingBlock cfb = (CraftFallingBlock) fb.getBukkitEntity();
+			consumer.accept(cfb);
+			((CraftWorld) location.getWorld()).getHandle().addEntity(fb, CreatureSpawnEvent.SpawnReason.CUSTOM);
+			return cfb;
+		} else {
+			throw new IllegalStateException("[VersionIndependentUtils] An unexpected error occurred");
+		}
 	}
 
 }
