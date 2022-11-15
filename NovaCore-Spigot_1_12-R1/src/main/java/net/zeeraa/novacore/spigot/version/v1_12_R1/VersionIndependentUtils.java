@@ -17,10 +17,13 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftFallingBlock;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_12_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -42,6 +45,7 @@ import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.util.Vector;
 
 import java.awt.Color;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -989,5 +993,18 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		ignore.add(Material.WATER);
 		ignore.add(Material.STATIONARY_WATER);
 		return getTargetBlockExact(entity, 5, ignore);
+	}
+
+	@Override
+	public FallingBlock spawnFallingBlock(Location location, Material material, Consumer<FallingBlock> consumer) {
+		EntityFallingBlock fb = new EntityFallingBlock(((CraftWorld)location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ(), CraftMagicNumbers.getBlock(material).getBlockData());
+		if (fb.getBukkitEntity() instanceof CraftFallingBlock) {
+			CraftFallingBlock cfb = (CraftFallingBlock) fb.getBukkitEntity();
+			consumer.accept(cfb);
+			((CraftWorld) location.getWorld()).getHandle().addEntity(fb, CreatureSpawnEvent.SpawnReason.CUSTOM);
+			return cfb;
+		} else {
+			throw new IllegalStateException("[VersionIndependentUtils] An unexpected error occurred");
+		}
 	}
 }

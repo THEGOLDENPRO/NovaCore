@@ -9,10 +9,7 @@ import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -26,6 +23,7 @@ import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 
 import java.awt.Color;
+import java.util.function.Consumer;
 
 /**
  * A utility to make your plugins support multiple versions of the game without
@@ -747,4 +745,6 @@ public abstract class VersionIndependentUtils {
 	public abstract Block getTargetBlockExact(LivingEntity entity, int distance, List<Material> ignore);
 
 	public abstract Block getReacheableBlockExact(LivingEntity entity);
+
+	public abstract FallingBlock spawnFallingBlock(Location location, Material material, Consumer<FallingBlock> consumer);
 }
