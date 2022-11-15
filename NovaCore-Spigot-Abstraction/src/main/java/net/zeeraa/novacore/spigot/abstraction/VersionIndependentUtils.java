@@ -743,4 +743,8 @@ public abstract class VersionIndependentUtils {
 
 
 	public abstract void addAttribute(ItemStack item, ItemMeta meta, AttributeInfo attributeInfo);
+
+	public abstract Block getTargetBlockExact(LivingEntity entity, int distance, List<Material> ignore);
+
+	public abstract Block getReacheableBlockExact(LivingEntity entity);
 }

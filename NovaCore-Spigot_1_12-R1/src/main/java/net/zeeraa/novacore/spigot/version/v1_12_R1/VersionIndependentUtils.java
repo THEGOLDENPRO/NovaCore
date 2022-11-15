@@ -9,13 +9,14 @@ import net.zeeraa.novacore.commons.utils.ListUtils;
 import net.zeeraa.novacore.commons.utils.RandomGenerator;
 import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
-import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
+import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import org.bukkit.*;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.*;
@@ -36,14 +37,9 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 
 import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
-import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
-import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
-import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerError;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
+import org.bukkit.util.Vector;
 
 import java.awt.Color;
 import java.util.stream.Collectors;
@@ -934,5 +930,64 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		meta.serialize();
 
 
+	}
+
+	@Override
+	public Block getTargetBlockExact(LivingEntity entity, int distance, List<Material> ignore) {
+		Location eye = entity.getEyeLocation();
+		CraftWorld world = (CraftWorld) entity.getWorld();
+		org.bukkit.util.Vector direction = eye.getDirection();
+		direction.multiply(distance);
+		org.bukkit.util.Vector from = eye.toVector();
+
+
+
+
+		int rayTrace = 1000;
+		org.bukkit.util.Vector parcelled = direction.clone().setX(direction.getX()/rayTrace).setY(direction.getY()/rayTrace).setZ(direction.getZ()/rayTrace);
+		Block foundBlock = null;
+
+		for (int i = 0; i < rayTrace + 1; i++) {
+			Vector current = from.clone();
+			current.add(parcelled.clone().multiply(i));
+			Material type = world.getBlockAt(current.getBlockX(), current.getBlockY(), current.getBlockZ()).getType();
+			if (!ignore.contains(type) && type != Material.AIR) {
+
+				Location blockLoc = new Location(world, current.getX(), current.getY(), current.getZ());
+				BlockPosition bPos = new BlockPosition(blockLoc.getBlockX(), blockLoc.getBlockY(), blockLoc.getBlockZ());
+				IBlockData data = world.getHandle().getType(bPos);
+				net.minecraft.server.v1_12_R1.Block b = data.getBlock();
+
+				List<AxisAlignedBB> bbs = new ArrayList<>();
+				AxisAlignedBB cube = new AxisAlignedBB(blockLoc.getBlockX(), blockLoc.getBlockY(), blockLoc.getBlockZ(), blockLoc.getBlockX() + 1, blockLoc.getBlockY() + 1, blockLoc.getBlockZ() + 1);
+				b.a(data, world.getHandle(), bPos, cube, bbs, null, true);
+				if (bbs.isEmpty()) {
+					bbs.add(b.a(data, (IBlockAccess) null, bPos));
+				}
+
+
+				boolean stop = false;
+				for (AxisAlignedBB aabb: bbs) {
+					if ((current.getX() >= aabb.a && current.getX() <= aabb.d) && (current.getY() >= aabb.b && current.getY() <= aabb.e) && (current.getZ() >= aabb.c && current.getZ() <= aabb.f)) {
+						foundBlock = world.getBlockAt(current.getBlockX(), current.getBlockY(), current.getBlockZ());
+						stop = true;
+						break;
+					}
+				}
+				if (stop)
+					break;
+			}
+		}
+		return foundBlock;
+	}
+
+	@Override
+	public Block getReacheableBlockExact(LivingEntity entity) {
+		List<Material> ignore = new ArrayList<>();
+		ignore.add(Material.LAVA);
+		ignore.add(Material.STATIONARY_LAVA);
+		ignore.add(Material.WATER);
+		ignore.add(Material.STATIONARY_WATER);
+		return getTargetBlockExact(entity, 5, ignore);
 	}
 }
