@@ -36,6 +36,10 @@ public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler
 
 	protected boolean canBreak(Player player, Block block) {
 
+		if (block == null) {
+			return false;
+		}
+
 		if (block.getType() == Material.AIR) {
 
 			return false;
@@ -47,7 +51,7 @@ public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler
 
 		List<Player> playersDigging = VersionIndependentUtils.get().getPacketManager().getPlayersDigging();
 
-		if (playersDigging.stream().noneMatch(pl -> player.getUniqueId().equals(player.getUniqueId()))) {
+		if (playersDigging.stream().noneMatch(pl -> pl.getUniqueId().equals(player.getUniqueId()))) {
 			return false;
 		}
 

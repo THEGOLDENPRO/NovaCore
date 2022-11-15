@@ -17,11 +17,10 @@ import org.bukkit.World;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftMetaBook;
-import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -33,13 +32,12 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
+import org.bukkit.util.Vector;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -888,5 +886,75 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		meta.serialize();
 	}
+
+
+
+
+	@Override
+	public Block getTargetBlockExact(LivingEntity entity, int distance, List<Material> ignore) {
+			Location eye = entity.getEyeLocation();
+			CraftWorld world = (CraftWorld) entity.getWorld();
+			Vector direction = eye.getDirection();
+			direction.multiply(distance);
+			Vector from = eye.toVector();
+
+
+
+
+			int rayTrace = 1000;
+			Vector parcelled = direction.clone().setX(direction.getX()/rayTrace).setY(direction.getY()/rayTrace).setZ(direction.getZ()/rayTrace);
+			Block foundBlock = null;
+
+			for (int i = 0; i < rayTrace + 1; i++) {
+				Vector current = from.clone();
+				current.add(parcelled.clone().multiply(i));
+				Material type = world.getBlockAt(current.getBlockX(), current.getBlockY(), current.getBlockZ()).getType();
+				if (!ignore.contains(type) && type != Material.AIR) {
+
+					Location blockLoc = new Location(world, current.getX(), current.getY(), current.getZ());
+					BlockPosition bPos = new BlockPosition(blockLoc.getBlockX(), blockLoc.getBlockY(), blockLoc.getBlockZ());
+					IBlockData data = world.getHandle().getType(bPos);
+					net.minecraft.server.v1_8_R3.Block b = data.getBlock();
+
+					List<AxisAlignedBB> bbs = new ArrayList<>();
+					AxisAlignedBB cube = AxisAlignedBB.a(blockLoc.getBlockX(), blockLoc.getBlockY(), blockLoc.getBlockZ(), blockLoc.getBlockX() + 1, blockLoc.getBlockY() + 1, blockLoc.getBlockZ() + 1);
+					b.a(world.getHandle(), bPos, data, cube, bbs, null);
+
+					if (bbs.isEmpty()) {
+						double minX = blockLoc.getBlockX() + b.B();
+						double maxX = blockLoc.getBlockX() + b.C();
+						double minY = blockLoc.getBlockY() + b.D();
+						double maxY = blockLoc.getBlockY() + b.E();
+						double minZ = blockLoc.getBlockZ() + b.F();
+						double maxZ = blockLoc.getBlockZ() + b.G();
+						bbs.add(new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ));
+					}
+
+
+					boolean stop = false;
+					for (AxisAlignedBB aabb: bbs) {
+						if ((current.getX() >= aabb.a && current.getX() <= aabb.d) && (current.getY() >= aabb.b && current.getY() <= aabb.e) && (current.getZ() >= aabb.c && current.getZ() <= aabb.f)) {
+							foundBlock = world.getBlockAt(current.getBlockX(), current.getBlockY(), current.getBlockZ());
+							stop = true;
+							break;
+						}
+					}
+					if (stop)
+						break;
+				}
+			}
+			return foundBlock;
+		}
+
+	@Override
+	public Block getReacheableBlockExact(LivingEntity entity) {
+		List<Material> ignore = new ArrayList<>();
+		ignore.add(Material.LAVA);
+		ignore.add(Material.STATIONARY_LAVA);
+		ignore.add(Material.WATER);
+		ignore.add(Material.STATIONARY_WATER);
+		return getTargetBlockExact(entity, 5, ignore);
+	}
+
 
 }

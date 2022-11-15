@@ -23,6 +23,8 @@ import org.bukkit.World;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
@@ -1099,4 +1101,23 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			}
 		}
 	}
+
+	@Override
+	public Block getTargetBlockExact(LivingEntity entity, int distance, List<Material> ignore) {
+		if (ignore.contains(Material.AIR) || ignore.contains(Material.WATER) || ignore.contains(Material.LAVA)) {
+			return entity.getWorld().rayTraceBlocks(entity.getEyeLocation(), entity.getEyeLocation().getDirection(), distance, FluidCollisionMode.ALWAYS, true).getHitBlock();
+		} else {
+			return entity.getWorld().rayTraceBlocks(entity.getEyeLocation(), entity.getEyeLocation().getDirection(), distance, FluidCollisionMode.NEVER, false).getHitBlock();
+
+		}
+	}
+
+	@Override
+	public Block getReacheableBlockExact(LivingEntity entity) {
+		List<Material> ignore = new ArrayList<>();
+		ignore.add(Material.LAVA);
+		ignore.add(Material.WATER);
+		return getTargetBlockExact(entity, 5, ignore);
+	}
+
 }
