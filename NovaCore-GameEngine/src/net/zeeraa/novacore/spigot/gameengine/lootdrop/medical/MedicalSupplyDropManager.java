@@ -17,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -327,6 +328,13 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 				e.setCancelled(true);
 				return;
 			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onBlockFromTo(BlockFromToEvent e) {
+		if (chests.stream().anyMatch(c -> LocationUtils.isSameBlock(e.getToBlock().getLocation(), c.getLocation()))) {
+			e.setCancelled(true);
 		}
 	}
 }
