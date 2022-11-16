@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.instantvoidkill;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.json.JSONObject;
 
@@ -59,5 +60,10 @@ public class InstantVoidKill extends MapModule {
 	@Override
 	public void onGameEnd(Game game) {
 		Task.tryStopTask(taks);
+	}
+
+	@Override
+	public String getSummaryString() {
+		return ChatColor.GOLD + "Y Level: " + ChatColor.AQUA + y;
 	}
 }

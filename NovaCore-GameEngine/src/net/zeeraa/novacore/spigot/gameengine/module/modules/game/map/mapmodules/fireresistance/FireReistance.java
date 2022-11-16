@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.fireresistance;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -56,5 +57,10 @@ public class FireReistance extends MapModule implements Listener {
 				e.setCancelled(true);
 			}
 		}
+	}
+
+	@Override
+	public String getSummaryString() {
+		return ChatColor.GOLD + "Extinguish: " + ChatColor.AQUA + extinguish;
 	}
 }

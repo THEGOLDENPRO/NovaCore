@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -94,5 +95,15 @@ public class BlockLoot extends MapModule implements Listener {
 
 			data.getLootTable().generateLoot(game.getRandom()).forEach(item -> dropLocation.getWorld().dropItem(dropLocation, item));
 		}
+	}
+
+	@Override
+	public String getSummaryString() {
+		String summary = ChatColor.GREEN + "Material loot mapping: ";
+		for (Material key : materialData.keySet()) {
+			BlockLootData bld = materialData.get(key);
+			summary += ChatColor.AQUA + key.name() + ChatColor.GOLD + " => " + ChatColor.AQUA + bld.getLootTable().getName() + ChatColor.GOLD + " cancel drop: " + ChatColor.AQUA + bld.isCancelDrop() + ChatColor.GOLD + ". ";
+		}
+		return summary;
 	}
 }

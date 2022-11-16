@@ -1,10 +1,15 @@
 package net.zeeraa.novacore.spigot.gameengine.command.commands.game.debug;
 
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
+import net.zeeraa.novacore.commons.async.AsyncManager;
+import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.AllowedSenders;
 import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
@@ -26,36 +31,37 @@ public class GameDebugCommand extends NovaSubCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		sender.sendMessage(ChatColor.AQUA + "-=-=-= BEGIN DEBUG =-=-=-");
+		String message = "";
 
-		sender.sendMessage(ChatColor.GOLD + "Server version: " + ChatColor.AQUA + Bukkit.getServer().getVersion());
+		message += ChatColor.AQUA + "-=-=-= BEGIN DEBUG =-=-=-\n";
+		message += ChatColor.GOLD + "Server version: " + ChatColor.AQUA + Bukkit.getServer().getVersion() + "\n";
 
 		if (GameManager.getInstance().isEnabled()) {
-			sender.sendMessage(ChatColor.GREEN + "GameManager is enabled");
+			message += ChatColor.GREEN + "GameManager is enabled\n";
 
 			if (GameManager.getInstance().hasGame()) {
-				sender.sendMessage(ChatColor.GOLD + "Loaded game name: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getName());
-				sender.sendMessage(ChatColor.GOLD + "Display name: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getDisplayName());
-				sender.sendMessage(ChatColor.GOLD + "Class: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getClass().getName());
+				message += ChatColor.GOLD + "Loaded game name: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getName() + "\n";
+				message += ChatColor.GOLD + "Display name: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getDisplayName() + "\n";
+				message += ChatColor.GOLD + "Class: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getClass().getName() + "\n";
 				boolean started = GameManager.getInstance().getActiveGame().hasStarted();
 				boolean ended = GameManager.getInstance().getActiveGame().hasEnded();
-				sender.sendMessage(ChatColor.GOLD + "Started: " + (started ? ChatColor.GREEN : ChatColor.RED) + "" + started + ChatColor.GOLD + " Ended: " + (ended ? ChatColor.GREEN : ChatColor.RED) + "" + ended + ChatColor.GOLD);
+				message += ChatColor.GOLD + "Started: " + (started ? ChatColor.GREEN : ChatColor.RED) + "" + started + ChatColor.GOLD + " Ended: " + (ended ? ChatColor.GREEN : ChatColor.RED) + "" + ended + ChatColor.GOLD + "\n";
 
-				sender.sendMessage(ChatColor.GOLD + "Player count: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getPlayers().size());
+				message += ChatColor.GOLD + "Player count: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getPlayers().size() + "\n";
 
-				sender.sendMessage(ChatColor.GOLD + "Auto end: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().autoEndGame());
-				sender.sendMessage(ChatColor.GOLD + "Can start: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().canStart());
+				message += ChatColor.GOLD + "Auto end: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().autoEndGame() + "\n";
+				message += ChatColor.GOLD + "Can start: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().canStart() + "\n";
 
 				if (GameManager.getInstance().getActiveGame() instanceof MapGame) {
 					MapGame mapGame = (MapGame) GameManager.getInstance().getActiveGame();
 
-					sender.sendMessage(ChatColor.GOLD + "-= MAP DATA =-");
+					message += ChatColor.GOLD + "-= MAP DATA =-\n";
 
-					sender.sendMessage(ChatColor.GOLD + "Has active map: " + ChatColor.AQUA + (mapGame.hasActiveMap() ? (ChatColor.GREEN + "yes") : (ChatColor.RED + "no")));
+					message += ChatColor.GOLD + "Has active map: " + ChatColor.AQUA + (mapGame.hasActiveMap() ? (ChatColor.GREEN + "yes") : (ChatColor.RED + "no")) + "\n";
 
 					if (mapGame.hasActiveMap()) {
-						sender.sendMessage(ChatColor.GOLD + "Map name: " + ChatColor.AQUA + mapGame.getActiveMap().getAbstractMapData().getMapName());
-						sender.sendMessage(ChatColor.GOLD + "Display name: " + ChatColor.AQUA + mapGame.getActiveMap().getAbstractMapData().getDisplayName());
+						message += ChatColor.GOLD + "Map name: " + ChatColor.AQUA + mapGame.getActiveMap().getAbstractMapData().getMapName() + "\n";
+						message += ChatColor.GOLD + "Display name: " + ChatColor.AQUA + mapGame.getActiveMap().getAbstractMapData().getDisplayName() + "\n";
 
 						String modules = "";
 
@@ -63,18 +69,41 @@ public class GameDebugCommand extends NovaSubCommand {
 							modules += module.getName() + " ";
 						}
 
-						sender.sendMessage(ChatColor.GOLD + "Modules (" + mapGame.getActiveMap().getMapData().getMapModules().size() + "): " + modules);
+						message += ChatColor.GOLD + "Modules (" + mapGame.getActiveMap().getMapData().getMapModules().size() + "): " + modules + "\n";
+						message += ChatColor.GOLD + "-= MODULE DATA =-\n";
+						for (MapModule module : mapGame.getActiveMap().getMapData().getMapModules()) {
+							String moduleStatus = module.getSummaryString();
+							if (moduleStatus != null) {
+								message += moduleStatus + "\n";
+							}
+						}
 					}
 				}
-
 			} else {
-				sender.sendMessage(ChatColor.RED + "No game loaded");
+				message += ChatColor.RED + "No game loaded\n";
 			}
 		} else {
-			sender.sendMessage(ChatColor.RED + "GameManager is disabled");
+			message += ChatColor.RED + "GameManager is disabled\n";
 		}
 
-		sender.sendMessage(ChatColor.AQUA + "-=-=-= END DEBUG =-=-=-");
+		message += ChatColor.AQUA + "-=-=-= END DEBUG =-=-=-\n";
+
+		for (String line : message.split("\n")) {
+			sender.sendMessage(line);
+		}
+
+		sender.sendMessage(ChatColor.AQUA + "Uploading report to hastebin....");
+		final String finalHastebinMessage = ChatColor.stripColor(message);
+		AsyncManager.runAsync(() -> {
+			try {
+				String url = NovaCore.getInstance().getHastebinInstance().post(finalHastebinMessage, true);
+				sender.sendMessage(ChatColor.GOLD + "View the report online here: " + ChatColor.AQUA + url);
+			} catch (IOException e) {
+				Log.error("GameDebug", "Failed to upload message to hastebin. " + e.getClass().getName() + " " + e.getMessage());
+				e.printStackTrace();
+				sender.sendMessage(ChatColor.DARK_RED + "Failed to upload data to hastebin. " + e.getClass().getName() + " " + e.getMessage());
+			}
+		});
 
 		return true;
 	}

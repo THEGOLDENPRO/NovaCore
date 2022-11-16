@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -197,5 +198,44 @@ public class MapProtection extends MapModule implements Listener {
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getSummaryString() {
+		String summary = "";
+		summary += ChatColor.GOLD + "Mode: " + ChatColor.AQUA + mode.name() + ChatColor.GOLD + ". ";
+		if (breakWhitelist.size() > 0) {
+			String values = "";
+			for (Material material : breakWhitelist) {
+				values += material.name() + " ";
+			}
+			values = values.trim();
+			summary += ChatColor.GOLD + "Break whitelist: " + ChatColor.AQUA + values + ChatColor.GOLD + ". ";
+		}
+		if (breakBlacklist.size() > 0) {
+			String values = "";
+			for (Material material : breakBlacklist) {
+				values += material.name() + " ";
+			}
+			values = values.trim();
+			summary += ChatColor.GOLD + "Break blacklist: " + ChatColor.AQUA + values + ChatColor.GOLD + ". ";
+		}
+		if (placeWhitelist.size() > 0) {
+			String values = "";
+			for (Material material : placeWhitelist) {
+				values += material.name() + " ";
+			}
+			values = values.trim();
+			summary += ChatColor.GOLD + "Place whitelist: " + ChatColor.AQUA + values + ChatColor.GOLD + ". ";
+		}
+		if (placeBlacklist.size() > 0) {
+			String values = "";
+			for (Material material : placeBlacklist) {
+				values += material.name() + " ";
+			}
+			values = values.trim();
+			summary += ChatColor.GOLD + "Place blacklist: " + ChatColor.AQUA + values + ChatColor.GOLD + ". ";
+		}
+		return summary;
 	}
 }

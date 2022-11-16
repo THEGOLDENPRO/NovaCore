@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.json.JSONArray;
@@ -51,5 +52,17 @@ public class Chunkloader extends MapModule {
 	@Override
 	public void onGameEnd(Game game) {
 		chunks.forEach(chunk -> VersionIndependentUtils.get().getChunkLoader().remove(chunk));
+	}
+
+	@Override
+	public String getSummaryString() {
+		String summary = "";
+		summary += ChatColor.GOLD + "Chunk count: " + ChatColor.AQUA + chunks.size() + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Chunks: " + ChatColor.AQUA + "";
+		for (Chunk chunk : chunks) {
+			summary += ChatColor.GOLD + "X: " + ChatColor.AQUA + chunk.getX() + ChatColor.GOLD + " Z: " + ChatColor.AQUA + chunk.getZ() + ChatColor.GOLD + ". ";
+		}
+		summary += ChatColor.GOLD + ". ";
+		return summary;
 	}
 }

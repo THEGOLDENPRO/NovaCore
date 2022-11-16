@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -154,5 +155,25 @@ public class MedicalSupplyDropMapModule extends MapModule {
 		}
 
 		return false;
+	}
+
+	@Override
+	public String getSummaryString() {
+		String summary = "";
+
+		summary += ChatColor.GOLD + "Loot table: " + ChatColor.AQUA + lootTable + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Min drop time: " + ChatColor.AQUA + minDropTime + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Max drop time: " + ChatColor.AQUA + maxDropTime + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Trigger running: " + ChatColor.AQUA + trigger.isRunning() + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Trigger ticks left: " + ChatColor.AQUA + trigger.getTicksLeft() + ChatColor.GOLD + "(" + ChatColor.AQUA + ((int) (trigger.getTicksLeft() / 20)) + "s" + ChatColor.GOLD + ") " + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Trigger count: " + ChatColor.AQUA + trigger.getTriggerCount() + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Location count: " + ChatColor.AQUA + locations.size() + ChatColor.GOLD + ". ";
+		String locationString = "";
+		for (LocationData l : locations) {
+			locationString += ChatColor.GOLD + "X: " + ChatColor.AQUA + l.getX() + ChatColor.GOLD + " Y: " + ChatColor.AQUA + l.getX() + ChatColor.GOLD + " Z: " + ChatColor.AQUA + l.getX() + ChatColor.GOLD + ". ";
+		}
+		summary += ChatColor.GOLD + "Locations: " + ChatColor.AQUA + locationString + ChatColor.GOLD + ". ";
+
+		return summary;
 	}
 }

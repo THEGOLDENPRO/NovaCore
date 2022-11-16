@@ -152,4 +152,14 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 		isActive = false;
 		HandlerList.unregisterAll(this);
 	}
+
+	@Override
+	public String getSummaryString() {
+		String summary = "";
+		summary += ChatColor.GOLD + "Initial time: " + ChatColor.AQUA + initialTime + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Is active: " + ChatColor.AQUA + isActive + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Timer active: " + ChatColor.AQUA + endTimer.isRunning() + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Timer time left: " + ChatColor.AQUA + endTimer.getTimeLeft() + ChatColor.GOLD + ". ";
+		return summary;
+	}
 }

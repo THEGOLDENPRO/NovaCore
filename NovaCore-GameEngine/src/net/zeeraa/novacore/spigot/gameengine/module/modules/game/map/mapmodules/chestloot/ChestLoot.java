@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chestloot;
 
+import org.bukkit.ChatColor;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -142,5 +143,18 @@ public class ChestLoot extends MapModule {
 		trigger.stop();
 		trigger.setDelay(delay * 20);
 		trigger.start();
+	}
+
+	@Override
+	public String getSummaryString() {
+		String summary = "";
+		summary += ChatColor.GOLD + "Chest loot: " + ChatColor.AQUA + chestLootTable + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Ender chest loot: " + ChatColor.AQUA + enderChestLootTable + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Min refill time: " + ChatColor.AQUA + minRefillTime + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Max refill time: " + ChatColor.AQUA + maxRefillTime + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Announce refills: " + ChatColor.AQUA + announceRefills + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Task running: " + ChatColor.AQUA + trigger.isRunning() + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Ticks left: " + ChatColor.AQUA + trigger.getTicksLeft() + "(" + (int) (trigger.getTicksLeft() / 20) + "s)" + ChatColor.GOLD + ". ";
+		return summary;
 	}
 }
