@@ -97,4 +97,19 @@ public abstract class MapModule {
 	public boolean isCritical() {
 		return critical;
 	}
+
+	/**
+	 * Get the summary of the module as a string. This should return data useful for
+	 * debugging like timers and stored variables. If there is no relative data for
+	 * the module you can either skip the implementation of this function or just
+	 * return <code>null</code> to indicate that no interesting data exists for this
+	 * module
+	 * 
+	 * @return Important debugging data for this module as a string or
+	 *         <code>null</code> if there is no important debugging data to show
+	 *         from this module
+	 */
+	public String getSummaryString() {
+		return null;
+	}
 }

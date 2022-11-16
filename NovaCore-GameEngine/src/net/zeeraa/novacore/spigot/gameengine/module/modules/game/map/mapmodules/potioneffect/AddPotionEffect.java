@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -53,5 +54,14 @@ public class AddPotionEffect extends MapModule {
 				});
 			}
 		}.runTaskLater(NovaCoreGameEngine.getInstance(), 2L);
+	}
+
+	@Override
+	public String getSummaryString() {
+		String summary = ChatColor.GOLD + "Effects (" + ChatColor.AQUA + effects.size() + ChatColor.GOLD + "): ";
+		for (PotionEffect effect : effects) {
+			summary += ChatColor.GOLD + "Effect: " + ChatColor.AQUA + effect.getType().getName() + ChatColor.GOLD + " Duration: " + ChatColor.AQUA + effect.getDuration() + ChatColor.GOLD + " Amplifier: " + ChatColor.AQUA + effect.getAmplifier() + ChatColor.GOLD + "Particles: " + ChatColor.AQUA + effect.hasParticles() + ChatColor.GOLD + " Ambient: " + ChatColor.AQUA + effect.isAmbient() + ChatColor.GOLD + ". ";
+		}
+		return summary;
 	}
 }

@@ -2,6 +2,9 @@ package net.zeeraa.novacore.spigot.loottable;
 
 import java.util.List;
 import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -104,4 +107,18 @@ public abstract class LootTable {
 	 * @return {@link List} with {@link ItemStack}
 	 */
 	public abstract List<ItemStack> generateLoot(Random random, int count);
+
+	/**
+	 * Get the name of a {@link LootTable}. The provided loot table can be
+	 * <code>null</code> and if so it will just return the string "null"
+	 * 
+	 * @param lootTable The {@link LootTable} to get the name off
+	 * @return The loot table name
+	 */
+	public static String getNameSafe(@Nullable LootTable lootTable) {
+		if (lootTable == null) {
+			return "null";
+		}
+		return lootTable.getName();
+	}
 }

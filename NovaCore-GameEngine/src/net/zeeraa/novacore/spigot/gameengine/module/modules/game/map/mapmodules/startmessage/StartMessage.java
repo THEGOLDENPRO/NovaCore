@@ -24,4 +24,9 @@ public class StartMessage extends MapModule {
 	public void onGameStart(Game game) {
 		Bukkit.getServer().broadcastMessage(message);
 	}
+
+	@Override
+	public String getSummaryString() {
+		return ChatColor.GOLD + "Start message: " + ChatColor.RESET + message;
+	}
 }

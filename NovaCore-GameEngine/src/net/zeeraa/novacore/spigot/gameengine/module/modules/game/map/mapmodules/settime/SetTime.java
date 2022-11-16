@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.settime;
 
+import org.bukkit.ChatColor;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
@@ -23,5 +24,10 @@ public class SetTime extends MapModule {
 		if (game.hasWorld()) {
 			game.getWorld().setTime(time);
 		}
+	}
+
+	@Override
+	public String getSummaryString() {
+		return ChatColor.GOLD + "Time: " + ChatColor.AQUA + time;
 	}
 }

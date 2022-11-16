@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -28,5 +29,15 @@ public class Gamerule extends MapModule {
 	@Override
 	public void onGameStart(Game game) {
 		gamerules.forEach((key, val) -> WorldUtils.setGameRule(game.getWorld(), key, val));
+	}
+
+	@Override
+	public String getSummaryString() {
+		String summary = ChatColor.GOLD + "Rules: ";
+		for (String key : gamerules.keySet()) {
+			String val = gamerules.get(key);
+			summary += ChatColor.AQUA + key + ChatColor.GOLD + " => " + ChatColor.AQUA + val + ChatColor.GOLD + ". ";
+		}
+		return summary;
 	}
 }

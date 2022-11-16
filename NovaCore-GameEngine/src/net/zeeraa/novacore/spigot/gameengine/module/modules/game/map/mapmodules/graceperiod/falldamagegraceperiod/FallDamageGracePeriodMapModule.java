@@ -106,4 +106,14 @@ public class FallDamageGracePeriodMapModule extends MapModule implements Listene
 		isActive = false;
 		HandlerList.unregisterAll(this);
 	}
+
+	@Override
+	public String getSummaryString() {
+		String summary = "";
+		summary += ChatColor.GOLD + "Seconds: " + ChatColor.AQUA + seconds + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Is active: " + ChatColor.AQUA + isActive + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Timer active: " + ChatColor.AQUA + endTimer.isRunning() + ChatColor.GOLD + ". ";
+		summary += ChatColor.GOLD + "Timer time left: " + ChatColor.AQUA + endTimer.getTimeLeft() + ChatColor.GOLD + ". ";
+		return summary;
+	}
 }
