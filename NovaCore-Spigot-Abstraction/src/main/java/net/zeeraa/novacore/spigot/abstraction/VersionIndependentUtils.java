@@ -746,5 +746,5 @@ public abstract class VersionIndependentUtils {
 
 	public abstract Block getReacheableBlockExact(LivingEntity entity);
 
-	public abstract FallingBlock spawnFallingBlock(Location location, Material material, Consumer<FallingBlock> consumer);
+	public abstract FallingBlock spawnFallingBlock(Location location, Material material, byte data, Consumer<FallingBlock> consumer);
 }

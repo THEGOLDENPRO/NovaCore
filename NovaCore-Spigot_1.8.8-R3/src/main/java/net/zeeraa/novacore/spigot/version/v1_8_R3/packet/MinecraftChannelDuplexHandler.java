@@ -1,9 +1,6 @@
 package net.zeeraa.novacore.spigot.version.v1_8_R3.packet;
 
-import net.minecraft.server.v1_8_R3.PacketPlayInArmAnimation;
-import net.minecraft.server.v1_8_R3.PacketPlayInBlockDig;
-import net.minecraft.server.v1_8_R3.PacketPlayInSettings;
-import net.minecraft.server.v1_8_R3.PacketPlayInSpectate;
+import net.minecraft.server.v1_8_R3.*;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.ChatVisibility;
 import net.zeeraa.novacore.spigot.abstraction.enums.Hand;
@@ -14,6 +11,7 @@ import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerSwingEvent;
 import net.zeeraa.novacore.spigot.abstraction.packet.event.SpectatorTeleportEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -43,10 +41,13 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			PacketPlayInArmAnimation arm = (PacketPlayInArmAnimation) packet;
 
 			events.add(new PlayerSwingEvent(player, arm.timestamp, Hand.MAIN_HAND));
-
-			if (canBreak(player, VersionIndependentUtils.get().getReacheableBlockExact(player))) {
-				events.add(new PlayerAttemptBreakBlockEvent(player, arm.timestamp, VersionIndependentUtils.get().getReacheableBlockExact(player)));
+			Block block = VersionIndependentUtils.get().getReacheableBlockExact(player);
+			if (block != null) {
+				if (canBreak(player, block)) {
+					events.add(new PlayerAttemptBreakBlockEvent(player, arm.timestamp, block));
+				}
 			}
+
 
 		} else if (packet.getClass().equals(PacketPlayInSpectate.class)) {
 			PacketPlayInSpectate spectate = (PacketPlayInSpectate) packet;
