@@ -996,12 +996,14 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public FallingBlock spawnFallingBlock(Location location, Material material, Consumer<FallingBlock> consumer) {
-		EntityFallingBlock fb = new EntityFallingBlock(((CraftWorld)location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ(), CraftMagicNumbers.getBlock(material).getBlockData());
+	public FallingBlock spawnFallingBlock(Location location, Material material, byte data, Consumer<FallingBlock> consumer) {
+		EntityFallingBlock fb = new EntityFallingBlock(((CraftWorld)location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ(), CraftMagicNumbers.getBlock(material).fromLegacyData(data));
+		fb.ticksLived = 1;
 		if (fb.getBukkitEntity() instanceof CraftFallingBlock) {
 			CraftFallingBlock cfb = (CraftFallingBlock) fb.getBukkitEntity();
 			consumer.accept(cfb);
 			((CraftWorld) location.getWorld()).getHandle().addEntity(fb, CreatureSpawnEvent.SpawnReason.CUSTOM);
+
 			return cfb;
 		} else {
 			throw new IllegalStateException("[VersionIndependentUtils] An unexpected error occurred");

@@ -12,6 +12,7 @@ import net.zeeraa.novacore.spigot.abstraction.packet.event.SpectatorTeleportEven
 import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.Player;
@@ -60,8 +61,11 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			case START_DESTROY_BLOCK:
 				if (playersDigging.stream().noneMatch(pl -> pl.getUniqueId().equals(player.getUniqueId()))) {
 					playersDigging.add(player);
-					if (canBreak(player, VersionIndependentUtils.get().getReacheableBlockExact(player))) {
-						events.add(new PlayerAttemptBreakBlockEvent(player, System.currentTimeMillis(), VersionIndependentUtils.get().getReacheableBlockExact(player)));
+					Block block = VersionIndependentUtils.get().getReacheableBlockExact(player);
+					if (block != null) {
+						if (canBreak(player, block)) {
+							events.add(new PlayerAttemptBreakBlockEvent(player, System.currentTimeMillis(), block));
+						}
 					}
 				}
 				break;
