@@ -1,14 +1,11 @@
 package net.zeeraa.novacore.spigot.gameengine.command.commands.game.eliminateplayer.offline;
 
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 
 import net.zeeraa.novacore.commons.api.novauniverse.NovaUniverseAPI;
-import net.zeeraa.novacore.commons.api.novauniverse.callback.IAsyncNameToUUIDCallback;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.command.NovaSubCommand;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;

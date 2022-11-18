@@ -10,8 +10,6 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.DelayedGameTrigger;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.GameTrigger;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.TriggerCallback;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.TriggerFlag;
 import net.zeeraa.novacore.spigot.language.LanguageManager;
 

@@ -6,7 +6,6 @@ import java.util.*;
 import net.minecraft.server.v1_12_R1.*;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.ListUtils;
-import net.zeeraa.novacore.commons.utils.RandomGenerator;
 import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
@@ -49,7 +48,6 @@ import org.bukkit.util.Vector;
 import java.awt.Color;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
 	private ItemBuilderRecordList itemBuilderRecordList;
@@ -938,6 +936,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Block getTargetBlockExact(LivingEntity entity, int distance, List<Material> ignore) {
 		Location eye = entity.getEyeLocation();
@@ -999,6 +998,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public FallingBlock spawnFallingBlock(Location location, Material material, byte data, Consumer<FallingBlock> consumer) {
+		@SuppressWarnings("deprecation")
 		EntityFallingBlock fb = new EntityFallingBlock(((CraftWorld)location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ(), CraftMagicNumbers.getBlock(material).fromLegacyData(data));
 		fb.ticksLived = 1;
 		if (fb.getBukkitEntity() instanceof CraftFallingBlock) {

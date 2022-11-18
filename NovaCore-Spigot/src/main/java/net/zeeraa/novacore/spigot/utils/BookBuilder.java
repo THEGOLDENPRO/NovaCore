@@ -32,10 +32,6 @@ public class BookBuilder extends ItemBuilder {
 	public BookBuilder(List<String> pages, String title, String author) {
 		super(Material.WRITTEN_BOOK);
 
-		int value = 3;
-
-
-
 		if (pages != null) {
 			setPages(pages);
 		} else {

@@ -1,10 +1,7 @@
 package net.zeeraa.novacore.commons.utils;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class ListUtils {
 	/**
@@ -30,7 +27,7 @@ public class ListUtils {
 	 * @param elements The elements to add
 	 * @return {@link List} aith the provided elements
 	 */
-	public static <T> List<T> createList(T... elements) {
+	public static <T> List<T> createList(@SuppressWarnings("unchecked") T... elements) {
 		List<T> result = new ArrayList<>();
 
 		Collections.addAll(result, elements);

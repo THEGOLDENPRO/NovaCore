@@ -13,7 +13,6 @@ import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerSettingsEvent;
 import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerSwingEvent;
 import net.zeeraa.novacore.spigot.abstraction.packet.event.SpectatorTeleportEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

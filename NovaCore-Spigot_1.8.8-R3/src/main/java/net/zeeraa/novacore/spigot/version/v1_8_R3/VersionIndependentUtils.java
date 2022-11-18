@@ -22,7 +22,6 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftFallingSand;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -966,6 +965,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public FallingBlock spawnFallingBlock(Location location, Material material, byte data, Consumer<FallingBlock> consumer) {
+		@SuppressWarnings("deprecation")
 		EntityFallingBlock fb = new EntityFallingBlock(((CraftWorld)location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ(), net.minecraft.server.v1_8_R3.Block.getById(material.getId()).fromLegacyData(data));
 		fb.ticksLived = 1;
 		if (fb.getBukkitEntity() instanceof CraftFallingSand) {

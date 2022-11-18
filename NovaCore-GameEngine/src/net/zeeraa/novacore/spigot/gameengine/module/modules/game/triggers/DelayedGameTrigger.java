@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.zeeraa.novacore.commons.timers.TickCallback;
-import net.zeeraa.novacore.commons.utils.Callback;
 import net.zeeraa.novacore.spigot.timers.BasicTimer;
 
 /**
