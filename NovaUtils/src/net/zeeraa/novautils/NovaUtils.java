@@ -33,6 +33,6 @@ public class NovaUtils extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		Bukkit.getScheduler().cancelTasks(this);
-		HandlerList.unregisterAll((Plugin) this);
+		HandlerList.unregisterAll(this);
 	}
 }

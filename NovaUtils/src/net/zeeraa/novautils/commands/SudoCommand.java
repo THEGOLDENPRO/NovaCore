@@ -40,7 +40,7 @@ public class SudoCommand extends NovaCommand {
 				if (player.isOnline()) {
 					if (player.hasPermission("novautils.command.sudo.exempt")) {
 						if (args.length > 1) {
-							String commandArg[] = Arrays.copyOfRange(args, 1, args.length);
+							String[] commandArg = Arrays.copyOfRange(args, 1, args.length);
 
 							String cmd = String.join(" ", commandArg);
 

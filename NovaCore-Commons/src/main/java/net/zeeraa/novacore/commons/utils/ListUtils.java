@@ -30,7 +30,7 @@ public class ListUtils {
 	 * @param elements The elements to add
 	 * @return {@link List} aith the provided elements
 	 */
-	public static <T> List<T> createList(@SuppressWarnings("unchecked") T... elements) {
+	public static <T> List<T> createList(T... elements) {
 		List<T> result = new ArrayList<>();
 
 		Collections.addAll(result, elements);

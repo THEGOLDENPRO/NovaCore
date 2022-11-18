@@ -141,7 +141,7 @@ public class ChestLoot extends MapModule {
 		Log.debug("Next chest refill in " + delay + " seconds");
 
 		trigger.stop();
-		trigger.setDelay(delay * 20);
+		trigger.setDelay(delay * 20L);
 		trigger.start();
 	}
 

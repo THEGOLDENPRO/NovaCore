@@ -181,13 +181,9 @@ public class MapDisplayManager extends NovaModule implements Listener {
 
 		Location row = frame.getLocation();
 
-		while (true) {
-			if (getItemFrameAtLocation(row) == null) {
-				break;
-			}
-
+		while (getItemFrameAtLocation(row) != null) {
 			Location col = row.clone();
-			List<UUID> colFrames = new ArrayList<UUID>();
+			List<UUID> colFrames = new ArrayList<>();
 
 			int sx = 0;
 			while (true) {
@@ -249,9 +245,9 @@ public class MapDisplayManager extends NovaModule implements Listener {
 				out.writeInt(frameUuids[0].length);
 
 				// UUIDs
-				for (int i = 0; i < frameUuids.length; i++) {
-					for (int j = 0; j < frameUuids[i].length; j++) {
-						out.writeUTF(frameUuids[i][j].toString());
+				for (UUID[] frameUuid : frameUuids) {
+					for (UUID uuid : frameUuid) {
+						out.writeUTF(uuid.toString());
 					}
 				}
 

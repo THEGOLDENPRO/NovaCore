@@ -7,11 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 
@@ -198,9 +194,9 @@ public class MapDisplay {
 			}
 		}
 
-		for (int i = 0; i < itemFrames.length; i++) {
-			for (int j = 0; j < itemFrames[i].length; j++) {
-				itemFrames[i][j].setItem(ItemBuilder.AIR);
+		for (ItemFrame[] itemFrame : itemFrames) {
+			for (ItemFrame frame : itemFrame) {
+				frame.setItem(ItemBuilder.AIR);
 			}
 		}
 
@@ -230,10 +226,8 @@ public class MapDisplay {
 	public List<ItemFrame> getAllItemFrames() {
 		List<ItemFrame> frames = new ArrayList<>();
 
-		for (int i = 0; i < itemFrames.length; i++) {
-			for (int j = 0; j < itemFrames[i].length; j++) {
-				frames.add(itemFrames[i][j]);
-			}
+		for (ItemFrame[] itemFrame : itemFrames) {
+			Collections.addAll(frames, itemFrame);
 		}
 
 		return frames;
@@ -300,9 +294,9 @@ public class MapDisplay {
 	}
 
 	public void clearPlayerCache() {
-		for (int i = 0; i < renderers.length; i++) {
-			for (int j = 0; j < renderers[i].length; j++) {
-				renderers[i][j].clearPlayerCache();
+		for (DisplayRenderer[] renderer : renderers) {
+			for (DisplayRenderer displayRenderer : renderer) {
+				displayRenderer.clearPlayerCache();
 			}
 		}
 	}
@@ -351,7 +345,7 @@ public class MapDisplay {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof UUID) {
-			return this.getUuid() == (UUID) obj;
+			return this.getUuid() == obj;
 		}
 
 		if (obj instanceof MapDisplay) {
@@ -362,9 +356,9 @@ public class MapDisplay {
 	}
 
 	public boolean isEntityPartOfDisplay(Entity entity) {
-		for (int i = 0; i < itemFrames.length; i++) {
-			for (int j = 0; j < itemFrames[i].length; j++) {
-				if (entity.getUniqueId().equals(itemFrames[i][j].getUniqueId())) {
+		for (ItemFrame[] itemFrame : itemFrames) {
+			for (ItemFrame frame : itemFrame) {
+				if (entity.getUniqueId().equals(frame.getUniqueId())) {
 					return true;
 				}
 			}

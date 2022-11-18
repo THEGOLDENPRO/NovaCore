@@ -95,7 +95,7 @@ public class GiveItemSlow extends MapModule {
 					}
 				}
 			}
-		}, delay * 20);
+		}, delay * 20L);
 	}
 
 	@Override

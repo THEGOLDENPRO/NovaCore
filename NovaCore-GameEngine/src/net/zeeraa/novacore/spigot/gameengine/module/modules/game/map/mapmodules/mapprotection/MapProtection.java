@@ -36,13 +36,13 @@ public class MapProtection extends MapModule implements Listener {
 	public MapProtection(JSONObject json) {
 		super(json);
 
-		this.breakWhitelist = new ArrayList<Material>();
-		this.breakBlacklist = new ArrayList<Material>();
+		this.breakWhitelist = new ArrayList<>();
+		this.breakBlacklist = new ArrayList<>();
 
-		this.placeWhitelist = new ArrayList<Material>();
-		this.placeBlacklist = new ArrayList<Material>();
+		this.placeWhitelist = new ArrayList<>();
+		this.placeBlacklist = new ArrayList<>();
 
-		this.bypassedGamemodes = new ArrayList<GameMode>();
+		this.bypassedGamemodes = new ArrayList<>();
 
 		try {
 			this.mode = MapProtectionMode.valueOf(json.getString("mode"));

@@ -50,9 +50,7 @@ public class JumpPad {
 
 				double entityDistance = Math.hypot(x, z);
 
-				if (entityDistance <= radius) {
-					return true;
-				}
+				return entityDistance <= radius;
 			}
 		}
 

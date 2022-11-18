@@ -54,8 +54,8 @@ public class GUIMapVote extends MapSelector implements Listener {
 	public GUIMapVote() {
 		GUIMapVote.instance = this;
 
-		this.votes = new HashMap<UUID, String>();
-		this.playerVoteInventory = new HashMap<UUID, Inventory>();
+		this.votes = new HashMap<>();
+		this.playerVoteInventory = new HashMap<>();
 
 		this.forcedMap = null;
 
@@ -107,11 +107,9 @@ public class GUIMapVote extends MapSelector implements Listener {
 					}
 				}
 
-				List<String> lore = new ArrayList<String>();
+				List<String> lore = new ArrayList<>();
 
-				for (String line : map.getDescription().split("\n")) {
-					lore.add(line);
-				}
+				Collections.addAll(lore, map.getDescription().split("\n"));
 
 				if (!map.isEnabled()) {
 					lore.add("");
@@ -169,7 +167,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 		}
 
 		Log.info("Got at least 1 vote. Finding top map");
-		Collections.sort(entries, new VoteEntryComparator());
+		entries.sort(new VoteEntryComparator());
 
 		entries.forEach(e -> Log.trace("Map " + e.getName() + " got " + e.getVotes() + " votes"));
 
@@ -182,13 +180,9 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent e) {
-		if (votes.containsKey(e.getPlayer().getUniqueId())) {
-			votes.remove(e.getPlayer().getUniqueId());
-		}
+		votes.remove(e.getPlayer().getUniqueId());
 
-		if (playerVoteInventory.containsKey(e.getPlayer().getUniqueId())) {
-			playerVoteInventory.remove(e.getPlayer().getUniqueId());
-		}
+		playerVoteInventory.remove(e.getPlayer().getUniqueId());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -221,7 +215,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 						if (e.getClick() == ClickType.MIDDLE) {
 							if (player.hasPermission("novacore.gamelobby.forcemap")) {
-								if (forcedMap == mapName) {
+								if (forcedMap.equals(mapName)) {
 									forcedMap = null;
 									Bukkit.getServer().broadcast(ChatColor.GREEN + "Set forced map to null", "novacore.gamelobby.forcemap");
 									Log.info("Set forced map to null");

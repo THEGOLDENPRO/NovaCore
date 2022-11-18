@@ -43,7 +43,7 @@ public class MedicalSupplyDropEffect implements Runnable {
 
 		double offset = MathUtil.lerp(y, maxHeight, progress);
 
-		return new Location(location.getWorld(), location.getX(), (double) offset, location.getZ());
+		return new Location(location.getWorld(), location.getX(), offset, location.getZ());
 	}
 
 	public MedicalSupplyDropEffect(Location location, String lootTable) {
@@ -72,7 +72,7 @@ public class MedicalSupplyDropEffect implements Runnable {
 		// Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), this,
 		// 5L, 5L);
 
-		for (int x = (int) location.getBlockX() - 1; x <= location.getBlockX() + 1; x++) {
+		for (int x = location.getBlockX() - 1; x <= location.getBlockX() + 1; x++) {
 			for (int z = location.getBlockZ() - 1; z <= location.getBlockZ() + 1; z++) {
 				Location l1 = new Location(location.getWorld(), x, location.getBlockY() - 3, z);
 				Location l2 = new Location(location.getWorld(), x, location.getBlockY() - 2, z);
@@ -107,12 +107,7 @@ public class MedicalSupplyDropEffect implements Runnable {
 
 			fw.setFireworkMeta(fwm);
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					fw.detonate();
-				}
-			}, 2L);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), fw::detonate, 2L);
 
 			animationCompleted();
 			return;
@@ -130,12 +125,7 @@ public class MedicalSupplyDropEffect implements Runnable {
 
 			fw.setFireworkMeta(fwm);
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					fw.detonate();
-				}
-			}, 2L);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), fw::detonate, 2L);
 		}
 		ticksLeft--;
 	}

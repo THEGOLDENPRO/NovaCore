@@ -13,5 +13,5 @@ public interface IAsyncProfileCallback {
 	 *                  found or on error
 	 * @param exception The {@link Exception} thrown or null on success or not found
 	 */
-	public void onResult(MojangPlayerProfile profile, Exception exception);
+	void onResult(MojangPlayerProfile profile, Exception exception);
 }

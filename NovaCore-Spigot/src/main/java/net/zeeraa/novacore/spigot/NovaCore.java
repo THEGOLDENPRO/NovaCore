@@ -174,6 +174,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 	 * @return {@link CustomCraftingManager} instance
 	 */
 	public CustomCraftingManager getCustomCraftingManager() {
+
 		return customCraftingManager;
 	}
 

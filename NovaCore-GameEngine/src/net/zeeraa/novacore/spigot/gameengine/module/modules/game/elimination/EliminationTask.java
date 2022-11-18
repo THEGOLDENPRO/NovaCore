@@ -37,19 +37,16 @@ public class EliminationTask {
 		if (taskId != -2) {
 			return;
 		}
-		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				timeLeft--;
+		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), () -> {
+			timeLeft--;
 
-				if (timeLeft == 60) {
-					Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + username + ChatColor.RED + ChatColor.BOLD + " will be eliminated in 1 minute");
-				} else if (timeLeft == 30) {
-					Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + username + ChatColor.RED + ChatColor.BOLD + " will be eliminated in 30 seconds");
-				} else if (timeLeft == 0) {
-					callback.execute();
-					stop();
-				}
+			if (timeLeft == 60) {
+				Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + username + ChatColor.RED + ChatColor.BOLD + " will be eliminated in 1 minute");
+			} else if (timeLeft == 30) {
+				Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "" + username + ChatColor.RED + ChatColor.BOLD + " will be eliminated in 30 seconds");
+			} else if (timeLeft == 0) {
+				callback.execute();
+				stop();
 			}
 		}, 20L, 20L);
 	}

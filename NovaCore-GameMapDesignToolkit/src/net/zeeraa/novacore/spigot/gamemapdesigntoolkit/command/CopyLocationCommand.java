@@ -36,12 +36,12 @@ public class CopyLocationCommand extends NovaCommand {
 		boolean center = false;
 		boolean onlyLocation = false;
 
-		for (int i = 0; i < args.length; i++) {
-			if (args[i].equalsIgnoreCase("-v") || args[i].equalsIgnoreCase("--verbose")) {
+		for (String arg : args) {
+			if (arg.equalsIgnoreCase("-v") || arg.equalsIgnoreCase("--verbose")) {
 				verbose = true;
-			} else if (args[i].equalsIgnoreCase("-c") || args[i].equalsIgnoreCase("--center")) {
+			} else if (arg.equalsIgnoreCase("-c") || arg.equalsIgnoreCase("--center")) {
 				center = true;
-			} else if (args[i].equalsIgnoreCase("-l") || args[i].equalsIgnoreCase("--location-only")) {
+			} else if (arg.equalsIgnoreCase("-l") || arg.equalsIgnoreCase("--location-only")) {
 				onlyLocation = true;
 			}
 		}

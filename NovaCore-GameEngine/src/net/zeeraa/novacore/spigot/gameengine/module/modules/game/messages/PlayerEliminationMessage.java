@@ -20,5 +20,5 @@ public interface PlayerEliminationMessage {
 	 * @param reason The {@link PlayerEliminationReason}
 	 * @param placement The placement of the player
 	 */
-	public abstract void showPlayerEliminatedMessage(OfflinePlayer player, Entity killer, PlayerEliminationReason reason, int placement);
+	void showPlayerEliminatedMessage(OfflinePlayer player, Entity killer, PlayerEliminationReason reason, int placement);
 }

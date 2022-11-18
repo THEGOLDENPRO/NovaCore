@@ -44,8 +44,8 @@ public class JumpPadManager extends NovaModule implements Listener {
 	@Override
 	public void onLoad() {
 		JumpPadManager.instance = this;
-		this.jumpPads = new ArrayList<JumpPad>();
-		this.isOnJumpPad = new ArrayList<Player>();
+		this.jumpPads = new ArrayList<>();
+		this.isOnJumpPad = new ArrayList<>();
 		this.task = null;
 
 		this.jumpPadCommand = new JumpPadCommand();
@@ -61,52 +61,47 @@ public class JumpPadManager extends NovaModule implements Listener {
 
 		Task.tryStopTask(task);
 
-		task = new SimpleTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-					if (player.getGameMode() == GameMode.SPECTATOR) {
-						return;
-					}
+		task = new SimpleTask(NovaCore.getInstance(), () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+			if (player.getGameMode() == GameMode.SPECTATOR) {
+				return;
+			}
 
-					if (player.getGameMode() == GameMode.CREATIVE && player.isFlying()) {
-						return;
-					}
+			if (player.getGameMode() == GameMode.CREATIVE && player.isFlying()) {
+				return;
+			}
 
-					boolean isPlayerOnJumpPad = false;
-					for (JumpPad pad : jumpPads) {
-						if (pad.isInRange(player)) {
-							isPlayerOnJumpPad = true;
+			boolean isPlayerOnJumpPad = false;
+			for (JumpPad pad : jumpPads) {
+				if (pad.isInRange(player)) {
+					isPlayerOnJumpPad = true;
 
-							if (!isOnJumpPad.contains(player)) {
-								isOnJumpPad.add(player);
+					if (!isOnJumpPad.contains(player)) {
+						isOnJumpPad.add(player);
 
-								PlayerUseJumpPadEvent event = new PlayerUseJumpPadEvent(player, pad);
+						PlayerUseJumpPadEvent event = new PlayerUseJumpPadEvent(player, pad);
 
-								Bukkit.getPluginManager().callEvent(event);
+						Bukkit.getPluginManager().callEvent(event);
 
-								if (!event.isCancelled()) {
-									player.setVelocity(pad.getVelocity());
-									if (event.isPlayEffect()) {
-										if (jumpPadEffect != null) {
-											jumpPadEffect.playJumpPadEffect(pad, player);
-										}
-									}
+						if (!event.isCancelled()) {
+							player.setVelocity(pad.getVelocity());
+							if (event.isPlayEffect()) {
+								if (jumpPadEffect != null) {
+									jumpPadEffect.playJumpPadEffect(pad, player);
 								}
 							}
-
-							break;
 						}
+					}
 
-						if (!isPlayerOnJumpPad) {
-							if (isOnJumpPad.contains(player)) {
-								isOnJumpPad.remove(player);
-							}
-						}
-					}					
-				});
+					// removed the break function because after looking at the code it makes no sense
+				}
+
+				if (!isPlayerOnJumpPad) {
+					if (isOnJumpPad.contains(player)) {
+						isOnJumpPad.remove(player);
+					}
+				}
 			}
-		}, 5L, 5L);
+		}), 5L, 5L);
 		task.start();
 	}
 

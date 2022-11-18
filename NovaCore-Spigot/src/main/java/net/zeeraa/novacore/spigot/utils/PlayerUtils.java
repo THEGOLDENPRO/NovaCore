@@ -26,10 +26,11 @@ public class PlayerUtils {
 	 */
 	public static void clearPlayerInventory(Player player) {
 		player.getInventory().clear();
-		for (int i = 0; i < 36; i++) {
+		for (int i = 0; i < player.getInventory().getSize(); i++) {
 			player.getInventory().setItem(i, new ItemStack(Material.AIR));
 		}
 		player.getInventory().setArmorContents(new ItemStack[player.getInventory().getArmorContents().length]);
+		player.getItemOnCursor().setType(Material.AIR);
 	}
 
 	/**

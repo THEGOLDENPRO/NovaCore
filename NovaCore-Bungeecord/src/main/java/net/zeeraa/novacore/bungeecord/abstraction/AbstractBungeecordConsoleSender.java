@@ -13,8 +13,8 @@ public class AbstractBungeecordConsoleSender implements AbstractConsoleSender {
 
 	@Override
 	public void sendMessage(String[] message) {
-		for (int i = 0; i < message.length; i++) {
-			ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(message[i]));
+		for (String s : message) {
+			ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(s));
 		}
 	}
 }

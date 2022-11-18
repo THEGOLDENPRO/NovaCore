@@ -47,31 +47,28 @@ public class CompassTracker extends NovaModule implements Listener {
 	@Override
 	public void onEnable() {
 		if (this.taskId == -1) {
-			this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					if (!hasCompassTrackerTarget()) {
-						return;
+			this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), () -> {
+				if (!hasCompassTrackerTarget()) {
+					return;
+				}
+
+				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+					if (strictMode) {
+						if (!p.getInventory().contains(Material.COMPASS)) {
+							continue;
+						}
 					}
 
-					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-						if (strictMode) {
-							if (!p.getInventory().contains(Material.COMPASS)) {
-								continue;
-							}
-						}
+					CompassTarget target = compassTrackerTarget.getCompassTarget(p);
 
-						CompassTarget target = compassTrackerTarget.getCompassTarget(p);
+					CompassTrackingEvent event = new CompassTrackingEvent(p, target);
 
-						CompassTrackingEvent event = new CompassTrackingEvent(p, target);
+					Bukkit.getServer().getPluginManager().callEvent(event);
 
-						Bukkit.getServer().getPluginManager().callEvent(event);
-
-						if (!event.isCancelled()) {
-							if (target != null) {
-								if (target.getTargetLocation() != null) {
-									p.setCompassTarget(target.getTargetLocation());
-								}
+					if (!event.isCancelled()) {
+						if (target != null) {
+							if (target.getTargetLocation() != null) {
+								p.setCompassTarget(target.getTargetLocation());
 							}
 						}
 					}

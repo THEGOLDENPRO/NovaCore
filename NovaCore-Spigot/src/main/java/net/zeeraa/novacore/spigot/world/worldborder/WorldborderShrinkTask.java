@@ -23,7 +23,7 @@ public class WorldborderShrinkTask {
 
 	private World world;
 
-	private int taskId = -1;
+	private int taskId;
 
 	public WorldborderShrinkTask(World world, double centerX, double centerZ, double startSize, double endSize, double damage, double damageBuffer, int shrinkDuration, int stepTime) {
 		this.centerX = centerX;
@@ -81,7 +81,7 @@ public class WorldborderShrinkTask {
 
 					activeStep++;
 				}
-			}, 0, stepTime * 20);
+			}, 0, stepTime * 20L);
 			return true;
 		}
 		return false;

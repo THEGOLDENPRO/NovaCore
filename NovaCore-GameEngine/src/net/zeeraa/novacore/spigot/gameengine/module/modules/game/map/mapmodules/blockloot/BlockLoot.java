@@ -28,7 +28,7 @@ public class BlockLoot extends MapModule implements Listener {
 	public BlockLoot(JSONObject json) {
 		super(json);
 
-		materialData = new HashMap<Material, BlockLootData>();
+		materialData = new HashMap<>();
 
 		json.keySet().forEach(key -> {
 			try {

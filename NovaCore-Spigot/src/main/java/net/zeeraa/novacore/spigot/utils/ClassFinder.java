@@ -15,7 +15,7 @@ import java.util.jar.JarFile;
  */
 public class ClassFinder {
 	public static Set<Class<?>> getClasses(File jarFile, String packageName) {
-		Set<Class<?>> classes = new HashSet<Class<?>>();
+		Set<Class<?>> classes = new HashSet<>();
 		try {
 			JarFile file = new JarFile(jarFile);
 			for (Enumeration<JarEntry> entry = file.entries(); entry.hasMoreElements();) {

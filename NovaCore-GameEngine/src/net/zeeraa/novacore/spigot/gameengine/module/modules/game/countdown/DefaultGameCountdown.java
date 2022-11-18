@@ -52,26 +52,23 @@ public class DefaultGameCountdown extends GameCountdown {
 		}
 		this.started = true;
 
-		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				timeLeft--;
-				if (timeLeft <= 0) {
-					Bukkit.getScheduler().cancelTask(taskId);
-					taskId = -1;
-					try {
-						onCountdownFinished();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return;
+		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), () -> {
+			timeLeft--;
+			if (timeLeft <= 0) {
+				Bukkit.getScheduler().cancelTask(taskId);
+				taskId = -1;
+				try {
+					onCountdownFinished();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+				return;
+			}
 
-				if (timeLeft <= 10) {
-					LanguageManager.broadcast("novacore.game.starting_in", timeLeft);
+			if (timeLeft <= 10) {
+				LanguageManager.broadcast("novacore.game.starting_in", timeLeft);
 
-					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().playSound(player, player.getLocation(), VersionIndependentSound.NOTE_PLING, 1F, 1F));
-				}
+				Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().playSound(player, player.getLocation(), VersionIndependentSound.NOTE_PLING, 1F, 1F));
 			}
 		}, 20L, 20L);
 

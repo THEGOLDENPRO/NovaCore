@@ -8,7 +8,7 @@ public interface AbstractAsyncManager {
 	 * @param delay    The delay in ticks. For BungeeCord this will be
 	 *                 <code>(delay * 50)</code> milliseconds
 	 */
-	public void runAsync(Runnable runnable, long delay);
+	void runAsync(Runnable runnable, long delay);
 	
 	/**
 	 * Run a runnable in the main thread
@@ -17,5 +17,5 @@ public interface AbstractAsyncManager {
 	 * @param delay    The delay in ticks. For BungeeCord this will be
 	 *                 <code>(delay * 50)</code> milliseconds
 	 */
-	public void runSync(Runnable runnable, long delay);
+	void runSync(Runnable runnable, long delay);
 }

@@ -63,7 +63,7 @@ public class UnzipUtility {
 	private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
 		byte[] bytesIn = new byte[BUFFER_SIZE];
-		int read = 0;
+		int read;
 		while ((read = zipIn.read(bytesIn)) != -1) {
 			bos.write(bytesIn, 0, read);
 		}

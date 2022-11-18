@@ -140,29 +140,21 @@ public class NovaUniverseAPI {
 	 * @since 2.0.0
 	 */
 	public static final void getProfileAsync(UUID uuid, IAsyncProfileCallback callback) {
-		AsyncManager.runAsync(new Runnable() {
-			@Override
-			public void run() {
-				Exception exception = null;
-				MojangPlayerProfile profile = null;
-				try {
-					profile = NovaUniverseAPI.getProfile(uuid);
-					exception = null;
-				} catch (Exception e) {
-					profile = null;
-					exception = e;
-				}
-
-				final MojangPlayerProfile finalProfile = profile;
-				final Exception finalException = exception;
-
-				AsyncManager.runSync(new Runnable() {
-					@Override
-					public void run() {
-						callback.onResult(finalProfile, finalException);
-					}
-				});
+		AsyncManager.runAsync(() -> {
+			Exception exception;
+			MojangPlayerProfile profile;
+			try {
+				profile = NovaUniverseAPI.getProfile(uuid);
+				exception = null;
+			} catch (Exception e) {
+				profile = null;
+				exception = e;
 			}
+
+			final MojangPlayerProfile finalProfile = profile;
+			final Exception finalException = exception;
+
+			AsyncManager.runSync(() -> callback.onResult(finalProfile, finalException));
 		});
 	}
 
@@ -243,29 +235,21 @@ public class NovaUniverseAPI {
 			throw new IllegalArgumentException("Username contains invalid characters");
 		}
 
-		AsyncManager.runAsync(new Runnable() {
-			@Override
-			public void run() {
-				Exception exception = null;
-				UUID uuid = null;
-				try {
-					uuid = NovaUniverseAPI.nameToUUID(name);
-					exception = null;
-				} catch (Exception e) {
-					uuid = null;
-					exception = e;
-				}
-
-				final UUID finalUUID = uuid;
-				final Exception finalException = exception;
-
-				AsyncManager.runSync(new Runnable() {
-					@Override
-					public void run() {
-						callback.onResult(finalUUID, finalException);
-					}
-				});
+		AsyncManager.runAsync(() -> {
+			Exception exception;
+			UUID uuid;
+			try {
+				uuid = NovaUniverseAPI.nameToUUID(name);
+				exception = null;
+			} catch (Exception e) {
+				uuid = null;
+				exception = e;
 			}
+
+			final UUID finalUUID = uuid;
+			final Exception finalException = exception;
+
+			AsyncManager.runSync(() -> callback.onResult(finalUUID, finalException));
 		});
 	}
 }

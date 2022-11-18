@@ -1,15 +1,15 @@
 package net.zeeraa.novacore.commons.log;
 
 public interface IBasicLogger {
-	public void trace(String message);
+	void trace(String message);
 
-	public void debug(String message);
+	void debug(String message);
 
-	public void info(String message);
+	void info(String message);
 
-	public void warn(String message);
+	void warn(String message);
 
-	public void error(String message);
+	void error(String message);
 
-	public void fatal(String message);
+	void fatal(String message);
 }

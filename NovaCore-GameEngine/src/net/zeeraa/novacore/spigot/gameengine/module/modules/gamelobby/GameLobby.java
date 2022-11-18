@@ -105,9 +105,9 @@ public class GameLobby extends NovaModule implements Listener {
 		this.mapReader = new DefaultLobbyMapReader();
 		this.mapSelector = new RandomLobbyMapSelector();
 
-		this.waitingPlayers = new ArrayList<UUID>();
+		this.waitingPlayers = new ArrayList<>();
 
-		this.maps = new ArrayList<GameLobbyMapData>();
+		this.maps = new ArrayList<>();
 
 		this.taskId = -1;
 	}

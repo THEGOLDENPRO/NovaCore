@@ -97,7 +97,7 @@ public class BasicTimer implements Timer {
 				if (timeLeft <= 0) {
 					finished = true;
 					
-					finishCallbacks.forEach(c -> c.execute());
+					finishCallbacks.forEach(Callback::execute);
 					
 					stop();
 				}

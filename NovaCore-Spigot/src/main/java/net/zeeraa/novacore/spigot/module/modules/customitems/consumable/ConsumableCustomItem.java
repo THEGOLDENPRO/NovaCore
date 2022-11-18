@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.module.modules.customitems.consumable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -30,9 +31,7 @@ public abstract class ConsumableCustomItem extends CustomItem {
 		this.allowedHand = allowedHand;
 		this.registeredClickTypes = new ArrayList<>();
 
-		for (RegisteredClickType type : types) {
-			registeredClickTypes.add(type);
-		}
+		registeredClickTypes.addAll(Arrays.asList(types));
 	}
 
 	/**

@@ -44,7 +44,7 @@ public class NovaCoreSubCommandGameEliminatePlayer extends NovaSubCommand {
 
 					if (foundUuid != null) {
 						GameManager.getInstance().getActiveGame().eliminatePlayer(Bukkit.getServer().getOfflinePlayer(foundUuid), null, PlayerEliminationReason.COMMAND);
-						sender.sendMessage(ChatColor.GREEN + "Player with uuid " + ChatColor.AQUA + foundUuid.toString() + ChatColor.GREEN + " was eliminated");
+						sender.sendMessage(ChatColor.GREEN + "Player with uuid " + ChatColor.AQUA + foundUuid + ChatColor.GREEN + " was eliminated");
 					} else {
 						Player player = Bukkit.getServer().getPlayer(args[0]);
 						if (player != null) {
@@ -73,7 +73,7 @@ public class NovaCoreSubCommandGameEliminatePlayer extends NovaSubCommand {
 
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		if (GameManager.getInstance().hasGame()) {
 			if (GameManager.getInstance().getActiveGame().isRunning()) {
 				for (UUID uuid : GameManager.getInstance().getActiveGame().getPlayers()) {

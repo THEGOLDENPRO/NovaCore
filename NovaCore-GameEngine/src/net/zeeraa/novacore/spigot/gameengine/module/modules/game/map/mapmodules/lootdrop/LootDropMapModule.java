@@ -43,7 +43,7 @@ public class LootDropMapModule extends MapModule {
 		this.minDropTime = 200;
 		this.maxDropTime = 900;
 
-		this.locations = new ArrayList<LocationData>();
+		this.locations = new ArrayList<>();
 
 		this.locationsReal = null;
 
@@ -72,12 +72,7 @@ public class LootDropMapModule extends MapModule {
 			this.timeToSpawn = json.getInt("time_to_descend");
 		}
 
-		trigger = new DelayedGameTrigger("novacore.lootdrop", minDropTime, new TriggerCallback() {
-			@Override
-			public void run(GameTrigger trigger2, TriggerFlag reason) {
-				onTrigger(reason);
-			}
-		});
+		trigger = new DelayedGameTrigger("novacore.lootdrop", minDropTime, (trigger2, reason) -> onTrigger(reason));
 		trigger.addFlag(TriggerFlag.STOP_ON_GAME_END);
 	}
 
@@ -95,7 +90,7 @@ public class LootDropMapModule extends MapModule {
 			trigger.stop();
 		}
 
-		trigger.setDelay(delay * 20);
+		trigger.setDelay(delay * 20L);
 
 		trigger.start();
 	}

@@ -134,7 +134,7 @@ public class GameManager extends NovaModule implements Listener {
 		this.addDependency(MultiverseManager.class);
 
 		this.activeGame = null;
-		this.eliminationTasks = new HashMap<UUID, EliminationTask>();
+		this.eliminationTasks = new HashMap<>();
 
 		this.countdown = new DefaultGameCountdown();
 
@@ -142,28 +142,25 @@ public class GameManager extends NovaModule implements Listener {
 		this.playerEliminationMessage = new DefaultPlayerEliminationMessage();
 		this.teamEliminationMessage = null;
 
-		this.callOnRespawn = new ArrayList<UUID>();
+		this.callOnRespawn = new ArrayList<>();
 
 		this.commandAdded = false;
 
-		this.combatTaggedPlayers = new HashMap<UUID, Integer>();
+		this.combatTaggedPlayers = new HashMap<>();
 
 		this.useCombatTagging = false;
 		this.combatTaggingTime = 5;
 
 		this.displayNameOverride = null;
 
-		this.combatTagMessages = new ArrayList<CombatTagMessage>();
+		this.combatTagMessages = new ArrayList<>();
 
-		this.combatTagCountdownTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				combatTaggedPlayers.keySet().forEach(uuid -> {
-					combatTaggedPlayers.put(uuid, combatTaggedPlayers.get(uuid) - 1);
-				});
+		this.combatTagCountdownTask = new SimpleTask(NovaCore.getInstance(), () -> {
+			combatTaggedPlayers.keySet().forEach(uuid -> {
+				combatTaggedPlayers.put(uuid, combatTaggedPlayers.get(uuid) - 1);
+			});
 
-				combatTaggedPlayers.entrySet().removeIf(i -> i.getValue() <= 0);
-			}
+			combatTaggedPlayers.entrySet().removeIf(i -> i.getValue() <= 0);
 		}, 20L, 20L);
 
 		this.showDeathMessage = false;
@@ -992,7 +989,6 @@ public class GameManager extends NovaModule implements Listener {
 								if (NovaCore.getInstance().getTeamManager().isInSameTeam(((OfflinePlayer) e.getEntity()).getUniqueId(), damagerUuid)) {
 									if (!getActiveGame().isFriendlyFireAllowed()) {
 										e.setCancelled(true);
-										return;
 									}
 								}
 							}
@@ -1039,13 +1035,9 @@ public class GameManager extends NovaModule implements Listener {
 								}
 							}
 
-							if (useCombatTagging) {
-								combatTagPlayer((Player) e.getEntity(), !isCombatTagged((Player) e.getEntity()));
-							}
-						} else {
-							if (useCombatTagging) {
-								combatTagPlayer((Player) e.getEntity(), !isCombatTagged((Player) e.getEntity()));
-							}
+						}
+						if (useCombatTagging) {
+							combatTagPlayer((Player) e.getEntity(), !isCombatTagged((Player) e.getEntity()));
 						}
 					}
 				}
@@ -1069,9 +1061,7 @@ public class GameManager extends NovaModule implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		Player player = e.getPlayer();
-		if (callOnRespawn.contains(player.getUniqueId())) {
-			callOnRespawn.remove(player.getUniqueId());
-		}
+		callOnRespawn.remove(player.getUniqueId());
 
 		if (hasGame()) {
 			if (activeGame.hasEnded()) {

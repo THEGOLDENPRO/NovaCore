@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.module.modules.lootdrop;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -27,7 +28,8 @@ public class LootDrop {
 	private UUID uuid;
 	private String lootTable;
 	private boolean removed;
-
+	private LootTable table;
+	private List<ItemStack> generatedLoot;
 	public LootDrop(Location location, String lootTable) {
 		this.removed = false;
 		this.uuid = UUID.randomUUID();
@@ -35,6 +37,7 @@ public class LootDrop {
 		this.inventory = Bukkit.createInventory(new LootDropInventoryHolder(uuid), 27, "Loot drop");
 
 		this.lootTable = lootTable;
+		this.generatedLoot = new ArrayList<>();
 
 		this.fill();
 
@@ -44,15 +47,15 @@ public class LootDrop {
 	}
 
 	public void fill() {
-		LootTable lt = NovaCore.getInstance().getLootTableManager().getLootTable(lootTable);
+		table = NovaCore.getInstance().getLootTableManager().getLootTable(lootTable);
 
-		if (lt == null) {
+		if (table == null) {
 			Log.warn("LootDrop", "No loot table named " + lootTable + " was found");
 			return;
 		}
 
-		List<ItemStack> loot = lt.generateLoot();
-
+		List<ItemStack> loot = table.generateLoot();
+		this.generatedLoot.addAll(loot);
 		inventory.clear();
 
 		while (loot.size() > inventory.getSize()) {
@@ -76,12 +79,7 @@ public class LootDrop {
 	}
 
 	public void scheduleRemove() {
-		Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				remove(true);
-			}
-		}, 80L);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), () -> remove(true), 80L);
 	}
 
 	public void remove() {
@@ -104,6 +102,24 @@ public class LootDrop {
 				}
 			}
 		});
+		if (dropItems) {
+			if (table != null) {
+				if (!generatedLoot.isEmpty()) {
+					for (ItemStack item : generatedLoot) {
+						location.getWorld().dropItemNaturally(location, item);
+					}
+				} else {
+					for (ItemStack item : table.generateLoot()) {
+						location.getWorld().dropItemNaturally(location, item);
+					}
+				}
+			} else {
+				LootTable table =  NovaCore.getInstance().getLootTableManager().getLootTable(lootTable);
+				for (ItemStack item : table.generateLoot()) {
+					location.getWorld().dropItemNaturally(location, item);
+				}
+			}
+		}
 
 		for (ItemStack i : this.inventory.getContents()) {
 			if (i == null) {

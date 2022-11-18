@@ -4,8 +4,8 @@ public enum WorldLoadingFlags {
 	PREVENT_AG_RELOAD;
 
 	public static boolean hasFlag(WorldLoadingFlags[] flags, WorldLoadingFlags flag) {
-		for (int i = 0; i < flags.length; i++) {
-			if (flags[i] == flag) {
+		for (WorldLoadingFlags worldLoadingFlags : flags) {
+			if (worldLoadingFlags == flag) {
 				return true;
 			}
 		}

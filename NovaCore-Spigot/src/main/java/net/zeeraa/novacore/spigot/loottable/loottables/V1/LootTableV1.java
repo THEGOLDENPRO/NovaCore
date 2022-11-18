@@ -20,8 +20,8 @@ import net.zeeraa.novacore.spigot.loottable.loottables.V1.entry.implementation.I
  * @author Zeeraa
  */
 public class LootTableV1 extends LootTable {
-	private Map<UUID, LootEntryV1> items = new HashMap<UUID, LootEntryV1>();
-	private List<UUID> lootChance = new ArrayList<UUID>();
+	private Map<UUID, LootEntryV1> items = new HashMap<>();
+	private List<UUID> lootChance = new ArrayList<>();
 
 	public void addItem(LootEntryV1 lootEntry) {
 		UUID uuid = UUID.randomUUID();
@@ -57,7 +57,7 @@ public class LootTableV1 extends LootTable {
 
 	@Override
 	public ArrayList<ItemStack> generateLoot(Random random, int count) {
-		ArrayList<ItemStack> result = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> result = new ArrayList<>();
 
 		for (int i = 0; i < count; i++) {
 			int r = random.nextInt(lootChance.size());
@@ -80,7 +80,7 @@ public class LootTableV1 extends LootTable {
 	}
 
 	private ArrayList<ItemStack> getExtraItems(LootEntryV1 lootEntry) {
-		ArrayList<ItemStack> result = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> result = new ArrayList<>();
 		if (lootEntry.hasExtraItems()) {
 			for (LootEntryV1 lootEntry2 : lootEntry.getExtraItems()) {
 				if (lootEntry2.hasExtraItems()) {

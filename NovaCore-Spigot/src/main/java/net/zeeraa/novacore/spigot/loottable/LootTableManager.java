@@ -31,8 +31,8 @@ public class LootTableManager {
 	}
 	
 	public LootTableManager() {
-		this.loaders = new HashMap<String, LootTableLoader>();
-		this.lootTables = new HashMap<String, LootTable>();
+		this.loaders = new HashMap<>();
+		this.lootTables = new HashMap<>();
 	}
 
 	/**

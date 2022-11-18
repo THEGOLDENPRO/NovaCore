@@ -30,22 +30,17 @@ public class InstantVoidKill extends MapModule {
 			y = json.getInt("y");
 		}
 
-		this.taks = new SimpleTask(new Runnable() {
-			@Override
-			public void run() {
-				Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-					if (player.getLocation().getBlockY() < y) {
-						if (!player.isDead()) {
-							if (player.getHealth() > 0) {
-								if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
-									player.setHealth(0);
-								}
-							}
+		this.taks = new SimpleTask(() -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+			if (player.getLocation().getBlockY() < y) {
+				if (!player.isDead()) {
+					if (player.getHealth() > 0) {
+						if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
+							player.setHealth(0);
 						}
 					}
-				});
+				}
 			}
-		}, 2L);
+		}), 2L);
 	}
 
 	public int getY() {

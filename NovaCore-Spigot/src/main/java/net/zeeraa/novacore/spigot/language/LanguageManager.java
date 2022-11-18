@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import net.md_5.bungee.api.ChatColor;
 
 public class LanguageManager {
-	private static Map<String, Language> languages = new HashMap<String, Language>();
-	private static Map<UUID, String> playerLanguage = new HashMap<UUID, String>();
+	private static Map<String, Language> languages = new HashMap<>();
+	private static Map<UUID, String> playerLanguage = new HashMap<>();
 
 	private static String primaryLanguage = "en-us";
 

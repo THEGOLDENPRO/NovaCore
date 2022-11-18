@@ -72,12 +72,7 @@ public class MedicalSupplyDrop {
 	}
 
 	public void scheduleRemove() {
-		Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				remove(true);
-			}
-		}, 80L);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(NovaCore.getInstance(), () -> remove(true), 80L);
 	}
 
 	public void remove() {
