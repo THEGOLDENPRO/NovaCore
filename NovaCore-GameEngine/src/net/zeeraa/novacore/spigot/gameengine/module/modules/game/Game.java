@@ -117,8 +117,8 @@ public abstract class Game {
 	private Plugin plugin;
 
 	public Game(Plugin plugin) {
-		this.players = new ArrayList<UUID>();
-		this.triggers = new ArrayList<GameTrigger>();
+		this.players = new ArrayList<>();
+		this.triggers = new ArrayList<>();
 		this.world = null;
 		this.endCalled = false;
 		this.startCalled = false;
@@ -127,13 +127,10 @@ public abstract class Game {
 		this.beginEventCalled = false;
 		this.plugin = plugin;
 		this.dropItemsOnCombatLog = false;
-		this.winCheckTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				if (!autoWinnerCheckCompleted) {
-					if (autoEndGame()) {
-						checkWinner();
-					}
+		this.winCheckTask = new SimpleTask(NovaCore.getInstance(), () -> {
+			if (!autoWinnerCheckCompleted) {
+				if (autoEndGame()) {
+					checkWinner();
 				}
 			}
 		}, 5L);
@@ -355,7 +352,7 @@ public abstract class Game {
 	 * @return List with triggers
 	 */
 	public final List<GameTrigger> getTriggersByFlags(TriggerFlag... flags) {
-		List<GameTrigger> result = new ArrayList<GameTrigger>();
+		List<GameTrigger> result = new ArrayList<>();
 
 		triggers.forEach(trigger -> {
 			for (TriggerFlag flag : flags) {
@@ -765,7 +762,7 @@ public abstract class Game {
 		boolean hasWinner = false;
 
 		if (NovaCore.getInstance().hasTeamManager() && getGameManager().isUseTeams()) {
-			List<UUID> teamsLeft = new ArrayList<UUID>();
+			List<UUID> teamsLeft = new ArrayList<>();
 
 			players.forEach(uuid -> {
 				Team team = NovaCore.getInstance().getTeamManager().getPlayerTeam(uuid);

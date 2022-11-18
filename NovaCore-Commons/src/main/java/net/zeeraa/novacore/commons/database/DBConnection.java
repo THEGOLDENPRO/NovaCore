@@ -26,12 +26,9 @@ public class DBConnection {
 
 	public DBConnection() {
 		this.connection = null;
-		this.keepAliveTask = NovaCommons.getAbstractSimpleTaskCreator().createTask(new Runnable() {
-			@Override
-			public void run() {
-				Log.trace("DBC", "Sending keep alive query to database " + credentials.getHost());
-				testQuery();
-			}
+		this.keepAliveTask = NovaCommons.getAbstractSimpleTaskCreator().createTask(() -> {
+			Log.trace("DBC", "Sending keep alive query to database " + credentials.getHost());
+			testQuery();
 		}, 36000L, 36000L);
 	}
 
@@ -214,31 +211,25 @@ public class DBConnection {
 	}
 
 	public static void executeQueryAsync(PreparedStatement ps, ExecuteQueryAsyncCallback callback) {
-		AsyncManager.runAsync(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					ResultSet rs = ps.executeQuery();
+		AsyncManager.runAsync(() -> {
+			try {
+				ResultSet rs = ps.executeQuery();
 
-					callback.onExecute(rs, null);
-				} catch (Exception e) {
-					callback.onExecute(null, e);
-				}
+				callback.onExecute(rs, null);
+			} catch (Exception e) {
+				callback.onExecute(null, e);
 			}
 		});
 	}
 
 	public static void executeUpdateAsync(PreparedStatement ps, ExecuteUpdateAsyncCallback callback) {
-		AsyncManager.runAsync(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					int result = ps.executeUpdate();
+		AsyncManager.runAsync(() -> {
+			try {
+				int result = ps.executeUpdate();
 
-					callback.onExecute(result, null);
-				} catch (Exception e) {
-					callback.onExecute(0, e);
-				}
+				callback.onExecute(result, null);
+			} catch (Exception e) {
+				callback.onExecute(0, e);
 			}
 		});
 	}

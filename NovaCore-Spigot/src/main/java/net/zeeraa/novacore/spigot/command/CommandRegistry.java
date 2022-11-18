@@ -16,7 +16,7 @@ import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
  * @author Zeeraa
  */
 public class CommandRegistry {
-	private static List<NovaCommand> registeredCommands = new ArrayList<NovaCommand>();
+	private static List<NovaCommand> registeredCommands = new ArrayList<>();
 
 	/**
 	 * Register a {@link NovaCommand}
@@ -68,7 +68,7 @@ public class CommandRegistry {
 			PermissionRegistrator.registerPermission(command.getPermission(), command.getPermissionDescription(), command.getPermissionDefaultValue());
 		}
 
-		command.getSubCommands().forEach(sub -> registerCommandPermissions(sub));
+		command.getSubCommands().forEach(CommandRegistry::registerCommandPermissions);
 	}
 
 	/**

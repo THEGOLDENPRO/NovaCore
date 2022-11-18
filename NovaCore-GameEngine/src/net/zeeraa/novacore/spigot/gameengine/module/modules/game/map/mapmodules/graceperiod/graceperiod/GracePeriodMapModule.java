@@ -93,23 +93,17 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 
 		endTimer = new BasicTimer(seconds, 20L);
 
-		endTimer.addTickCallback(new TickCallback() {
-			@Override
-			public void execute(long timeLeft) {
-				if (warnings.contains(timeLeft)) {
-					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentSound.NOTE_PLING.play(player));
-					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period ends in " + timeLeft + " seconds " + ChatColor.RESET + ChatColor.YELLOW + TextUtils.ICON_WARNING);
-				}
+		endTimer.addTickCallback(timeLeft -> {
+			if (warnings.contains(timeLeft)) {
+				Bukkit.getServer().getOnlinePlayers().forEach(VersionIndependentSound.NOTE_PLING::play);
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period ends in " + timeLeft + " seconds " + ChatColor.RESET + ChatColor.YELLOW + TextUtils.ICON_WARNING);
 			}
 		});
 
-		endTimer.addFinishCallback(new Callback() {
-			@Override
-			public void execute() {
-				isActive = false;
-				Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().sendTitle(player, "", ChatColor.YELLOW + TextUtils.ICON_WARNING + " Grace period is over " + TextUtils.ICON_WARNING, 10, 40, 10));
-				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period is over");
-			}
+		endTimer.addFinishCallback(() -> {
+			isActive = false;
+			Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().sendTitle(player, "", ChatColor.YELLOW + TextUtils.ICON_WARNING + " Grace period is over " + TextUtils.ICON_WARNING, 10, 40, 10));
+			Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period is over");
 		});
 	}
 

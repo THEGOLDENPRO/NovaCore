@@ -14,5 +14,5 @@ public interface TeamEliminationMessage {
 	 * @param team      The {@link Team} that was eliminated
 	 * @param placement The placement of the player
 	 */
-	public abstract void showTeamEliminatedMessage(Team team, int placement);
+	void showTeamEliminatedMessage(Team team, int placement);
 }

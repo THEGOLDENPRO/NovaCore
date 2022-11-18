@@ -34,5 +34,5 @@ public interface ExecuteUpdateAsyncCallback {
 	 * @param exception {@link Exception} if something went wrong or
 	 *                  <code>null</code> if successful
 	 */
-	public void onExecute(int result, Exception exception);
+	void onExecute(int result, Exception exception);
 }

@@ -66,7 +66,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 			}
 		}
 
-		return (LootTable) lootTable;
+		return lootTable;
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 			}
 
 			int minAmount = 0;
-			int maxAmount = 0;
+			int maxAmount;
 
 			if (itemJson.has("min_amount")) {
 				minAmount = itemJson.getInt("min_amount");
@@ -246,7 +246,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 		List<LootEntryV1> extraItems = null;
 
 		if (itemJson.has("extra_items")) {
-			extraItems = new ArrayList<LootEntryV1>();
+			extraItems = new ArrayList<>();
 			JSONArray extraItemsJson = itemJson.getJSONArray("extra_items");
 
 			for (int i = 0; i < extraItemsJson.length(); i++) {
@@ -256,9 +256,7 @@ public class LootTableLoaderV1 implements LootTableLoader {
 			}
 		}
 
-		LootEntryV1 entry = new ItemStackBasedLootEntryV1(item, chance, minAmount, maxAmount, extraItems);
-
-		return entry;
+		return new ItemStackBasedLootEntryV1(item, chance, minAmount, maxAmount, extraItems);
 	}
 
 	private static PotionEffect readPotionEffect(JSONObject potion) {

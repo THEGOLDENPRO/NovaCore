@@ -33,8 +33,8 @@ public class GameTrigger {
 
 		this.triggerCount = 0;
 
-		this.callbacks = new ArrayList<TriggerCallback>();
-		this.flags = new ArrayList<TriggerFlag>();
+		this.callbacks = new ArrayList<>();
+		this.flags = new ArrayList<>();
 
 		if (callback != null) {
 			this.callbacks.add(callback);

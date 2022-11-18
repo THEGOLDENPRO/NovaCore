@@ -62,10 +62,10 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		NetherBoardScoreboard.instance = this;
 		this.lineCount = 15;
 		this.defaultTitle = "";
-		this.boards = new HashMap<UUID, BPlayerBoard>();
-		this.globalLines = new HashMap<Integer, String>();
-		this.playerLines = new HashMap<UUID, HashMap<Integer, String>>();
-		this.playerNameColor = new HashMap<UUID, ChatColor>();
+		this.boards = new HashMap<>();
+		this.globalLines = new HashMap<>();
+		this.playerLines = new HashMap<>();
+		this.playerNameColor = new HashMap<>();
 		this.taskId = -1;
 	}
 
@@ -79,21 +79,16 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 			globalLines.put(i, "");
 		}
 
-		Bukkit.getServer().getOnlinePlayers().forEach(player -> createPlayerScoreboard(player));
+		Bukkit.getServer().getOnlinePlayers().forEach(this::createPlayerScoreboard);
 
 		if (taskId == -1) {
-			taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					boards.keySet().forEach(uuid -> {
-						Player player = Bukkit.getServer().getPlayer(uuid);
+			taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NovaCore.getInstance(), () -> boards.keySet().forEach(uuid -> {
+				Player player = Bukkit.getServer().getPlayer(uuid);
 
-						if (player != null) {
-							update(player);
-						}
-					});
+				if (player != null) {
+					update(player);
 				}
-			}, 5L, 5L);
+			}), 5L, 5L);
 		}
 	}
 
@@ -131,7 +126,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 			BPlayerBoard board = Netherboard.instance().createBoard(player, event.getTitle());
 
-			HashMap<Integer, String> pLines = new HashMap<Integer, String>();
+			HashMap<Integer, String> pLines = new HashMap<>();
 
 			for (int i = 0; i < lineCount; i++) {
 				pLines.put(i, "");
@@ -194,7 +189,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 
 			HashMap<Integer, String> pLines = playerLines.get(player.getUniqueId());
 
-			ArrayList<String> existingLines = new ArrayList<String>();
+			ArrayList<String> existingLines = new ArrayList<>();
 
 			int lineNumber = lineCount;
 			for (int i = 0; i < lineCount; i++) {

@@ -11,12 +11,12 @@ public interface AbstractConsoleSender {
 	 *
 	 * @param message Message to be displayed
 	 */
-	public void sendMessage(String message);
+	void sendMessage(String message);
 
 	/**
 	 * Sends this sender multiple messages
 	 *
 	 * @param message An array of messages to be displayed
 	 */
-	public void sendMessage(String[] message);
+	void sendMessage(String[] message);
 }

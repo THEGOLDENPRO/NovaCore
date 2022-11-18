@@ -37,7 +37,7 @@ public enum GameEndReason {
 	 * Used when the server ends the game
 	 */
 	SERVER_ENDED_GAME,
-	/*
+	/**
 	 * Used when there is no players left
 	 */
 	NO_PLAYERS_LEFT,

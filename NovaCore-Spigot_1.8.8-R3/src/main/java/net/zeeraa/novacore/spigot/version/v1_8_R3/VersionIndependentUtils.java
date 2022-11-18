@@ -33,8 +33,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
 import java.awt.Color;
@@ -973,6 +977,40 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		} else {
 			throw new IllegalStateException("[VersionIndependentUtils] An unexpected error occurred");
 		}
+	}
+
+	@Override
+	@SuppressWarnings("deprecation")
+	public void setPotionEffect(ItemStack item, ItemMeta meta, PotionEffect effect, boolean color) {
+		if ((item.getType() == Material.POTION) || meta.getClass().isAssignableFrom(PotionMeta.class)) {
+			PotionMeta potMeta = (PotionMeta) meta;
+			potMeta.addCustomEffect(effect, false);
+			if (color) {
+				try {
+					item.setDurability((short) getFromEffectType(effect.getType()).getDamageValue());
+				} catch (Exception e) {
+					Log.warn("Could not set item color, defaulting to water bottle.");
+				}
+			}
+		}
+	}
+
+	@Override
+	public void setPotionColor(ItemMeta meta, org.bukkit.Color color) {
+		Log.error("VersionIndependentUtils", "setPotionColor cannot be handled on current version");
+	}
+
+	private PotionType getFromEffectType(PotionEffectType type) {
+		PotionType potionType = null;
+		for (PotionType potType : PotionType.values()) {
+			if (potType.toString().equalsIgnoreCase(type.getName())) {
+				potionType = potType;
+			}
+		}
+		if (potionType == null) {
+			throw new TypeNotPresentException(type.toString(), new Throwable());
+		}
+		return potionType;
 	}
 
 

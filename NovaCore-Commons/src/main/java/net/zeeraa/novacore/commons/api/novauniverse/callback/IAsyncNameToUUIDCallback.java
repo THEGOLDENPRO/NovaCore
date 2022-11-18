@@ -15,5 +15,5 @@ public interface IAsyncNameToUUIDCallback {
 	 *                  successful
 	 * @since 2.0.0
 	 */
-	public void onResult(UUID uuid, Exception exception);
+	void onResult(UUID uuid, Exception exception);
 }

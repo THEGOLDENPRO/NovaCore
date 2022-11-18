@@ -21,6 +21,8 @@ import org.bukkit.map.MapView;
 
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.awt.Color;
 import java.util.function.Consumer;
@@ -747,4 +749,8 @@ public abstract class VersionIndependentUtils {
 	public abstract Block getReacheableBlockExact(LivingEntity entity);
 
 	public abstract FallingBlock spawnFallingBlock(Location location, Material material, byte data, Consumer<FallingBlock> consumer);
+
+	public abstract void setPotionEffect(ItemStack item, ItemMeta meta, PotionEffect effect, boolean color);
+
+	public abstract void setPotionColor(ItemMeta meta, org.bukkit.Color color);
 }

@@ -8,7 +8,7 @@ import java.util.Map;
 import org.json.JSONObject;
 
 public class MapModuleManager {
-	private static Map<String, Class<? extends MapModule>> mapModules = new HashMap<String, Class<? extends MapModule>>();
+	private static Map<String, Class<? extends MapModule>> mapModules = new HashMap<>();
 
 	public static void addMapModule(String name, Class<? extends MapModule> clazz) {
 		mapModules.put(name.toLowerCase(), clazz);

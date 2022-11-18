@@ -61,22 +61,15 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	@Override
 	public void onLoad() {
 		MedicalSupplyDropManager.instance = this;
-		chests = new ArrayList<MedicalSupplyDrop>();
-		dropEffects = new ArrayList<MedicalSupplyDropEffect>();
-		particleEffects = new HashMap<UUID, LootdropParticleEffect>();
+		chests = new ArrayList<>();
+		dropEffects = new ArrayList<>();
+		particleEffects = new HashMap<>();
 
 		this.defaultSpawnTimeTicks = 60 * 20 * 2;
 
-		this.particleTask = new SimpleTask(NovaCore.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				particleEffects.values().forEach(e -> e.update());
-			}
-		}, 2L);
+		this.particleTask = new SimpleTask(NovaCore.getInstance(), () -> particleEffects.values().forEach(LootdropParticleEffect::update), 2L);
 
-		this.removeTask = new SimpleTask(NovaCore.getInstance(), () -> {
-			dropEffects.removeIf(e -> e.isCompleted());
-		}, 20L);
+		this.removeTask = new SimpleTask(NovaCore.getInstance(), () -> dropEffects.removeIf(MedicalSupplyDropEffect::isCompleted), 20L);
 	}
 
 	@Override
@@ -101,7 +94,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	}
 
 	public void destroy() {
-		dropEffects.forEach(effect -> effect.undoBlocks());
+		dropEffects.forEach(MedicalSupplyDropEffect::undoBlocks);
 
 		particleEffects.clear();
 
@@ -111,7 +104,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	}
 
 	public void removeFromWorld(World world) {
-		dropEffects.stream().filter(e -> e.getWorld().equals(world)).forEach(e -> e.undoBlocks());
+		dropEffects.stream().filter(e -> e.getWorld().equals(world)).forEach(MedicalSupplyDropEffect::undoBlocks);
 
 		List<UUID> removeParticles = new ArrayList<UUID>();
 
@@ -159,11 +152,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 			return false;
 		}
 
-		if (LocationUtils.isOutsideOfBorder(location)) {
-			return false;
-		}
-
-		return true;
+		return !LocationUtils.isOutsideOfBorder(location);
 	}
 
 	public void spawnChest(Location location, String lootTable) {
@@ -304,7 +293,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent e) {
-		if (dropEffects.stream().filter(ef -> ef.getWorld().equals(e.getBlock().getWorld())).filter(ef -> LocationUtils.isBlockXZMatching(ef.getLocation(), e.getBlock().getLocation())).findAny().isPresent()) {
+		if (dropEffects.stream().filter(ef -> ef.getWorld().equals(e.getBlock().getWorld())).anyMatch(ef -> LocationUtils.isBlockXZMatching(ef.getLocation(), e.getBlock().getLocation()))) {
 			e.setCancelled(true);
 		}
 	}
@@ -326,7 +315,6 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 
 			if (chest != null) {
 				e.setCancelled(true);
-				return;
 			}
 		}
 	}

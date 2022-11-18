@@ -36,24 +36,21 @@ public class NovaCoreSubCommandGameEliminateOfflinePlayer extends NovaSubCommand
 					sender.sendMessage(ChatColor.AQUA + "Please wait while we try to fetch the uuid of that player from the mojang api...");
 
 					try {
-						NovaUniverseAPI.nameToUUIDAsync(args[0], new IAsyncNameToUUIDCallback() {
-							@Override
-							public void onResult(UUID uuid, Exception exception) {
-								if (uuid != null) {
-									if (GameManager.getInstance().getActiveGame().getPlayers().contains(uuid)) {
-										GameManager.getInstance().getActiveGame().eliminatePlayer(Bukkit.getServer().getOfflinePlayer(uuid), null, PlayerEliminationReason.COMMAND);
-										sender.sendMessage(ChatColor.GREEN + "Player with uuid " + ChatColor.AQUA + uuid + ChatColor.GREEN + " was eliminated");
-									} else {
-										sender.sendMessage(ChatColor.RED + "That player is not in game");
-									}
+						NovaUniverseAPI.nameToUUIDAsync(args[0], (uuid, exception) -> {
+							if (uuid != null) {
+								if (GameManager.getInstance().getActiveGame().getPlayers().contains(uuid)) {
+									GameManager.getInstance().getActiveGame().eliminatePlayer(Bukkit.getServer().getOfflinePlayer(uuid), null, PlayerEliminationReason.COMMAND);
+									sender.sendMessage(ChatColor.GREEN + "Player with uuid " + ChatColor.AQUA + uuid + ChatColor.GREEN + " was eliminated");
 								} else {
-									if (exception != null) {
-										exception.printStackTrace();
-										Log.error("EliminateOfflinePlayerCommand", "An exception occured while trying to fetch the player id from the novauniverse api. " + exception.getClass().getName() + " " + exception.getMessage());
-										sender.sendMessage(ChatColor.DARK_RED + "An exception occured while trying to fetch the player id from the novauniverse api. " + exception.getClass().getName() + " " + exception.getMessage());
-									} else {
-										sender.sendMessage(ChatColor.RED + "Could not find a player named " + args[0]);
-									}
+									sender.sendMessage(ChatColor.RED + "That player is not in game");
+								}
+							} else {
+								if (exception != null) {
+									exception.printStackTrace();
+									Log.error("EliminateOfflinePlayerCommand", "An exception occured while trying to fetch the player id from the novauniverse api. " + exception.getClass().getName() + " " + exception.getMessage());
+									sender.sendMessage(ChatColor.DARK_RED + "An exception occured while trying to fetch the player id from the novauniverse api. " + exception.getClass().getName() + " " + exception.getMessage());
+								} else {
+									sender.sendMessage(ChatColor.RED + "Could not find a player named " + args[0]);
 								}
 							}
 						});

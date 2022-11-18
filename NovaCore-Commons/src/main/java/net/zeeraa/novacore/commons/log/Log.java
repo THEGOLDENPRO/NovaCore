@@ -22,7 +22,7 @@ import net.zeeraa.novacore.commons.async.AsyncManager;
 public class Log {
 	private static LogLevel consoleLogLevel = LogLevel.INFO;
 
-	public static HashMap<UUID, LogLevel> subscribedPlayers = new HashMap<UUID, LogLevel>();
+	public static HashMap<UUID, LogLevel> subscribedPlayers = new HashMap<>();
 
 	public static void trace(String message) {
 		Log.trace(null, message);
@@ -83,12 +83,7 @@ public class Log {
 	public static void log(String source, String message, LogLevel logLevel) {
 		if (NovaCommons.getServerType() == ServerType.SPIGOT) {
 			if (!Bukkit.isPrimaryThread()) {
-				AsyncManager.runSync(new Runnable() {
-					@Override
-					public void run() {
-						Log.log(source, message, logLevel);
-					}
-				});
+				AsyncManager.runSync(() -> Log.log(source, message, logLevel));
 				return;
 			}
 		}

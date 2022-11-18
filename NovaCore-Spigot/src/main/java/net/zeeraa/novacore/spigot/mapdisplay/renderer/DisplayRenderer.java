@@ -44,7 +44,7 @@ public class DisplayRenderer extends MapRenderer {
 	}
 
 	public DisplayRenderer() {
-		hasRendered = new ArrayList<UUID>();
+		hasRendered = new ArrayList<>();
 		rendererId = UUID.randomUUID();
 	}
 

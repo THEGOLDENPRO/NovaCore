@@ -10,5 +10,5 @@ public interface GameStartFailureMessage {
 	 * @param exception The {@link Exception} that caused the failure. This can be
 	 *                  null
 	 */
-	public void showStartFailureMessage(Game game, Exception exception);
+	void showStartFailureMessage(Game game, Exception exception);
 }

@@ -99,14 +99,11 @@ public class RepeatingGameTrigger extends ScheduledGameTrigger implements ITicki
 			task = null;
 		}
 
-		task = NovaCommons.getAbstractSimpleTaskCreator().createTask(new Runnable() {
-			@Override
-			public void run() {
-				ticksLeft--;
-				if (ticksLeft <= 0) {
-					trigger(TriggerFlag.SCHEDULED_TRIGGER_ACTIVATION);
-					ticksLeft = period;
-				}
+		task = NovaCommons.getAbstractSimpleTaskCreator().createTask(() -> {
+			ticksLeft--;
+			if (ticksLeft <= 0) {
+				trigger(TriggerFlag.SCHEDULED_TRIGGER_ACTIVATION);
+				ticksLeft = period;
 			}
 		}, 1L, 1L);
 

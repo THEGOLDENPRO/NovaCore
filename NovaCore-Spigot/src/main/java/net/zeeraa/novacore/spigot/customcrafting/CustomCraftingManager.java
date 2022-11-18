@@ -72,7 +72,7 @@ public class CustomCraftingManager implements Listener {
 
 	public boolean addRecipe(Class<? extends CustomRecipe> clazz) {
 		try {
-			CustomRecipe recipe = (CustomRecipe) clazz.getConstructor().newInstance(new Object[] {});
+			CustomRecipe recipe = clazz.getConstructor().newInstance();
 			return this.addRecipe(recipe);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -139,7 +139,7 @@ public class LocationData {
 	 * @return A {@link List} with bukkit {@link Location}s
 	 */
 	public static List<Location> toLocations(List<LocationData> locations, World world) {
-		List<Location> result = new ArrayList<Location>();
+		List<Location> result = new ArrayList<>();
 
 		for (LocationData locationData : locations) {
 			result.add(locationData.toLocation(world));
@@ -189,10 +189,8 @@ public class LocationData {
 	public static double blockCenterLocation(int block) {
 		if (block >= 0) {
 			return ((double) block) + 0.5;
-		}
-		if (block < 0) {
+		} else {
 			return ((double) block) - 0.5;
 		}
-		return block;
 	}
 }

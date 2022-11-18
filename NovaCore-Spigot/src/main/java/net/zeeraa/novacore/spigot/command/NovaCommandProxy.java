@@ -79,9 +79,7 @@ public class NovaCommandProxy extends Command {
 					// remove first argument to prevent the sub command name to be the first entry
 					// in arguments
 					String[] newArgs = new String[args.length - 1];
-					for (int i = 1; i < args.length; i++) {
-						newArgs[i - 1] = args[i];
-					}
+					System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 
 					// Log.trace("recursive check on sub command " + subCommand.getName() + " origin
 					// command: " + novaCommand.getName());
@@ -118,7 +116,7 @@ public class NovaCommandProxy extends Command {
 	private List<String> recursiceCommandTabCheck(NovaCommandBase command, CommandSender sender, String alias, String[] args) {
 		if (args.length == 1) {
 			if (!command.hasSenderPermission(sender)) {
-				return new ArrayList<String>();
+				return new ArrayList<>();
 			}
 
 			List<String> result = new ArrayList<>();
@@ -129,7 +127,7 @@ public class NovaCommandProxy extends Command {
 
 			if (command.isFilterAutocomplete()) {
 				// Filter
-				Collections.sort(commandResults, String.CASE_INSENSITIVE_ORDER);
+				commandResults.sort(String.CASE_INSENSITIVE_ORDER);
 				for (String string : commandResults) {
 					if (StringUtil.startsWithIgnoreCase(string, lastWord)) {
 						result.add(string);
@@ -155,7 +153,7 @@ public class NovaCommandProxy extends Command {
 				});
 			});
 
-			Collections.sort(matchedSubCommands, String.CASE_INSENSITIVE_ORDER);
+			matchedSubCommands.sort(String.CASE_INSENSITIVE_ORDER);
 
 			result.addAll(0, matchedSubCommands);
 
@@ -184,9 +182,7 @@ public class NovaCommandProxy extends Command {
 						// remove first argument to prevent the sub command name to be the first entry
 						// in arguments
 						String[] newArgs = new String[args.length - 1];
-						for (int i = 1; i < args.length; i++) {
-							newArgs[i - 1] = args[i];
-						}
+						System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 
 						return recursiceCommandTabCheck(subCommand, sender, newAlias, newArgs);
 					}
@@ -195,7 +191,7 @@ public class NovaCommandProxy extends Command {
 
 			// No matching sub commands found, Check permission
 			if (!command.hasSenderPermission(sender)) {
-				return new ArrayList<String>();
+				return new ArrayList<>();
 			}
 
 			// No matching sub commands found, Return the tab value of this command

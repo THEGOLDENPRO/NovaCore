@@ -29,8 +29,7 @@ public class RandomFireworkEffect {
 	 * @return A random {@link FireworkEffect}
 	 */
 	public static FireworkEffect randomFireworkEffect(Random random) {
-		FireworkEffect effect = FireworkEffect.builder().flicker(random.nextBoolean()).withColor(getColor(random.nextInt(17) + 1)).withFade(getColor(random.nextInt(17) + 1)).with(Type.values()[random.nextInt(Type.values().length)]).trail(random.nextBoolean()).build();
-		return effect;
+		return FireworkEffect.builder().flicker(random.nextBoolean()).withColor(getColor(random.nextInt(17) + 1)).withFade(getColor(random.nextInt(17) + 1)).with(Type.values()[random.nextInt(Type.values().length)]).trail(random.nextBoolean()).build();
 	}
 
 	public static Color getColor(final int i) {
@@ -69,7 +68,8 @@ public class RandomFireworkEffect {
 			return Color.WHITE;
 		case 17:
 			return Color.YELLOW;
+			default:
+				throw new IllegalStateException("Unexpected value " + i);
 		}
-		return null;
 	}
 }

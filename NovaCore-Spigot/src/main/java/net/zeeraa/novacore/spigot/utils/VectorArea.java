@@ -166,7 +166,7 @@ public class VectorArea {
 	 * @return {@link List} with {@link Vector}s within
 	 */
 	public List<Vector> getAllVectors() {
-		List<Vector> vectors = new ArrayList<Vector>();
+		List<Vector> vectors = new ArrayList<>();
 
 		for (int x = position1.getBlockX(); x <= position2.getBlockX(); x++) {
 			for (int y = position1.getBlockY(); y <= position2.getBlockY(); y++) {

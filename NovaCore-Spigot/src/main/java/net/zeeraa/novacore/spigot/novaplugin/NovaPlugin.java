@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.novaplugin;
 
+import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemInitialized;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -112,6 +113,16 @@ public abstract class NovaPlugin extends JavaPlugin {
 			return CustomItemManager.getInstance().addCustomItem(clazz);
 		} catch (Exception e) {
 			Log.error(this.getName(), "Failed to add custom item " + clazz.getName() + ". Reason: " + e.getClass().getName() + " : " + e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	protected boolean addCustomItem(CustomItemInitialized customItem) {
+		try {
+			return CustomItemManager.getInstance().addCustomItem(customItem);
+		} catch (Exception e) {
+			Log.error(this.getName(), "Failed to add custom item " + customItem.getFullId() + ". Reason: " + e.getClass().getName() + " : " + e.getMessage());
 			e.printStackTrace();
 		}
 		return false;

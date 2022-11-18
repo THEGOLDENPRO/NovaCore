@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,12 +54,12 @@ public abstract class NovaCommandBase {
 		this.permissionDescription = "";
 		this.permissionDefaultValue = PermissionDefault.FALSE;
 		this.requireOp = false;
-		this.subCommands = new ArrayList<NovaSubCommand>();
+		this.subCommands = new ArrayList<>();
 		this.allowedSenders = AllowedSenders.ALL;
 		this.parentCommand = null;
 		this.usage = null;
 
-		this.aliases = new ArrayList<String>();
+		this.aliases = new ArrayList<>();
 
 		this.emptyTabMode = false;
 
@@ -370,7 +371,7 @@ public abstract class NovaCommandBase {
 	 */
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
 		if (emptyTabMode) {
-			return new ArrayList<String>();
+			return new ArrayList<>();
 		}
 
 		Validate.notNull(sender, "Sender cannot be null");
@@ -385,7 +386,7 @@ public abstract class NovaCommandBase {
 
 		Player senderPlayer = sender instanceof Player ? (Player) sender : null;
 
-		List<String> matchedPlayers = new ArrayList<String>();
+		List<String> matchedPlayers = new ArrayList<>();
 		sender.getServer().getOnlinePlayers().forEach(player -> {
 			String name = player.getName();
 			if ((senderPlayer == null || senderPlayer.canSee(player)) && StringUtil.startsWithIgnoreCase(name, lastWord)) {
@@ -393,7 +394,7 @@ public abstract class NovaCommandBase {
 			}
 		});
 
-		Collections.sort(matchedPlayers, String.CASE_INSENSITIVE_ORDER);
+		matchedPlayers.sort(String.CASE_INSENSITIVE_ORDER);
 		return matchedPlayers;
 	}
 
@@ -461,9 +462,7 @@ public abstract class NovaCommandBase {
 	public static List<String> generateAliasList(String... aliases) {
 		List<String> result = new ArrayList<>();
 
-		for (String alias : aliases) {
-			result.add(alias);
-		}
+		result.addAll(Arrays.asList(aliases));
 
 		return result;
 	}
@@ -510,9 +509,7 @@ public abstract class NovaCommandBase {
 		}
 
 		if (this.isRequireOp()) {
-			if (sender.isOp()) {
-				return true;
-			}
+			return sender.isOp();
 		}
 
 		return false;

@@ -22,7 +22,7 @@ public abstract class Team {
 
 	public Team() {
 		this.teamUuid = UUID.randomUUID();
-		members = new ArrayList<UUID>();
+		members = new ArrayList<>();
 	}
 	
 	public List<Player> getOnlinePlayers() {

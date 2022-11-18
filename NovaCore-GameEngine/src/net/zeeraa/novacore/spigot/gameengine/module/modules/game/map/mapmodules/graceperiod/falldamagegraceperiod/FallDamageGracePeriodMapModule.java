@@ -56,13 +56,10 @@ public class FallDamageGracePeriodMapModule extends MapModule implements Listene
 
 		endTimer = new BasicTimer(seconds, 20L);
 
-		endTimer.addTickCallback(new TickCallback() {
-			@Override
-			public void execute(long timeLeft) {
-				if (warnings.contains(timeLeft)) {
-					Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentSound.NOTE_PLING.play(player));
-					Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Fall damage will be enabled in " + timeLeft + " seconds " + ChatColor.RESET + ChatColor.YELLOW + TextUtils.ICON_WARNING);
-				}
+		endTimer.addTickCallback(timeLeft -> {
+			if (warnings.contains(timeLeft)) {
+				Bukkit.getServer().getOnlinePlayers().forEach(VersionIndependentSound.NOTE_PLING::play);
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Fall damage will be enabled in " + timeLeft + " seconds " + ChatColor.RESET + ChatColor.YELLOW + TextUtils.ICON_WARNING);
 			}
 		});
 

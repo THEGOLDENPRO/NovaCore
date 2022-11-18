@@ -25,7 +25,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.Trigge
 public class GameEngineDebugTriggers {
 	public static void init() {
 		DebugCommandRegistrator.getInstance().addDebugTrigger(new DebugTrigger() {
-			private Map<Player, Integer> index = new HashMap<Player, Integer>();
+			private Map<Player, Integer> index = new HashMap<>();
 
 			private void next(Player player) {
 				int i = 0;

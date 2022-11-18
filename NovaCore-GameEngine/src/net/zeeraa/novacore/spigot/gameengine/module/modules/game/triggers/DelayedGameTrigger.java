@@ -84,12 +84,9 @@ public class DelayedGameTrigger extends ScheduledGameTrigger implements ITicking
 		}
 
 		timer = new BasicTimer(delay, 1);
-		timer.addFinishCallback(new Callback() {
-			@Override
-			public void execute() {
-				stop();
-				trigger(TriggerFlag.SCHEDULED_TRIGGER_ACTIVATION);
-			}
+		timer.addFinishCallback(() -> {
+			stop();
+			trigger(TriggerFlag.SCHEDULED_TRIGGER_ACTIVATION);
 		});
 
 		for (TickCallback callback : tickCallbacks) {

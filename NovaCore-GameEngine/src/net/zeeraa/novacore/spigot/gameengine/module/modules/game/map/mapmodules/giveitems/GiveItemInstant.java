@@ -28,7 +28,7 @@ public class GiveItemInstant extends MapModule {
 	public GiveItemInstant(JSONObject json) {
 		super(json);
 
-		this.items = new ArrayList<ItemStack>();
+		this.items = new ArrayList<>();
 
 		JSONArray items = json.getJSONArray("items");
 		for (int i = 0; i < items.length(); i++) {

@@ -87,13 +87,13 @@ public class CustomItemManager extends NovaModule implements Listener {
 	/**
 	 * Add a custom item that has been initialized, for items of same type
 	 *
-	 * @param name The {@link CustomItem} name, to diferentiate multiple custom items
+	 *
 	 * @param customItem The initialized {@link CustomItem}
 	 * @return <code>true</code> on success
 	 */
-	public boolean addCustomItem(String name, CustomItem customItem) {
-		if (!hasCustomItem(customItem.getClass().getName() + "." + name)) {
-			customItems.put(customItem.getClass().getName() + "." + name, customItem);
+	public boolean addCustomItem(CustomItemInitialized customItem) {
+		if (!hasCustomItem(customItem.getFullId())) {
+			customItems.put(customItem.getFullId(), customItem);
 			return true;
 		}
 		return false;
@@ -120,6 +120,16 @@ public class CustomItemManager extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Check if a custom item has been loaded
+	 *
+	 * @param className The name of the class of the {@link CustomItem}
+	 * @return <code>true</code> if the item has been loaded
+	 */
+	public boolean hasCustomItemId(String id, String className) {
+		return hasCustomItem(className + "." + id);
+	}
+
+	/**
 	 * Get the {@link CustomItem} instance by the class
 	 * 
 	 * @param clazz The {@link CustomItem} class to get
@@ -132,8 +142,21 @@ public class CustomItemManager extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Get the {@link CustomItem} instance by the class and item ID
+	 *
+	 * @param clazz The {@link CustomItem} class to get
+	 * @param id The ID
+	 * @return The {@link CustomItem} instance or <code>null</code> if not loaded or
+	 *         not found
+	 */
+	@Nullable
+	public CustomItem getCustomItemByID(String id, Class<? extends CustomItemInitialized> clazz) {
+		return this.getCustomItem(clazz.getName() + "." + id);
+	}
+
+	/**
 	 * Get the {@link CustomItem} instance by the class name
-	 * 
+	 *
 	 * @param className The class name of the {@link CustomItem} to get
 	 * @return The {@link CustomItem} instance or <code>null</code> if not loaded or
 	 *         not found
@@ -170,8 +193,21 @@ public class CustomItemManager extends NovaModule implements Listener {
 		if (customItem != null) {
 			return customItem.getItem(player);
 		}
-
 		return null;
+	}
+
+	/**
+	 * Get an {@link ItemStack} from a {@link CustomItemInitialized} with id
+	 *
+	 * @param clazz The {@link CustomItemInitialized} class to get the
+	 *                  {@link ItemStack} from
+	 * @param id The id for the specific item
+	 * @param player    The player that the item was created by
+	 * @return An {@link ItemStack} or <code>null</code> if not loaded or not found
+	 */
+	@Nullable
+	public ItemStack getCustomItemStackByID(String id, Class<? extends CustomItemInitialized> clazz, @Nullable Player player) {
+		return this.getCustomItemStack(clazz.getName() + "." + id, player);
 	}
 
 	/**
@@ -219,6 +255,16 @@ public class CustomItemManager extends NovaModule implements Listener {
 			String itemId = NBTEditor.getString(item, "novacore", "customitemid");
 
 			return itemId.equalsIgnoreCase(customItemClass.getName());
+		}
+
+		return false;
+	}
+
+	public boolean isType(ItemStack item, Class<? extends CustomItemInitialized> customItemClass, String id) {
+		if (isCustomItem(item)) {
+			String itemId = NBTEditor.getString(item, "novacore", "customitemid");
+
+			return itemId.equalsIgnoreCase(customItemClass.getName() + "." + id);
 		}
 
 		return false;

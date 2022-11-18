@@ -45,26 +45,18 @@ public class SimpleBoxDecay extends MapModule {
 
 		int beginAfter = json.getInt("begin_after");
 
-		trigger = new RepeatingGameTrigger("novauniverse.simpleboxdecay.simpleboxdecay", 20L, 60L, new TriggerCallback() {
-			@Override
-			public void run(GameTrigger trigger2, TriggerFlag reason) {
-				execDecayStep();
-			}
-		});
+		trigger = new RepeatingGameTrigger("novauniverse.simpleboxdecay.simpleboxdecay", 20L, 60L, (trigger2, reason) -> execDecayStep());
 
 		trigger.addFlag(TriggerFlag.STOP_ON_GAME_END);
 
-		startTrigger = new DelayedGameTrigger("novauniverse.simpleboxdecay.begin_simpleboxdecay", beginAfter * 20L, new TriggerCallback() {
-			@Override
-			public void run(GameTrigger trigger2, TriggerFlag reason) {
-				Bukkit.getServer().getOnlinePlayers().forEach(p -> {
-					p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);
-				});
+		startTrigger = new DelayedGameTrigger("novauniverse.simpleboxdecay.begin_simpleboxdecay", beginAfter * 20L, (trigger2, reason) -> {
+			Bukkit.getServer().getOnlinePlayers().forEach(p -> {
+				p.playSound(p.getLocation(), Sound.NOTE_PLING, 1F, 1F);
+			});
 
-				Bukkit.getServer().broadcastMessage(startMessage);
+			Bukkit.getServer().broadcastMessage(startMessage);
 
-				trigger.start();
-			}
+			trigger.start();
 		});
 
 		startTrigger.addFlag(TriggerFlag.STOP_ON_GAME_END);

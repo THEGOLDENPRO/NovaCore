@@ -32,7 +32,7 @@ public class WorldborderMapModule extends MapModule {
 
 	private Game game;
 
-	private int taskId = -1;
+	private int taskId;
 
 	private int stepTime;
 	private double stepShrinkValue;
@@ -116,18 +116,15 @@ public class WorldborderMapModule extends MapModule {
 		this.taskId = -1;
 		this.activeStep = 0;
 
-		this.startTrigger = new DelayedGameTrigger("novacore.worldborder.start", startDelay * 20, new TriggerCallback() {
-			@Override
-			public void run(GameTrigger trigger, TriggerFlag reason) {
-				startTrigger.stop();
-				// Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD +
-				// "The world border is starting to shrink");
-				LanguageManager.broadcast("novacore.game.wordborder.start");
+		this.startTrigger = new DelayedGameTrigger("novacore.worldborder.start", startDelay * 20L, (trigger, reason) -> {
+			startTrigger.stop();
+			// Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD +
+			// "The world border is starting to shrink");
+			LanguageManager.broadcast("novacore.game.wordborder.start");
 
-				Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().playSound(player, player.getLocation(), VersionIndependentSound.NOTE_PLING, 1F, 1F));
+			Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().playSound(player, player.getLocation(), VersionIndependentSound.NOTE_PLING, 1F, 1F));
 
-				start();
-			}
+			start();
 		});
 		this.startTrigger.addFlag(TriggerFlag.RUN_ONLY_ONCE);
 		this.startTrigger.addFlag(TriggerFlag.STOP_ON_GAME_END);
@@ -179,7 +176,6 @@ public class WorldborderMapModule extends MapModule {
 			Log.info("The worldborder in world " + game.getWorld().getName() + " has been reset");
 		} else {
 			Log.fatal("Worldborder cant set initial size because the game does not have a world set");
-			return;
 		}
 	}
 	
@@ -220,13 +216,13 @@ public class WorldborderMapModule extends MapModule {
 						return;
 					}
 
-					game.getWorld().getWorldBorder().setSize(lastSize - stepShrinkValue, (long) stepTime);
+					game.getWorld().getWorldBorder().setSize(lastSize - stepShrinkValue, stepTime);
 
 					lastSize -= stepShrinkValue;
 
 					activeStep++;
 				}
-			}, 0, stepTime * 20);
+			}, 0, stepTime * 20L);
 			return true;
 		}
 		return false;

@@ -32,5 +32,5 @@ public interface ExecuteQueryAsyncCallback {
 	 * @param exception {@link Exception} if something went wrong or
 	 *                  <code>null</code> if successful
 	 */
-	public void onExecute(ResultSet rs, Exception exception);
+	void onExecute(ResultSet rs, Exception exception);
 }

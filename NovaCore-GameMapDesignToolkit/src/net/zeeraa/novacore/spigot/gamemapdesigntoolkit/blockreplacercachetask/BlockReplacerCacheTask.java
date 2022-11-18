@@ -36,7 +36,7 @@ public class BlockReplacerCacheTask {
 		this.x = area.getPosition1().getBlockX();
 		this.z = area.getPosition1().getBlockZ();
 
-		this.locations = new ArrayList<XYZLocation>();
+		this.locations = new ArrayList<>();
 
 		this.task = new BukkitRunnable() {
 			@Override

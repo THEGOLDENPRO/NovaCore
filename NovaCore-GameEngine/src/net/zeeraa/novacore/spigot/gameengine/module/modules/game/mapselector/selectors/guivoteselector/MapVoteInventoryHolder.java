@@ -10,7 +10,7 @@ public class MapVoteInventoryHolder implements InventoryHolder {
 	private Map<Integer, String> mapSlots;
 
 	public MapVoteInventoryHolder() {
-		this.mapSlots = new HashMap<Integer, String>();
+		this.mapSlots = new HashMap<>();
 	}
 
 	public Map<Integer, String> getMapSlots() {

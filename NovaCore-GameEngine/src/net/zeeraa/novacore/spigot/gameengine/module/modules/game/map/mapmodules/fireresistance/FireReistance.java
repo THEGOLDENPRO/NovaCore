@@ -34,12 +34,7 @@ public class FireReistance extends MapModule implements Listener {
 	public void onGameStart(Game game) {
 		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
 		if (extinguish) {
-			task = new SimpleTask(game.getPlugin(), new Runnable() {
-				@Override
-				public void run() {
-					Bukkit.getServer().getOnlinePlayers().forEach(player -> player.setFireTicks(0));
-				}
-			}, 1L);
+			task = new SimpleTask(game.getPlugin(), () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> player.setFireTicks(0)), 1L);
 			Task.tryStartTask(task);
 		}
 	}

@@ -77,7 +77,7 @@ public class LegacyMapReader extends MapReader {
 			}
 		}
 
-		ArrayList<LocationData> starterLocations = new ArrayList<LocationData>();
+		ArrayList<LocationData> starterLocations = new ArrayList<>();
 		if (json.has("starter_locations")) {
 			JSONArray starterLocationsJSON = json.getJSONArray("starter_locations");
 			for (int i = 0; i < starterLocationsJSON.length(); i++) {
@@ -91,7 +91,7 @@ public class LegacyMapReader extends MapReader {
 			}
 		}
 
-		List<HologramData> holograms = new ArrayList<HologramData>();
+		List<HologramData> holograms = new ArrayList<>();
 
 		if (json.has("holograms")) {
 			JSONArray hologramsJson = json.getJSONArray("holograms");
@@ -101,7 +101,7 @@ public class LegacyMapReader extends MapReader {
 
 				LocationData location = new LocationData(hologramJson.getJSONObject("location"));
 
-				List<String> lines = new ArrayList<String>();
+				List<String> lines = new ArrayList<>();
 
 				JSONArray linesJson = hologramJson.getJSONArray("lines");
 

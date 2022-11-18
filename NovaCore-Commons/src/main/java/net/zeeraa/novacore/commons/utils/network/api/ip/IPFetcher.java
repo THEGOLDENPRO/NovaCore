@@ -55,56 +55,45 @@ public class IPFetcher {
 	}
 
 	public static final void getIPv4Async(IAsyncIPCallback callback) {
-		AsyncManager.runAsync(new Runnable() {
-			@Override
-			public void run() {
-				Exception exception = null;
-				String ip = null;
-				try {
-					ip = IPFetcher.getIPv4Sync();
-					exception = null;
-				} catch (Exception e) {
-					ip = null;
-					exception = e;
-				}
-
-				final String finalIp = ip;
-				final Exception finalException = exception;
-
-				AsyncManager.runSync(new Runnable() {
-					@Override
-					public void run() {
-						callback.onResult(finalIp, finalException);
-					}
-				});
+		AsyncManager.runAsync(() -> {
+			Exception exception = null;
+			String ip = null;
+			try {
+				ip = IPFetcher.getIPv4Sync();
+				exception = null;
+			} catch (Exception e) {
+				ip = null;
+				exception = e;
 			}
+
+			final String finalIp = ip;
+			final Exception finalException = exception;
+
+			AsyncManager.runSync(new Runnable() {
+				@Override
+				public void run() {
+					callback.onResult(finalIp, finalException);
+				}
+			});
 		});
 	}
 
 	public static final void getIPAsync(IAsyncIPCallback callback) {
-		AsyncManager.runAsync(new Runnable() {
-			@Override
-			public void run() {
-				Exception exception = null;
-				String ip = null;
-				try {
-					ip = IPFetcher.getIPSync();
-					exception = null;
-				} catch (Exception e) {
-					ip = null;
-					exception = e;
-				}
-
-				final String finalIp = ip;
-				final Exception finalException = exception;
-
-				AsyncManager.runSync(new Runnable() {
-					@Override
-					public void run() {
-						callback.onResult(finalIp, finalException);
-					}
-				});
+		AsyncManager.runAsync(() -> {
+			Exception exception;
+			String ip;
+			try {
+				ip = IPFetcher.getIPSync();
+				exception = null;
+			} catch (Exception e) {
+				ip = null;
+				exception = e;
 			}
+
+			final String finalIp = ip;
+			final Exception finalException = exception;
+
+			AsyncManager.runSync(() -> callback.onResult(finalIp, finalException));
 		});
 	}
 }

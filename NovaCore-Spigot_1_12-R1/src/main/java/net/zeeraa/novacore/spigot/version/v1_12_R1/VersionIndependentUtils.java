@@ -32,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
 
@@ -42,6 +43,7 @@ import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import java.awt.Color;
@@ -1007,6 +1009,25 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			return cfb;
 		} else {
 			throw new IllegalStateException("[VersionIndependentUtils] An unexpected error occurred");
+		}
+	}
+
+	@Override
+	public void setPotionEffect(ItemStack item, ItemMeta meta, PotionEffect effect, boolean color) {
+		if (meta instanceof PotionMeta) {
+			PotionMeta potMeta = (PotionMeta) meta;
+			potMeta.addCustomEffect(effect, true);
+			if (color) {
+				potMeta.setColor(effect.getColor());
+			}
+		}
+	}
+
+	@Override
+	public void setPotionColor(ItemMeta meta, org.bukkit.Color color) {
+		if (meta instanceof PotionMeta) {
+			PotionMeta potMeta = (PotionMeta) meta;
+			potMeta.setColor(color);
 		}
 	}
 }
