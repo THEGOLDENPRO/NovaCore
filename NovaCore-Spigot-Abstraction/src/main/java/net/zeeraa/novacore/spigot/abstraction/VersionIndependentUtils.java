@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -22,8 +23,6 @@ import org.bukkit.map.MapView;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import java.awt.Color;
 import java.util.function.Consumer;
 
@@ -753,4 +752,6 @@ public abstract class VersionIndependentUtils {
 	public abstract void setPotionEffect(ItemStack item, ItemMeta meta, PotionEffect effect, boolean color);
 
 	public abstract void setPotionColor(ItemMeta meta, org.bukkit.Color color);
+	
+	public abstract Block getBlockFromProjectileHitEvent(ProjectileHitEvent e);
 }
