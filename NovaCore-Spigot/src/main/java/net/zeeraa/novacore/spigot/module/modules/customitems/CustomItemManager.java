@@ -233,7 +233,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 	 *         {@link CustomItem} has not been loaded or is missing
 	 */
 	@Nullable
-	private CustomItem getCustomItem(ItemStack item) {
+	public CustomItem getCustomItem(ItemStack item) {
 		if (isCustomItem(item)) {
 			String itemId = NBTEditor.getString(item, "novacore", "customitemid");
 
