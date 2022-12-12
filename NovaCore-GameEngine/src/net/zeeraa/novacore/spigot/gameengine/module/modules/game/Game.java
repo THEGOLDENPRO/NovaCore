@@ -846,7 +846,7 @@ public abstract class Game {
 			return false;
 		}
 
-		Log.debug("Adding player " + player.getName() + " the the game");
+		Log.debug("Adding player " + player.getName() + " to the game");
 
 		players.add(player.getUniqueId());
 
