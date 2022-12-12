@@ -45,11 +45,4 @@ public class ExperienceUtils {
         player.setExp(getExpProgress(xp));
         player.setLevel(levelFromXP(xp));
     }
-
-
-
-
-
-
-
 }
