@@ -27,7 +27,7 @@ public class NovaMapReader extends MapReader {
 	public static final String NAME = "nova";
 
 	public NovaMapReader() {
-		super("nova");
+		super(NAME);
 	}
 
 	@Override
