@@ -36,9 +36,9 @@ public class ExperienceUtils {
 
     public static float getExpProgress(long xp) {
         int level = levelFromXP(xp);
-        long levelXp = xpFromLevel(level);
+        float difference = xp - xpFromLevel(level);
 
-        return ((float) xp - levelXp)/(xpToNextLevel(level + 1));
+        return difference/xpToNextLevel(level);
     }
 
     public static void setXp(Player player, long xp) {
