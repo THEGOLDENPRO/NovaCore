@@ -113,7 +113,7 @@ public class RandomGenerator {
 	 * @return A random number between min and max
 	 */
 	public static long generateLong(long min, long max, Random random) {
-		return (random.nextLong() * (max - min)) + min;
-	}
+		return (long) (random.nextDouble() * (max - min) + min);
+	}	
 
 }
