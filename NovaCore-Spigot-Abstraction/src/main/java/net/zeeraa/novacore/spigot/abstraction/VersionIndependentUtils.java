@@ -127,15 +127,7 @@ public abstract class VersionIndependentUtils {
 		VersionIndependentUtils.instance = instance;
 	}
 
-	/**
-	 * Get the {@link LabyModProtocol} instance to use for this version. If the
-	 * server version is not supported by labymod this will return a fake instance
-	 * that does nothing
-	 * 
-	 * @return The {@link LabyModProtocol} instance to use
-	 * @author Zeeraa
-	 */
-	public abstract LabyModProtocol getLabyModProtocol();
+
 
 	/**
 	 * Get the {@link NovaCoreGameVersion} nova core is using for the server
