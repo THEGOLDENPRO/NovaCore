@@ -49,6 +49,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameEndE
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameLoadedEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameStartEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameStartFailureEvent;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.MapLoadedEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.readers.LegacyMapReader;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.readers.NovaMapReader;
@@ -419,6 +420,27 @@ public class GameManager extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Try to load all JSON files from a directory as maps and add them to the
+	 * active {@link MapSelector} defined by {@link GameManager#getMapSelector()}
+	 * <p>
+	 * This is the delayed version of
+	 * {@link GameManager#readMapsFromFolder(File, File)}, this will wait for the
+	 * server to load so that modules from external plugins can be used in the game
+	 * 
+	 * @param directory      Directory to scan
+	 * @param worldDirectory The directory containing the worlds
+	 * @since 2.0.0
+	 */
+	public void readMapsFromFolderDelayed(File directory, File worldDirectory) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				readMapsFromFolder(directory, worldDirectory);
+			}
+		}.runTaskLater(NovaCore.getInstance(), 0L);
+	}
+
+	/**
 	 * Read {@link GameMapData} from a {@link File} list and add it to the active
 	 * {@link MapSelector} defined by {@link GameManager#getMapSelector()}
 	 * 
@@ -455,6 +477,8 @@ public class GameManager extends NovaModule implements Listener {
 
 			if (map != null) {
 				this.getMapSelector().addMap(map);
+				MapLoadedEvent event = new MapLoadedEvent(map);
+				Bukkit.getServer().getPluginManager().callEvent(event);
 				return true;
 			} else {
 				Log.error("GameManager", "Failed to load map " + mapFile.getAbsolutePath() + ". Reader returned null");
@@ -465,6 +489,27 @@ public class GameManager extends NovaModule implements Listener {
 			Log.error("GameManager", "Failed to load map " + mapFile.getAbsolutePath() + ". Reason: " + e.getClass().getName() + " " + e.getMessage());
 		}
 		return false;
+	}
+
+	/**
+	 * Read {@link GameMapData} from a {@link File} list and add it to the active
+	 * {@link MapSelector} defined by {@link GameManager#getMapSelector()}
+	 * <p>
+	 * This is the delayed version of
+	 * {@link GameManager#readMapFromFile(File, File)}, this will wait for the
+	 * server to load so that modules from external plugins can be used in the game
+	 * 
+	 * @param mapFile        The {@link File} to read
+	 * @param worldDirectory The directory containing the worlds
+	 * @since 2.0.0
+	 */
+	public void readMapFromFileDelayed(File mapFile, File worldDirectory) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				readMapFromFileDelayed(mapFile, worldDirectory);
+			}
+		}.runTaskLater(NovaCore.getInstance(), 0L);
 	}
 
 	/**
