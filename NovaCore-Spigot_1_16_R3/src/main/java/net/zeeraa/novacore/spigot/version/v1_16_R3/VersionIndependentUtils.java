@@ -44,6 +44,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.RayTraceResult;
@@ -1158,5 +1159,15 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public Block getBlockFromProjectileHitEvent(ProjectileHitEvent e) {
 		return e.getHitBlock();
+	}
+
+	@Override
+	public ShapedRecipe createShapedRecipeSafe(ItemStack result, Plugin owner, String key) {
+		return new ShapedRecipe(new NamespacedKey(owner, key.toLowerCase()), result);
+	}
+
+	@Override
+	public ShapelessRecipe createShapelessRecipe(ItemStack result, Plugin owner, String key) {
+		return new ShapelessRecipe(new NamespacedKey(owner, key.toLowerCase()), result);
 	}
 }

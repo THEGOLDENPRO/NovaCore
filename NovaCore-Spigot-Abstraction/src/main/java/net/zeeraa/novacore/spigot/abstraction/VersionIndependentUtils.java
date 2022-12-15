@@ -19,6 +19,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.plugin.Plugin;
 
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
@@ -126,8 +127,6 @@ public abstract class VersionIndependentUtils {
 	public static void setInstance(VersionIndependentUtils instance) {
 		VersionIndependentUtils.instance = instance;
 	}
-
-
 
 	/**
 	 * Get the {@link NovaCoreGameVersion} nova core is using for the server
@@ -721,7 +720,6 @@ public abstract class VersionIndependentUtils {
 	 */
 	public abstract String colorizeRainbow(Color[] colors, int charsPerColor, String message);
 
-
 	public abstract PacketManager getPacketManager();
 
 	public abstract boolean canBreakBlock(ItemStack item, Material material);
@@ -731,7 +729,6 @@ public abstract class VersionIndependentUtils {
 	public abstract Material getMaterialFromName(String name);
 
 	public abstract void sendPacket(Player player, Object packet);
-
 
 	public abstract void addAttribute(ItemStack item, ItemMeta meta, AttributeInfo attributeInfo);
 
@@ -744,6 +741,30 @@ public abstract class VersionIndependentUtils {
 	public abstract void setPotionEffect(ItemStack item, ItemMeta meta, PotionEffect effect, boolean color);
 
 	public abstract void setPotionColor(ItemMeta meta, org.bukkit.Color color);
-	
+
 	public abstract Block getBlockFromProjectileHitEvent(ProjectileHitEvent e);
+
+	/**
+	 * Create a {@link ShapedRecipe} in any version of the game without receiving
+	 * warnings in the console
+	 * 
+	 * @param result The output of the recipe
+	 * @param owner  The {@link Plugin} that owns the recipe. The plugin
+	 *               will be used in the namespaced key
+	 * @param key    The key to use in the namespaced key
+	 * @return A {@link ShapedRecipe} with a namespaced key if applicable
+	 */
+	public abstract ShapedRecipe createShapedRecipeSafe(ItemStack result, Plugin owner, String key);
+
+	/**
+	 * Create a {@link ShapelessRecipe} in any version of the game without receiving
+	 * warnings in the console
+	 * 
+	 * @param result The output of the recipe
+	 * @param owner  The {@link Plugin} that owns the recipe. The plugin
+	 *               will be used in the namespaced key
+	 * @param key    The key to use in the namespaced key
+	 * @return A {@link ShapelessRecipe} with a namespaced key if applicable
+	 */
+	public abstract ShapelessRecipe createShapelessRecipe(ItemStack result, Plugin owner, String key);
 }

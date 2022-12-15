@@ -36,6 +36,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -1002,5 +1003,15 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		Vector vec = projectile.getVelocity();
 		Location hitLocation = new Location(loc.getWorld(), loc.getX() + vec.getX(), loc.getY() + vec.getY(), loc.getZ() + vec.getZ());
 		return hitLocation.getBlock();
+	}
+
+	@Override
+	public ShapedRecipe createShapedRecipeSafe(ItemStack result, Plugin owner, String key) {
+		return new ShapedRecipe(result);
+	}
+
+	@Override
+	public ShapelessRecipe createShapelessRecipe(ItemStack result, Plugin owner, String key) {
+		return new ShapelessRecipe(result);
 	}
 }
