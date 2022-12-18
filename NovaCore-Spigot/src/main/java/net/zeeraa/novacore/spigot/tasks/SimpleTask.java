@@ -58,7 +58,7 @@ public class SimpleTask extends Task {
 	}
 
 	/**
-	 * GEt the {@link TaskExecutionMode}
+	 * Get the {@link TaskExecutionMode}
 	 * 
 	 * @return {@link TaskExecutionMode} the has been set, not that this might not
 	 *         correctly reflect the active execution mode since if the mode was
