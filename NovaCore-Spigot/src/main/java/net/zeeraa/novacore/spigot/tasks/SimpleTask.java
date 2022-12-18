@@ -110,7 +110,7 @@ public class SimpleTask extends Task {
 			break;
 
 		default:
-			break;
+			return false;
 		}
 
 		return true;

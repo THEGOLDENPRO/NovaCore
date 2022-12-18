@@ -168,7 +168,7 @@ public class TimeBasedTask extends Task {
 			break;
 
 		default:
-			break;
+			return false;
 		}
 
 		return true;
