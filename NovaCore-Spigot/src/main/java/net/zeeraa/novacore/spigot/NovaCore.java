@@ -62,6 +62,7 @@ import net.zeeraa.novacore.spigot.module.event.ModuleEnableEvent;
 import net.zeeraa.novacore.spigot.module.modules.chestloot.ChestLootManager;
 import net.zeeraa.novacore.spigot.module.modules.compass.CompassTracker;
 import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
+import net.zeeraa.novacore.spigot.module.modules.deltatime.DeltaTime;
 import net.zeeraa.novacore.spigot.module.modules.glowmanager.GlowManager;
 import net.zeeraa.novacore.spigot.module.modules.gui.GUIManager;
 import net.zeeraa.novacore.spigot.module.modules.jumppad.JumpPadManager;
@@ -524,6 +525,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(customCraftingManager, this);
 
 		// Load modules
+		ModuleManager.loadModule(this, DeltaTime.class);
 		ModuleManager.loadModule(this, GUIManager.class);
 		ModuleManager.loadModule(this, LootDropManager.class);
 		ModuleManager.loadModule(this, ChestLootManager.class);
