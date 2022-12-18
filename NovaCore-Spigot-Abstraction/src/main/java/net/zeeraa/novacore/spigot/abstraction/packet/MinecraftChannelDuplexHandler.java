@@ -29,10 +29,14 @@ public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler
 
 	@Override
 	public void write(ChannelHandlerContext channelHandlerContext, Object packet, ChannelPromise channelPromise) throws Exception {
+		if (!writePacket(player, packet))
+			return;
 		super.write(channelHandlerContext, packet, channelPromise);
 	}
 
 	public abstract boolean readPacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException;
+
+	public abstract boolean writePacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException;
 
 	protected boolean canBreak(Player player, Block block) {
 
