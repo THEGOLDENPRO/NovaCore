@@ -5,11 +5,9 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.ChatVisibility;
 import net.zeeraa.novacore.spigot.abstraction.enums.Hand;
 import net.zeeraa.novacore.spigot.abstraction.enums.MainHand;
-import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerAttemptBreakBlockEvent;
-import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerSettingsEvent;
-import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerSwingEvent;
-import net.zeeraa.novacore.spigot.abstraction.packet.event.SpectatorTeleportEvent;
+import net.zeeraa.novacore.spigot.abstraction.packet.event.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -74,6 +72,50 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			default:
 				break;
 			}
+		}
+
+		if (events.isEmpty())
+			return true;
+
+		boolean value = true;
+		for (Event event : events) {
+			Bukkit.getPluginManager().callEvent(event);
+
+			if (((Cancellable) event).isCancelled()) {
+				value = false;
+				break;
+			}
+		}
+		return value;
+	}
+
+	@Override
+	public boolean writePacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
+		List<Event> events = new ArrayList<>();
+		if (packet.getClass().equals(PacketPlayOutNamedSoundEffect.class)) {
+			PacketPlayOutNamedSoundEffect effect = (PacketPlayOutNamedSoundEffect) packet;
+			Field a = effect.getClass().getDeclaredField("a");
+			a.setAccessible(true);
+			Field b = effect.getClass().getDeclaredField("b");
+			b.setAccessible(true);
+			Field c = effect.getClass().getDeclaredField("c");
+			c.setAccessible(true);
+			Field d = effect.getClass().getDeclaredField("d");
+			d.setAccessible(true);
+			Field e = effect.getClass().getDeclaredField("e");
+			e.setAccessible(true);
+			Field f = effect.getClass().getDeclaredField("f");
+			f.setAccessible(true);
+
+			String name = (String) a.get(effect);
+			double x = (float)b.get(effect) / 8.0F;
+			double y = (float)c.get(effect) / 8.0F;
+			double z = (float)d.get(effect) / 8.0F;
+			float volume = (float) e.get(effect);
+			float pitch = (float) f.get(effect) / 63.0F;
+
+
+			events.add(new PlayerListenSoundEvent(player, name, null, x, y, z, volume, pitch));
 		}
 
 		if (events.isEmpty())
