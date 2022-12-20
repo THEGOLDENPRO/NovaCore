@@ -1,5 +1,7 @@
 package net.zeeraa.novacore.spigot.utils;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
@@ -362,16 +364,33 @@ public class LocationUtils {
 	 * use {@link Location#clone()} and use the return value from this function
 	 * instead
 	 * 
-	 * @param location The {@link Location} to modfy
+	 * @param location The {@link Location} to modify
 	 * @param x        The X value range
 	 * @param y        The Y value range
 	 * @param z        The Z value range
 	 * @return Instance of the modified location
 	 */
 	public static Location addRandomValue(Location location, double x, double y, double z) {
-		double newX = RandomGenerator.generateDouble(x * -1, x);
-		double newY = RandomGenerator.generateDouble(y * -1, y);
-		double newZ = RandomGenerator.generateDouble(z * -1, z);
+		return LocationUtils.addRandomValue(location, x, y, z, new Random());
+	}
+
+	/**
+	 * Add a random value to the X, Y and Z coordinate of a location. The input
+	 * instance will have its location changed, if you dont want that make sure you
+	 * use {@link Location#clone()} and use the return value from this function
+	 * instead
+	 * 
+	 * @param location The {@link Location} to modify
+	 * @param x        The X value range
+	 * @param y        The Y value range
+	 * @param z        The Z value range
+	 * @param random   The Random instance to use
+	 * @return Instance of the modified location
+	 */
+	public static Location addRandomValue(Location location, double x, double y, double z, Random random) {
+		double newX = RandomGenerator.generateDouble(x * -1, x, random);
+		double newY = RandomGenerator.generateDouble(y * -1, y, random);
+		double newZ = RandomGenerator.generateDouble(z * -1, z, random);
 
 		return location.add(newX, newY, newZ);
 	}
