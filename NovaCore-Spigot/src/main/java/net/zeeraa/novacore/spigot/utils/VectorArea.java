@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 import org.json.JSONObject;
 
@@ -43,35 +45,6 @@ public class VectorArea {
 
 	public VectorArea(float x1, float y1, float z1, float x2, float y2, float z2) {
 		this(new Vector(x1, y1, z1), new Vector(x2, y2, z2));
-	}
-
-	/**
-	 * Check if a vectors block position is inside this area. To check location use
-	 * {@link VectorArea#isInside(Vector)}
-	 * 
-	 * @param vector The vector to check
-	 * @return <code>true</code> if the vectors block location is inside this area
-	 */
-	public boolean isInsideBlock(Vector vector) {
-		int x1 = position1.getBlockX();
-		int y1 = position1.getBlockY();
-		int z1 = position1.getBlockZ();
-
-		int x2 = position2.getBlockX();
-		int y2 = position2.getBlockY();
-		int z2 = position2.getBlockZ();
-
-		int x = vector.getBlockX();
-		int y = vector.getBlockY();
-		int z = vector.getBlockZ();
-
-		if (x >= x1 && x <= x2) {
-			if (y >= y1 && y <= y2) {
-				return z >= z1 && z <= z2;
-			}
-		}
-
-		return false;
 	}
 
 	/**
@@ -123,6 +96,51 @@ public class VectorArea {
 		return false;
 	}
 	
+	/**
+	 * Check if a vectors block position is inside this area. To check location use
+	 * {@link VectorArea#isInside(Vector)}
+	 * 
+	 * @param vector The vector to check
+	 * @return <code>true</code> if the vectors block location is inside this area
+	 */
+	public boolean isInsideBlock(Vector vector) {
+		int x1 = position1.getBlockX();
+		int y1 = position1.getBlockY();
+		int z1 = position1.getBlockZ();
+
+		int x2 = position2.getBlockX();
+		int y2 = position2.getBlockY();
+		int z2 = position2.getBlockZ();
+
+		int x = vector.getBlockX();
+		int y = vector.getBlockY();
+		int z = vector.getBlockZ();
+
+		if (x >= x1 && x <= x2) {
+			if (y >= y1 && y <= y2) {
+				return z >= z1 && z <= z2;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isInside(Location location) {
+		return this.isInside(location.toVector());
+	}
+
+	public boolean isInsideBlock(Location location) {
+		return this.isInsideBlock(location.toVector());
+	}
+
+	public boolean isInside(Entity entity) {
+		return this.isInside(entity.getLocation());
+	}
+
+	public boolean isInsideBlock(Entity entity) {
+		return this.isInsideBlock(entity.getLocation());
+	}
+
 	public Vector getDifferential() {
 		return VectorUtils.getDifferential(position1, position2);
 	}
