@@ -102,7 +102,7 @@ public class MapDisplayManager extends NovaModule implements Listener {
 		worldDataSavingDisabled = false;
 		mapDisplays = new ArrayList<>();
 		processedWorlds = new ArrayList<>();
-		usePreloadFix = VersionIndependentUtils.get().getNovaCoreGameVersion().isAfterOrEqual(NovaCoreGameVersion.V_1_17);
+		usePreloadFix = VersionIndependentUtils.get().getNovaCoreGameVersion().isAfterOrEqual(NovaCoreGameVersion.V_1_18);
 
 		protectedWorlds = new ArrayList<>();
 	}
