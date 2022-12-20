@@ -13,6 +13,7 @@ import org.bukkit.util.Vector;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.commons.utils.RandomGenerator;
 import net.zeeraa.novacore.commons.utils.Rotation;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseWorld;
@@ -353,5 +354,25 @@ public class LocationUtils {
 	 */
 	public static boolean isBlockXZMatching(Vector vector1, Vector vector2) {
 		return vector1.getBlockX() == vector2.getBlockX() && vector1.getBlockZ() == vector2.getBlockZ();
+	}
+
+	/**
+	 * Add a random value to the X, Y and Z coordinate of a location. The input
+	 * instance will have its location changed, if you dont want that make sure you
+	 * use {@link Location#clone()} and use the return value from this function
+	 * instead
+	 * 
+	 * @param location The {@link Location} to modfy
+	 * @param x        The X value range
+	 * @param y        The Y value range
+	 * @param z        The Z value range
+	 * @return Instance of the modified location
+	 */
+	public static Location addRandomValue(Location location, double x, double y, double z) {
+		double newX = RandomGenerator.generateDouble(x * -1, x);
+		double newY = RandomGenerator.generateDouble(y * -1, y);
+		double newZ = RandomGenerator.generateDouble(z * -1, z);
+
+		return location.add(newX, newY, newZ);
 	}
 }
