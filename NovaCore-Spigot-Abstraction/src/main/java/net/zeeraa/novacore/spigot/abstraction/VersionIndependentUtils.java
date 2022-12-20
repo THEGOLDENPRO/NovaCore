@@ -749,8 +749,8 @@ public abstract class VersionIndependentUtils {
 	 * warnings in the console
 	 * 
 	 * @param result The output of the recipe
-	 * @param owner  The {@link Plugin} that owns the recipe. The plugin
-	 *               will be used in the namespaced key
+	 * @param owner  The {@link Plugin} that owns the recipe. The plugin will be
+	 *               used in the namespaced key
 	 * @param key    The key to use in the namespaced key
 	 * @return A {@link ShapedRecipe} with a namespaced key if applicable
 	 */
@@ -761,10 +761,43 @@ public abstract class VersionIndependentUtils {
 	 * warnings in the console
 	 * 
 	 * @param result The output of the recipe
-	 * @param owner  The {@link Plugin} that owns the recipe. The plugin
-	 *               will be used in the namespaced key
+	 * @param owner  The {@link Plugin} that owns the recipe. The plugin will be
+	 *               used in the namespaced key
 	 * @param key    The key to use in the namespaced key
 	 * @return A {@link ShapelessRecipe} with a namespaced key if applicable
 	 */
 	public abstract ShapelessRecipe createShapelessRecipe(ItemStack result, Plugin owner, String key);
+
+	/**
+	 * Send a title to all players online
+	 * 
+	 * @param title    The title text
+	 * @param subtitle The subtitle text
+	 * @param fadeIn   The amount of ticks for the fade in animation. Set to 0 to
+	 *                 disable
+	 * @param stay     The amount of ticks the text should stay
+	 * @param fadeOut  The amount of ticks for the fade out animation. Set to 0 to
+	 *                 disable
+	 * @author Zeeraa
+	 */
+	public void broadcastTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+		Bukkit.getServer().getOnlinePlayers().forEach(player -> this.sendTitle(player, title, subtitle, fadeIn, stay, fadeOut));
+	}
+
+	/**
+	 * Send a title to all players online in the specified world
+	 * 
+	 * @param world    The world to broadcast to
+	 * @param title    The title text
+	 * @param subtitle The subtitle text
+	 * @param fadeIn   The amount of ticks for the fade in animation. Set to 0 to
+	 *                 disable
+	 * @param stay     The amount of ticks the text should stay
+	 * @param fadeOut  The amount of ticks for the fade out animation. Set to 0 to
+	 *                 disable
+	 * @author Zeeraa
+	 */
+	public void broadcastTitle(World world, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+		Bukkit.getServer().getOnlinePlayers().stream().filter(player -> player.getWorld().equals(world)).forEach(player -> this.sendTitle(player, title, subtitle, fadeIn, stay, fadeOut));
+	}
 }
