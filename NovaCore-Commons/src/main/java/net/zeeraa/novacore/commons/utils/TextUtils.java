@@ -1,6 +1,8 @@
 package net.zeeraa.novacore.commons.utils;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 
@@ -282,5 +284,51 @@ public class TextUtils {
 
 	public static String formatTps(double tps) {
 		return ((tps > 18.0) ? ChatColor.GREEN : (tps > 16.0) ? ChatColor.YELLOW : ChatColor.RED).toString() + ((tps > 20.0) ? "*" : "") + Math.min(Math.round(tps * 100.0) / 100.0, 20.0);
+	}
+
+	/**
+	 * I can already hear you ask WHY THE FUCK DID YOU ADD THIS. well one day i
+	 * decided to ask ChatGPT to "write java function to convert english to uwu
+	 * language" and it delivered this masterpiece of code, to not anger our ai
+	 * overlords i decided to add this to novacore. Also if any potential employers
+	 * see this please dont let this discourage you from hiring me, this is just a
+	 * joke and should not be taken seriusly
+	 * 
+	 * @author A FUCKING AI
+	 * @param input The text you want to ruin
+	 * @return The reason why your dad left you
+	 */
+	public static String englishToUWU(String input) {
+		// Replace L with W
+		input = input.replace('L', 'W');
+		input = input.replace('l', 'w');
+
+		// Replace R with W
+		input = input.replace('R', 'W');
+		input = input.replace('r', 'w');
+
+		// Replace vowels with UW
+		input = input.replace('a', 'u');
+		input = input.replace('A', 'U');
+		input = input.replace('e', 'u');
+		input = input.replace('E', 'U');
+		input = input.replace('i', 'u');
+		input = input.replace('I', 'U');
+		input = input.replace('o', 'u');
+		input = input.replace('O', 'U');
+		input = input.replace('u', 'u');
+		input = input.replace('U', 'U');
+
+		// Replace ending s with SW
+		Pattern pattern = Pattern.compile("\\b(\\w+)(s)\\b");
+		Matcher matcher = pattern.matcher(input);
+		StringBuffer sb = new StringBuffer();
+		while (matcher.find()) {
+			matcher.appendReplacement(sb, matcher.group(1) + "sw");
+		}
+		matcher.appendTail(sb);
+		input = sb.toString();
+
+		return input;
 	}
 }
