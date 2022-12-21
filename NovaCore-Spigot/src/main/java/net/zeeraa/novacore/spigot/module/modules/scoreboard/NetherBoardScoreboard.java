@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.module.modules.scoreboard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -43,7 +44,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	private HashMap<UUID, BPlayerBoard> boards;
 
 	private HashMap<Integer, String> globalLines;
-	private HashMap<UUID, HashMap<Integer, String>> playerLines;
+	private HashMap<UUID, Map<Integer, String>> playerLines;
 
 	private HashMap<UUID, ChatColor> playerNameColor;
 
@@ -187,7 +188,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		if (boards.containsKey(player.getUniqueId())) {
 			BPlayerBoard board = boards.get(player.getUniqueId());
 
-			HashMap<Integer, String> pLines = playerLines.get(player.getUniqueId());
+			Map<Integer, String> pLines = playerLines.get(player.getUniqueId());
 
 			ArrayList<String> existingLines = new ArrayList<>();
 
@@ -320,6 +321,21 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Set a line to display for a single player
+	 * <p>
+	 * This will override global lines with the same line number
+	 * 
+	 * @param line    The line number. Note that this starts from 0
+	 * @param uuid    The {@link UUID} of the player
+	 * @param content The text to set
+	 */
+	public void setPlayerLine(int line, UUID uuid, String content) {
+		if (playerLines.containsKey(uuid)) {
+			playerLines.get(uuid).put(line, content);
+		}
+	}
+
+	/**
 	 * Remove a player line from the scoreboard
 	 * 
 	 * @param line   The line number. Note that this starts from 0
@@ -330,9 +346,20 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Remove a player line from the scoreboard
+	 * 
+	 * @param line The line number. Note that this starts from 0
+	 * @param uuid The {@link UUID} of the player to remove the line from
+	 */
+	public void clearPlayerLine(int line, UUID uuid) {
+		this.setPlayerLine(line, uuid, " ");
+	}
+
+	/**
 	 * Get the line for a specified player.
 	 * <p>
-	 * This will return <code>null</code> if global lines are used instead
+	 * This will not fetch the global line visible for the player. To fetch global
+	 * line use {@link NetherBoardScoreboard#getGlobalLine(int)}
 	 * 
 	 * @param line   The line number to get
 	 * @param player The player to get
@@ -348,6 +375,25 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Get the line for a specified player.
+	 * <p>
+	 * This will not fetch the global line visible for the player. To fetch global
+	 * line use {@link NetherBoardScoreboard#getGlobalLine(int)}
+	 * 
+	 * @param line The line number to get
+	 * @param uuid The {@link UUID} of the player to get
+	 * @return The content of that line or <code>null</code> if not found
+	 */
+	@Nullable
+	public String getPlayerLine(int line, UUID uuid) {
+		if (playerLines.containsKey(uuid)) {
+			return playerLines.get(uuid).get(line);
+		}
+
+		return null;
+	}
+
+	/**
 	 * Get a {@link HashMap} with all global lines
 	 * 
 	 * @return{@link HashMap} with global lines
@@ -357,11 +403,11 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	}
 
 	/**
-	 * Get a {@link HashMap} with all player lines
+	 * Get a {@link Map} with all player lines
 	 * 
-	 * @return {@link HashMap} with player lines
+	 * @return {@link Map} with player lines
 	 */
-	public HashMap<UUID, HashMap<Integer, String>> getPlayerLines() {
+	public Map<UUID, Map<Integer, String>> getPlayerLines() {
 		return playerLines;
 	}
 
@@ -441,5 +487,16 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 				}
 			});
 		}
+	}
+
+	/**
+	 * Remove the specified line for all players
+	 * 
+	 * @param line The line number to remove
+	 */
+	public void clearAllPlayerLines(int line) {
+		playerLines.forEach((uuid, lines) -> {
+			this.clearPlayerLine(line, uuid);
+		});
 	}
 }
