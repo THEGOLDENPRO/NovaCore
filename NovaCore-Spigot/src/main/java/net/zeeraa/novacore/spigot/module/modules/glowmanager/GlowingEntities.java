@@ -1,4 +1,4 @@
-package fr.skytasul.glowingentities;
+package net.zeeraa.novacore.spigot.module.modules.glowmanager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
