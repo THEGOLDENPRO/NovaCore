@@ -122,6 +122,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 	/**
 	 * Check if a custom item has been loaded
 	 *
+	 * @param id The id
 	 * @param className The name of the class of the {@link CustomItem}
 	 * @return <code>true</code> if the item has been loaded
 	 */
@@ -145,7 +146,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 	 * Get the {@link CustomItem} instance by the class and item ID
 	 *
 	 * @param clazz The {@link CustomItem} class to get
-	 * @param id The ID
+	 * @param id    The ID
 	 * @return The {@link CustomItem} instance or <code>null</code> if not loaded or
 	 *         not found
 	 */
@@ -199,10 +200,10 @@ public class CustomItemManager extends NovaModule implements Listener {
 	/**
 	 * Get an {@link ItemStack} from a {@link CustomItemInitialized} with id
 	 *
-	 * @param clazz The {@link CustomItemInitialized} class to get the
-	 *                  {@link ItemStack} from
-	 * @param id The id for the specific item
-	 * @param player    The player that the item was created by
+	 * @param clazz  The {@link CustomItemInitialized} class to get the
+	 *               {@link ItemStack} from
+	 * @param id     The id for the specific item
+	 * @param player The player that the item was created by
 	 * @return An {@link ItemStack} or <code>null</code> if not loaded or not found
 	 */
 	@Nullable
