@@ -24,7 +24,7 @@ public abstract class Team {
 		this.teamUuid = UUID.randomUUID();
 		members = new ArrayList<>();
 	}
-	
+
 	public List<Player> getOnlinePlayers() {
 		return Bukkit.getServer().getOnlinePlayers().stream().filter(player -> isMember(player)).collect(Collectors.toList());
 	}
@@ -87,6 +87,10 @@ public abstract class Team {
 		}
 
 		members.add(uuid);
+	}
+
+	public boolean hasOnlineMembersInThisServer() {
+		return this.getOnlinePlayers().size() > 0;
 	}
 
 	/**
