@@ -74,6 +74,13 @@ public abstract class ConsumableCustomItem extends CustomItem {
 	public void onPlayerInteractBeforeProcessing(PlayerInteractEvent event) {
 	}
 
+	/**
+	 * This version of the event cant be overridden since its needed by the
+	 * ConsumableCustomItem. To modify the outcome of the event see
+	 * {@link ConsumableCustomItem#onPlayerInteractBeforeProcessing(PlayerInteractEvent)}
+	 * 
+	 * @param event The {@link PlayerInteractEvent}
+	 */
 	@Override
 	public final void onPlayerInteract(PlayerInteractEvent event) {
 		super.onPlayerInteract(event);
