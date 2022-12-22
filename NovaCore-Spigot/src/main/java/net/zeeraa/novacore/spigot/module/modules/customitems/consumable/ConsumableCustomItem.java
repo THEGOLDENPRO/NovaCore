@@ -71,9 +71,14 @@ public abstract class ConsumableCustomItem extends CustomItem {
 	 */
 	public abstract boolean onItemConsume(Player player, PlayerInteractEvent event);
 
+	public void onPlayerInteractBeforeProcessing(PlayerInteractEvent event) {
+	}
+
 	@Override
-	public void onPlayerInteract(PlayerInteractEvent event) {
+	public final void onPlayerInteract(PlayerInteractEvent event) {
 		super.onPlayerInteract(event);
+
+		onPlayerInteractBeforeProcessing(event);
 
 		Player player = event.getPlayer();
 		if (this.canUseItem(player)) {
