@@ -292,7 +292,7 @@ public class TextUtils {
 	 * language" and it delivered this masterpiece of code, to not anger our ai
 	 * overlords i decided to add this to novacore. Also if any potential employers
 	 * see this please dont let this discourage you from hiring me, this is just a
-	 * joke and should not be taken seriusly
+	 * joke and should not be taken seriously
 	 * 
 	 * @author A FUCKING AI
 	 * @param input The text you want to ruin
