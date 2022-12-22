@@ -2,8 +2,12 @@ package net.zeeraa.novacore.spigot.teams;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -27,6 +31,15 @@ public abstract class Team {
 
 	public List<Player> getOnlinePlayers() {
 		return Bukkit.getServer().getOnlinePlayers().stream().filter(player -> isMember(player)).collect(Collectors.toList());
+	}
+
+	@Nullable
+	public Player getRandomOnlineMember() {
+		List<Player> online = this.getOnlinePlayers();
+		if (online.size() > 0) {
+			return online.get(new Random().nextInt(online.size()));
+		}
+		return null;
 	}
 
 	/**
