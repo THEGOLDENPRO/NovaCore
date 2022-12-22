@@ -88,6 +88,14 @@ public abstract class Team {
 
 		members.add(uuid);
 	}
+	
+	public boolean hasOnlineMembersInThisServer() {
+		return this.getOnlinePlayers().size() > 0;
+	}
+	
+	public boolean hasNoOnlinePlayers() {
+		return !hasOnlineMembersInThisServer();
+	}
 
 	/**
 	 * Send a message to all team members on this servers
