@@ -213,7 +213,10 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 					line = "";
 				}
 
+				// The library does not like when 2 lines are identical so add something
+				// invisible to the end to prevent issues
 				while (existingLines.contains(line)) {
+
 					line += ChatColor.RESET;
 				}
 
@@ -302,7 +305,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	 * @param line The line number. Note that this starts from 0
 	 */
 	public void clearGlobalLine(int line) {
-		this.setGlobalLine(line, " ");
+		this.setGlobalLine(line, "");
 	}
 
 	/**
@@ -349,7 +352,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	 * @param player The player to remove the line from
 	 */
 	public void clearPlayerLine(int line, Player player) {
-		this.setPlayerLine(line, player, " ");
+		this.setPlayerLine(line, player, "");
 	}
 
 	/**
@@ -359,7 +362,7 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	 * @param uuid The {@link UUID} of the player to remove the line from
 	 */
 	public void clearPlayerLine(int line, UUID uuid) {
-		this.setPlayerLine(line, uuid, " ");
+		this.setPlayerLine(line, uuid, "");
 	}
 
 	/**
