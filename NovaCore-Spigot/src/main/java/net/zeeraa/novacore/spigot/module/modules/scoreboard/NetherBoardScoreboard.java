@@ -306,6 +306,13 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 	}
 
 	/**
+	 * Clear all global lines
+	 */
+	public void clearGlobalLines() {
+		globalLines.keySet().forEach(key -> globalLines.put(key, ""));
+	}
+
+	/**
 	 * Set a line to display for a single player
 	 * <p>
 	 * This will override global lines with the same line number
@@ -498,5 +505,16 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		playerLines.forEach((uuid, lines) -> {
 			this.clearPlayerLine(line, uuid);
 		});
+	}
+
+	public NetherBoardGlobalLineContentSnapshot createGlobalLineSnapshot() {
+		Map<Integer, String> globalLinesCopy = new HashMap<>();
+		globalLines.forEach((key, val) -> globalLinesCopy.put(key, val));
+		return new NetherBoardGlobalLineContentSnapshot(globalLinesCopy);
+	}
+
+	public void restoreGlobalLineSnapshot(NetherBoardGlobalLineContentSnapshot netherBoardGlobalLineContentSnapshot) {
+		clearGlobalLines();
+		netherBoardGlobalLineContentSnapshot.getGlobalLines().forEach((key, val) -> globalLines.put(key, val));
 	}
 }
