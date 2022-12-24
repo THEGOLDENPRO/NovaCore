@@ -507,6 +507,15 @@ public class NetherBoardScoreboard extends NovaModule implements Listener {
 		});
 	}
 
+	/**
+	 * Remove all lines for all players
+	 */
+	public void clearAllPlayerLines() {
+		for (int i = 0; i < lineCount; i++) {
+			this.clearAllPlayerLines(i);
+		}
+	}
+
 	public NetherBoardGlobalLineContentSnapshot createGlobalLineSnapshot() {
 		Map<Integer, String> globalLinesCopy = new HashMap<>();
 		globalLines.forEach((key, val) -> globalLinesCopy.put(key, val));
