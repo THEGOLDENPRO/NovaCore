@@ -328,6 +328,7 @@ public class ItemBuilder {
 
 	/**
 	 * Adds an attribute to the item
+	 * 
 	 * @param attributeInfo The attribute's info
 	 * @return The item builder instance
 	 */
@@ -338,7 +339,8 @@ public class ItemBuilder {
 
 	/**
 	 * Adds multiple attribute to the item
-	 * @param atributeInfo Attribute info (to differenciate)
+	 * 
+	 * @param atributeInfo   Attribute info (to differenciate)
 	 * @param attributeInfos Array of attribute info
 	 * @return The item builder instance
 	 */
@@ -547,6 +549,10 @@ public class ItemBuilder {
 	 */
 	public static ItemBuilder newInstance(Material material) {
 		return new ItemBuilder(material);
+	}
+
+	public static ItemBuilder withItemsAdderItem(String namespace) {
+		return new ItemBuilder(NovaItemsAdderUtils.getItemStack(namespace));
 	}
 
 	public static ItemStack makeItemStackUnbreakable(ItemStack item, boolean unbreakable) {
