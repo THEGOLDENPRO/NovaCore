@@ -551,7 +551,7 @@ public class ItemBuilder {
 		return new ItemBuilder(material);
 	}
 
-	public static ItemBuilder withItemsAdderItem(String namespace) {
+	public static ItemBuilder fromItemsAdderNamespace(String namespace) {
 		return new ItemBuilder(NovaItemsAdderUtils.getItemStack(namespace));
 	}
 
