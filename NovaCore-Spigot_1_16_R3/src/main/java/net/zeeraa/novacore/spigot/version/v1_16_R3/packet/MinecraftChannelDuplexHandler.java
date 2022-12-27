@@ -107,12 +107,13 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			g.setAccessible(true);
 
 			SoundCategory sc = (SoundCategory) b.get(effect);
+
 			SoundEffect effect1 = (SoundEffect) a.get(effect);
 			Field key = effect1.getClass().getDeclaredField("b");
 			b.setAccessible(true);
 			MinecraftKey mcKey = (MinecraftKey) key.get(effect1);
-			String effectName = mcKey.getKey();
-			Sound foundSound = Arrays.stream(Sound.values()).filter(sound -> sound.name().toLowerCase(Locale.ROOT).equalsIgnoreCase(effectName.replace(".", "_"))).findFirst().get();
+
+			Sound foundSound = Arrays.stream(Sound.values()).filter(sound -> sound.getKey().toString().equalsIgnoreCase(mcKey.toString())).findFirst().get();
 			net.zeeraa.novacore.spigot.abstraction.enums.SoundCategory category = Arrays.stream(SoundCategory.values()).filter(soundCategory -> soundCategory.getName().equalsIgnoreCase(sc.getName())).findFirst().get();
 
 
