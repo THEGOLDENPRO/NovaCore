@@ -28,6 +28,8 @@ public class GUIHolder implements InventoryHolder {
 	private List<GUIClickCallbackWithEvent> clickEventCallbacks = new ArrayList<>();
 	private Map<Integer, ArrayList<GUIClickCallbackWithEvent>> slotClickEventCallbacks = new HashMap<Integer, ArrayList<GUIClickCallbackWithEvent>>();
 
+	private Inventory inventory = null;
+
 	/**
 	 * Get close callback list
 	 * 
@@ -131,12 +133,12 @@ public class GUIHolder implements InventoryHolder {
 		slotClickEventCallbacks.get(slot).add(guiClickCallback);
 	}
 
-	/**
-	 * Unused
-	 */
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
+	}
+
 	@Override
-	@Deprecated
 	public Inventory getInventory() {
-		return null;
+		return inventory;
 	}
 };
