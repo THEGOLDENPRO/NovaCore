@@ -280,6 +280,36 @@ public abstract class Game {
 	}
 
 	/**
+	 * Check if a player is in the game
+	 * 
+	 * @param player The {@link Player} to check
+	 * @return <code>true</code> if the player is in the player list
+	 */
+	public final boolean hasPlayer(Player player) {
+		return this.hasPlayer(player.getUniqueId());
+	}
+
+	/**
+	 * Check if a player is in the game
+	 * 
+	 * @param player The {@link OfflinePlayer} to check
+	 * @return <code>true</code> if the player is in the player list
+	 */
+	public final boolean hasOfflinePlayer(OfflinePlayer player) {
+		return this.hasPlayer(player.getUniqueId());
+	}
+
+	/**
+	 * Check if a player is in the game
+	 * 
+	 * @param player The {@link UUID} of the player to check
+	 * @return <code>true</code> if the player is in the player list
+	 */
+	public final boolean hasPlayer(UUID uuid) {
+		return this.players.contains(uuid);
+	}
+
+	/**
 	 * Get a list with all game triggers
 	 * 
 	 * @return {@link List} with game triggers
