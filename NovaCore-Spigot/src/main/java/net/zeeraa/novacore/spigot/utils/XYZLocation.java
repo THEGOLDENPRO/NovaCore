@@ -54,6 +54,18 @@ public class XYZLocation {
 		return x;
 	}
 
+	public int getBlockX() {
+		return (int) x;
+	}
+
+	public int getBlockY() {
+		return (int) y;
+	}
+
+	public int getBlockZ() {
+		return (int) z;
+	}
+
 	/**
 	 * Get the y location
 	 * 
@@ -181,6 +193,28 @@ public class XYZLocation {
 		json.put("z", z);
 
 		return json;
+	}
+
+	public boolean isLocationMatching(Location location) {
+		if (location.getX() == this.x) {
+			if (location.getY() == this.y) {
+				if (location.getZ() == this.z) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean isLocationMatchingBlock(Location location) {
+		if (location.getBlockX() == this.getBlockX()) {
+			if (location.getBlockY() == this.getBlockY()) {
+				if (location.getBlockZ() == this.getBlockZ()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
