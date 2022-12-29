@@ -271,7 +271,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 		return false;
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if (e.getItem() != null) {
 			if (e.getItem().getType() != Material.AIR) {
@@ -286,7 +286,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerDropItem(PlayerDropItemEvent e) {
 		if (e.getItemDrop() != null) {
 			if (e.getItemDrop().getItemStack().getType() != Material.AIR) {
@@ -301,7 +301,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onBlockBreak(BlockBreakEvent e) {
 		ItemStack item = NovaCore.getInstance().getVersionIndependentUtils().getItemInMainHand(e.getPlayer());
 		if (item != null) {
@@ -317,7 +317,7 @@ public class CustomItemManager extends NovaModule implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onInventoryClick(InventoryClickEvent e) {
 		if (e.getCurrentItem() != null) {
 			if (e.getCurrentItem().getType() != Material.AIR) {

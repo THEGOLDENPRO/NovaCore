@@ -10,7 +10,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.avaje.ebean.validation.NotNull;
+
 import io.github.bananapuncher714.nbteditor.NBTEditor;
+import net.zeeraa.novacore.commons.log.Log;
 
 public abstract class CustomItem {
 	/**
@@ -23,6 +26,7 @@ public abstract class CustomItem {
 	 *               if there is no player involved with the custom item.
 	 * @return Instance of the item that should be added
 	 */
+	@NotNull
 	protected abstract ItemStack createItemStack(@Nullable Player player);
 
 	/**
@@ -32,10 +36,15 @@ public abstract class CustomItem {
 	 * 
 	 * @param player The player that crafted or was given the custom item. This will
 	 *               be null if there is no player involved with the custom item.
-	 * @return .
+	 * @return {@link ItemStack} of this custom item
 	 */
 	public ItemStack getItem(@Nullable Player player) {
 		ItemStack stack = createItemStack(player);
+
+		if (stack == null) {
+			Log.error("CustomItem", "createItemStack returned null in item " + this.getClass().getName());
+			return null;
+		}
 
 		stack = NBTEditor.set(stack, 1, "novacore", "iscustomitem");
 		stack = NBTEditor.set(stack, this.getClass().getName(), "novacore", "customitemid");

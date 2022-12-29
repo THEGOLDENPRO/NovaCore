@@ -7,13 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nullable;
 
 public abstract class CustomItemInitialized extends CustomItem {
-
-    private final String id;
+	private final String id;
 
     public CustomItemInitialized(String id) {
         this.id = id;
     }
-
 
     public String getId() {
         return id;
@@ -23,8 +21,6 @@ public abstract class CustomItemInitialized extends CustomItem {
         return this.getClass().getName() + "." + id;
     }
 
-
-
     @Override
     public ItemStack getItem(@Nullable Player player) {
         ItemStack stack = createItemStack(player);
@@ -33,6 +29,4 @@ public abstract class CustomItemInitialized extends CustomItem {
         stack = NBTEditor.set(stack, this.getClass().getName() + "." + id, "novacore", "customitemid");
         return stack;
     }
-
-
 }
