@@ -142,4 +142,21 @@ public class PlayerUtils {
 
 		return names;
 	}
+
+	/**
+	 * Try to send a message to a player by their {@link UUID}
+	 * 
+	 * @param uuid    The {@link UUID} of the player to message
+	 * @param message The message to send
+	 * @return <code>true</code> if the player is online and received the message,
+	 *         <code>false</code> if the player is offline
+	 */
+	public static boolean tryMessagePlayer(UUID uuid, String message) {
+		Player player = Bukkit.getServer().getPlayer(uuid);
+		if (player != null) {
+			player.sendMessage(message);
+			return true;
+		}
+		return false;
+	}
 }
