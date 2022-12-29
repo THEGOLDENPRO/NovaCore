@@ -167,13 +167,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.github.bananapuncher714</groupId>
-			<artifactId>NBTEditor</artifactId>
-			<version>7.16</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>fr.minuskube</groupId>
 			<artifactId>netherboard-bukkit</artifactId>
 			<version>1.2.3</version>

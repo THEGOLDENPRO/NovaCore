@@ -17,6 +17,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
@@ -28,11 +29,11 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameStartEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector.MapSelector;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.events.PlayerJoinGameLobbyEvent;
@@ -185,6 +186,11 @@ public class GUIMapVote extends MapSelector implements Listener {
 		playerVoteInventory.remove(e.getPlayer().getUniqueId());
 	}
 
+	@EventHandler
+	public void onGameStart(GameStartEvent e) {
+		HandlerList.unregisterAll(this);
+	}
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoinGameLobby(PlayerJoinGameLobbyEvent e) {
 		e.getPlayer().getInventory().addItem(CustomItemManager.getInstance().getCustomItemStack(GUIMapVoteMenuIcon.class, e.getPlayer()));
@@ -248,19 +254,6 @@ public class GUIMapVote extends MapSelector implements Listener {
 						player.sendMessage(ChatColor.GREEN + (changed ? LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote.changed") : LanguageManager.getString(player, "novacore.game.lobby.map_vote.vote.for")) + this.getMap(mapName).getDisplayName());
 
 						updateInventory(player);
-					}
-				}
-			}
-		}
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerInteract(PlayerInteractEvent e) {
-		if (e.getItem() != null) {
-			if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-				if (e.getItem().getType() == Material.COMPASS) {
-					if (NBTEditor.contains(e.getItem(), "novacore", "mapselector")) {
-						showPlayer(e.getPlayer());
 					}
 				}
 			}
