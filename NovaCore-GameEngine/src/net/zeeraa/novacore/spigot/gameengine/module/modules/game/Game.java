@@ -302,7 +302,7 @@ public abstract class Game {
 	/**
 	 * Check if a player is in the game
 	 * 
-	 * @param player The {@link UUID} of the player to check
+	 * @param uuid The {@link UUID} of the player to check
 	 * @return <code>true</code> if the player is in the player list
 	 */
 	public final boolean hasPlayer(UUID uuid) {
