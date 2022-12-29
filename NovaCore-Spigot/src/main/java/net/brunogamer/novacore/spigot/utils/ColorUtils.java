@@ -148,6 +148,11 @@ public class ColorUtils {
                 return Color.WHITE;
         }
     }
+    
+    public static java.awt.Color bukkitColorToAWT(Color color) {
+    	return new java.awt.Color(color.getRed(), color.getGreen(), color.getBlue());
+    }
+    
     public static Color[] gradientFromColors(RGB color1, RGB color2, int lenght) throws Exception {
         if (lenght <= 1) {
             throw new Exception("can not be 1 or lower");
