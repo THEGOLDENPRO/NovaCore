@@ -16,9 +16,21 @@ import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItem;
 import net.zeeraa.novacore.spigot.utils.ItemBuilder;
 
 public class GUIMapVoteMenuIcon extends CustomItem {
+	public static String ITEMSADDER_ICON = null;
+
 	@Override
 	protected ItemStack createItemStack(Player player) {
-		return new ItemBuilder(Material.COMPASS).setName(ChatColor.GOLD + "" + ChatColor.BOLD + LanguageManager.getString(player, "novacore.game.map_selector.item.name")).build();
+		ItemBuilder builder;
+
+		if (GUIMapVoteMenuIcon.ITEMSADDER_ICON == null) {
+			builder = new ItemBuilder(Material.COMPASS);
+		} else {
+			builder = ItemBuilder.fromItemsAdderNamespace(GUIMapVoteMenuIcon.ITEMSADDER_ICON);
+		}
+
+		builder.setName(ChatColor.GOLD + "" + ChatColor.BOLD + LanguageManager.getString(player, "novacore.game.map_selector.item.name"));
+
+		return builder.build();
 	}
 
 	@Override
