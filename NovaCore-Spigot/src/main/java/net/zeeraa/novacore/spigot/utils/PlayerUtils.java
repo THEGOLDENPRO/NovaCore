@@ -96,7 +96,7 @@ public class PlayerUtils {
 		return maxHealth;
 	}
 
-	public void damagePlayer(Player player, PlayerDamageReason reason, float damage) {
+	public static void damagePlayer(Player player, PlayerDamageReason reason, float damage) {
 		NovaCore.getInstance().getVersionIndependentUtils().damagePlayer(player, reason, damage);
 	}
 
@@ -109,7 +109,7 @@ public class PlayerUtils {
 	 * @return <code>true</code> if the player is online and exists, this will also
 	 *         return <code>false</code> if the player is <code>null</code>
 	 */
-	public boolean existsAndIsOnline(Player player) {
+	public static boolean existsAndIsOnline(Player player) {
 		if (player != null) {
 			return player.isOnline();
 		}
@@ -125,8 +125,8 @@ public class PlayerUtils {
 	 * @return <code>true</code> if the player is online and exists, this will also
 	 *         return <code>false</code> if the player is <code>null</code>
 	 */
-	public boolean existsAndIsOnline(UUID uuid) {
-		return this.existsAndIsOnline(Bukkit.getServer().getPlayer(uuid));
+	public static boolean existsAndIsOnline(UUID uuid) {
+		return PlayerUtils.existsAndIsOnline(Bukkit.getServer().getPlayer(uuid));
 	}
 
 	/**
