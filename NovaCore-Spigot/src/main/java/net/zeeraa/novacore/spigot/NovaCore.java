@@ -6,6 +6,8 @@ import java.io.InvalidClassException;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,6 +18,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +41,7 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitConsoleSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.AbstractBukkitPlayerMessageSender;
 import net.zeeraa.novacore.spigot.abstraction.commons.BukkitAsyncManager;
+import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
@@ -273,37 +277,54 @@ public class NovaCore extends JavaPlugin implements Listener {
 			return false;
 		}
 
-		boolean ok = true;
-		VersionIndependentUtils.get().resetLastError();
-		Log.info("NovaCore", "Running version independent layer selftest");
+		try {
 
-		Log.debug("NovaCore", "SelfTest: Looping thru VersionIndependentMaterial");
-		for (VersionIndependentMaterial m : VersionIndependentMaterial.values()) {
-			Log.trace("NovaCore", "SelfTest: getMaterial(): " + m.name());
-			VersionIndependentUtils.get().getMaterial(m);
-		}
-
-		if (VersionIndependentUtils.get().getLastError().isProblem()) {
-			Log.error("NovaCore", "Errors detected while running selftest: VersionIndependentUtils last error is " + VersionIndependentUtils.get().getLastError().name() + " after get material test");
+			boolean ok = true;
 			VersionIndependentUtils.get().resetLastError();
-			ok = false;
-		}
+			Log.info("NovaCore", "Running version independent layer selftest");
 
-		// Sound test
-		Log.debug("NovaCore", "SelfTest: Looping thru VersionIndependentSound");
-		for (VersionIndependentSound s : VersionIndependentSound.values()) {
-			Log.trace("NovaCore", "SelfTest: getSound(): " + s.name());
-			VersionIndependentUtils.get().getSound(s);
-		}
+			Log.debug("NovaCore", "SelfTest: Looping thru VersionIndependentMaterial");
+			for (VersionIndependentMaterial m : VersionIndependentMaterial.values()) {
+				Log.trace("NovaCore", "SelfTest: getMaterial(): " + m.name());
+				VersionIndependentUtils.get().getMaterial(m);
+			}
 
-		if (VersionIndependentUtils.get().getLastError().isProblem()) {
-			Log.error("NovaCore", "Errors detected while running selftest: VersionIndependentUtils last error is " + VersionIndependentUtils.get().getLastError().name() + " after get sound test");
+			if (VersionIndependentUtils.get().getLastError().isProblem()) {
+				Log.error("NovaCore", "Errors detected while running selftest: VersionIndependentUtils last error is " + VersionIndependentUtils.get().getLastError().name() + " after get material test");
+				VersionIndependentUtils.get().resetLastError();
+				ok = false;
+			}
+
+			// Sound test
+			Log.debug("NovaCore", "SelfTest: Looping thru VersionIndependentSound");
+			for (VersionIndependentSound s : VersionIndependentSound.values()) {
+				Log.trace("NovaCore", "SelfTest: getSound(): " + s.name());
+				VersionIndependentUtils.get().getSound(s);
+			}
+
+			if (VersionIndependentUtils.get().getLastError().isProblem()) {
+				Log.error("NovaCore", "Errors detected while running selftest: VersionIndependentUtils last error is " + VersionIndependentUtils.get().getLastError().name() + " after get sound test");
+				VersionIndependentUtils.get().resetLastError();
+				ok = false;
+			}
+
+			for (ColoredBlockType type : ColoredBlockType.values()) {
+				for (DyeColor color : DyeColor.values()) {
+					ItemStack item = VersionIndependentUtils.get().getColoredItem(color, type);
+					if (item.getType() == Material.AIR) {
+						Log.error("NovaCore", "Errors detected while running selftest: VersionIndependentUtils getColoredItem with color " + color.name() + " and type " + type.name() + " returned material type AIR");
+						ok = false;
+					}
+				}
+			}
+
 			VersionIndependentUtils.get().resetLastError();
-			ok = false;
+			return ok;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.error("NovaCore", "An exception occured while running selftest. " + e.getClass().getName() + " " + e.getMessage());
+			return false;
 		}
-
-		VersionIndependentUtils.get().resetLastError();
-		return ok;
 	}
 
 	/**
