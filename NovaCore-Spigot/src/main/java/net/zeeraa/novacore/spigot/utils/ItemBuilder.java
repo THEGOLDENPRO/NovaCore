@@ -478,7 +478,7 @@ public class ItemBuilder {
 	 * @since 1.1
 	 */
 	public static ItemBuilder playerSkull(String playerName) {
-		ItemStack playerHead = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+		ItemStack playerHead = VersionIndependentUtils.get().getPlayerSkullitem();
 
 		SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
 
