@@ -89,7 +89,7 @@ public class RGBColorData {
 		return org.bukkit.Color.fromRGB(r, g, b);
 	}
 
-	public java.awt.Color tooAWTColor() {
+	public java.awt.Color toAWTColor() {
 		return new java.awt.Color(r, g, b);
 	}
 

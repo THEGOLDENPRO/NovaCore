@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.spigot.NovaCore;
 
 public abstract class TeamManager {
@@ -39,6 +40,17 @@ public abstract class TeamManager {
 
 	public boolean hasTeam(UUID uuid) {
 		return getPlayerTeam(uuid) != null;
+	}
+
+	public ChatColor tryGetPlayerTeamColor(Player player, ChatColor fallback) {
+		return this.tryGetPlayerTeamColor(player.getUniqueId(), fallback);
+	}
+
+	public ChatColor tryGetPlayerTeamColor(UUID uuid, ChatColor fallback) {
+		if (hasTeam(uuid)) {
+			return getPlayerTeam(uuid).getTeamColor();
+		}
+		return fallback;
 	}
 
 	public Team getTeamByTeamUUID(UUID uuid) {
