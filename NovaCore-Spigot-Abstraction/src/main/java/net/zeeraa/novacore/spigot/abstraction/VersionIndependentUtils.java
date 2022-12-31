@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import org.bukkit.*;
@@ -799,5 +800,9 @@ public abstract class VersionIndependentUtils {
 	 */
 	public void broadcastTitle(World world, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
 		Bukkit.getServer().getOnlinePlayers().stream().filter(player -> player.getWorld().equals(world)).forEach(player -> this.sendTitle(player, title, subtitle, fadeIn, stay, fadeOut));
+	}
+	
+	public Color bungeecordChatColorToBukkitColor(ChatColor color) {
+		return DefaultBunceecordColorMapper.getColorOfChatcolor(color);
 	}
 }
