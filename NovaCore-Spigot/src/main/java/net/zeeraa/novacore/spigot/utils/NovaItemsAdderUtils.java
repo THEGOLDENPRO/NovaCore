@@ -12,6 +12,6 @@ public class NovaItemsAdderUtils {
 	}
 
 	public static String getFontImage(String namespace) {
-		return new FontImageWrapper(namespace).toString();
+		return new FontImageWrapper(namespace).getString();
 	}
 }
