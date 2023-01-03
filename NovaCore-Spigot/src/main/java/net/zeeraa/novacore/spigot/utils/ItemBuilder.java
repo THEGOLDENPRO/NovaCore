@@ -111,7 +111,7 @@ public class ItemBuilder {
 	 * Set the display name of the item
 	 * 
 	 * @param name The name of the item
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder setName(String name) {
 		meta.setDisplayName(name);
@@ -123,7 +123,7 @@ public class ItemBuilder {
 	 * 
 	 * @param ench  The {@link Enchantment} to add
 	 * @param level The level
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder addEnchant(Enchantment ench, int level) {
 		return this.addEnchant(ench, level, false);
@@ -135,7 +135,7 @@ public class ItemBuilder {
 	 * @param ench                   The {@link Enchantment} to add
 	 * @param level                  The level
 	 * @param ignoreLevelRestriction <code>true</code> to ignore level restriction
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder addEnchant(Enchantment ench, int level, boolean ignoreLevelRestriction) {
 		meta.addEnchant(ench, level, ignoreLevelRestriction);
@@ -146,7 +146,7 @@ public class ItemBuilder {
 	 * Remove an enchantment
 	 * 
 	 * @param ench The {@link Enchantment} to remove
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder removeEnchant(Enchantment ench) {
 		meta.removeEnchant(ench);
@@ -157,7 +157,7 @@ public class ItemBuilder {
 	 * Add an item flag
 	 * 
 	 * @param itemFlag The {@link ItemFlag} to add
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder addItemFlags(ItemFlag itemFlag) {
 		meta.addItemFlags(itemFlag);
@@ -168,7 +168,7 @@ public class ItemBuilder {
 	 * Remove an item flag
 	 * 
 	 * @param itemFlag The {@link ItemFlag} to remove
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder removeItemFlags(ItemFlag itemFlag) {
 		meta.removeItemFlags(itemFlag);
@@ -179,7 +179,7 @@ public class ItemBuilder {
 	 * Set the amount of items in the stack
 	 * 
 	 * @param amount The amount
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder setAmount(int amount) {
 		item.setAmount(amount);
@@ -190,7 +190,7 @@ public class ItemBuilder {
 	 * Set the item meta of the builder
 	 * 
 	 * @param meta The new item meta to use
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder setItemMeta(ItemMeta meta) {
 		item.setItemMeta(meta);
@@ -202,7 +202,7 @@ public class ItemBuilder {
 	 * Set the item as unbreakable
 	 * 
 	 * @param unbreakable <code>true</code> if the item should be unbreakable
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder setUnbreakable(boolean unbreakable) {
 		VersionIndependentUtils.get().setUnbreakable(meta, unbreakable);
@@ -213,7 +213,7 @@ public class ItemBuilder {
 	 * Add a line to the lore of the item
 	 * 
 	 * @param string The text that should be added
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder addLore(String string) {
 		List<String> lore;
@@ -229,10 +229,19 @@ public class ItemBuilder {
 	}
 
 	/**
+	 * Add an empty line to the items lore
+	 * 
+	 * @return This item builder instance
+	 */
+	public ItemBuilder addEmptyLoreLine() {
+		return this.addLore(" ");
+	}
+
+	/**
 	 * Add multiple lines of lore to the item
 	 * 
 	 * @param strings The text that should be added
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder addLore(String... strings) {
 		for (int i = 0; i < strings.length; i++) {
@@ -245,7 +254,7 @@ public class ItemBuilder {
 	 * Add multiple lines of lore to the item
 	 * 
 	 * @param lines The lines to add
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 * @since 2.0.0
 	 */
 	public ItemBuilder addLore(List<String> lines) {
@@ -257,7 +266,7 @@ public class ItemBuilder {
 	 * Set the durability of the item
 	 * 
 	 * @param durability New durability
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder setDurability(short durability) {
 		item.setDurability(durability);
@@ -269,7 +278,7 @@ public class ItemBuilder {
 	 * of leather armor.
 	 * 
 	 * @param color The color to set
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder setLeatherArmorColor(Color color) {
 		((LeatherArmorMeta) meta).setColor(color);
@@ -279,7 +288,7 @@ public class ItemBuilder {
 	/**
 	 * Create an item stack from the builder
 	 * 
-	 * @return The item stack
+	 * @return This item stack
 	 */
 	public ItemStack build() {
 		this.item.setItemMeta(meta);
@@ -291,7 +300,7 @@ public class ItemBuilder {
 	 * 
 	 * @param enchantment The {@link Enchantment} to add
 	 * @param level       The level
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder addStoredEnchant(Enchantment enchantment, int level) {
 		return this.addStoredEnchant(enchantment, level, false);
@@ -319,7 +328,7 @@ public class ItemBuilder {
 	 * Sets the items CustomModelData
 	 *
 	 * @param data The <code>int</code> value for the CustomModelData
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder setCustomModelData(int data) {
 		VersionIndependentUtils.get().setCustomModelData(meta, data);
@@ -330,7 +339,7 @@ public class ItemBuilder {
 	 * Adds an attribute to the item
 	 * 
 	 * @param attributeInfo The attribute's info
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder addAttribute(AttributeInfo attributeInfo) {
 		VersionIndependentUtils.get().addAttribute(item, meta, attributeInfo);
@@ -342,7 +351,7 @@ public class ItemBuilder {
 	 * 
 	 * @param atributeInfo   Attribute info (to differenciate)
 	 * @param attributeInfos Array of attribute info
-	 * @return The item builder instance
+	 * @return This item builder instance
 	 */
 	public ItemBuilder addAttribute(AttributeInfo atributeInfo, AttributeInfo... attributeInfos) {
 		List<AttributeInfo> list = new ArrayList<>();
