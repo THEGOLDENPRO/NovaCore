@@ -47,6 +47,10 @@ public class VectorArea {
 		this(new Vector(x1, y1, z1), new Vector(x2, y2, z2));
 	}
 
+	public VectorArea clone() {
+		return new VectorArea(this.getPosition1().clone(), this.getPosition2().clone());
+	}
+	
 	/**
 	 * Get a {@link JSONObject} from this {@link VectorArea}
 	 * 
