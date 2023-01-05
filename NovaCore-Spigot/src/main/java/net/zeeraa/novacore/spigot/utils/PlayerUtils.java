@@ -159,4 +159,13 @@ public class PlayerUtils {
 		}
 		return false;
 	}
+
+	/**
+	 * Check if the player is at full health
+	 * @param player The {@link Player} to check
+	 * @return <code>true</code> if the player is at full health
+	 */
+	public static boolean isAtMaxHealth(Player player) {
+		return player.getHealth() == PlayerUtils.getPlayerMaxHealth(player);
+	}
 }
