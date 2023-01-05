@@ -2,7 +2,6 @@ package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.World;
@@ -30,7 +29,7 @@ public class GameMapData extends AbstractMapData {
 
 	private boolean enabled;
 
-	public GameMapData(List<MapModule> mapModules, ArrayList<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled, List<HologramData> holograms) {
+	public GameMapData(List<MapModule> mapModules, List<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled, List<HologramData> holograms) {
 		super(mapName, displayName, description, worldFile, holograms);
 
 		this.mapModules = mapModules;
