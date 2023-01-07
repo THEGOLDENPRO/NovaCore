@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -32,6 +31,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONObject;
 
+import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.commons.utils.Callback;
@@ -295,7 +295,7 @@ public class GameManager extends NovaModule implements Listener {
 		try {
 			combatTagMessages.forEach(m -> m.showTaggedMessage(player));
 		} catch (Exception e) {
-			Log.error("Error while showing combat tagged message for a player: " + e.getClass().getName() + " " + e.getMessage());
+			Log.error("GameManager", "Error while showing combat tagged message for a player: " + e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -310,7 +310,7 @@ public class GameManager extends NovaModule implements Listener {
 		try {
 			combatTagMessages.forEach(message -> message.showNoLongerTaggedMessage(player));
 		} catch (Exception e) {
-			Log.error("Error while showing no longer combat tagged message for a player: " + e.getClass().getName() + " " + e.getMessage());
+			Log.error("GameManager", "Error while showing no longer combat tagged message for a player: " + e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -409,7 +409,7 @@ public class GameManager extends NovaModule implements Listener {
 	 * @since 2.0.0
 	 */
 	public void readMapsFromFolder(File directory, File worldDirectory) {
-		Log.info("Scanning folder " + directory.getName() + " for maps");
+		Log.info("GameManager", "Scanning folder " + directory.getName() + " for maps");
 		for (File file : directory.listFiles()) {
 			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("json")) {
 				if (!file.isDirectory()) {
@@ -451,7 +451,7 @@ public class GameManager extends NovaModule implements Listener {
 	 */
 	public boolean readMapFromFile(File mapFile, File worldDirectory) {
 		try {
-			Log.info("Reading map from file " + mapFile.getName());
+			Log.info("GameManager", "Reading map from file " + mapFile.getName());
 
 			JSONObject json = JSONFileUtils.readJSONObjectFromFile(mapFile);
 
@@ -541,7 +541,7 @@ public class GameManager extends NovaModule implements Listener {
 			return false;
 		}
 
-		Log.info("Loading game " + game.getName());
+		Log.info("GameManager", "Loading game " + game.getName());
 
 		game.onLoad();
 		if (game instanceof Listener) {
@@ -558,7 +558,7 @@ public class GameManager extends NovaModule implements Listener {
 	@Override
 	public void onEnable() {
 		if (!commandAdded) {
-			Log.info("Adding the game command");
+			Log.info("GameManager", "Registering game command");
 			CommandRegistry.registerCommand(new NovaCoreCommandGame());
 			commandAdded = true;
 		}
@@ -605,24 +605,26 @@ public class GameManager extends NovaModule implements Listener {
 	 */
 	public void start() throws IOException {
 		try {
-			Log.debug("GameManager is trying to start a game");
+			Log.debug("GameManager", "Trying to start game");
 			if (activeGame instanceof MapGame) {
 				if (mapSelector.getMaps().size() == 0) {
-					Log.fatal("No maps has been loaded");
+					Log.fatal("GameManager", "No maps has been loaded");
 					throw new NoMapsAddedException("No maps has been loaded");
 				}
 
 				GameMapData map = mapSelector.getMapToUse();
-				Log.debug("Selected map: " + map.getDisplayName());
+				Log.debug("GameManager", "Selected map: " + map.getDisplayName());
 
-				Log.info("Loading game map");
+				Log.info("GameManager", "Loading game map");
 				((MapGame) activeGame).loadMap(map);
 			}
 
-			Log.debug("Calling start on " + activeGame.getClass().getName());
+			Log.debug("GameManager", "Calling start on " + activeGame.getClass().getName());
 			activeGame.startGame();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Log.fatal("GameManager", "Caught exception while starting game. " + e.getClass().getName() + " " + e.getMessage());
+			Bukkit.getServer().broadcastMessage(ChatColor.DARK_RED + "An error occured while starting the game");
 			GameStartFailureEvent event = new GameStartFailureEvent(GameManager.getInstance().getActiveGame(), e);
 			Bukkit.getPluginManager().callEvent(event);
 		}
@@ -965,7 +967,7 @@ public class GameManager extends NovaModule implements Listener {
 
 						LivingEntity killer = player.getKiller();
 
-						Log.trace("Eliminating player on death");
+						Log.trace("GameManager", "Eliminating player on death");
 						getActiveGame().eliminatePlayer(player, killer, (killer == null ? PlayerEliminationReason.DEATH : PlayerEliminationReason.KILLED));
 					}
 
