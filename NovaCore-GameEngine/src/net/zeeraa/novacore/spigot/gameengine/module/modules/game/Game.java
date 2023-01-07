@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -963,5 +964,25 @@ public abstract class Game {
 	 */
 	public void setRandom(Random random) {
 		this.random = random;
+	}
+
+	/**
+	 * Check if a {@link Player} is in the game
+	 * 
+	 * @param player The {@link Player} to check
+	 * @return <code>true</code> if the player is in the list of players playing
+	 */
+	public boolean isPlaying(Player player) {
+		return this.players.contains(player.getUniqueId());
+	}
+
+	/**
+	 * Get a {@link List} of all the online {@link Player}s that are participating
+	 * in the game
+	 * 
+	 * @return {@link List} with {@link Player}s
+	 */
+	public List<Player> getOnlinePlayers() {
+		return Bukkit.getServer().getOnlinePlayers().stream().filter(this::isPlaying).collect(Collectors.toList());
 	}
 }
