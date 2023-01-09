@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 
 /**
@@ -35,6 +37,8 @@ public class ItemBuilder {
 	 */
 	public static final ItemStack AIR = new ItemBuilder(Material.AIR).build();
 
+	protected static String itemsAdderGUIBackgroundItem = null;
+
 	/**
 	 * Item being built
 	 */
@@ -46,7 +50,7 @@ public class ItemBuilder {
 	protected ItemMeta meta;
 
 	/**
-	 * Init by material
+	 * Create instance with material
 	 * 
 	 * @param material The material
 	 */
@@ -55,17 +59,17 @@ public class ItemBuilder {
 	}
 
 	/**
-	 * Initiate by material and amount
+	 * Create instance with material and amount
 	 * 
 	 * @param material The material
-	 * @param ammount  The amount
+	 * @param amount   The amount
 	 */
-	public ItemBuilder(Material material, int ammount) {
-		this(new ItemStack(material, ammount), false);
+	public ItemBuilder(Material material, int amount) {
+		this(new ItemStack(material, amount), false);
 	}
 
 	/**
-	 * Init by material
+	 * Create instance with material
 	 * 
 	 * @param material The material
 	 */
@@ -74,17 +78,17 @@ public class ItemBuilder {
 	}
 
 	/**
-	 * Initiate by material and amount
+	 * Create instance with material and amount
 	 * 
 	 * @param material The material
-	 * @param ammount  The amount
+	 * @param amount   The amount
 	 */
-	public ItemBuilder(VersionIndependentMaterial material, int ammount) {
-		this(new ItemStack(material.toBukkitVersion(), ammount), false);
+	public ItemBuilder(VersionIndependentMaterial material, int amount) {
+		this(new ItemStack(material.toBukkitVersion(), amount), false);
 	}
 
 	/**
-	 * Initiate from an existing item stack
+	 * Create instance from an existing item stack
 	 * 
 	 * @param itemStack The item stack
 	 */
@@ -93,7 +97,17 @@ public class ItemBuilder {
 	}
 
 	/**
-	 * Initiate from an item stack
+	 * Get a builder with a colored material
+	 * 
+	 * @param type  The material type
+	 * @param color The {@link DyeColor} to use
+	 */
+	public ItemBuilder(ColoredBlockType type, DyeColor color) {
+		this(VersionIndependentUtils.get().getColoredItem(color, type));
+	}
+
+	/**
+	 * Create instance from an item stack
 	 * 
 	 * @param itemStack The item stack
 	 * @param clone     True if the stack should be cloned
@@ -566,5 +580,35 @@ public class ItemBuilder {
 
 	public static ItemStack makeItemStackUnbreakable(ItemStack item, boolean unbreakable) {
 		return VersionIndependentUtils.get().setUnbreakable(item, unbreakable);
+	}
+
+	public static String getItemsAdderGUIBackgroundItem() {
+		return itemsAdderGUIBackgroundItem;
+	}
+
+	public static void setItemsAdderGUIBackgroundItem(String itemsAdderGUIBackgroundItem) {
+		ItemBuilder.itemsAdderGUIBackgroundItem = itemsAdderGUIBackgroundItem;
+	}
+
+	/**
+	 * Get an item used as background in inventory GUIs. Use
+	 * {@link ItemBuilder#setItemsAdderGUIBackgroundItem(String)} to use a custom
+	 * item for this
+	 * 
+	 * @return {@link ItemStack} to use as background in GUIs
+	 */
+	public static ItemStack getGUIBackgroundItem() {
+		ItemBuilder builder;
+
+		if (itemsAdderGUIBackgroundItem == null) {
+			builder = new ItemBuilder(ColoredBlockType.GLASS_PANE, DyeColor.WHITE);
+		} else {
+			builder = ItemBuilder.fromItemsAdderNamespace(itemsAdderGUIBackgroundItem);
+		}
+
+		builder.setName(" ");
+		builder.setAmount(1);
+
+		return builder.build();
 	}
 }
