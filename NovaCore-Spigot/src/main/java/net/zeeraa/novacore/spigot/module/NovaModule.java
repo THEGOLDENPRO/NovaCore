@@ -44,7 +44,7 @@ public abstract class NovaModule {
 	private boolean hasBeenEnabledBefore = false;
 	protected ModuleEnableFailureReason enableFailureReason = null;
 	private String name;
-	private Plugin plugin;
+	private Plugin plugin = null;
 
 	private List<Class<? extends NovaModule>> dependencies = new ArrayList<Class<? extends NovaModule>>();
 
@@ -52,7 +52,6 @@ public abstract class NovaModule {
 
 	public NovaModule(String name) {
 		this.name = name;
-		this.plugin = null;
 	}
 
 	/**
@@ -65,7 +64,7 @@ public abstract class NovaModule {
 	 * @since 1.0
 	 */
 	public final String getName() {
-		return this.name;
+		return name;
 	}
 
 	/**
@@ -126,7 +125,7 @@ public abstract class NovaModule {
 	 * @since 1.0
 	 */
 	public ModuleEnableFailureReason getEnableFailureReason() {
-		return this.enableFailureReason;
+		return enableFailureReason;
 	}
 
 	/**
@@ -139,28 +138,28 @@ public abstract class NovaModule {
 	 * @since 1.0
 	 */
 	public boolean enable() {
-		if (this.enabled) {
-			this.enableFailureReason = ModuleEnableFailureReason.ALREADY_ENABLED;
+		if (enabled) {
+			enableFailureReason = ModuleEnableFailureReason.ALREADY_ENABLED;
 			return false;
 		}
 
 		missingPluginName = null;
 
-		Log.info("Enabling module " + this.getName());
+		Log.info("Enabling module " + getName());
 
 		if (dependencies != null) {
-			Log.debug("Module:" + getName(), this.getName() + " has " + dependencies.size() + " dependencies");
+			Log.debug("Module:" + getName(), getName() + " has " + dependencies.size() + " dependencies");
 			for (Class<? extends NovaModule> clazz : dependencies) {
 				if (!ModuleManager.moduleExists(clazz)) {
-					Log.error("Module:" + getName(), "Failed to load module " + this.getName() + ". Missing dependency" + clazz.getName());
-					this.enableFailureReason = ModuleEnableFailureReason.MISSING_DEPENDENCY;
+					Log.error("Module:" + getName(), "Failed to load module " + getName() + ". Missing dependency" + clazz.getName());
+					enableFailureReason = ModuleEnableFailureReason.MISSING_DEPENDENCY;
 					return false;
 				}
 
 				if (!ModuleManager.isEnabled(clazz)) {
 					if (!ModuleManager.enable(clazz)) {
-						Log.error("Module:" + getName(), "Failed to load module " + this.getName() + ". Failed to enable dependency" + clazz.getName());
-						this.enableFailureReason = ModuleEnableFailureReason.DEPENDENCY_ENABLE_FAILED;
+						Log.error("Module:" + getName(), "Failed to load module " + getName() + ". Failed to enable dependency" + clazz.getName());
+						enableFailureReason = ModuleEnableFailureReason.DEPENDENCY_ENABLE_FAILED;
 						return false;
 					}
 				}
@@ -170,14 +169,14 @@ public abstract class NovaModule {
 		boolean returnValue = true;
 
 		try {
-			this.onEnable();
+			onEnable();
 			if (this instanceof Listener) {
-				Log.debug("Module:" + getName(), "Registering listeners for module " + this.getName());
+				Log.debug("Module:" + getName(), "Registering listeners for module " + getName());
 				Bukkit.getPluginManager().registerEvents((Listener) this, NovaCore.getInstance());
 			}
-			this.enableFailureReason = null;
-			this.enabled = true;
-			this.hasBeenEnabledBefore = true;
+			enableFailureReason = null;
+			enabled = true;
+			hasBeenEnabledBefore = true;
 		} catch (MissingPluginDependencyException e) {
 			this.enableFailureReason = ModuleEnableFailureReason.MISSING_PLUGIN_DEPENDENCY;
 			returnValue = false;
@@ -185,7 +184,7 @@ public abstract class NovaModule {
 			Log.error(getName(), "Failed to enable module. Reason: " + e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.enableFailureReason = ModuleEnableFailureReason.EXCEPTION;
+			enableFailureReason = ModuleEnableFailureReason.EXCEPTION;
 			returnValue = false;
 		}
 
@@ -203,16 +202,16 @@ public abstract class NovaModule {
 	 * @since 1.0
 	 */
 	public boolean disable() {
-		if (!this.enabled) {
+		if (!enabled) {
 			return false;
 		}
 
 		Log.info("Disabling module " + this.getName());
 
-		this.enableFailureReason = null;
+		enableFailureReason = null;
 		boolean returnValue;
 		if (this instanceof Listener) {
-			Log.debug("Unregistering listeners for module " + this.getName());
+			Log.debug("Unregistering listeners for module " + getName());
 			HandlerList.unregisterAll((Listener) this);
 		}
 
@@ -223,7 +222,7 @@ public abstract class NovaModule {
 			e.printStackTrace();
 			returnValue = false;
 		}
-		this.enabled = false;
+		enabled = false;
 
 		ModuleDisabledEvent event = new ModuleDisabledEvent(this);
 		Bukkit.getServer().getPluginManager().callEvent(event);
@@ -239,7 +238,7 @@ public abstract class NovaModule {
 	 * @since 1.0
 	 */
 	public final String getClassName() {
-		return this.getClass().getName();
+		return getClass().getName();
 	}
 
 	/**
@@ -249,7 +248,7 @@ public abstract class NovaModule {
 	 * @since 1.0
 	 */
 	public final boolean isEnabled() {
-		return this.enabled;
+		return enabled;
 	}
 
 	/**
@@ -284,11 +283,11 @@ public abstract class NovaModule {
 	 * @param owner {@link Plugin} that owns this module
 	 */
 	public final void setPlugin(Plugin owner) {
-		if (this.plugin != null) {
-			Log.warn("Tried to call NovaModule#setPlugin() after plugin has already been set in " + this.getClassName());
+		if (plugin != null) {
+			Log.warn(name, "Tried to call NovaModule#setPlugin() after plugin has already been set in " + this.getClassName());
 			return;
 		}
-		this.plugin = owner;
+		plugin = owner;
 	}
 
 	/**
