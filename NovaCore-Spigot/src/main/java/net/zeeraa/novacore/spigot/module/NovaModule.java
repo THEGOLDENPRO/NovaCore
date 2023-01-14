@@ -40,7 +40,7 @@ public abstract class NovaModule {
 	 * 
 	 * @since 1.0
 	 */
-	protected boolean enabled = false;
+	private boolean enabled = false;
 	private boolean hasBeenEnabledBefore = false;
 	protected ModuleEnableFailureReason enableFailureReason = null;
 	private String name;
@@ -137,7 +137,7 @@ public abstract class NovaModule {
 	 *         {@link NovaModule#onEnable()} failed
 	 * @since 1.0
 	 */
-	public boolean enable() {
+	public final boolean enable() {
 		if (enabled) {
 			enableFailureReason = ModuleEnableFailureReason.ALREADY_ENABLED;
 			return false;
@@ -201,7 +201,7 @@ public abstract class NovaModule {
 	 *         {@link NovaModule#onDisable()} or if the module was already disabled
 	 * @since 1.0
 	 */
-	public boolean disable() {
+	public final boolean disable() {
 		if (!enabled) {
 			return false;
 		}

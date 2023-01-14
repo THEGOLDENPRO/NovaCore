@@ -625,7 +625,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		if (ModuleManager.moduleExists(JumpPadManager.class)) {
 			try {
-				if (JumpPadManager.getInstance().hasBeenEnabled()) {
+				if (JumpPadManager.getInstance().hasBeenEnabledBefore()) {
 					JumpPadManager.getInstance().saveJumpPads(jumpPadFile, this);
 				}
 			} catch (IOException e) {
@@ -676,7 +676,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 	public void onModuleDisable(ModuleDisabledEvent e) {
 		if (e.isModule(JumpPadManager.class)) {
 			try {
-				if (JumpPadManager.getInstance().hasBeenEnabled()) {
+				if (JumpPadManager.getInstance().hasBeenEnabledBefore()) {
 					JumpPadManager.getInstance().saveJumpPads(jumpPadFile, this);
 				}
 			} catch (JSONException | IOException e1) {

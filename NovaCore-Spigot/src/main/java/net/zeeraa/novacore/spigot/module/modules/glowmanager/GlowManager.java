@@ -46,7 +46,7 @@ public class GlowManager extends NovaModule {
 	 *                                      supported
 	 */
 	public void setGlowing(Entity entity, Player receiver) throws ReflectiveOperationException {
-		if (!enabled) {
+		if (!isEnabled()) {
 			return;
 		}
 		glowingEntities.setGlowing(entity, receiver);
@@ -62,7 +62,7 @@ public class GlowManager extends NovaModule {
 	 *                                      supported
 	 */
 	public void setGlowing(Entity entity, Player receiver, ChatColor color) throws ReflectiveOperationException {
-		if (!enabled) {
+		if (!isEnabled()) {
 			return;
 		}
 		glowingEntities.setGlowing(entity, receiver, color);
@@ -78,7 +78,7 @@ public class GlowManager extends NovaModule {
 	 *                                      supported
 	 */
 	public void setGlowing(int entityID, String teamID, Player receiver) throws ReflectiveOperationException {
-		if (!enabled) {
+		if (!isEnabled()) {
 			return;
 		}
 		glowingEntities.setGlowing(entityID, teamID, receiver);
@@ -95,7 +95,7 @@ public class GlowManager extends NovaModule {
 	 *                                      supported
 	 */
 	public void setGlowing(int entityID, String teamID, Player receiver, ChatColor color) throws ReflectiveOperationException {
-		if (!enabled) {
+		if (!isEnabled()) {
 			return;
 		}
 		glowingEntities.setGlowing(entityID, teamID, receiver, color);
@@ -117,7 +117,7 @@ public class GlowManager extends NovaModule {
 	 *                                      supported
 	 */
 	public void setGlowing(int entityID, String teamID, Player receiver, ChatColor color, byte otherFlags) throws ReflectiveOperationException {
-		if (!enabled) {
+		if (!isEnabled()) {
 			return;
 		}
 		glowingEntities.setGlowing(entityID, teamID, receiver, color, otherFlags);
@@ -136,7 +136,7 @@ public class GlowManager extends NovaModule {
 	 *                                      supported
 	 */
 	public void unsetGlowing(Entity entity, Player receiver) throws ReflectiveOperationException {
-		if (!enabled) {
+		if (!isEnabled()) {
 			return;
 		}
 		glowingEntities.unsetGlowing(entity, receiver);
@@ -155,7 +155,7 @@ public class GlowManager extends NovaModule {
 	 *                                      supported
 	 */
 	public void unsetGlowing(int entityID, Player receiver) throws ReflectiveOperationException {
-		if (!enabled) {
+		if (!isEnabled()) {
 			return;
 		}
 		glowingEntities.unsetGlowing(entityID, receiver);
