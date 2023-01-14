@@ -41,7 +41,7 @@ public abstract class NovaModule {
 	 * @since 1.0
 	 */
 	protected boolean enabled = false;
-	private boolean hasBeenEnabled = false;
+	private boolean hasBeenEnabledBefore = false;
 	protected ModuleEnableFailureReason enableFailureReason = null;
 	private String name;
 	private Plugin plugin;
@@ -177,7 +177,7 @@ public abstract class NovaModule {
 			}
 			this.enableFailureReason = null;
 			this.enabled = true;
-			this.hasBeenEnabled = true;
+			this.hasBeenEnabledBefore = true;
 		} catch (MissingPluginDependencyException e) {
 			this.enableFailureReason = ModuleEnableFailureReason.MISSING_PLUGIN_DEPENDENCY;
 			returnValue = false;
@@ -235,7 +235,7 @@ public abstract class NovaModule {
 	 * Get the class name of the module. used to identify the module in
 	 * {@link ModuleManager}
 	 * 
-	 * @return Call name of the module
+	 * @return Class name of the module
 	 * @since 1.0
 	 */
 	public final String getClassName() {
@@ -243,7 +243,7 @@ public abstract class NovaModule {
 	}
 
 	/**
-	 * CheckS if the module has been enabled
+	 * Check if the module has been enabled
 	 * 
 	 * @return <code>true</code> if the module has been enabled
 	 * @since 1.0
@@ -260,8 +260,8 @@ public abstract class NovaModule {
 	 * @return <code>true</code> if the module has ever been enabled
 	 * @since 1.0
 	 */
-	public final boolean hasBeenEnabled() {
-		return hasBeenEnabled;
+	public final boolean hasBeenEnabledBefore() {
+		return hasBeenEnabledBefore;
 	}
 
 	/**
