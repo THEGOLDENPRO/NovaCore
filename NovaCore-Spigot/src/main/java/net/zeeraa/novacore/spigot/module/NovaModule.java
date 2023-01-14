@@ -55,7 +55,8 @@ public abstract class NovaModule {
 	}
 
 	/**
-	 * Get the module display name. Module names can't contain spaces.
+	 * Get the module display name. Module names should be kept to letters, numbers,
+	 * underscores and dots. Names are not allowed to have spaces
 	 * <p>
 	 * As of version 2.0.0 you can no longer override this to set the name. To set
 	 * the name use the constructor instead
@@ -69,9 +70,8 @@ public abstract class NovaModule {
 
 	/**
 	 * Add a module to use as a dependency. All the dependencies will be enabled
-	 * before this module is enabled. The dependencies can in no way have this
-	 * module as a dependency or the enable function will cause a
-	 * {@link StackOverflowError}
+	 * before this module is enabled. Make sure 2 modules dont depend on each other
+	 * since that might cause a {@link StackOverflowError}
 	 * 
 	 * @param dependency The module class to depend on
 	 * @since 1.0
@@ -117,8 +117,8 @@ public abstract class NovaModule {
 	}
 
 	/**
-	 * Check why the module failed to enable. This will return <code>null</code> if
-	 * the module got disabled or enabled again after the failure
+	 * Check why the module failed to enable. This value gets reset to
+	 * <code>null</code> if the module is successfully enabled
 	 * 
 	 * @return {@link ModuleEnableFailureReason} on fail, <code>null</code> on
 	 *         success
