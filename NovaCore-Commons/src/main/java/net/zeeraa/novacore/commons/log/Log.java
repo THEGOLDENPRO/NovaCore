@@ -11,11 +11,9 @@ import net.zeeraa.novacore.commons.ServerType;
 import net.zeeraa.novacore.commons.async.AsyncManager;
 
 /**
- * Used to log messages
+ * This is the logger built into both NovaCore Spigot and Novacore Bungeecord
  * <p>
- * The log functions can be called async since if
- * {@link Log#log(String, String, LogLevel)} is called async it will use
- * {@link AsyncManager#runSync(Runnable)} to jump to the main thread
+ * The log function can be called from async tasks
  * 
  * @author Zeeraa
  */

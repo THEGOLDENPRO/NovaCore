@@ -50,7 +50,29 @@ public class VectorArea {
 	public VectorArea clone() {
 		return new VectorArea(this.getPosition1().clone(), this.getPosition2().clone());
 	}
-	
+
+	/**
+	 * Apply an offset to both position 1 and position 2 of this vector area
+	 * 
+	 * @param offset The {@link Vector} to add
+	 * @return instance of this vector area
+	 */
+	public VectorArea applyOffset(Vector offset) {
+		this.position1.add(offset);
+		this.position2.add(offset);
+		return this;
+	}
+
+	/**
+	 * Apply an offset to both position 1 and position 2 of this vector area
+	 * 
+	 * @param offset The {@link Location} to add
+	 * @return instance of this vector area
+	 */
+	public VectorArea applyOffset(Location offset) {
+		return this.applyOffset(offset.toVector());
+	}
+
 	/**
 	 * Get a {@link JSONObject} from this {@link VectorArea}
 	 * 
@@ -99,7 +121,7 @@ public class VectorArea {
 
 		return false;
 	}
-	
+
 	/**
 	 * Check if a vectors block position is inside this area. To check location use
 	 * {@link VectorArea#isInside(Vector)}
@@ -129,18 +151,42 @@ public class VectorArea {
 		return false;
 	}
 
+	/**
+	 * Check if a {@link Location} is inside this vector area
+	 * 
+	 * @param location The {@link Location} to check
+	 * @return <code>true</code> if the location is inside
+	 */
 	public boolean isInside(Location location) {
 		return this.isInside(location.toVector());
 	}
 
+	/**
+	 * Check if a {@link Location} is inside this vector areas block location
+	 * 
+	 * @param location The {@link Location} to check
+	 * @return <code>true</code> if the location is inside
+	 */
 	public boolean isInsideBlock(Location location) {
 		return this.isInsideBlock(location.toVector());
 	}
 
+	/**
+	 * Check if an {@link Entity} is inside this vector area
+	 * 
+	 * @param entity The {@link Entity} to check
+	 * @return <code>true</code> if the entity is inside
+	 */
 	public boolean isInside(Entity entity) {
 		return this.isInside(entity.getLocation());
 	}
 
+	/**
+	 * Check if an {@link Entity} is inside this vector areas block location
+	 * 
+	 * @param entity The {@link Entity} to check
+	 * @return <code>true</code> if the entity is inside
+	 */
 	public boolean isInsideBlock(Entity entity) {
 		return this.isInsideBlock(entity.getLocation());
 	}

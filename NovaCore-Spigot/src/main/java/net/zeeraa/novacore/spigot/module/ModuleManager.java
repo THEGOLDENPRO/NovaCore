@@ -8,9 +8,9 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.Plugin;
 
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.commons.utils.ClassFinder;
 import net.zeeraa.novacore.spigot.module.annotations.EssentialModule;
 import net.zeeraa.novacore.spigot.module.annotations.NovaAutoLoad;
-import net.zeeraa.novacore.spigot.utils.ClassFinder;
 
 /**
  * This class is used to register, enable and disable {@link NovaModule}s

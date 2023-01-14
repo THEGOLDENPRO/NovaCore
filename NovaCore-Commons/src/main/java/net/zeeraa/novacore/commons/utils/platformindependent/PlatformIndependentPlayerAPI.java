@@ -11,7 +11,6 @@ import net.zeeraa.novacore.commons.NovaCommons;
  * @author Zeeraa
  */
 public abstract class PlatformIndependentPlayerAPI {
-
 	/**
 	 * Check if a player is online by their {@link UUID}
 	 * 
