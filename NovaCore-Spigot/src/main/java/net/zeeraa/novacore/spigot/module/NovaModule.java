@@ -182,7 +182,7 @@ public abstract class NovaModule {
 			this.enableFailureReason = ModuleEnableFailureReason.MISSING_PLUGIN_DEPENDENCY;
 			returnValue = false;
 			missingPluginName = e.getPluginName();
-			Log.warn(getName(), "Failed to enable module. Reason: " + e.getMessage());
+			Log.error(getName(), "Failed to enable module. Reason: " + e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.enableFailureReason = ModuleEnableFailureReason.EXCEPTION;
