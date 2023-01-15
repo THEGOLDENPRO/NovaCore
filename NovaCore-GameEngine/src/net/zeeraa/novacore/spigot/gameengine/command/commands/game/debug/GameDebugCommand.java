@@ -74,7 +74,7 @@ public class GameDebugCommand extends NovaSubCommand {
 						for (MapModule module : mapGame.getActiveMap().getMapData().getMapModules()) {
 							String moduleStatus = module.getSummaryString();
 							if (moduleStatus != null) {
-								message += moduleStatus + "\n";
+								message += module.getName() + ": " + moduleStatus + "\n";
 							}
 						}
 					}
