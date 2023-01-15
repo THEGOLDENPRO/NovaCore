@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.json.JSONArray;
@@ -22,6 +23,9 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod.graceperiod.event.GracePeriodFinishEvent;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod.graceperiod.event.GracePeriodTimerEvent;
+import net.zeeraa.novacore.spigot.teams.TeamManager;
 import net.zeeraa.novacore.spigot.timers.BasicTimer;
 
 public class GracePeriodMapModule extends MapModule implements Listener {
@@ -92,6 +96,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 		endTimer = new BasicTimer(seconds, 20L);
 
 		endTimer.addTickCallback(timeLeft -> {
+			Bukkit.getServer().getPluginManager().callEvent(new GracePeriodTimerEvent(timeLeft));
 			if (warnings.contains(timeLeft)) {
 				Bukkit.getServer().getOnlinePlayers().forEach(VersionIndependentSound.NOTE_PLING::play);
 				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period ends in " + timeLeft + " seconds " + ChatColor.RESET + ChatColor.YELLOW + TextUtils.ICON_WARNING);
@@ -100,13 +105,35 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 
 		endTimer.addFinishCallback(() -> {
 			isActive = false;
+			Bukkit.getServer().getPluginManager().callEvent(new GracePeriodFinishEvent());
 			Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().sendTitle(player, "", ChatColor.YELLOW + TextUtils.ICON_WARNING + " Grace period is over " + TextUtils.ICON_WARNING, 10, 40, 10));
 			Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period is over");
 		});
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+		if (e.getEntity() instanceof Player) {
+			if (isActive) {
+				if (e.getDamager() instanceof Player) {
+					Player attacker = (Player) e.getDamager();
+					if (TeamManager.hasTeamManager()) {
+						if (!TeamManager.getTeamManager().isInSameTeam(e.getEntity().getUniqueId(), attacker.getUniqueId())) {
+							attacker.sendMessage(ChatColor.RED + "Grace period is active");
+						}
+					}
+				}
+				e.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent e) {
+		if (e.getCause() == DamageCause.ENTITY_ATTACK) {
+			return;
+		}
+
 		if (e.getEntity() instanceof Player) {
 			if (isActive) {
 				if (BLOCKED_CAUSES.contains(e.getCause())) {
