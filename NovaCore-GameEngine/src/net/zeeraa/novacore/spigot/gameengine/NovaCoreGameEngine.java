@@ -17,7 +17,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.M
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockloot.BlockLoot;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockreplacer.BlockReplacer;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chestloot.ChestLoot;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chunkloader.Chunkloader;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chunkloader.ChunkLoader;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.farmlandprotection.FarmlandProtection;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.fireresistance.FireReistance;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.gamerule.Gamerule;
@@ -26,6 +26,8 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod.falldamagegraceperiod.FallDamageGracePeriodMapModule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.graceperiod.graceperiod.GracePeriodMapModule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.handcraftingtable.HandCraftingTable;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.infinitefood.InfiniteFood;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.infiniteoxygen.InfiniteOxygen;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.instantvoidkill.InstantVoidKill;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.lootdrop.LootDropMapModule;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.lootdrop.medical.MedicalSupplyDropMapModule;
@@ -47,13 +49,13 @@ public class NovaCoreGameEngine extends NovaPlugin {
 	public static NovaCoreGameEngine getInstance() {
 		return instance;
 	}
-	
+
 	private File requestedGameDataDirectory;
 
 	@Override
 	public void onEnable() {
 		requestedGameDataDirectory = null;
-		
+
 		this.getDataFolder().mkdir();
 
 		Log.info("NovaCoreGameEngine", "Loading language files...");
@@ -95,7 +97,9 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.instantvoidkill", InstantVoidKill.class);
 		MapModuleManager.addMapModule("novacore.fireresistance", FireReistance.class);
 		MapModuleManager.addMapModule("novacore.farmlandprotection", FarmlandProtection.class);
-		MapModuleManager.addMapModule("novacore.chunkloader", Chunkloader.class);
+		MapModuleManager.addMapModule("novacore.chunkloader", ChunkLoader.class);
+		MapModuleManager.addMapModule("novacore.infiniteoxygen", InfiniteOxygen.class);
+		MapModuleManager.addMapModule("novacore.infinitefood", InfiniteFood.class);
 
 		// Legacy modules
 		MapModuleManager.addMapModule("novauniverse.survivalgames.medicalsupplydrop", MedicalSupplyDropMapModule.class);
@@ -121,15 +125,15 @@ public class NovaCoreGameEngine extends NovaPlugin {
 
 		Log.success("NovaCoreGameEngine", "Game engine enabled");
 	}
-	
+
 	public File getRequestedGameDataDirectory() {
 		return requestedGameDataDirectory;
 	}
-	
+
 	public void setRequestedGameDataDirectory(File requestedGameDataDirectory) {
 		this.requestedGameDataDirectory = requestedGameDataDirectory;
 	}
-	
+
 	public boolean hasRequestedDataDirectory() {
 		return this.getRequestedGameDataDirectory() != null;
 	}
