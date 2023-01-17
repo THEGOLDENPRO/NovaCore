@@ -28,16 +28,16 @@ public class NovaAreaSelectionWand extends CustomItem {
 		if (event.getClickedBlock() != null) {
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				selection.setPosition1(event.getClickedBlock().getLocation().clone());
-				player.sendMessage(ChatColor.AQUA + "Position 1 set to " + stringifLocation(selection.getPosition1()));
+				player.sendMessage(ChatColor.AQUA + "Position 1 set to " + stringifyLocation(selection.getPosition1()));
 			} else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 				selection.setPosition2(event.getClickedBlock().getLocation().clone());
-				player.sendMessage(ChatColor.AQUA + "Position 2 set to " + stringifLocation(selection.getPosition2()));
+				player.sendMessage(ChatColor.AQUA + "Position 2 set to " + stringifyLocation(selection.getPosition2()));
 				event.setCancelled(true);
 			}
 		}
 	}
 	
-	private String stringifLocation(Location location) {
+	private String stringifyLocation(Location location) {
 		return "X: " + location.getX() + " Y: " + location.getY() + " Z: " + location.getZ();
 	}
 }
