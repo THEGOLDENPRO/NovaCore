@@ -7,7 +7,6 @@ import net.zeeraa.novacore.spigot.abstraction.enums.Hand;
 import net.zeeraa.novacore.spigot.abstraction.enums.MainHand;
 import net.zeeraa.novacore.spigot.abstraction.packet.event.*;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

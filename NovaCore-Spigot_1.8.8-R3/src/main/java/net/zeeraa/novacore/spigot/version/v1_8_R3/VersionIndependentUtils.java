@@ -339,6 +339,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case ENDERMAN_TELEPORT:
 			return Sound.ENDERMAN_TELEPORT;
+			
+		case CLICK:
+			return Sound.CLICK;
 
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_SOUND);

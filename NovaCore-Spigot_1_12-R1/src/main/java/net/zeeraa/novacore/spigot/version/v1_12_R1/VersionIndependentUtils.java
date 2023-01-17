@@ -351,6 +351,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case ENDERMAN_TELEPORT:
 			return Sound.ENTITY_ENDERMEN_TELEPORT;
 
+		case CLICK:
+			return Sound.BLOCK_LEVER_CLICK;
+
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_SOUND);
 			AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name() + " is not defined in this version. Please add it to " + this.getClass().getName());
@@ -834,24 +837,23 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound compound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
 
-
 		switch (attributeInfo.getAttribute()) {
-			case GENERIC_MAX_HEALTH:
-			case GENERIC_FOLLOW_RANGE:
-			case GENERIC_KNOCKBACK_RESISTANCE:
-			case GENERIC_MOVEMENT_SPEED:
-			case GENERIC_FLYING_SPEED:
-			case GENERIC_ATTACK_DAMAGE:
-			case GENERIC_ATTACK_SPEED:
-			case GENERIC_ARMOR:
-			case GENERIC_ARMOR_TOUGHNESS:
-			case GENERIC_LUCK:
-			case HORSE_JUMP_STRENGTH:
-			case ZOMBIE_SPAWN_REINFORCEMENTS:
-				break;
-			default:
-				Log.error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
-				return;
+		case GENERIC_MAX_HEALTH:
+		case GENERIC_FOLLOW_RANGE:
+		case GENERIC_KNOCKBACK_RESISTANCE:
+		case GENERIC_MOVEMENT_SPEED:
+		case GENERIC_FLYING_SPEED:
+		case GENERIC_ATTACK_DAMAGE:
+		case GENERIC_ATTACK_SPEED:
+		case GENERIC_ARMOR:
+		case GENERIC_ARMOR_TOUGHNESS:
+		case GENERIC_LUCK:
+		case HORSE_JUMP_STRENGTH:
+		case ZOMBIE_SPAWN_REINFORCEMENTS:
+			break;
+		default:
+			Log.error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
+			return;
 		}
 
 		List<net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot> newList = ListUtils.removeDuplicates(attributeInfo.getEquipmentSlots());
@@ -874,9 +876,6 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		attributeTag.set("UUIDLeast", new NBTTagInt(((Long) id.getLeastSignificantBits()).intValue()));
 		attributeTag.set("UUIDMost", new NBTTagInt(((Long) id.getMostSignificantBits()).intValue()));
 
-
-
-
 		if (!newList.contains(net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot.ALL)) {
 			for (net.zeeraa.novacore.spigot.abstraction.enums.EquipmentSlot eSlot : newList) {
 				NBTTagCompound extra = (NBTTagCompound) attributeTag.clone();
@@ -898,7 +897,6 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		} else {
 			attributeModifiers.add(modifiers);
 		}
-
 
 		nmsItem.setTag(compound);
 		ItemStack newItem = CraftItemStack.asBukkitCopy(nmsItem);
@@ -925,7 +923,6 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		meta.serialize();
 
-
 	}
 
 	@SuppressWarnings("deprecation")
@@ -937,11 +934,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		direction.multiply(distance);
 		org.bukkit.util.Vector from = eye.toVector();
 
-
-
-
 		int rayTrace = 1000;
-		org.bukkit.util.Vector parcelled = direction.clone().setX(direction.getX()/rayTrace).setY(direction.getY()/rayTrace).setZ(direction.getZ()/rayTrace);
+		org.bukkit.util.Vector parcelled = direction.clone().setX(direction.getX() / rayTrace).setY(direction.getY() / rayTrace).setZ(direction.getZ() / rayTrace);
 		Block foundBlock = null;
 
 		for (int i = 0; i < rayTrace + 1; i++) {
@@ -962,9 +956,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 					bbs.add(b.a(data, (IBlockAccess) null, bPos));
 				}
 
-
 				boolean stop = false;
-				for (AxisAlignedBB aabb: bbs) {
+				for (AxisAlignedBB aabb : bbs) {
 					if ((current.getX() >= aabb.a && current.getX() <= aabb.d) && (current.getY() >= aabb.b && current.getY() <= aabb.e) && (current.getZ() >= aabb.c && current.getZ() <= aabb.f)) {
 						foundBlock = world.getBlockAt(current.getBlockX(), current.getBlockY(), current.getBlockZ());
 						stop = true;
@@ -991,7 +984,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public FallingBlock spawnFallingBlock(Location location, Material material, byte data, Consumer<FallingBlock> consumer) {
 		@SuppressWarnings("deprecation")
-		EntityFallingBlock fb = new EntityFallingBlock(((CraftWorld)location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ(), CraftMagicNumbers.getBlock(material).fromLegacyData(data));
+		EntityFallingBlock fb = new EntityFallingBlock(((CraftWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ(), CraftMagicNumbers.getBlock(material).fromLegacyData(data));
 		fb.ticksLived = 1;
 		if (fb.getBukkitEntity() instanceof CraftFallingBlock) {
 			CraftFallingBlock cfb = (CraftFallingBlock) fb.getBukkitEntity();

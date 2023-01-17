@@ -588,6 +588,9 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case ENDERMAN_TELEPORT:
 			return Sound.ENTITY_ENDERMAN_TELEPORT;
 
+		case CLICK:
+			return Sound.BLOCK_LEVER_CLICK;
+
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_SOUND);
 			AbstractionLogger.getLogger().error("VersionIndependentUtils", "VersionIndependantSound " + sound.name()
