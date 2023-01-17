@@ -63,6 +63,24 @@ public class VectorArea {
 		return this;
 	}
 
+	public VectorArea addOffset(Vector offset) {
+		return this.applyOffset(offset);
+	}
+
+	public VectorArea subtractOffset(Vector offset) {
+		this.position1.subtract(offset);
+		this.position2.subtract(offset);
+		return this;
+	}
+
+	public VectorArea addOffset(Location location) {
+		return this.applyOffset(location.toVector());
+	}
+
+	public VectorArea subtractOffset(Location location) {
+		return this.subtractOffset(location.toVector());
+	}
+
 	/**
 	 * Apply an offset to both position 1 and position 2 of this vector area
 	 * 
