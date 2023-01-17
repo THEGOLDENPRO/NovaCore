@@ -45,6 +45,22 @@ public class XYZLocation {
 		this(json.getDouble("x"), json.getDouble("y"), json.getDouble("z"));
 	}
 
+	public XYZLocation add(Vector vector) {
+		this.x += vector.getX();
+		this.y += vector.getY();
+		this.z += vector.getZ();
+
+		return this;
+	}
+
+	public XYZLocation subtract(Vector vector) {
+		this.x -= vector.getX();
+		this.y -= vector.getY();
+		this.z -= vector.getZ();
+
+		return this;
+	}
+
 	/**
 	 * Get the x location
 	 * 
@@ -205,7 +221,7 @@ public class XYZLocation {
 		}
 		return false;
 	}
-	
+
 	public boolean isLocationMatchingBlock(Location location) {
 		if (location.getBlockX() == this.getBlockX()) {
 			if (location.getBlockY() == this.getBlockY()) {
