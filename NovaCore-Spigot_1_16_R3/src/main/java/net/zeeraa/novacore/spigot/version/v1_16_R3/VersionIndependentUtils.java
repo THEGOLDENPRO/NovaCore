@@ -1184,4 +1184,24 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public Color bungeecordChatColorToBukkitColor(ChatColor color) {
 		return color.getColor();
 	}
+
+	@Override
+	public void displayTotem(Player player) {
+		PacketPlayOutEntityStatus packet = new PacketPlayOutEntityStatus(((CraftPlayer) player).getHandle(), (byte) 35);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+	}
+
+	@Override
+	public void displayCustomTotem(Player player, int cmd) {
+		ItemStack totem = new ItemStack(Material.TOTEM_OF_UNDYING);
+		ItemMeta meta = totem.getItemMeta();
+		assert meta != null;
+		meta.setCustomModelData(cmd);
+		totem.setItemMeta(meta);
+		ItemStack hand = player.getInventory().getItemInMainHand();
+		player.getInventory().setItemInMainHand(totem);
+		PacketPlayOutEntityStatus packet = new PacketPlayOutEntityStatus(((CraftPlayer) player).getHandle(), (byte) 35);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+		player.getInventory().setItemInMainHand(hand);
+	}
 }

@@ -528,7 +528,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void setCustomModelData(ItemMeta meta, int data) {
 		// Does not exist for this version
-		AbstractionLogger.getLogger().error("VersionIndependentUtils", "Current version does not have CustomModelData support.");
+		Log.error("VersionIndependentUtils", "Current version does not have CustomModelData support.");
 	}
 
 	@Override
@@ -1017,4 +1017,16 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public ShapelessRecipe createShapelessRecipe(ItemStack result, Plugin owner, String key) {
 		return new ShapelessRecipe(result);
 	}
+
+	@Override
+	public void displayTotem(Player player) {
+		Log.error("VersionIndependentUtils", "Current version does not have Totems.");
+	}
+
+	@Override
+	public void displayCustomTotem(Player player, int cmd) {
+		Log.error("VersionIndependentUtils", "Current version does not have Totems.");
+	}
+
+
 }

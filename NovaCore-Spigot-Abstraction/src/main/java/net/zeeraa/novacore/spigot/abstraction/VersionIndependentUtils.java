@@ -805,4 +805,8 @@ public abstract class VersionIndependentUtils {
 	public Color bungeecordChatColorToBukkitColor(ChatColor color) {
 		return DefaultBunceecordColorMapper.getColorOfChatcolor(color);
 	}
+
+	public abstract void displayTotem(Player player);
+
+	public abstract void displayCustomTotem(Player player, int cmd);
 }
