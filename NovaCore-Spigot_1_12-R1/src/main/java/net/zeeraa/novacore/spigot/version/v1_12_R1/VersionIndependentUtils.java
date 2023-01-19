@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import net.minecraft.server.v1_12_R1.*;
-import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.ListUtils;
 import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
@@ -530,7 +529,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void setCustomModelData(ItemMeta meta, int data) {
-		// Does not exist for this version
+		AbstractionLogger.getLogger().error("VersionIndependentUtils", "Current version does not have CustomModelData support.");
 	}
 
 	@Override
@@ -817,7 +816,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		if (packet instanceof Packet) {
 			((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);
 		} else {
-			Log.warn("NovaCore", "Packet sent isnt instance of " + Packet.class.getCanonicalName());
+			AbstractionLogger.getLogger().warning("NovaCore", "Packet sent isnt instance of " + Packet.class.getCanonicalName());
 		}
 	}
 
@@ -825,12 +824,12 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@SuppressWarnings("unchecked")
 	public void addAttribute(ItemStack item, ItemMeta meta, AttributeInfo attributeInfo) {
 		if (attributeInfo == null) {
-			Log.error("VersionIndependentUtils", "AttributeInfo is null");
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "AttributeInfo is null");
 			return;
 		}
 
 		if (attributeInfo.getAttribute() == null) {
-			Log.error("VersionIndependentUtils", "Attribute is null");
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "Attribute is null");
 			return;
 		}
 
@@ -852,7 +851,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case ZOMBIE_SPAWN_REINFORCEMENTS:
 			break;
 		default:
-			Log.error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
 			return;
 		}
 
@@ -1029,5 +1028,16 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public ShapelessRecipe createShapelessRecipe(ItemStack result, Plugin owner, String key) {
 		return new ShapelessRecipe(new NamespacedKey(owner, key.toLowerCase()), result);
+	}
+
+	@Override
+	public void displayTotem(Player player) {
+		PacketPlayOutEntityStatus packet = new PacketPlayOutEntityStatus(((CraftPlayer) player).getHandle(), (byte) 35);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+	}
+
+	@Override
+	public void displayCustomTotem(Player player, int cmd) {
+		AbstractionLogger.getLogger().error("VersionIndependentUtils", "Current version does not have CustomModelData support.");
 	}
 }
