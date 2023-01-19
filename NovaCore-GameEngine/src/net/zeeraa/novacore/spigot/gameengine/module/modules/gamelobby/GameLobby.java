@@ -73,6 +73,8 @@ public class GameLobby extends NovaModule implements Listener {
 
 	private boolean ignoreNoTeam;
 
+	private boolean disableAutoAddPlayers;
+
 	/**
 	 * Set if players without teams should be added to the game or not. Default is
 	 * <code>false</code>
@@ -102,6 +104,8 @@ public class GameLobby extends NovaModule implements Listener {
 
 		this.ignoreNoTeam = false;
 
+		this.disableAutoAddPlayers = false;
+
 		this.mapReader = new DefaultLobbyMapReader();
 		this.mapSelector = new RandomLobbyMapSelector();
 
@@ -110,6 +114,14 @@ public class GameLobby extends NovaModule implements Listener {
 		this.maps = new ArrayList<>();
 
 		this.taskId = -1;
+	}
+
+	public void setDisableAutoAddPlayers(boolean disableAutoAddPlayers) {
+		this.disableAutoAddPlayers = disableAutoAddPlayers;
+	}
+
+	public boolean isDisableAutoAddPlayers() {
+		return disableAutoAddPlayers;
 	}
 
 	public GameLobby() {
@@ -223,7 +235,9 @@ public class GameLobby extends NovaModule implements Listener {
 							}
 						}
 
-						GameManager.getInstance().getActiveGame().addPlayer(player);
+						if (!disableAutoAddPlayers) {
+							GameManager.getInstance().getActiveGame().addPlayer(player);
+						}
 					}
 				}
 			}
