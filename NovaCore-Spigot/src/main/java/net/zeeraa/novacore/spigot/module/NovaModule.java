@@ -298,4 +298,11 @@ public abstract class NovaModule {
 	public final Plugin getPlugin() {
 		return plugin;
 	}
+
+	/**
+	 * Disable this module
+	 */
+	public final void disableSelf() {
+		ModuleManager.disable(this.getClass());
+	}
 }
