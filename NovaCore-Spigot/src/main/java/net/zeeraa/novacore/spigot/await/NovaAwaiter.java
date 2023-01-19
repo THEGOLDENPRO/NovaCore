@@ -59,15 +59,24 @@ public class NovaAwaiter implements NovaAwaitable, NovaAwaitableContainer {
 		awaitables.add(awaitable);
 	}
 
+	public boolean begin() {
+		if (finished) {
+			return false;
+		}
+		Task.tryStartTask(task);
+		return true;
+	}
+
 	/**
 	 * Cancel the awaiter. This will also flag this awaiter as finished
 	 */
-	public void cancel() {
+	public boolean cancel() {
 		if (finished) {
-			return;
+			return false;
 		}
 		Task.tryStopTask(task);
 		finished = true;
+		return true;
 	}
 
 	@Override
