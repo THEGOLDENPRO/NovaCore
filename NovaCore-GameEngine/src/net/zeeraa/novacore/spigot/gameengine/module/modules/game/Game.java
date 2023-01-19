@@ -185,6 +185,15 @@ public abstract class Game {
 	}
 
 	/**
+	 * Check if begin even has been sent
+	 * 
+	 * @return <code>true</code> if {@link Game#sendBeginEvent()} has been called
+	 */
+	public boolean hasSentBeginEvent() {
+		return beginEventCalled;
+	}
+
+	/**
 	 * Get the name of the game used by plugins
 	 * 
 	 * @return Name of the game
