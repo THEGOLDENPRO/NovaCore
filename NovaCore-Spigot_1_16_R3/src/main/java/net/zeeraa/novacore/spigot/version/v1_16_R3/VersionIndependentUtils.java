@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 
-import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.ListUtils;
 import net.zeeraa.novacore.commons.utils.LoopableIterator;
 import net.zeeraa.novacore.spigot.abstraction.*;
@@ -1072,19 +1071,19 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		if (packet instanceof Packet) {
 			((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);
 		} else {
-			Log.warn("NovaCore", "Packet sent isnt instance of " + Packet.class.getCanonicalName());
+			AbstractionLogger.getLogger().warning("NovaCore", "Packet sent isnt instance of " + Packet.class.getCanonicalName());
 		}
 	}
 
 	@Override
 	public void addAttribute(ItemStack item, ItemMeta meta, AttributeInfo attributeInfo) {
 		if (attributeInfo == null) {
-			Log.error("VersionIndependentUtils", "AttributeInfo is null");
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "AttributeInfo is null");
 			return;
 		}
 
 		if (attributeInfo.getAttribute() == null) {
-			Log.error("VersionIndependentUtils", "Attribute is null");
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "Attribute is null");
 			return;
 		}
 
@@ -1095,7 +1094,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 					attributeInfo.getValue(), AttributeModifier.Operation.valueOf(attributeInfo.getOperation().name()));
 
 			if (!meta.addAttributeModifier(Attribute.valueOf(attributeInfo.getAttribute().name()), modifier)) {
-				Log.error("VersionIndependentUtils", "Something went wrong when adding the attribute " + attributeInfo.getAttribute().getKey());
+				AbstractionLogger.getLogger().error("VersionIndependentUtils", "Something went wrong when adding the attribute " + attributeInfo.getAttribute().getKey());
 			}
 
 		} else {
@@ -1103,7 +1102,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 				AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), attributeInfo.getAttribute().getKey(),
 						attributeInfo.getValue(), AttributeModifier.Operation.valueOf(attributeInfo.getOperation().name()), EquipmentSlot.valueOf(eSlot.name()));
 				if (!meta.addAttributeModifier(Attribute.valueOf(attributeInfo.getAttribute().name()), modifier)) {
-					Log.error("VersionIndependentUtils", "Something went wrong when adding the attribute " + attributeInfo.getAttribute().getKey());
+					AbstractionLogger.getLogger().error("VersionIndependentUtils", "Something went wrong when adding the attribute " + attributeInfo.getAttribute().getKey());
 				}
 			}
 		}
@@ -1179,7 +1178,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public ShapelessRecipe createShapelessRecipe(ItemStack result, Plugin owner, String key) {
 		return new ShapelessRecipe(new NamespacedKey(owner, key.toLowerCase()), result);
 	}
-	
+
 	@Override
 	public Color bungeecordChatColorToBukkitColor(ChatColor color) {
 		return color.getColor();

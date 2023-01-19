@@ -6,7 +6,6 @@ import com.mojang.authlib.properties.PropertyMap;
 import net.minecraft.server.v1_8_R3.*;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
-import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
@@ -339,7 +338,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case ENDERMAN_TELEPORT:
 			return Sound.ENDERMAN_TELEPORT;
-			
+
 		case CLICK:
 			return Sound.CLICK;
 
@@ -528,7 +527,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void setCustomModelData(ItemMeta meta, int data) {
 		// Does not exist for this version
-		Log.error("VersionIndependentUtils", "Current version does not have CustomModelData support.");
+		AbstractionLogger.getLogger().error("VersionIndependentUtils", "Current version does not have CustomModelData support.");
 	}
 
 	@Override
@@ -804,7 +803,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		if (packet instanceof Packet) {
 			((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);
 		} else {
-			Log.warn("NovaCore", "Packet sent isnt instance of " + Packet.class.getCanonicalName());
+			AbstractionLogger.getLogger().warning("NovaCore", "Packet sent isnt instance of " + Packet.class.getCanonicalName());
 		}
 
 	}
@@ -814,12 +813,12 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	public void addAttribute(ItemStack item, ItemMeta meta, AttributeInfo attributeInfo) {
 
 		if (attributeInfo == null) {
-			Log.error("VersionIndependentUtils", "AttributeInfo is null");
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "AttributeInfo is null");
 			return;
 		}
 
 		if (attributeInfo.getAttribute() == null) {
-			Log.error("VersionIndependentUtils", "Attribute is null");
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "Attribute is null");
 			return;
 		}
 
@@ -836,12 +835,12 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		case ZOMBIE_SPAWN_REINFORCEMENTS:
 			break;
 		default:
-			Log.error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
+			AbstractionLogger.getLogger().error("VersionIndependentUtils", "Attribute " + attributeInfo.getAttribute().name() + " (" + attributeInfo.getAttribute().getPre1_16Key() + ") does not exist in current version");
 			return;
 		}
 
 		if (!attributeInfo.getEquipmentSlots().contains(EquipmentSlot.ALL)) {
-			Log.info("VersionIndependentUtils", "equipmentSlot set to ALL since in 1.8 theres only this option");
+			AbstractionLogger.getLogger().info("VersionIndependentUtils", "equipmentSlot set to ALL since in 1.8 theres only this option");
 		}
 
 		NBTTagList modifiers = new NBTTagList();
@@ -975,7 +974,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 				try {
 					item.setDurability((short) getFromEffectType(effect.getType()).getDamageValue());
 				} catch (Exception e) {
-					Log.warn("Could not set item color, defaulting to water bottle.");
+					AbstractionLogger.getLogger().warning("Could not set item color, defaulting to water bottle.");
 				}
 			}
 		}
@@ -983,7 +982,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void setPotionColor(ItemMeta meta, org.bukkit.Color color) {
-		Log.error("VersionIndependentUtils", "setPotionColor cannot be handled on current version");
+		AbstractionLogger.getLogger().error("VersionIndependentUtils", "setPotionColor cannot be handled on current version");
 	}
 
 	private PotionType getFromEffectType(PotionEffectType type) {
@@ -1020,13 +1019,11 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void displayTotem(Player player) {
-		Log.error("VersionIndependentUtils", "Current version does not have Totems.");
+		AbstractionLogger.getLogger().error("VersionIndependentUtils", "Current version does not have Totems.");
 	}
 
 	@Override
 	public void displayCustomTotem(Player player, int cmd) {
-		Log.error("VersionIndependentUtils", "Current version does not have Totems.");
+		AbstractionLogger.getLogger().error("VersionIndependentUtils", "Current version does not have Totems.");
 	}
-
-
 }
