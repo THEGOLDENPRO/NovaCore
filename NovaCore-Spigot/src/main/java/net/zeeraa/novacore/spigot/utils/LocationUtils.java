@@ -55,6 +55,22 @@ public class LocationUtils {
 	}
 
 	/**
+	 * Check if a location and vector have matching block X, Y and Z values
+	 * 
+	 * @param location1 Location 1 to check
+	 * @param location2 Location 2 to check
+	 * @return <code>true</code> if matching
+	 */
+	public static boolean isSameBlock(Location location1, Vector location2) {
+		if (location1.getBlockX() == location2.getBlockX()) {
+			if (location1.getBlockY() == location2.getBlockY()) {
+				return location1.getBlockZ() == location2.getBlockZ();
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Check if 2 locations have matching {@link Location#getBlockX()},
 	 * {@link Location#getBlockY()} and {@link Location#getBlockZ()}
 	 * 
