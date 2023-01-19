@@ -311,7 +311,8 @@ public class LocationUtils {
 	}
 
 	/**
-	 * Get a copy of the provided location with its x and z centered
+	 * Get a copy of the provided location with its x and z centered. This will not
+	 * modify the provided {@link Location} object
 	 * 
 	 * @param location The location to get a centered copy of
 	 * @return New location with centered x and z
