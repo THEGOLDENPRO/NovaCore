@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -210,6 +211,10 @@ public class GameLobby extends NovaModule implements Listener {
 
 	public void setMapSelector(LobbyMapSelector mapSelector) {
 		this.mapSelector = mapSelector;
+	}
+
+	public World getWorld() {
+		this.activeMap.getWorld();
 	}
 
 	public boolean startGame() {
