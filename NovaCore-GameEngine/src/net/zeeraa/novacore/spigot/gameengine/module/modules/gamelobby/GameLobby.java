@@ -214,7 +214,7 @@ public class GameLobby extends NovaModule implements Listener {
 	}
 
 	public World getWorld() {
-		this.activeMap.getWorld();
+		return this.activeMap.getWorld();
 	}
 
 	public boolean startGame() {
