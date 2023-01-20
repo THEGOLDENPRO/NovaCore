@@ -131,6 +131,34 @@ public class ModuleManager {
 	}
 
 	/**
+	 * Reloads a module
+	 * 
+	 * @since 2.0.0
+	 * @param clazz The class of the module
+	 * @return <code>true</code> on success, false if module is not enabled or if
+	 *         the enable function return an error
+	 */
+	public static boolean reload(Class<? extends NovaModule> clazz) {
+		return reload(clazz.getName());
+	}
+
+	/**
+	 * Reloads a module
+	 * 
+	 * @since 2.0.0
+	 * @param className The class name of the module
+	 * @return <code>true</code> on success, false if module is not enabled or if
+	 *         the enable function return an error
+	 */
+	public static boolean reload(String className) {
+		NovaModule module = getModule(className);
+		if (module != null) {
+			return module.reload();
+		}
+		return false;
+	}
+
+	/**
 	 * Disable a module
 	 * 
 	 * @since 1.0
@@ -304,7 +332,7 @@ public class ModuleManager {
 	 * Scan for modules in a plugin and load them if they have the
 	 * {@link NovaAutoLoad} annotation
 	 * 
-	 * @param plugin   The plugin that owns the package
+	 * @param plugin        The plugin that owns the package
 	 * @param packageToScan The package to scan in
 	 * @since 1.1
 	 */

@@ -117,6 +117,16 @@ public abstract class NovaModule {
 	}
 
 	/**
+	 * Called when the module is being reloaded. This gets called by
+	 * {@link NovaModule#reload()} before the module is disabled using
+	 * {@link NovaModule#disable()}
+	 * 
+	 * @since 2.0.0
+	 */
+	public void onReload() {
+	}
+
+	/**
 	 * Check why the module failed to enable. This value gets reset to
 	 * <code>null</code> if the module is successfully enabled
 	 * 
@@ -228,6 +238,22 @@ public abstract class NovaModule {
 		Bukkit.getServer().getPluginManager().callEvent(event);
 
 		return returnValue;
+	}
+
+	/**
+	 * Disable and enable this module
+	 * 
+	 * @return <code>true</code> on success
+	 */
+	public final boolean reload() {
+		if (!enabled) {
+			Log.warn("Module", "Call to reload was made on non enabled module");
+			return false;
+		}
+		this.onReload();
+		Log.info("Reloading module " + this.getName());
+		this.disable();
+		return this.enable();
 	}
 
 	/**

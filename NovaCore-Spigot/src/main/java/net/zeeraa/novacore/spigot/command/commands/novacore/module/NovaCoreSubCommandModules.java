@@ -22,12 +22,13 @@ public class NovaCoreSubCommandModules extends NovaSubCommand {
 
 		this.setPermission("novacore.command.novacore.modules");
 		this.setPermissionDefaultValue(PermissionDefault.OP);
-		
+
 		this.addHelpSubCommand();
 		this.addSubCommand(new NovaCoreSubCommandModulesList());
 		this.addSubCommand(new NovaCoreSubCommandModulesDisable());
 		this.addSubCommand(new NovaCoreSubCommandModulesEnable());
-		
+		this.addSubCommand(new NovaCoreSubCommandModulesReload());
+
 		this.setFilterAutocomplete(true);
 	}
 
