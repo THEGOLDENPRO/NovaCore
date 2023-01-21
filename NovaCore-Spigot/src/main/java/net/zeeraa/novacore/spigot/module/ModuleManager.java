@@ -52,17 +52,7 @@ public class ModuleManager {
 	 * @return {@link NovaModule} or null if not loaded
 	 */
 	public static NovaModule getModule(String className) {
-		try {
-			Class<?> clazz = Class.forName(className);
-			if (clazz.isAssignableFrom(NovaModule.class)) {
-				return modules.get(className);
-			} else {
-				return null;
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return modules.get(className);
 	}
 
 	/**
