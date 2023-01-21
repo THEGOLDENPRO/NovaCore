@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
 import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.Plugin;
 
@@ -40,6 +39,7 @@ public class ModuleManager {
 	 * @param clazz The class of the module
 	 * @return {@link NovaModule} or null if not loaded
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T extends NovaModule> T getModule(Class<T> clazz) {
 		return (T) modules.get(clazz.getName());
 	}

@@ -25,6 +25,8 @@ import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
 public class MultiverseManager extends NovaModule implements Listener {
 	private Map<String, MultiverseWorld> worlds;
 
+	public static String UNLOADING_WORLD_MESSAGE = "Unloading world";
+	
 	private static MultiverseManager instance;
 
 	public static MultiverseManager getInstance() {
@@ -267,7 +269,7 @@ public class MultiverseManager extends NovaModule implements Listener {
 		for (Player player : multiverseWorld.getWorld().getPlayers()) {
 			switch (multiverseWorld.getPlayerUnloadOptions()) {
 			case KICK:
-				player.kickPlayer("Unloading world");
+				player.kickPlayer(UNLOADING_WORLD_MESSAGE);
 				break;
 
 			case SEND_TO_FIRST:
