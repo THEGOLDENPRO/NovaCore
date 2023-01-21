@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+
 import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.Plugin;
 
@@ -39,8 +40,8 @@ public class ModuleManager {
 	 * @param clazz The class of the module
 	 * @return {@link NovaModule} or null if not loaded
 	 */
-	public static NovaModule getModule(Class<? extends NovaModule> clazz) {
-		return modules.get(clazz.getName());
+	public static <T extends NovaModule> T getModule(Class<T> clazz) {
+		return (T) modules.get(clazz.getName());
 	}
 
 	/**
@@ -51,7 +52,17 @@ public class ModuleManager {
 	 * @return {@link NovaModule} or null if not loaded
 	 */
 	public static NovaModule getModule(String className) {
-		return modules.get(className);
+		try {
+			Class<?> clazz = Class.forName(className);
+			if (clazz.isAssignableFrom(NovaModule.class)) {
+				return modules.get(className);
+			} else {
+				return null;
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
