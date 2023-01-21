@@ -48,7 +48,7 @@ public class InstantVoidKill extends MapModule {
 	}
 
 	@Override
-	public void onGameStart(Game game) {
+	public void onGameBegin(Game game) {
 		Task.tryStartTask(taks);
 	}
 
