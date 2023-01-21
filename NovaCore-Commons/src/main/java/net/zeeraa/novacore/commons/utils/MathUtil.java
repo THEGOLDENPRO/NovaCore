@@ -8,4 +8,8 @@ public class MathUtil {
 	public static double lerp(double a, double b, double f) {
 		return a + f * (b - a);
 	}
+
+	public static boolean isDecimal(double number) {
+		return number % 1 != 0;
+	}
 }
