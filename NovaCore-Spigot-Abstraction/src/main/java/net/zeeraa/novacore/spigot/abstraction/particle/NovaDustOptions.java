@@ -28,7 +28,15 @@ public class NovaDustOptions {
 	public java.awt.Color getAwtColor() {
 		return awtColor;
 	}
-	
+
+	public NovaDustOptions(java.awt.Color color) {
+		this(color, 1);
+	}
+
+	public NovaDustOptions(Color color) {
+		this(color, 1);
+	}
+
 	public Color getColor() {
 		return color;
 	}
