@@ -5,5 +5,5 @@ import java.util.HashMap;
 import org.bukkit.Material;
 
 public interface ItemBuilderRecordList {
-	public HashMap<String, Material> getRecordMap();
+	HashMap<String, Material> getRecordMap();
 }

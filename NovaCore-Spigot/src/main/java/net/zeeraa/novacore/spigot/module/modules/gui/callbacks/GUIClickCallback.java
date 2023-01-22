@@ -27,5 +27,5 @@ public interface GUIClickCallback {
 	 *         outcome and deny the interaction. use the other values to either
 	 *         allow or deny the interaction
 	 */
-	public GUIAction onClick(Inventory clickedInventory, Inventory inventory, HumanEntity entity, int clickedSlot, SlotType slotType, InventoryAction clickType);
+	GUIAction onClick(Inventory clickedInventory, Inventory inventory, HumanEntity entity, int clickedSlot, SlotType slotType, InventoryAction clickType);
 }

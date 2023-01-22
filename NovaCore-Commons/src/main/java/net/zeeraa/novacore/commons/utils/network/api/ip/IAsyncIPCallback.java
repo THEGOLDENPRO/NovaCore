@@ -7,5 +7,5 @@ public interface IAsyncIPCallback {
 	 * @param ip        The ip or <code>null</code> on error
 	 * @param exception The {@link Exception} thrown or null on success
 	 */
-	public void onResult(String ip, Exception exception);
+	void onResult(String ip, Exception exception);
 }

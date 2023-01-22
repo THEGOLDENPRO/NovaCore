@@ -1,9 +1,15 @@
 package net.zeeraa.novacore.spigot.abstraction;
 
-public interface VersionIndependantLoader {
-	public CommandRegistrator getCommandRegistrator();
+import net.zeeraa.novacore.spigot.abstraction.particle.NovaParticleProvider;
 
-	public VersionIndependentUtils getVersionIndependentUtils();
+public abstract class VersionIndependantLoader {
+	public abstract CommandRegistrator getCommandRegistrator();
 
-	public Listeners getListeners();
+	public abstract VersionIndependentUtils getVersionIndependentUtils();
+
+	public abstract Listeners getListeners();
+
+	public NovaParticleProvider getVersionSpecificParticleProvider() {
+		return null;
+	}
 }

@@ -13,5 +13,5 @@ public interface GUICloseCallback {
 	 * 
 	 * @param event the {@link InventoryCloseEvent}
 	 */
-	public void onClose(InventoryCloseEvent event);
+	void onClose(InventoryCloseEvent event);
 }

@@ -19,5 +19,5 @@ public interface GUIClickCallbackWithEvent {
 	 *         outcome and deny the interaction. use the other values to either
 	 *         allow or deny the interaction
 	 */
-	public GUIAction onClick(InventoryClickEvent event);
+	GUIAction onClick(InventoryClickEvent event);
 }

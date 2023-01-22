@@ -5,6 +5,5 @@ import org.bukkit.Material;
 import java.util.HashMap;
 
 public interface MaterialNameList {
-
-    public HashMap<String, Material> getMaterialMap();
+    HashMap<String, Material> getMaterialMap();
 }

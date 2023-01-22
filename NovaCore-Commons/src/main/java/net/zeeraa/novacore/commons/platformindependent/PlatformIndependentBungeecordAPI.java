@@ -15,5 +15,5 @@ public interface PlatformIndependentBungeecordAPI {
 	 * @param server The name of the server to send the player to
 	 * @return <code>true</code> if an attempt was made
 	 */
-	public boolean sendPlayerToServer(UUID player, String server);
+	boolean sendPlayerToServer(UUID player, String server);
 }

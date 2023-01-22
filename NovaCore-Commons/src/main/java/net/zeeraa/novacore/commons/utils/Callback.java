@@ -6,5 +6,5 @@ package net.zeeraa.novacore.commons.utils;
  * @author Zeeraa
  */
 public interface Callback {
-	public void execute();
+	void execute();
 }

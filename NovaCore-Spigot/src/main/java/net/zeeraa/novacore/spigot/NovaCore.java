@@ -45,6 +45,7 @@ import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
+import net.zeeraa.novacore.spigot.abstraction.particle.NovaParticleProvider;
 import net.zeeraa.novacore.spigot.command.CommandRegistry;
 import net.zeeraa.novacore.spigot.command.commands.dumplanguagenodes.DumpLanguageNodesCommand;
 import net.zeeraa.novacore.spigot.command.commands.novacore.NovaCoreCommand;
@@ -74,6 +75,7 @@ import net.zeeraa.novacore.spigot.module.modules.jumppad.JumpPadManager;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.LootDropManager;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.module.modules.scoreboard.NetherBoardScoreboard;
+import net.zeeraa.novacore.spigot.particles.DefaultNovaParticleProvider;
 import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
 import net.zeeraa.novacore.spigot.platformindependent.SpigotPlatformIndependentBungeecordAPI;
 import net.zeeraa.novacore.spigot.platformindependent.SpigotPlatformIndependentPlayerAPI;
@@ -115,6 +117,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 	private ReflectionBasedCommandRegistrator reflectionBasedCommandRegistrator;
 
 	private LogLevel defaultOpLogLevel = LogLevel.ERROR;
+
+	private NovaParticleProvider novaParticleProvider;
 
 	/**
 	 * Check if the NovaCoreGameEngine plugin is enabled
@@ -272,6 +276,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 		return advancedGUIMultiverseReloadDelay;
 	}
 
+	public NovaParticleProvider getNovaParticleProvider() {
+		return novaParticleProvider;
+	}
+
 	public boolean runVersionIndependentLayerSelftest() {
 		if (noNMSMode) {
 			Log.error("NovaCore", "Cant run selftest in no nms mode");
@@ -279,7 +287,6 @@ public class NovaCore extends JavaPlugin implements Listener {
 		}
 
 		try {
-
 			boolean ok = true;
 			VersionIndependentUtils.get().resetLastError();
 			Log.info("NovaCore", "Running version independent layer selftest");
@@ -390,6 +397,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 			defaultHastebinInstance = new Hastebin("https://hastebin.novauniverse.net");
 		}
 		NovaCommons.setDefaultHastebinInstance(defaultHastebinInstance);
+		
+		novaParticleProvider = new DefaultNovaParticleProvider();
 
 		jumpPadFile = new File(this.getDataFolder().getPath() + File.separator + "jump_pads.json");
 
@@ -456,6 +465,14 @@ public class NovaCore extends JavaPlugin implements Listener {
 				}
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
+				
+				NovaParticleProvider versionSpecificParticleProvider = versionIndependantLoader.getVersionSpecificParticleProvider();
+				if(versionSpecificParticleProvider == null) {
+					Log.info("NovaCore", "No version specific particle provider found. Using default implementation");
+				} else {
+					Log.info("NovaCore", "Using particle provider " + versionIndependantLoader.getClass().getName());
+					this.novaParticleProvider = versionSpecificParticleProvider;
+				}
 
 			} else {
 				throw new InvalidClassException(clazz.getName() + " is not assignable from " + VersionIndependantLoader.class.getName());

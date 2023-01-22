@@ -12,5 +12,5 @@ public interface TriggerCallback {
 	 * @param reason  The {@link Flags} that caused the activation of the trigger.
 	 *                This will be null if called by any other ways
 	 */
-	public void run(GameTrigger trigger, @Nullable TriggerFlag reason);
+	void run(GameTrigger trigger, @Nullable TriggerFlag reason);
 }
