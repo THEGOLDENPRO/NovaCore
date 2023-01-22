@@ -33,9 +33,9 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.particles.LootdropParticleEffect;
+import net.zeeraa.novacore.spigot.module.modules.lootdrop.particles.LootdropParticleEffectProvider;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 import net.zeeraa.novacore.spigot.utils.LocationUtils;
-import xyz.xenondevs.particle.ParticleEffect;
 
 public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	private static MedicalSupplyDropManager instance;
@@ -49,6 +49,16 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	private Task removeTask;
 
 	private int defaultSpawnTimeTicks;
+
+	private LootdropParticleEffectProvider particleProvider;
+
+	public void setParticleProvider(LootdropParticleEffectProvider particleProvider) {
+		this.particleProvider = particleProvider;
+	}
+
+	public LootdropParticleEffectProvider getParticleProvider() {
+		return particleProvider;
+	}
 
 	public static MedicalSupplyDropManager getInstance() {
 		return instance;
@@ -64,6 +74,8 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 		chests = new ArrayList<>();
 		dropEffects = new ArrayList<>();
 		particleEffects = new HashMap<>();
+		
+		particleProvider = new MedicalLootdropParticleProvider();
 
 		this.defaultSpawnTimeTicks = 60 * 20 * 2;
 
@@ -161,7 +173,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 
 		Location particleLocation = new Location(location.getWorld(), LocationUtils.blockCenter(location.getBlockX()), location.getY() + 0.8, LocationUtils.blockCenter(location.getBlockZ()));
 
-		particleEffects.put(drop.getUuid(), new LootdropParticleEffect(particleLocation, ParticleEffect.HEART, 0, 0, 0, false));
+		particleEffects.put(drop.getUuid(), new LootdropParticleEffect(particleLocation, particleProvider));
 	}
 
 	public MedicalSupplyDrop getChestAtLocation(Location location) {

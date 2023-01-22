@@ -47,4 +47,12 @@ public abstract class NovaParticleProvider {
 	public abstract void showRedstoneParticle(Location location, NovaDustOptions options, Collection<Player> receivers);
 
 	public abstract void showRedstoneParticle(Location location, NovaDustOptions options, Predicate<Player> predicate);
+
+	public abstract void showParticle(Location location, NovaParticleEffect effect);
+
+	public abstract void showParticle(Location location, NovaParticleEffect effect, Player receiver);
+
+	public abstract void showParticle(Location location, NovaParticleEffect effect, Collection<Player> receivers);
+
+	public abstract void showParticle(Location location, NovaParticleEffect effect, Predicate<Player> predicate);
 }

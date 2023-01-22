@@ -242,7 +242,7 @@ public class LootDropManager extends NovaModule implements Listener {
 
 		Location particleLocation = new Location(location.getWorld(), LocationUtils.blockCenter(location.getBlockX()), location.getY() + 0.8, LocationUtils.blockCenter(location.getBlockZ()));
 
-		particleEffects.put(drop.getUuid(), new LootdropParticleEffect(particleLocation));
+		particleEffects.put(drop.getUuid(), new LootdropParticleEffect(particleLocation, new DefaultFireworkSparkLootdropEffectProvider()));
 	}
 
 	public LootDrop getChestAtLocation(Location location) {
