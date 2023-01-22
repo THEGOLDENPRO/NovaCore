@@ -280,6 +280,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 		return novaParticleProvider;
 	}
 
+	public void setNovaParticleProvider(NovaParticleProvider novaParticleProvider) {
+		this.novaParticleProvider = novaParticleProvider;
+	}
+
 	public boolean runVersionIndependentLayerSelftest() {
 		if (noNMSMode) {
 			Log.error("NovaCore", "Cant run selftest in no nms mode");
@@ -397,7 +401,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 			defaultHastebinInstance = new Hastebin("https://hastebin.novauniverse.net");
 		}
 		NovaCommons.setDefaultHastebinInstance(defaultHastebinInstance);
-		
+
 		novaParticleProvider = new DefaultNovaParticleProvider();
 
 		jumpPadFile = new File(this.getDataFolder().getPath() + File.separator + "jump_pads.json");
@@ -465,9 +469,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 				}
 
 				Bukkit.getServer().getPluginManager().registerEvents(versionIndependantLoader.getListeners(), this);
-				
+
 				NovaParticleProvider versionSpecificParticleProvider = versionIndependantLoader.getVersionSpecificParticleProvider();
-				if(versionSpecificParticleProvider == null) {
+				if (versionSpecificParticleProvider == null) {
 					Log.info("NovaCore", "No version specific particle provider found. Using default implementation");
 				} else {
 					Log.info("NovaCore", "Using particle provider " + versionIndependantLoader.getClass().getName());
