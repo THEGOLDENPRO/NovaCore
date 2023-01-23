@@ -10,6 +10,7 @@ import net.zeeraa.novacore.spigot.abstraction.*;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
+import net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -51,6 +52,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	private ItemBuilderRecordList itemBuilderRecordList;
 	private MaterialNameList materialNameList;
 	private PacketManager packetManager;
+
 
 	private ChunkLoader chunkLoader;
 

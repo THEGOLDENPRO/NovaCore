@@ -8,6 +8,7 @@ import java.util.UUID;
 import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
+import net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
