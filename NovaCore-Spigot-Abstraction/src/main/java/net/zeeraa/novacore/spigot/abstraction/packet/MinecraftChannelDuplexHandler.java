@@ -1,6 +1,9 @@
 package net.zeeraa.novacore.spigot.abstraction.packet;
 
+import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,10 +13,21 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.logging.Level;
 
 public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler {
 	private final Player player;
+	private static boolean debug = false;
+
+	public static void setDebug(boolean debug) {
+		MinecraftChannelDuplexHandler.debug = debug;
+	}
+
+	public static boolean isDebug() {
+		return debug;
+	}
 
 	public MinecraftChannelDuplexHandler(Player player) {
 		this.player = player;
@@ -24,6 +38,14 @@ public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler
 		if (!readPacket(player, packet)) {
 			return;
 		}
+		if (debug) {
+			Bukkit.getLogger().log(Level.FINE, "NovaCore Packet Reader", ChatColor.GREEN + "Packet read name: " + ChatColor.YELLOW + packet.getClass().getSimpleName() + ChatColor.RESET + ChatColor.GREEN +  " | Packet read class path: " + ChatColor.YELLOW + packet.getClass().getName() + ChatColor.RESET + ChatColor.GREEN + " | Packet Fields:");
+			for (Field field : packet.getClass().getDeclaredFields()) {
+				field.setAccessible(true);
+				Bukkit.getLogger().log(Level.FINE, ChatColor.GREEN + "FIELD NAME: " + field.getName() + " | FIELD TYPE: " + field.getType().getSimpleName() + " | FIELD VALUE: " + field.get(packet));
+			}
+			Bukkit.getLogger().log(Level.FINE, ChatColor.GREEN + "------------------------------------------");
+		}
 		super.channelRead(channelHandlerContext, packet);
 	}
 
@@ -31,6 +53,14 @@ public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler
 	public void write(ChannelHandlerContext channelHandlerContext, Object packet, ChannelPromise channelPromise) throws Exception {
 		if (!writePacket(player, packet))
 			return;
+		if (debug) {
+			Bukkit.getLogger().log(Level.FINE, "NovaCore Packet Writer", ChatColor.RED + "Packet written name: " + ChatColor.YELLOW + packet.getClass().getSimpleName() + ChatColor.RESET + ChatColor.RED +  " | Packet written class path: " + ChatColor.YELLOW + packet.getClass().getName() + ChatColor.RESET + ChatColor.RED + " | Packet Fields:");
+			for (Field field : packet.getClass().getDeclaredFields()) {
+				field.setAccessible(true);
+				Bukkit.getLogger().log(Level.FINE, ChatColor.RED + "FIELD NAME: " + field.getName() + " | FIELD TYPE: " + field.getType().getSimpleName() + " | FIELD VALUE: " + field.get(packet));
+			}
+			Bukkit.getLogger().log(Level.FINE, ChatColor.RED + "------------------------------------------");
+		}
 		super.write(channelHandlerContext, packet, channelPromise);
 	}
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
 
+import net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -366,6 +367,42 @@ public class NovaCore extends JavaPlugin implements Listener {
 		Bukkit.getServer().getPluginManager().registerEvents(VersionIndependentUtils.get().getPacketManager(), this);
 		Log.info("NovaCore", "Packet manager enabled");
 		packetManagerEnabled = true;
+		return true;
+	}
+
+	public boolean enablePacketDebugging() {
+		if (noNMSMode) {
+			Log.error("NovaCore", "Could not enable packet debugging since we are running in NoNMS mode");
+			return false;
+		}
+		if (!packetManagerEnabled) {
+			Log.warn("NovaCore", "Could not enable packet debugging since the packet manager is not enabled");
+			return false;
+		}
+		if (MinecraftChannelDuplexHandler.isDebug()) {
+			Log.warn("NovaCore", "Packet Debugging is already disabled.");
+			return false;
+		}
+		Log.info("NovaCore", "Packet debugging enabled");
+		MinecraftChannelDuplexHandler.setDebug(true);
+		return true;
+	}
+
+	public boolean disablePacketDebugging() {
+		if (noNMSMode) {
+			Log.error("NovaCore", "Could not disable packet debugging since we are running in NoNMS mode");
+			return false;
+		}
+		if (!packetManagerEnabled) {
+			Log.warn("NovaCore", "Could not disable packet debugging since the packet manager is not enabled");
+			return false;
+		}
+		if (!MinecraftChannelDuplexHandler.isDebug()) {
+			Log.warn("NovaCore", "Packet Debugging is already disabled.");
+			return false;
+		}
+		Log.info("NovaCore", "Packet debugging disabled");
+		MinecraftChannelDuplexHandler.setDebug(false);
 		return true;
 	}
 

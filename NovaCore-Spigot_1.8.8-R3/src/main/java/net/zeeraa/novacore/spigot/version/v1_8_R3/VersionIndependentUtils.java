@@ -40,6 +40,7 @@ import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerErro
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
+import net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
 
 import org.bukkit.Bukkit;
@@ -95,6 +96,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	private ItemBuilderRecordList itemBuilderRecordList;
 	private MaterialNameList materialNameList;
 	private PacketManager packetManager;
+
 
 	private ChunkLoader chunkLoader;
 
