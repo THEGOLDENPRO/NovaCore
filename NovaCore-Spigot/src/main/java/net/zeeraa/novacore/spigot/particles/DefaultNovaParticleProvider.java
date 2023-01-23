@@ -13,22 +13,22 @@ import xyz.xenondevs.particle.ParticleEffect;
 
 public class DefaultNovaParticleProvider extends NovaParticleProvider {
 	@Override
-	public void showRedstoneParticle(Location location, NovaDustOptions options) {
+	public void showColoredRedstoneParticle(Location location, NovaDustOptions options) {
 		ParticleEffect.REDSTONE.display(location, options.getAwtColor());
 	}
 
 	@Override
-	public void showRedstoneParticle(Location location, NovaDustOptions options, Player receiver) {
+	public void showColoredRedstoneParticle(Location location, NovaDustOptions options, Player receiver) {
 		ParticleEffect.REDSTONE.display(location, options.getAwtColor(), receiver);
 	}
 
 	@Override
-	public void showRedstoneParticle(Location location, NovaDustOptions options, Collection<Player> receivers) {
+	public void showColoredRedstoneParticle(Location location, NovaDustOptions options, Collection<Player> receivers) {
 		ParticleEffect.REDSTONE.display(location, options.getAwtColor(), receivers);
 	}
 
 	@Override
-	public void showRedstoneParticle(Location location, NovaDustOptions options, Predicate<Player> predicate) {
+	public void showColoredRedstoneParticle(Location location, NovaDustOptions options, Predicate<Player> predicate) {
 		ParticleEffect.REDSTONE.display(location, options.getAwtColor(), predicate);
 	}
 
