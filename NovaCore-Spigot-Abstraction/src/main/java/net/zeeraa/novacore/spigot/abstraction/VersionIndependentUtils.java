@@ -8,7 +8,6 @@ import java.util.UUID;
 import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
-import net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -803,8 +802,8 @@ public abstract class VersionIndependentUtils {
 		Bukkit.getServer().getOnlinePlayers().stream().filter(player -> player.getWorld().equals(world)).forEach(player -> this.sendTitle(player, title, subtitle, fadeIn, stay, fadeOut));
 	}
 
-	public Color bungeecordChatColorToBukkitColor(ChatColor color) {
-		return DefaultBunceecordColorMapper.getColorOfChatcolor(color);
+	public Color bungeecordChatColorToJavaColor(ChatColor color) {
+		return DefaultBungeecordColorMapper.getColorOfChatcolor(color);
 	}
 
 	public abstract void displayTotem(Player player);

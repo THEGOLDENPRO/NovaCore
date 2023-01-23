@@ -1213,7 +1213,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public Color bungeecordChatColorToBukkitColor(ChatColor color) {
+	public Color bungeecordChatColorToJavaColor(ChatColor color) {
 		return color.getColor();
 	}
 

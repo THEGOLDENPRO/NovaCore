@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class DefaultBunceecordColorMapper {
+public class DefaultBungeecordColorMapper {
 	public static Color getColorOfChatcolor(ChatColor color) {
 		switch (color.name().toLowerCase()) {
 		case "black":

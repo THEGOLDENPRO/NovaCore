@@ -1,6 +1,5 @@
 package net.zeeraa.novacore.spigot.abstraction.packet;
 
-import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
