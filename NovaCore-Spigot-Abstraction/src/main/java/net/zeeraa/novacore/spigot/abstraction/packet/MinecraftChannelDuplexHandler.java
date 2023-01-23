@@ -38,12 +38,12 @@ public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler
 			return;
 		}
 		if (debug) {
-			Log.info("NovaCore Packet Reader", ChatColor.GREEN + "Packet read name: " + ChatColor.YELLOW + packet.getClass().getSimpleName() + ChatColor.RESET + ChatColor.GREEN +  " | Packet read class path: " + ChatColor.YELLOW + packet.getClass().getName() + ChatColor.RESET + ChatColor.GREEN + " | Packet Fields:");
+			Log.debug("NovaCore Packet Reader", ChatColor.GREEN + "Packet read name: " + ChatColor.YELLOW + packet.getClass().getSimpleName() + ChatColor.RESET + ChatColor.GREEN +  " | Packet read class path: " + ChatColor.YELLOW + packet.getClass().getName() + ChatColor.RESET + ChatColor.GREEN + " | Packet Fields:");
 			for (Field field : packet.getClass().getDeclaredFields()) {
 				field.setAccessible(true);
-				Log.info(ChatColor.GREEN + "FIELD NAME: " + field.getName() + " | FIELD TYPE: " + field.getType().getSimpleName() + " | FIELD VALUE: " + field.get(packet));
+				Log.debug(ChatColor.GREEN + "FIELD NAME: " + field.getName() + " | FIELD TYPE: " + field.getType().getSimpleName() + " | FIELD VALUE: " + field.get(packet));
 			}
-			Log.info(ChatColor.GREEN + "------------------------------------------");
+			Log.debug(ChatColor.GREEN + "------------------------------------------");
 		}
 		super.channelRead(channelHandlerContext, packet);
 	}
@@ -53,12 +53,12 @@ public abstract class MinecraftChannelDuplexHandler extends ChannelDuplexHandler
 		if (!writePacket(player, packet))
 			return;
 		if (debug) {
-			Log.info("NovaCore Packet Writer", ChatColor.RED + "Packet written name: " + ChatColor.YELLOW + packet.getClass().getSimpleName() + ChatColor.RESET + ChatColor.RED +  " | Packet written class path: " + ChatColor.YELLOW + packet.getClass().getName() + ChatColor.RESET + ChatColor.RED + " | Packet Fields:");
+			Log.debug("NovaCore Packet Writer", ChatColor.RED + "Packet written name: " + ChatColor.YELLOW + packet.getClass().getSimpleName() + ChatColor.RESET + ChatColor.RED +  " | Packet written class path: " + ChatColor.YELLOW + packet.getClass().getName() + ChatColor.RESET + ChatColor.RED + " | Packet Fields:");
 			for (Field field : packet.getClass().getDeclaredFields()) {
 				field.setAccessible(true);
-				Log.info(ChatColor.RED + "FIELD NAME: " + field.getName() + " | FIELD TYPE: " + field.getType().getSimpleName() + " | FIELD VALUE: " + field.get(packet));
+				Log.debug(ChatColor.RED + "FIELD NAME: " + field.getName() + " | FIELD TYPE: " + field.getType().getSimpleName() + " | FIELD VALUE: " + field.get(packet));
 			}
-			Log.info(ChatColor.RED + "------------------------------------------");
+			Log.debug(ChatColor.RED + "------------------------------------------");
 		}
 		super.write(channelHandlerContext, packet, channelPromise);
 	}
