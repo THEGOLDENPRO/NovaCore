@@ -51,6 +51,7 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftFallingBlock;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftMagicNumbers;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -1235,5 +1236,15 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		PacketPlayOutEntityStatus packet = new PacketPlayOutEntityStatus(((CraftPlayer) player).getHandle(), (byte) 35);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 		player.getInventory().setItemInMainHand(hand);
+	}
+
+	@Override
+	public void setMarker(ArmorStand stand, boolean marker) {
+		stand.setMarker(marker);
+	}
+
+	@Override
+	public boolean isMarker(ArmorStand stand) {
+		return stand.isMarker();
 	}
 }

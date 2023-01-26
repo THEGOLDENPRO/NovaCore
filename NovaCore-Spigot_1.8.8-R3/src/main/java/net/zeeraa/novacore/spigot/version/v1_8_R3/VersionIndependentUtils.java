@@ -8,6 +8,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.DamageSource;
+import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.EntityFallingBlock;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.IBlockData;
@@ -52,10 +53,12 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftFallingSand;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -95,7 +98,6 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	private ItemBuilderRecordList itemBuilderRecordList;
 	private MaterialNameList materialNameList;
 	private PacketManager packetManager;
-
 
 	private ChunkLoader chunkLoader;
 
@@ -1069,5 +1071,17 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void displayCustomTotem(Player player, int cmd) {
 		AbstractionLogger.getLogger().error("VersionIndependentUtils", "Current version does not have Totems.");
+	}
+
+	@Override
+	public void setMarker(ArmorStand stand, boolean marker) {
+		EntityArmorStand nmsStand = ((CraftArmorStand) stand).getHandle();
+		nmsStand.n(marker);
+
+	}
+
+	@Override
+	public boolean isMarker(ArmorStand stand) {
+		return ((CraftArmorStand) stand).getHandle().s();
 	}
 }
