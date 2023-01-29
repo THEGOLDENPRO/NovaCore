@@ -553,6 +553,7 @@ public class GameManager extends NovaModule implements Listener {
 	 */
 	public boolean loadGame(Game game) {
 		if (this.hasGame()) {
+			Log.warn("GameManager", "attempted to call loadGame() while already having a game loaded");
 			return false;
 		}
 
@@ -1184,7 +1185,7 @@ public class GameManager extends NovaModule implements Listener {
 
 		removeCombatTag(player);
 	}
-	
+
 	public void reset() {
 		this.activeGame = null;
 	}
