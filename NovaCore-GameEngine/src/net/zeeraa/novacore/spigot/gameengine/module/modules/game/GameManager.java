@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
@@ -110,6 +111,8 @@ public class GameManager extends NovaModule implements Listener {
 
 	private List<MapReader> mapReaders;
 
+	private Map<String, GameMapData> loadedMaps;
+
 	private String displayNameOverride;
 
 	/**
@@ -156,6 +159,8 @@ public class GameManager extends NovaModule implements Listener {
 
 		this.combatTagMessages = new ArrayList<>();
 
+		this.loadedMaps = new HashMap<>();
+
 		this.combatTagCountdownTask = new SimpleTask(NovaCore.getInstance(), () -> {
 			combatTaggedPlayers.keySet().forEach(uuid -> {
 				combatTaggedPlayers.put(uuid, combatTaggedPlayers.get(uuid) - 1);
@@ -169,6 +174,16 @@ public class GameManager extends NovaModule implements Listener {
 
 		mapReaders.add(new LegacyMapReader());
 		mapReaders.add(new NovaMapReader());
+	}
+
+	/**
+	 * Get a {@link Map} containing all the maps loaded by the {@link GameManager}.
+	 * The key is the name of the map and the value is the {@link GameMapData}
+	 * 
+	 * @return {@link Map} with all loaded {@link GameMapData}
+	 */
+	public Map<String, GameMapData> getAllLoadedMaps() {
+		return loadedMaps;
 	}
 
 	/**
@@ -476,7 +491,11 @@ public class GameManager extends NovaModule implements Listener {
 			GameMapData map = reader.readMap(json, worldDirectory);// this.readMap(new JSONObject(data), worldDirectory);
 
 			if (map != null) {
-				this.getMapSelector().addMap(map);
+				if (this.getMapSelector() != null) {
+					Log.debug("GameManager", "Adding map " + map.getMapName() + " to mapSelector " + this.getMapSelector().getClass().getName());
+					this.getMapSelector().addMap(map);
+				}
+				this.loadedMaps.put(map.getMapName(), map);
 				MapLoadedEvent event = new MapLoadedEvent(map);
 				Bukkit.getServer().getPluginManager().callEvent(event);
 				return true;
