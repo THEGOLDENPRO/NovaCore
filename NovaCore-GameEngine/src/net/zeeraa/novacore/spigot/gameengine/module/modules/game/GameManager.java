@@ -64,6 +64,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.messages.defaul
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.GameTrigger;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.triggers.TriggerFlag;
 import net.zeeraa.novacore.spigot.language.LanguageManager;
+import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
@@ -75,7 +76,6 @@ import net.zeeraa.novacore.spigot.utils.PlayerUtils;
  * @author Zeeraa
  */
 public class GameManager extends NovaModule implements Listener {
-	private static GameManager instance;
 	private Game activeGame;
 
 	private HashMap<UUID, EliminationTask> eliminationTasks;
@@ -121,13 +121,11 @@ public class GameManager extends NovaModule implements Listener {
 	 * @return Instance
 	 */
 	public static GameManager getInstance() {
-		return instance;
+		return ModuleManager.getModule(GameManager.class);
 	}
 
 	public GameManager() {
 		super("NovaCore.Gameengine.GameManager");
-
-		GameManager.instance = this;
 
 		this.useTeams = false;
 
