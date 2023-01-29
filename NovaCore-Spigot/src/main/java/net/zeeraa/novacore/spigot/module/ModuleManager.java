@@ -1,8 +1,10 @@
 package net.zeeraa.novacore.spigot.module;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.Plugin;
@@ -301,17 +303,40 @@ public class ModuleManager {
 	}
 
 	/**
+	 * Removes and disables all modules owned by the specified {@link Plugin}
+	 * 
+	 * @param plugin The {@link Plugin} to remove modules from
+	 */
+	public static void removePluginModules(Plugin plugin) {
+		List<NovaModule> toRemove = modules.values().stream().filter(m -> m.getPlugin().equals(plugin)).collect(Collectors.toList());
+		toRemove.stream().filter(NovaModule::isEnabled).forEach(NovaModule::disable);
+		toRemove.forEach(module -> {
+			String className = module.getClass().getName();
+			Log.trace("ModuleManager", "Removing " + className + " from module list");
+			modules.remove(className);
+		});
+	}
+
+	/**
+	 * Try to disable all modules that belongs to a specific plugin
+	 * 
+	 * @param plugin The {@link Plugin} to disabled modules from
+	 * 
+	 * @since 2.0.0
+	 */
+	public static void disableAll(Plugin plugin) {
+		Log.info("ModuleManager", "Disabling all modules from plugin " + plugin.getName());
+		modules.values().stream().filter(m -> m.getPlugin().equals(plugin)).filter(NovaModule::isEnabled).forEach(NovaModule::disable);
+	}
+
+	/**
 	 * Try to disable all modules
 	 * 
 	 * @since 1.0
 	 */
 	public static void disableAll() {
 		Log.info("ModuleManager", "Disabling all modules");
-		modules.keySet().forEach(module -> {
-			if (isEnabled(module)) {
-				disable(module);
-			}
-		});
+		modules.values().stream().filter(NovaModule::isEnabled).forEach(NovaModule::disable);
 	}
 
 	/**

@@ -19,6 +19,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
@@ -712,6 +713,11 @@ public class NovaCore extends JavaPlugin implements Listener {
 		} catch (JSONException | IOException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPluginDisable(PluginDisableEvent e) {
+		ModuleManager.removePluginModules(e.getPlugin());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
