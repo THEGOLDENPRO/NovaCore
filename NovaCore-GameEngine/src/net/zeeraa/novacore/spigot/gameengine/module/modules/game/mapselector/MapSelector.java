@@ -1,8 +1,9 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData;
 
 /**
@@ -11,19 +12,13 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData
  * @author Zeeraa
  */
 public abstract class MapSelector {
-	protected List<GameMapData> maps;
-
-	public MapSelector() {
-		this.maps = new ArrayList<GameMapData>();
-	}
-
 	/**
 	 * Get a list with all maps
 	 * 
 	 * @return {@link List} with {@link GameMapData}
 	 */
 	public List<GameMapData> getMaps() {
-		return maps;
+		return GameManager.getInstance().getAllLoadedMaps().values().stream().collect(Collectors.toList());
 	}
 
 	/**
@@ -33,22 +28,7 @@ public abstract class MapSelector {
 	 * @return The {@link GameMapData} or <code>null</code> if the map was not found
 	 */
 	public GameMapData getMap(String name) {
-		for (GameMapData map : maps) {
-			if (map.getMapName().equalsIgnoreCase(name)) {
-				return map;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Add a map to the possible maps
-	 * 
-	 * @param map The {@link GameMapData} to be added
-	 */
-	public void addMap(GameMapData map) {
-		maps.add(map);
+		return GameManager.getInstance().getAllLoadedMaps().get(name);
 	}
 
 	/**

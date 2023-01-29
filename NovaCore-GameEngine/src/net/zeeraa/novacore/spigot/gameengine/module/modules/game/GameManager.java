@@ -491,10 +491,6 @@ public class GameManager extends NovaModule implements Listener {
 			GameMapData map = reader.readMap(json, worldDirectory);// this.readMap(new JSONObject(data), worldDirectory);
 
 			if (map != null) {
-				if (this.getMapSelector() != null) {
-					Log.debug("GameManager", "Adding map " + map.getMapName() + " to mapSelector " + this.getMapSelector().getClass().getName());
-					this.getMapSelector().addMap(map);
-				}
 				this.loadedMaps.put(map.getMapName(), map);
 				MapLoadedEvent event = new MapLoadedEvent(map);
 				Bukkit.getServer().getPluginManager().callEvent(event);

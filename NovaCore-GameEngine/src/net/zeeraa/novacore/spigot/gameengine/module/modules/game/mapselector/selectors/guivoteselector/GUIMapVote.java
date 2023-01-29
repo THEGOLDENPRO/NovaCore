@@ -69,9 +69,11 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 	public void showPlayer(Player player) {
 		if (!playerVoteInventory.containsKey(player.getUniqueId())) {
+			List<GameMapData> maps = getMaps();
+
 			int slots = 9;
 
-			while (slots < getMaps().size()) {
+			while (slots < maps.size()) {
 				slots += 9;
 			}
 
@@ -85,6 +87,8 @@ public class GUIMapVote extends MapSelector implements Listener {
 	}
 
 	private void updateInventory(Player player) {
+		List<GameMapData> maps = getMaps();
+
 		if (playerVoteInventory.containsKey(player.getUniqueId())) {
 			Inventory voteInventory = playerVoteInventory.get(player.getUniqueId());
 			MapVoteInventoryHolder holder = (MapVoteInventoryHolder) voteInventory.getHolder();
@@ -93,7 +97,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 			int slot = 0;
 
-			for (GameMapData map : getMaps()) {
+			for (GameMapData map : maps) {
 				ItemStack voteItem = new ItemStack(map.isEnabled() ? Material.EMERALD : Material.COAL);
 
 				ItemMeta meta = voteItem.getItemMeta();
@@ -149,6 +153,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 		}
 
 		List<VoteEntry> entries = new ArrayList<>();
+		List<GameMapData> maps = getMaps();
 
 		votes.forEach((uuid, name) -> {
 			VoteEntry entry = entries.stream().filter(e -> e.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
