@@ -1184,6 +1184,10 @@ public class GameManager extends NovaModule implements Listener {
 
 		removeCombatTag(player);
 	}
+	
+	public void reset() {
+		this.activeGame = null;
+	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onGameBegin(GameBeginEvent e) {
