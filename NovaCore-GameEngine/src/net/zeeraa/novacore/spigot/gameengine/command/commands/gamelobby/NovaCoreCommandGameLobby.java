@@ -3,8 +3,8 @@ package net.zeeraa.novacore.spigot.gameengine.command.commands.gamelobby;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.Plugin;
 
-import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.command.NovaCommand;
 
 /**
@@ -13,8 +13,8 @@ import net.zeeraa.novacore.spigot.command.NovaCommand;
  * @author Zeeraa
  */
 public class NovaCoreCommandGameLobby extends NovaCommand {
-	public NovaCoreCommandGameLobby() {
-		super("gamelobby", NovaCore.getInstance());
+	public NovaCoreCommandGameLobby(Plugin plugin) {
+		super("gamelobby", plugin);
 
 		this.setDescription("Game lobby commands");
 		this.setPermission("novacore.command.gamelobby");

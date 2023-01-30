@@ -104,7 +104,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		// Legacy modules
 		MapModuleManager.addMapModule("novauniverse.survivalgames.medicalsupplydrop", MedicalSupplyDropMapModule.class);
 
-		CommandRegistry.registerCommand(new NovaCoreCommandGameLobby());
+		CommandRegistry.registerCommand(new NovaCoreCommandGameLobby(this));
 		CommandRegistry.syncCommands();
 
 		File overridesFile = new File(this.getDataFolder().getAbsolutePath() + File.separator + "overrides.json");
