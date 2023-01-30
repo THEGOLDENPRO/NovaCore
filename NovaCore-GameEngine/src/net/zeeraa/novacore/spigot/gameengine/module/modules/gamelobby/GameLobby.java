@@ -38,6 +38,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.map.reader
 import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.mapselector.LobbyMapSelector;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.mapselector.selectors.RandomLobbyMapSelector;
 import net.zeeraa.novacore.spigot.language.LanguageManager;
+import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.teams.Team;
@@ -51,8 +52,6 @@ import net.zeeraa.novacore.spigot.utils.PlayerUtils;
  * @author Zeeraa
  */
 public class GameLobby extends NovaModule implements Listener {
-	private static GameLobby instance;
-
 	private GameLobbyMap activeMap;
 
 	private GameLobbyReader mapReader;
@@ -65,7 +64,7 @@ public class GameLobby extends NovaModule implements Listener {
 	private List<GameLobbyMapData> maps;
 
 	public static GameLobby getInstance() {
-		return instance;
+		return ModuleManager.getModule(GameLobby.class);
 	}
 
 	public List<GameLobbyMapData> getMaps() {
@@ -99,8 +98,6 @@ public class GameLobby extends NovaModule implements Listener {
 
 	@Override
 	public void onLoad() {
-		GameLobby.instance = this;
-
 		this.activeMap = null;
 
 		this.ignoreNoTeam = false;

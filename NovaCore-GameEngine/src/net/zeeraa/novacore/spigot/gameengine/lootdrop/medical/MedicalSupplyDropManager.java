@@ -31,6 +31,7 @@ import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
+import net.zeeraa.novacore.spigot.module.ModuleManager;
 import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.particles.LootdropParticleEffect;
 import net.zeeraa.novacore.spigot.module.modules.lootdrop.particles.LootdropParticleEffectProvider;
@@ -38,8 +39,6 @@ import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 import net.zeeraa.novacore.spigot.utils.LocationUtils;
 
 public class MedicalSupplyDropManager extends NovaModule implements Listener {
-	private static MedicalSupplyDropManager instance;
-
 	private List<MedicalSupplyDrop> chests;
 	private List<MedicalSupplyDropEffect> dropEffects;
 
@@ -61,7 +60,7 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 	}
 
 	public static MedicalSupplyDropManager getInstance() {
-		return instance;
+		return ModuleManager.getModule(MedicalSupplyDropManager.class);
 	}
 
 	public MedicalSupplyDropManager() {
@@ -70,7 +69,6 @@ public class MedicalSupplyDropManager extends NovaModule implements Listener {
 
 	@Override
 	public void onLoad() {
-		MedicalSupplyDropManager.instance = this;
 		chests = new ArrayList<>();
 		dropEffects = new ArrayList<>();
 		particleEffects = new HashMap<>();
