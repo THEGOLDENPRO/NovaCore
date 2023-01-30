@@ -122,6 +122,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	private NovaParticleProvider novaParticleProvider;
 
+	private boolean disableUnregisteringCommands;
+
 	/**
 	 * Check if the NovaCoreGameEngine plugin is enabled
 	 * 
@@ -415,9 +417,13 @@ public class NovaCore extends JavaPlugin implements Listener {
 		this.noNMSMode = false;
 		this.reflectionBasedCommandRegistrator = new ReflectionBasedCommandRegistrator();
 
+		this.disableUnregisteringCommands = false;
+
 		AbstractionLogger.setLogger(new SpigotAbstractionLogger());
 
 		saveDefaultConfig();
+
+		ConfigurationSection commandRegistratorOptions = getConfig().getConfigurationSection("CommandRegistrator");
 
 		NovaCommons.setAbstractConsoleSender(new AbstractBukkitConsoleSender());
 		NovaCommons.setAbstractPlayerMessageSender(new AbstractBukkitPlayerMessageSender());
@@ -446,6 +452,11 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		File lootTableFolder = new File(this.getDataFolder().getPath() + File.separator + "LootTables");
 		logSeverityConfigFile = new File(this.getDataFolder(), "log_severity.yml");
+
+		this.disableUnregisteringCommands = commandRegistratorOptions.getBoolean("DisableUnregistation");
+		if (disableUnregisteringCommands) {
+			Log.warn("NovaCore", "Commands will not be unregistered since DisableUnregistation is set to true in config.yml");
+		}
 
 		try {
 			FileUtils.forceMkdir(this.getDataFolder());
@@ -487,14 +498,18 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 		Log.info("NovaCore", "Server version: " + version);
 
+		boolean forceReflectionCommandRegistrator = commandRegistratorOptions.getBoolean("ForceUseReflectionBasedRegistrator");
+
 		try {
 			Class<?> clazz = Class.forName("net.zeeraa.novacore.spigot.version." + version + ".VersionIndependentLoader");
 			if (VersionIndependantLoader.class.isAssignableFrom(clazz)) {
 				VersionIndependantLoader versionIndependantLoader = (VersionIndependantLoader) clazz.getConstructor().newInstance();
 
-				bukkitCommandRegistrator = versionIndependantLoader.getCommandRegistrator();
-				if (bukkitCommandRegistrator == null) {
-					Log.warn("NovaCore", "CommandRegistrator is not supported for this version");
+				if (!forceReflectionCommandRegistrator) {
+					bukkitCommandRegistrator = versionIndependantLoader.getCommandRegistrator();
+					if (bukkitCommandRegistrator == null) {
+						Log.warn("NovaCore", "CommandRegistrator is not supported for this version");
+					}
 				}
 
 				versionIndependentUtils = versionIndependantLoader.getVersionIndependentUtils();
@@ -529,6 +544,11 @@ public class NovaCore extends JavaPlugin implements Listener {
 				Bukkit.getPluginManager().disablePlugin(this);
 				return;
 			}
+		}
+		
+		if(forceReflectionCommandRegistrator) {
+			Log.info("NovaCore", "Using reflection based command registrator since ForceUseReflectionBasedRegistrator is set to true in config.yml");
+			bukkitCommandRegistrator = reflectionBasedCommandRegistrator;
 		}
 
 		if (bukkitCommandRegistrator.getCommandMap() == null) {
@@ -726,7 +746,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 	public void onPluginDisable(PluginDisableEvent e) {
 		Plugin plugin = e.getPlugin();
 		ModuleManager.removePluginModules(plugin);
-		CommandRegistry.removePluginCommands(plugin);
+		if (!disableUnregisteringCommands) {
+			CommandRegistry.removePluginCommands(plugin);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

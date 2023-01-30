@@ -1,3 +1,7 @@
+# ====================
+# Module configuration
+# ====================
+
 # Enable or disable some of the integrated modules on start
 EnableModules:
     CustomItemManager: true
@@ -12,6 +16,11 @@ MapDisplayManager:
     # If true map displays wont be saved to the world file
     DisableWorldDataSaving: false
 
+
+# =====================
+# Logging and Debugging
+# =====================
+
 # Values are: NONE, TRACE, DEBUG, INFO, WARN, ERROR and FATAL
 # If set to NONE the plugin wont attempt to change the log level of op players
 # This is applied before the permission based log level so the permission based log level will have higher priority than the op one
@@ -25,8 +34,16 @@ ExtendedDebugging: false
 # Only enable this if you know what you are doing
 IgnoreMissingNMS: false
 
+# ==============
+# Plugin metrics
+# ==============
+
 # Set to true to disable bStats
 DisableMetrics: false
+
+# ==============================
+# Third party web based services
+# ==============================
 
 # The url of the mojang api proxy to use
 # If you want to self host this check out https://github.com/NovaUniverse/MojangAPIProxy
@@ -38,11 +55,31 @@ MojangAPIProxyURL: "https://mojangapi.novauniverse.net/"
 # To self host this see https://hub.docker.com/r/rlister/hastebin or https://github.com/toptal/haste-server
 HastebinURL: "https://hastebin.novauniverse.net"
 
+
+# ================================
+# AdvancedGUI + Multiverse support
+# ================================
+
 # By default the MultiverseManager will try to reload AdvancedGUIs if it detects the plugin
 # To disable this set the following value to true
 DisableAdvancedGUIAupport: false
 AdvancedGUIMultiverseReloadDelay: 20
 
+
+# ==========================================
+# Expiremental / Potentially laggy functions
+# ==========================================
+
 # By default the packet manager is turned off until another plugin calls NovaCore#enablePacketManager()
 # By setting this to true the packet manager will be enabled on start
 EnablePacketManager: false
+
+# ===========================
+# Command registrator options
+# ===========================
+
+# Change how the command registrator behaves. We recommand that you dont change these settings unless you know what you are doing
+CommandRegistrator:
+    # Disable the unregistration of commands when plugins are disabled
+    DisableUnregistation: false
+    ForceUseReflectionBasedRegistrator: false
