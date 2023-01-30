@@ -74,7 +74,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		ModuleManager.loadModule(this, GameManager.class);
 		ModuleManager.loadModule(this, GameLobby.class);
 		ModuleManager.loadModule(this, MedicalSupplyDropManager.class);
-
+		
 		Log.info("NovaCoreGameEngine", "Loading map modules...");
 		MapModuleManager.addMapModule("novacore.chestloot", ChestLoot.class);
 		MapModuleManager.addMapModule("novacore.lootdrop", LootDropMapModule.class);
@@ -105,6 +105,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novauniverse.survivalgames.medicalsupplydrop", MedicalSupplyDropMapModule.class);
 
 		CommandRegistry.registerCommand(new NovaCoreCommandGameLobby());
+		CommandRegistry.syncCommands();
 
 		File overridesFile = new File(this.getDataFolder().getAbsolutePath() + File.separator + "overrides.json");
 		if (overridesFile.exists()) {

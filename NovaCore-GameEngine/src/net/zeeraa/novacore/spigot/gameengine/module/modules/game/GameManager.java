@@ -559,7 +559,7 @@ public class GameManager extends NovaModule implements Listener {
 	public void onEnable() {
 		if (!commandAdded) {
 			Log.info("GameManager", "Registering game command");
-			CommandRegistry.registerCommand(new NovaCoreCommandGame());
+			CommandRegistry.registerCommand(new NovaCoreCommandGame(getPlugin()));
 			commandAdded = true;
 		}
 

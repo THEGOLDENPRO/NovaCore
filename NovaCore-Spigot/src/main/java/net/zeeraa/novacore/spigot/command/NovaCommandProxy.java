@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -42,6 +43,10 @@ public class NovaCommandProxy extends Command {
 	 */
 	public NovaCommand getNovaCommand() {
 		return novaCommand;
+	}
+
+	public Plugin getOwnerPlugin() {
+		return novaCommand.getOwner();
 	}
 
 	/**

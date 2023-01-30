@@ -3,16 +3,16 @@ package net.zeeraa.novacore.spigot.command.fallback;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.plugin.Plugin;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
 import net.zeeraa.novacore.spigot.abstraction.CommandRegistrator;
 
 public class ReflectionBasedCommandRegistrator implements CommandRegistrator {
-
 	@Override
-	public void registerCommand(Command command) {
-		this.getCommandMap().register("", command);
+	public void registerCommand(Plugin plugin, Command command) {
+		this.getCommandMap().register(plugin.getName().toLowerCase(), command);
 	}
 
 	@Override
@@ -28,5 +28,10 @@ public class ReflectionBasedCommandRegistrator implements CommandRegistrator {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean syncCommands() {
+		return false;
 	}
 }

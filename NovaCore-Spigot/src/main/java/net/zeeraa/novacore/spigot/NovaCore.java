@@ -531,6 +531,11 @@ public class NovaCore extends JavaPlugin implements Listener {
 			}
 		}
 
+		if (bukkitCommandRegistrator.getCommandMap() == null) {
+			Log.error("NovaCore", "The implementation of CommandRegistrator returned null when attempting to fetch command map. Using reflection based fallback instead");
+			bukkitCommandRegistrator = reflectionBasedCommandRegistrator;
+		}
+
 		if (bukkitCommandRegistrator == null) {
 			Log.warn("NovaCore", "No command registrator defined. Using the reflection based fallback");
 			bukkitCommandRegistrator = reflectionBasedCommandRegistrator;
@@ -649,6 +654,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 		CommandRegistry.registerCommand(new MapDisplayCommand());
 		CommandRegistry.registerCommand(new DumpLanguageNodesCommand());
 
+		CommandRegistry.syncCommands();
+
 		new DebugCommandRegistrator();
 		new BuiltinDebugTriggers();
 
@@ -717,7 +724,9 @@ public class NovaCore extends JavaPlugin implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPluginDisable(PluginDisableEvent e) {
-		ModuleManager.removePluginModules(e.getPlugin());
+		Plugin plugin = e.getPlugin();
+		ModuleManager.removePluginModules(plugin);
+		CommandRegistry.removePluginCommands(plugin);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
