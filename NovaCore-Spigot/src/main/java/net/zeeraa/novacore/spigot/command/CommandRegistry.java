@@ -1,10 +1,17 @@
 package net.zeeraa.novacore.spigot.command;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.plugin.Plugin;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.NovaCore;
@@ -17,6 +24,50 @@ import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
  */
 public class CommandRegistry {
 	private static List<NovaCommand> registeredCommands = new ArrayList<>();
+
+	public static void removePluginCommands(Plugin plugin) {
+		registeredCommands.removeIf(c -> c.getOwner().equals(plugin));
+		CommandMap commandMap = NovaCore.getInstance().getCommandRegistrator().getCommandMap();
+		if (commandMap instanceof SimpleCommandMap) {
+			SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
+			try {
+				Field field = simpleCommandMap.getClass().getDeclaredField("knownCommands");
+				field.setAccessible(true);
+
+				@SuppressWarnings("unchecked")
+				Map<String, Command> knownCommands = (Map<String, Command>) field.get(simpleCommandMap);
+
+				List<String> toRemove = new ArrayList<>();
+
+				knownCommands.forEach((key, command) -> {
+					if (command instanceof NovaCommandProxy) {
+						NovaCommandProxy proxy = (NovaCommandProxy) command;
+						if (proxy.getOwnerPlugin().equals(plugin)) {
+							toRemove.add(key);
+							Log.trace("CommandRegistry", "Command " + proxy.getClass().getName() + " should be removed since its owner plugin " + plugin.getName() + " is getting disabled. key: " + key);
+						}
+					}
+				});
+
+				toRemove.forEach(knownCommands::remove);
+			} catch (Exception e) {
+				Log.error("NovaCore", "Could not unregister commands from SimpleCommandMap. " + e.getClass().getName() + " " + e.getMessage());
+				e.printStackTrace();
+			}
+		} else {
+			Log.error("NovaCore", "Failed to unregister commands from plugin " + plugin.getName() + " since the CommandMap " + commandMap.getClass().getName() + " is not supported by NovaCore");
+		}
+	}
+
+	/**
+	 * Attempts to call the syncCommands function on the server
+	 * 
+	 * @return <code>true</code> if this version has the function.
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean syncCommands() {
+		return NovaCore.getInstance().getCommandRegistrator().syncCommands();
+	}
 
 	/**
 	 * Register a {@link NovaCommand}
@@ -36,7 +87,7 @@ public class CommandRegistry {
 		Log.debug("CommandRegistry", "Registering command " + command.getName());
 		CommandRegistry.registerCommandPermissions(command);
 		NovaCommandProxy commandProxy = new NovaCommandProxy(command);
-		NovaCore.getInstance().getCommandRegistrator().registerCommand(commandProxy);
+		NovaCore.getInstance().getCommandRegistrator().registerCommand(command.getOwner(), commandProxy);
 
 		CommandRegistry.registeredCommands.add(command);
 

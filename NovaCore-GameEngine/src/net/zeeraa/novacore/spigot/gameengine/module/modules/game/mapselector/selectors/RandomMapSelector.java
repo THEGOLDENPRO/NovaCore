@@ -25,7 +25,7 @@ public class RandomMapSelector extends MapSelector {
 		if (maps.size() == 0) {
 			return null;
 		}
-
+		
 		return maps.get(new Random().nextInt(maps.size()));
 	}
 }
