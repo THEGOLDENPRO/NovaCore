@@ -1,10 +1,12 @@
 package net.zeeraa.novacore.spigot.version.v1_12_R1;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.plugin.Plugin;
 
@@ -40,5 +42,11 @@ public class CommandRegistrator implements net.zeeraa.novacore.spigot.abstractio
 	@Override
 	public boolean syncCommands() {
 		return false;
+	}
+
+	@Override
+	public Map<String, Command> tryGetKnownCommandsFromSimpleCommandMap(SimpleCommandMap commandMap) {
+		// Not supported
+		return null;
 	}
 }

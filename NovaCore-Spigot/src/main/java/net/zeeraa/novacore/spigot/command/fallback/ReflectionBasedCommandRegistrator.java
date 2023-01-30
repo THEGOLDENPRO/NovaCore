@@ -1,5 +1,7 @@
 package net.zeeraa.novacore.spigot.command.fallback;
 
+import java.util.Map;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
@@ -33,5 +35,12 @@ public class ReflectionBasedCommandRegistrator implements CommandRegistrator {
 	@Override
 	public boolean syncCommands() {
 		return false;
+	}
+
+	@Override
+	public Map<String, Command> tryGetKnownCommandsFromSimpleCommandMap(SimpleCommandMap commandMap) {
+		// Since this command registrator is used when we have no idea what version we
+		// are running we return null and let NovaCore try to use reflection instead
+		return null;
 	}
 }

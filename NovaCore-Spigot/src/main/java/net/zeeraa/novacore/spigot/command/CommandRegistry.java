@@ -25,33 +25,65 @@ import net.zeeraa.novacore.spigot.permission.PermissionRegistrator;
 public class CommandRegistry {
 	private static List<NovaCommand> registeredCommands = new ArrayList<>();
 
+	@SuppressWarnings("unchecked")
 	public static void removePluginCommands(Plugin plugin) {
 		registeredCommands.removeIf(c -> c.getOwner().equals(plugin));
 		CommandMap commandMap = NovaCore.getInstance().getCommandRegistrator().getCommandMap();
 		if (commandMap instanceof SimpleCommandMap) {
 			SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
+
+			Map<String, Command> knownCommands = NovaCore.getInstance().getCommandRegistrator().tryGetKnownCommandsFromSimpleCommandMap(simpleCommandMap);
 			try {
-				Field field = simpleCommandMap.getClass().getDeclaredField("knownCommands");
-				field.setAccessible(true);
+				if (knownCommands == null) {
+					Log.trace("CommandRegistry", "This version does not support native way of accessing the knownCommands map. Trying to use reflection to get it");
 
-				@SuppressWarnings("unchecked")
-				Map<String, Command> knownCommands = (Map<String, Command>) field.get(simpleCommandMap);
+					Field field = null;
+					boolean fieldFound = false;
 
-				List<String> toRemove = new ArrayList<>();
+					try {
+						field = simpleCommandMap.getClass().getDeclaredField("knownCommands");
+						fieldFound = true;
+					} catch (NoSuchFieldException e) {
+						Log.trace("CommandRegistry", "field knownCommands not found. attempting to use superclass");
+					}
 
-				knownCommands.forEach((key, command) -> {
-					if (command instanceof NovaCommandProxy) {
-						NovaCommandProxy proxy = (NovaCommandProxy) command;
-						if (proxy.getOwnerPlugin().equals(plugin)) {
-							toRemove.add(key);
-							Log.trace("CommandRegistry", "Command " + proxy.getClass().getName() + " should be removed since its owner plugin " + plugin.getName() + " is getting disabled. key: " + key);
+					if (!fieldFound) {
+						try {
+							field = simpleCommandMap.getClass().getSuperclass().getDeclaredField("knownCommands");
+							fieldFound = true;
+						} catch (NoSuchFieldException e) {
+							Log.trace("CommandRegistry", "field knownCommands not found in superclass. attempting to invoke getKnownCommands");
 						}
 					}
-				});
 
-				toRemove.forEach(knownCommands::remove);
+					if (fieldFound) {
+						field.setAccessible(true);
+						knownCommands = (Map<String, Command>) field.get(simpleCommandMap);
+					}
+				}
+
+				if (knownCommands == null) {
+					Log.error("CommandRegistry", "All attempts to fetch knownCommands from CommandMap failed. Please open an issue here https://github.com/NovaUniverse/NovaCore/issues and provide logs and info about what fork and version your server is running and we will try to fix this asap");
+				} else {
+					List<String> toRemove = new ArrayList<>();
+
+					knownCommands.forEach((key, command) -> {
+						if (command instanceof NovaCommandProxy) {
+							NovaCommandProxy proxy = (NovaCommandProxy) command;
+							if (proxy.getOwnerPlugin().equals(plugin)) {
+								toRemove.add(key);
+								Log.trace("CommandRegistry", "Command " + proxy.getClass().getName() + " should be removed since its owner plugin " + plugin.getName() + " is getting disabled. key: " + key);
+							}
+						}
+					});
+
+					for (String c : toRemove) {
+						Command command = knownCommands.remove(c);
+						command.unregister(simpleCommandMap);
+					}
+				}
 			} catch (Exception e) {
-				Log.error("NovaCore", "Could not unregister commands from SimpleCommandMap. " + e.getClass().getName() + " " + e.getMessage());
+				Log.error("NovaCore", "Could not unregister commands from SimpleCommandMap. (class: " + simpleCommandMap.getClass().getName() + ") " + e.getClass().getName() + " " + e.getMessage());
 				e.printStackTrace();
 			}
 		} else {
