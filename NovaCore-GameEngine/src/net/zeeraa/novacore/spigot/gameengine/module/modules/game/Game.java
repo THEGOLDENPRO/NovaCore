@@ -659,6 +659,7 @@ public abstract class Game {
 		}
 		endCalled = true;
 
+		Log.debug("Game", "endGame() called with reason " + reason.name());
 		if (!beginEventCalled) {
 			Log.warn("Game", "Game#sendBeginEvent() was never called before Game#endGame() was called. If the game progressed as intended this might mean that you forgot to call Game#sendBeginEvent() in your game code");
 		}
