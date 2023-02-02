@@ -224,7 +224,7 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 						if (e.getClick() == ClickType.MIDDLE) {
 							if (player.hasPermission("novacore.gamelobby.forcemap")) {
-								if (forcedMap.equals(mapName)) {
+								if (forcedMap != null && forcedMap.equals(mapName)) {
 									forcedMap = null;
 									Bukkit.getServer().broadcast(ChatColor.GREEN + "Set forced map to null", "novacore.gamelobby.forcemap");
 									Log.info("Set forced map to null");
