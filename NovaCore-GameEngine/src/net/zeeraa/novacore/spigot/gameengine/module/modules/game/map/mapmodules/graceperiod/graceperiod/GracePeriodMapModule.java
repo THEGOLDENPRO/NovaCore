@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules
 import java.util.ArrayList;
 import java.util.List;
 
+import net.zeeraa.novacore.spigot.language.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -98,16 +99,20 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 		endTimer.addTickCallback(timeLeft -> {
 			Bukkit.getServer().getPluginManager().callEvent(new GracePeriodTimerEvent(timeLeft));
 			if (warnings.contains(timeLeft)) {
-				Bukkit.getServer().getOnlinePlayers().forEach(VersionIndependentSound.NOTE_PLING::play);
-				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period ends in " + timeLeft + " seconds " + ChatColor.RESET + ChatColor.YELLOW + TextUtils.ICON_WARNING);
+				Bukkit.getServer().getOnlinePlayers().forEach(x -> {
+					VersionIndependentSound.NOTE_PLING.play(x);
+					x.sendMessage(LanguageManager.getString(x, "novacore.game.modules.graceperiod.ending_in", timeLeft));
+				});
 			}
 		});
 
 		endTimer.addFinishCallback(() -> {
 			isActive = false;
 			Bukkit.getServer().getPluginManager().callEvent(new GracePeriodFinishEvent());
-			Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().sendTitle(player, "", ChatColor.YELLOW + TextUtils.ICON_WARNING + " Grace period is over " + TextUtils.ICON_WARNING, 10, 40, 10));
-			Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Grace period is over");
+			Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+				VersionIndependentUtils.get().sendTitle(player, "", LanguageManager.getString(player, "novacore.game.modules.graceperiod.over_title"), 10, 40, 10);
+				player.sendMessage(LanguageManager.getString(player, "novacore.game.modules.graceperiod.over"));
+			});
 		});
 	}
 
@@ -119,7 +124,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 					Player attacker = (Player) e.getDamager();
 					if (TeamManager.hasTeamManager()) {
 						if (!TeamManager.getTeamManager().isInSameTeam(e.getEntity().getUniqueId(), attacker.getUniqueId())) {
-							attacker.sendMessage(ChatColor.RED + "Grace period is active");
+							attacker.sendMessage(LanguageManager.getString((Player) e.getEntity(), "novacore.game.modules.graceperiod.cant_attack"));
 						}
 					}
 				}
@@ -156,13 +161,13 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 		Log.info("GracePeriodMapModule", "Received GameBeginEvent");
 		isActive = true;
 		// TODO: language file
-		Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "Grace period will end in " + seconds + " seconds");
+		Bukkit.getServer().getOnlinePlayers().forEach(player -> player.sendMessage(LanguageManager.getString(player, "novacore.game.modules.graceperiod.ending_in", seconds)));
 		endTimer.start();
 	}
 
 	@Override
 	public void onGameStart(Game game) {
-		Log.info("GracePeriodMapModule", "Grace period will be " + seconds + " seconds long");
+		Bukkit.getServer().getOnlinePlayers().forEach(player -> player.sendMessage(LanguageManager.getString(player, "novacore.game.modules.graceperiod.started", seconds)));
 		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
 	}
 
