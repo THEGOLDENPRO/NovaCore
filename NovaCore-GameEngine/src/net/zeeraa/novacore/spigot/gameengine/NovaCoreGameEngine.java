@@ -18,6 +18,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.blockreplacer.BlockReplacer;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chestloot.ChestLoot;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.chunkloader.ChunkLoader;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.disablespectatechests.DisableSpectateChests;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.farmlandprotection.FarmlandProtection;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.fireresistance.FireReistance;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodules.gamerule.Gamerule;
@@ -100,6 +101,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		MapModuleManager.addMapModule("novacore.chunkloader", ChunkLoader.class);
 		MapModuleManager.addMapModule("novacore.infiniteoxygen", InfiniteOxygen.class);
 		MapModuleManager.addMapModule("novacore.infinitefood", InfiniteFood.class);
+		MapModuleManager.addMapModule("novacore.disablespectatechests", DisableSpectateChests.class);
 
 		// Legacy modules
 		MapModuleManager.addMapModule("novauniverse.survivalgames.medicalsupplydrop", MedicalSupplyDropMapModule.class);
