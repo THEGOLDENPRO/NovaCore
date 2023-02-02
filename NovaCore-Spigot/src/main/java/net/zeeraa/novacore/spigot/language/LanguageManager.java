@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,6 +54,28 @@ public class LanguageManager {
 		return LanguageManager.getLanguage(code) != null;
 	}
 
+	@Nullable
+	public static String getPlayerLanguage(Player player) {
+		return LanguageManager.getPlayerLanguage(player.getUniqueId());
+	}
+
+	@Nullable
+	public static String getPlayerLanguage(UUID uuid) {
+		return playerLanguage.get(uuid);
+	}
+
+	public static void setPlayerLanguage(Player player, @Nullable String lanuage) {
+		LanguageManager.setPlayerLanguage(player.getUniqueId(), lanuage);
+	}
+
+	public static void setPlayerLanguage(UUID uuid, @Nullable String lanuage) {
+		if(lanuage == null) {
+			playerLanguage.remove(uuid);
+		} else {
+			playerLanguage.put(uuid, lanuage);
+		}
+	}
+
 	public static String getString(String languageCode, String node, Object... args) {
 		Language language = LanguageManager.getLanguage(languageCode);
 
@@ -64,11 +88,6 @@ public class LanguageManager {
 
 	public static String getString(Language language, String node, Object... args) {
 		if (language.getContent().containsKey(node.toLowerCase())) {
-			/*
-			 * System.out.println(args); System.out.println("Arg length: " + args.length);
-			 * for(Object object : args) { System.out.println(object.getClass().getName() +
-			 * " " + object + " " + object.toString()); }
-			 */
 			String formatted = String.format(language.getContent().get(node.toLowerCase()), args);
 			return ChatColor.translateAlternateColorCodes(ChatColor.COLOR_CHAR, formatted);
 		}
