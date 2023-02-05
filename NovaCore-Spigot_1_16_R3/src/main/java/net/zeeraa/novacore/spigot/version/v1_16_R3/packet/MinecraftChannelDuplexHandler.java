@@ -33,6 +33,7 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 
 	public boolean readPacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
 		List<Event> events = new ArrayList<>();
+		boolean containsEvent = false;
 		events.add(new ReadPacketSentEvent(player, packet));
 		if (packet.getClass().equals(PacketPlayInSettings.class)) {
 			PacketPlayInSettings settings = (PacketPlayInSettings) packet;
@@ -80,18 +81,13 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 				break;
 			}
 		}
-		if (events.isEmpty())
-			return true;
-
-		boolean value = true;
-		for (Event event : events) {
-			Bukkit.getPluginManager().callEvent(event);
-			if (((Cancellable) event).isCancelled()) {
-				value = false;
-				break;
+		for (Event e : events) {
+			Bukkit.getPluginManager().callEvent(e);
+			if (((Cancellable) e).isCancelled()) {
+				return false;
 			}
 		}
-		return value;
+		return true;
 	}
 
 	@Override
@@ -132,19 +128,12 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 
 			events.add(new PlayerListenSoundEvent(player, foundSound, category, x, y, z, volume, pitch));
 		}
-
-		if (events.isEmpty())
-			return true;
-
-		boolean value = true;
-		for (Event event : events) {
-			Bukkit.getPluginManager().callEvent(event);
-
-			if (((Cancellable) event).isCancelled()) {
-				value = false;
-				break;
+		for (Event e : events) {
+			Bukkit.getPluginManager().callEvent(e);
+			if (((Cancellable) e).isCancelled()) {
+				return false;
 			}
 		}
-		return value;
+		return true;
 	}
 }
