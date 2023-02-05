@@ -83,19 +83,13 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			}
 		}
 
-		if (events.isEmpty())
-			return true;
-
-		boolean value = true;
-		for (Event event : events) {
-			Bukkit.getPluginManager().callEvent(event);
-
-			if (((Cancellable) event).isCancelled()) {
-				value = false;
-				break;
+		for (Event e : events) {
+			Bukkit.getPluginManager().callEvent(e);
+			if (((Cancellable) e).isCancelled()) {
+				return false;
 			}
 		}
-		return value;
+		return true;
 	}
 
 	@Override
@@ -126,18 +120,12 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			events.add(new PlayerListenSoundEvent(player, name, null, x, y, z, volume, pitch));
 		}
 
-		if (events.isEmpty())
-			return true;
-
-		boolean value = true;
-		for (Event event : events) {
-			Bukkit.getPluginManager().callEvent(event);
-
-			if (((Cancellable) event).isCancelled()) {
-				value = false;
-				break;
+		for (Event e : events) {
+			Bukkit.getPluginManager().callEvent(e);
+			if (((Cancellable) e).isCancelled()) {
+				return false;
 			}
 		}
-		return value;
+		return true;
 	}
 }
