@@ -97,7 +97,6 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 	@Override
 	public boolean writePacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
 		List<Event> events = new ArrayList<>();
-		events.add(new WritePacketSentEvent(player, packet));
 		if (packet.getClass().equals(PacketPlayOutNamedSoundEffect.class)) {
 			PacketPlayOutNamedSoundEffect effect = (PacketPlayOutNamedSoundEffect) packet;
 			Field a = effect.getClass().getDeclaredField("a");
