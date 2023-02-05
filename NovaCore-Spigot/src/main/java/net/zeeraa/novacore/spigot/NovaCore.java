@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 
 import net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler;
+import net.zeeraa.novacore.spigot.spectators.SpectatorListener;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -545,8 +546,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 				return;
 			}
 		}
-		
-		if(forceReflectionCommandRegistrator) {
+
+		if (forceReflectionCommandRegistrator) {
 			Log.info("NovaCore", "Using reflection based command registrator since ForceUseReflectionBasedRegistrator is set to true in config.yml");
 			bukkitCommandRegistrator = reflectionBasedCommandRegistrator;
 		}
@@ -629,6 +630,7 @@ public class NovaCore extends JavaPlugin implements Listener {
 		// Register events
 		Bukkit.getPluginManager().registerEvents(this, this);
 		Bukkit.getPluginManager().registerEvents(customCraftingManager, this);
+		new SpectatorListener();
 
 		// Load modules
 		ModuleManager.loadModule(this, DeltaTime.class);

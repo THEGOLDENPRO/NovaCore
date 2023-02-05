@@ -1,10 +1,15 @@
 package net.zeeraa.novacore.spigot.version.v1_16_R3.packet;
 
-import net.minecraft.server.v1_16_R3.*;
+import net.minecraft.server.v1_16_R3.EnumChatVisibility;
+import net.minecraft.server.v1_16_R3.MinecraftKey;
+import net.minecraft.server.v1_16_R3.PacketPlayInArmAnimation;
+import net.minecraft.server.v1_16_R3.PacketPlayInBlockDig;
+import net.minecraft.server.v1_16_R3.PacketPlayInSettings;
+import net.minecraft.server.v1_16_R3.PacketPlayInSpectate;
+import net.minecraft.server.v1_16_R3.PacketPlayOutNamedSoundEffect;
+import net.minecraft.server.v1_16_R3.SoundEffect;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
-import net.zeeraa.novacore.spigot.abstraction.enums.ChatVisibility;
-import net.zeeraa.novacore.spigot.abstraction.enums.Hand;
-import net.zeeraa.novacore.spigot.abstraction.enums.MainHand;
+import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import net.zeeraa.novacore.spigot.abstraction.enums.SoundCategory;
 import net.zeeraa.novacore.spigot.abstraction.packet.event.*;
 import org.bukkit.Bukkit;
@@ -15,7 +20,10 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler {
 
@@ -26,6 +34,7 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 	public boolean readPacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
 		List<Player> playersDigging = VersionIndependentUtils.get().getPacketManager().getPlayersDigging();
 		List<Event> events = new ArrayList<>();
+		events.add(new ReadPacketSentEvent(player, packet));
 		if (packet.getClass().equals(PacketPlayInSettings.class)) {
 			PacketPlayInSettings settings = (PacketPlayInSettings) packet;
 			Field field = PacketPlayInSettings.class.getDeclaredField("c");
@@ -89,6 +98,7 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 	@Override
 	public boolean writePacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
 		List<Event> events = new ArrayList<>();
+		events.add(new WritePacketSentEvent(player, packet));
 		if (packet.getClass().equals(PacketPlayOutNamedSoundEffect.class)) {
 			PacketPlayOutNamedSoundEffect effect = (PacketPlayOutNamedSoundEffect) packet;
 			Field a = effect.getClass().getDeclaredField("a");
@@ -112,7 +122,7 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			Field key = effect1.getClass().getDeclaredField("b");
 			b.setAccessible(true);
 			MinecraftKey mcKey = (MinecraftKey) key.get(effect1);
-
+			
 			Sound foundSound = Arrays.stream(Sound.values()).filter(sound -> sound.getKey().toString().equalsIgnoreCase(mcKey.toString())).findFirst().get();
 			net.zeeraa.novacore.spigot.abstraction.enums.SoundCategory category = Arrays.stream(SoundCategory.values()).filter(soundCategory -> soundCategory.getName().equalsIgnoreCase(sc.getName())).findFirst().get();
 

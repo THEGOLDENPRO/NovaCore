@@ -2,15 +2,34 @@ package net.zeeraa.novacore.spigot.abstraction;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
-import net.zeeraa.novacore.spigot.abstraction.enums.*;
-import org.bukkit.*;
+import net.zeeraa.novacore.spigot.abstraction.commons.EntityBoundingBox;
+import net.zeeraa.novacore.spigot.abstraction.enums.ColoredBlockType;
+import net.zeeraa.novacore.spigot.abstraction.enums.DeathType;
+import net.zeeraa.novacore.spigot.abstraction.enums.NovaCoreGameVersion;
+import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerError;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
+
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -813,4 +832,12 @@ public abstract class VersionIndependentUtils {
 	public abstract void setMarker(ArmorStand stand, boolean value);
 
 	public abstract boolean isMarker(ArmorStand stand);
+
+	public void setCustomSpectator(Player player, boolean value) {
+		setCustomSpectator(player, value, Bukkit.getOnlinePlayers());
+	}
+
+	public abstract void setCustomSpectator(Player player, boolean value, Collection<? extends Player> players);
+
+	public abstract EntityBoundingBox getEntityBoundingBox(Entity entity);
 }

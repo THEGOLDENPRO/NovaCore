@@ -5,22 +5,22 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-
 public class AsyncPacketEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 
-    protected Player who;
+	protected Player who;
 
-    private boolean cancelled;
+	private boolean cancelled;
 
-    public Player getPlayer() {
-        return who;
-    }
+	public Player getPlayer() {
+		return who;
+	}
 
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
+	@Override
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
 	@Override
 	public void setCancelled(boolean cancel) {
 		cancelled = cancel;
@@ -34,9 +34,9 @@ public class AsyncPacketEvent extends Event implements Cancellable {
 	public static HandlerList getHandlerList() {
 		return handlers;
 	}
-	
-    public AsyncPacketEvent(Player player) {
-        super(true);
-        who = player;
-    }
+
+	public AsyncPacketEvent(Player player) {
+		super(true);
+		who = player;
+	}
 }

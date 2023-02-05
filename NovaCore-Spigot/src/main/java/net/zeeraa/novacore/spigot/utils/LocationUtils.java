@@ -1,9 +1,12 @@
 package net.zeeraa.novacore.spigot.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import net.zeeraa.novacore.spigot.abstraction.commons.EntityBoundingBox;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,6 +14,7 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 import org.json.JSONObject;
 
@@ -411,4 +415,48 @@ public class LocationUtils {
 
 		return location.add(newX, newY, newZ);
 	}
+
+
+	/**
+	 * Checks if the player is inside a block location, since it needs to count for
+	 * the players hitbox
+	 *
+	 * @param block The block to be checked
+	 * @param entity The entity to be checked
+	 * @return If player is inside the block location
+	 */
+	public static boolean entityIsInsideBlockLocation(Block block, Entity entity) {
+		EntityBoundingBox bb = VersionIndependentUtils.get().getEntityBoundingBox(entity);
+		Block blockTop = block.getLocation().clone().add(bb.getWidth(), bb.getHeight(), bb.getWidth()).getBlock();
+		Block blockBottom = block.getLocation().clone().add(-bb.getWidth(), 0, -bb.getWidth()).getBlock();
+
+		List<Block> avaliableBlocks = new ArrayList<>();
+
+		for (int x = blockBottom.getX(); x <= blockTop.getX(); x++) {
+			for (int y = blockBottom.getY(); y <= blockTop.getY(); y++) {
+				for (int z = blockBottom.getZ(); z <= blockTop.getZ(); z++) {
+					avaliableBlocks.add(entity.getWorld().getBlockAt(x,y,z));
+				}
+			}
+		}
+
+		boolean isInside = false;
+
+		for (Block found : avaliableBlocks) {
+			if (blockLocationsEqual(found, block)) {
+				isInside = true;
+				break;
+			}
+		}
+		return isInside;
+	}
+
+	public static boolean blockLocationsEqual(Block block, Block other) {
+		if (block.getWorld() == other.getWorld()) {
+			return block.getX() == other.getX() && block.getY() == other.getY() && other.getZ() == other.getZ();
+		} else {
+			return false;
+		}
+	}
+
 }
