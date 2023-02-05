@@ -24,7 +24,6 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONException;
@@ -547,8 +546,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 				return;
 			}
 		}
-		
-		if(forceReflectionCommandRegistrator) {
+
+		if (forceReflectionCommandRegistrator) {
 			Log.info("NovaCore", "Using reflection based command registrator since ForceUseReflectionBasedRegistrator is set to true in config.yml");
 			bukkitCommandRegistrator = reflectionBasedCommandRegistrator;
 		}
@@ -632,7 +631,6 @@ public class NovaCore extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(this, this);
 		Bukkit.getPluginManager().registerEvents(customCraftingManager, this);
 		new SpectatorListener();
-
 
 		// Load modules
 		ModuleManager.loadModule(this, DeltaTime.class);

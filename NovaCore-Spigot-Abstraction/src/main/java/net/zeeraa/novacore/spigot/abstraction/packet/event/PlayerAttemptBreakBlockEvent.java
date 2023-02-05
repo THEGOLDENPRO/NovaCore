@@ -10,16 +10,14 @@ import org.bukkit.entity.Player;
  * WARNING: This event is Asynchronous and might be dangerous to use
  */
 public class PlayerAttemptBreakBlockEvent extends PlayerSwingEvent {
+	Block block;
 
-    Block block;
+	public PlayerAttemptBreakBlockEvent(Player player, long timestamp, Block block) {
+		super(player, timestamp, Hand.MAIN_HAND);
+		this.block = block;
+	}
 
-    public PlayerAttemptBreakBlockEvent(Player player, long timestamp, Block block) {
-        super(player, timestamp, Hand.MAIN_HAND);
-        this.block = block;
-    }
-
-    public Block getBlock() {
-        return block;
-    }
-
+	public Block getBlock() {
+		return block;
+	}
 }

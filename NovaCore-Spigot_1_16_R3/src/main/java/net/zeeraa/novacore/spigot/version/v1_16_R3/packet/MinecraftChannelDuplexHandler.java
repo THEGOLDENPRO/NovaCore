@@ -1,6 +1,13 @@
 package net.zeeraa.novacore.spigot.version.v1_16_R3.packet;
 
-import net.minecraft.server.v1_16_R3.*;
+import net.minecraft.server.v1_16_R3.EnumChatVisibility;
+import net.minecraft.server.v1_16_R3.MinecraftKey;
+import net.minecraft.server.v1_16_R3.PacketPlayInArmAnimation;
+import net.minecraft.server.v1_16_R3.PacketPlayInBlockDig;
+import net.minecraft.server.v1_16_R3.PacketPlayInSettings;
+import net.minecraft.server.v1_16_R3.PacketPlayInSpectate;
+import net.minecraft.server.v1_16_R3.PacketPlayOutNamedSoundEffect;
+import net.minecraft.server.v1_16_R3.SoundEffect;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import net.zeeraa.novacore.spigot.abstraction.enums.SoundCategory;
@@ -13,7 +20,10 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler {
 
@@ -112,7 +122,7 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			Field key = effect1.getClass().getDeclaredField("b");
 			b.setAccessible(true);
 			MinecraftKey mcKey = (MinecraftKey) key.get(effect1);
-
+			
 			Sound foundSound = Arrays.stream(Sound.values()).filter(sound -> sound.getKey().toString().equalsIgnoreCase(mcKey.toString())).findFirst().get();
 			net.zeeraa.novacore.spigot.abstraction.enums.SoundCategory category = Arrays.stream(SoundCategory.values()).filter(soundCategory -> soundCategory.getName().equalsIgnoreCase(sc.getName())).findFirst().get();
 

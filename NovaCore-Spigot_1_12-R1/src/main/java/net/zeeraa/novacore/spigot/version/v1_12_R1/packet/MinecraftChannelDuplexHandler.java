@@ -1,6 +1,11 @@
 package net.zeeraa.novacore.spigot.version.v1_12_R1.packet;
 
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.server.v1_12_R1.PacketPlayInArmAnimation;
+import net.minecraft.server.v1_12_R1.PacketPlayInBlockDig;
+import net.minecraft.server.v1_12_R1.PacketPlayInSettings;
+import net.minecraft.server.v1_12_R1.PacketPlayInSpectate;
+import net.minecraft.server.v1_12_R1.PacketPlayOutNamedSoundEffect;
+import net.minecraft.server.v1_12_R1.SoundEffect;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.ChatVisibility;
 import net.zeeraa.novacore.spigot.abstraction.enums.Hand;
@@ -15,10 +20,13 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler {
-
 	public MinecraftChannelDuplexHandler(Player player) {
 		super(player);
 	}
@@ -112,13 +120,11 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			Sound foundSound = Arrays.stream(Sound.values()).filter(sound -> sound.name().toLowerCase(Locale.ROOT).equalsIgnoreCase(effectName.replace(".", "_"))).findFirst().get();
 			SoundCategory category = Arrays.stream(SoundCategory.values()).filter(soundCategory -> soundCategory.getName().equalsIgnoreCase(sc.a())).findFirst().get();
 
-
-			double x = (float)c.get(effect) / 8.0F;
-			double y = (float)d.get(effect) / 8.0F;
-			double z = (float)e.get(effect) / 8.0F;
+			double x = (float) c.get(effect) / 8.0F;
+			double y = (float) d.get(effect) / 8.0F;
+			double z = (float) e.get(effect) / 8.0F;
 			float volume = (float) f.get(effect);
 			float pitch = (float) g.get(effect);
-
 
 			events.add(new PlayerListenSoundEvent(player, foundSound, category, x, y, z, volume, pitch));
 		}

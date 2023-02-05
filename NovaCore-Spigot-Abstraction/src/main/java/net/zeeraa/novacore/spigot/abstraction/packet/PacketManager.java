@@ -16,7 +16,6 @@ import java.util.List;
  * @author Bruno
  */
 public abstract class PacketManager implements Listener {
-
 	private final List<Player> playersDigging;
 
 	public PacketManager() {
@@ -64,5 +63,4 @@ public abstract class PacketManager implements Listener {
 	 * @param player {@link Player}.
 	 */
 	public abstract void removePlayer(Player player);
-
 }

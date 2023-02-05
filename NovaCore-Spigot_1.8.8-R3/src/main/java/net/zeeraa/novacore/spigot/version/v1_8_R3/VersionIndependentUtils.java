@@ -90,7 +90,12 @@ import org.bukkit.util.Vector;
 import java.lang.reflect.Field;
 import java.awt.Color;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils {
@@ -99,7 +104,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	private PacketManager packetManager;
 
 	private ChunkLoader chunkLoader;
-
+	
 	@Override
 	public ChunkLoader getChunkLoader() {
 		if (chunkLoader == null) {

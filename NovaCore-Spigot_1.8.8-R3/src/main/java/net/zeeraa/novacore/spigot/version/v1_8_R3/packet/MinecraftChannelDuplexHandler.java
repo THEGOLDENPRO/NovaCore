@@ -1,11 +1,22 @@
 package net.zeeraa.novacore.spigot.version.v1_8_R3.packet;
 
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.PacketPlayInArmAnimation;
+import net.minecraft.server.v1_8_R3.PacketPlayInBlockDig;
+import net.minecraft.server.v1_8_R3.PacketPlayInSettings;
+import net.minecraft.server.v1_8_R3.PacketPlayInSpectate;
+import net.minecraft.server.v1_8_R3.PacketPlayOutNamedSoundEffect;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.ChatVisibility;
 import net.zeeraa.novacore.spigot.abstraction.enums.Hand;
 import net.zeeraa.novacore.spigot.abstraction.enums.MainHand;
-import net.zeeraa.novacore.spigot.abstraction.packet.event.*;
+import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerAttemptBreakBlockEvent;
+import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerListenSoundEvent;
+import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerSettingsEvent;
+import net.zeeraa.novacore.spigot.abstraction.packet.event.PlayerSwingEvent;
+import net.zeeraa.novacore.spigot.abstraction.packet.event.ReadPacketSentEvent;
+import net.zeeraa.novacore.spigot.abstraction.packet.event.SpectatorTeleportEvent;
+import net.zeeraa.novacore.spigot.abstraction.packet.event.WritePacketSentEvent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -13,13 +24,13 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler {
-
 	public MinecraftChannelDuplexHandler(Player player) {
 		super(player);
-
 	}
 
 	public boolean readPacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
@@ -43,7 +54,6 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 					events.add(new PlayerAttemptBreakBlockEvent(player, arm.timestamp, block));
 				}
 			}
-
 
 		} else if (packet.getClass().equals(PacketPlayInSpectate.class)) {
 			PacketPlayInSpectate spectate = (PacketPlayInSpectate) packet;
@@ -109,12 +119,11 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			f.setAccessible(true);
 
 			String name = (String) a.get(effect);
-			double x = (float)b.get(effect) / 8.0F;
-			double y = (float)c.get(effect) / 8.0F;
-			double z = (float)d.get(effect) / 8.0F;
+			double x = (float) b.get(effect) / 8.0F;
+			double y = (float) c.get(effect) / 8.0F;
+			double z = (float) d.get(effect) / 8.0F;
 			float volume = (float) e.get(effect);
 			float pitch = (float) f.get(effect) / 63.0F;
-
 
 			events.add(new PlayerListenSoundEvent(player, name, null, x, y, z, volume, pitch));
 		}
@@ -133,5 +142,4 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 		}
 		return value;
 	}
-
 }

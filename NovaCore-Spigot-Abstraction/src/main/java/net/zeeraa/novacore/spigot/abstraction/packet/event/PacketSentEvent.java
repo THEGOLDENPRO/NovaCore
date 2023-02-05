@@ -4,23 +4,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 public class PacketSentEvent extends AsyncPacketEvent {
-    private static final HandlerList handlers = new HandlerList();
-    private Object packet;
-    public PacketSentEvent(Player player, Object packetSent) {
-        super(player);
-        packet = packetSent;
-    }
+	private static final HandlerList handlers = new HandlerList();
+	private Object packet;
 
-    public Object getPacket() {
-        return packet;
-    }
+	public PacketSentEvent(Player player, Object packetSent) {
+		super(player);
+		packet = packetSent;
+	}
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	public Object getPacket() {
+		return packet;
+	}
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 }
