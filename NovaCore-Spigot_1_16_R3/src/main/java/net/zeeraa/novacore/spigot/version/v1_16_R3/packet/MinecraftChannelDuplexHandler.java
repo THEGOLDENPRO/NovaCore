@@ -32,7 +32,6 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 	}
 
 	public boolean readPacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
-		List<Player> playersDigging = VersionIndependentUtils.get().getPacketManager().getPlayersDigging();
 		List<Event> events = new ArrayList<>();
 		events.add(new ReadPacketSentEvent(player, packet));
 		if (packet.getClass().equals(PacketPlayInSettings.class)) {
@@ -46,10 +45,9 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			PacketPlayInArmAnimation arm = (PacketPlayInArmAnimation) packet;
 
 			events.add(new PlayerSwingEvent(player, System.currentTimeMillis(), Hand.valueOf(arm.b().name())));
-				if (canBreak(player, VersionIndependentUtils.get().getReacheableBlockExact(player))) {
-					events.add(new PlayerAttemptBreakBlockEvent(player, System.currentTimeMillis(), VersionIndependentUtils.get().getReacheableBlockExact(player)));
-				}
-
+			if (canBreak(player, VersionIndependentUtils.get().getReacheableBlockExact(player))) {
+				events.add(new PlayerAttemptBreakBlockEvent(player, System.currentTimeMillis(), VersionIndependentUtils.get().getReacheableBlockExact(player)));
+			}
 
 		} else if (packet.getClass().equals(PacketPlayInSpectate.class)) {
 			PacketPlayInSpectate spectate = (PacketPlayInSpectate) packet;
@@ -59,6 +57,7 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			events.add(new SpectatorTeleportEvent(player, Bukkit.getPlayer(id)));
 
 		} else if (packet.getClass().equals(PacketPlayInBlockDig.class)) {
+			List<Player> playersDigging = VersionIndependentUtils.get().getPacketManager().getPlayersDigging();
 			PacketPlayInBlockDig action = (PacketPlayInBlockDig) packet;
 
 			switch (action.d()) {
@@ -122,17 +121,15 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 			Field key = effect1.getClass().getDeclaredField("b");
 			b.setAccessible(true);
 			MinecraftKey mcKey = (MinecraftKey) key.get(effect1);
-			
+
 			Sound foundSound = Arrays.stream(Sound.values()).filter(sound -> sound.getKey().toString().equalsIgnoreCase(mcKey.toString())).findFirst().get();
 			net.zeeraa.novacore.spigot.abstraction.enums.SoundCategory category = Arrays.stream(SoundCategory.values()).filter(soundCategory -> soundCategory.getName().equalsIgnoreCase(sc.getName())).findFirst().get();
 
-
-			double x = (float)c.get(effect) / 8.0F;
-			double y = (float)d.get(effect) / 8.0F;
-			double z = (float)e.get(effect) / 8.0F;
+			double x = (float) c.get(effect) / 8.0F;
+			double y = (float) d.get(effect) / 8.0F;
+			double z = (float) e.get(effect) / 8.0F;
 			float volume = (float) f.get(effect);
 			float pitch = (float) g.get(effect);
-
 
 			events.add(new PlayerListenSoundEvent(player, foundSound, category, x, y, z, volume, pitch));
 		}
