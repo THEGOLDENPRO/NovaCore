@@ -526,6 +526,8 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 		case EXP_BOTTLE:
 			return Material.EXP_BOTTLE;
+		case WOOL:
+			return Material.WOOL;
 
 		default:
 			setLastError(VersionIndependenceLayerError.MISSING_MATERIAL);
