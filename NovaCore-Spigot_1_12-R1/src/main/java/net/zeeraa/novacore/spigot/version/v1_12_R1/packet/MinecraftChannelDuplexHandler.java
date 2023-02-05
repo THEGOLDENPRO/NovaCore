@@ -26,7 +26,7 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 	public boolean readPacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
 		List<Player> playersDigging = VersionIndependentUtils.get().getPacketManager().getPlayersDigging();
 		List<Event> events = new ArrayList<>();
-
+		events.add(new ReadPacketSentEvent(player, packet));
 		if (packet.getClass().equals(PacketPlayInSettings.class)) {
 			PacketPlayInSettings settings = (PacketPlayInSettings) packet;
 			Field field = PacketPlayInSettings.class.getDeclaredField("b");
@@ -88,6 +88,7 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 	@Override
 	public boolean writePacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
 		List<Event> events = new ArrayList<>();
+		events.add(new WritePacketSentEvent(player, packet));
 		if (packet.getClass().equals(PacketPlayOutNamedSoundEffect.class)) {
 			PacketPlayOutNamedSoundEffect effect = (PacketPlayOutNamedSoundEffect) packet;
 			Field a = effect.getClass().getDeclaredField("a");

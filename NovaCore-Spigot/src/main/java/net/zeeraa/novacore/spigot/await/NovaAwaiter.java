@@ -1,6 +1,7 @@
 package net.zeeraa.novacore.spigot.await;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.plugin.Plugin;
@@ -27,9 +28,7 @@ public class NovaAwaiter implements NovaAwaitable, NovaAwaitableContainer {
 		this.callback = callback;
 		this.awaitables = new ArrayList<>();
 		this.finished = false;
-		for (NovaAwaitable a : awaitables) {
-			this.awaitables.add(a);
-		}
+		this.awaitables.addAll(Arrays.asList(awaitables));
 		setupTask();
 	}
 

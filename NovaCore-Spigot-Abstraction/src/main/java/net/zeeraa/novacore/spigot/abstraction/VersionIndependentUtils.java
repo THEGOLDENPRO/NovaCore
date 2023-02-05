@@ -2,11 +2,13 @@ package net.zeeraa.novacore.spigot.abstraction;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.spigot.abstraction.commons.AttributeInfo;
+import net.zeeraa.novacore.spigot.abstraction.commons.EntityBoundingBox;
 import net.zeeraa.novacore.spigot.abstraction.enums.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -813,4 +815,12 @@ public abstract class VersionIndependentUtils {
 	public abstract void setMarker(ArmorStand stand, boolean value);
 
 	public abstract boolean isMarker(ArmorStand stand);
+
+	public void setCustomSpectator(Player player, boolean value) {
+		setCustomSpectator(player, value, Bukkit.getOnlinePlayers());
+	}
+
+	public abstract void setCustomSpectator(Player player, boolean value, Collection<? extends Player> players);
+
+	public abstract EntityBoundingBox getEntityBoundingBox(Entity entity);
 }
