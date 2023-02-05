@@ -83,7 +83,7 @@ public enum VersionIndependentMaterial {
 	/**
 	 * CLOCK
 	 */
-	WATCH, GOLD_HELMET, GOLD_CHESTPLATE, GOLD_LEGGINGS, GOLD_BOOTS, GRILLED_PORK, EXP_BOTTLE, WOOL;
+	WATCH, GOLD_HELMET, GOLD_CHESTPLATE, GOLD_LEGGINGS, GOLD_BOOTS, GRILLED_PORK, EXP_BOTTLE, WOOL, FIREBALL;
 
 	/**
 	 * Get the bukkit {@link Material} for the currently used version of the game
