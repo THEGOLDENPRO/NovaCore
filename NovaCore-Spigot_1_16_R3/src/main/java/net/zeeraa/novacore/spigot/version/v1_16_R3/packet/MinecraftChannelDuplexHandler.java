@@ -33,7 +33,6 @@ public class MinecraftChannelDuplexHandler extends net.zeeraa.novacore.spigot.ab
 
 	public boolean readPacket(Player player, Object packet) throws NoSuchFieldException, IllegalAccessException {
 		List<Event> events = new ArrayList<>();
-		boolean containsEvent = false;
 		events.add(new ReadPacketSentEvent(player, packet));
 		if (packet.getClass().equals(PacketPlayInSettings.class)) {
 			PacketPlayInSettings settings = (PacketPlayInSettings) packet;
