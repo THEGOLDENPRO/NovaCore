@@ -345,6 +345,23 @@ public class LocationUtils {
 
 		return newLocation;
 	}
+	
+	/**
+	 * Get a copy of the provided location with its x, y and z centered. This will not
+	 * modify the provided {@link Location} object
+	 * 
+	 * @param location The location to get a centered copy of
+	 * @return New location with centered x, y and z
+	 */
+	public static Location fullyCenterLocation(Location location) {
+		Location newLocation = location.clone();
+
+		newLocation.setX(LocationUtils.blockCenter(newLocation.getBlockX()));
+		newLocation.setY(LocationUtils.blockCenter(newLocation.getBlockY()));
+		newLocation.setZ(LocationUtils.blockCenter(newLocation.getBlockZ()));
+
+		return newLocation;
+	}
 
 	/**
 	 * Modify a location by adding the values from a {@link BlockFace}
