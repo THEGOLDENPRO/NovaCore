@@ -79,12 +79,11 @@ public class Log {
 	}
 
 	public static void log(String source, String message, LogLevel logLevel) {
-		if (NovaCommons.getServerType() == ServerType.SPIGOT) {
-			if (!Bukkit.isPrimaryThread()) {
-				AsyncManager.runSync(() -> Log.log(source, message, logLevel));
-				return;
-			}
-		}
+		/*
+		 * if (NovaCommons.getServerType() == ServerType.SPIGOT) { if
+		 * (!Bukkit.isPrimaryThread()) { AsyncManager.runSync(() -> Log.log(source,
+		 * message, logLevel)); return; } }
+		 */
 
 		String fullMessage = "[" + logLevel.getMessagePrefix() + ChatColor.RESET + "]" + (source == null ? "" : " [" + ChatColor.GOLD + source + ChatColor.RESET + "]") + ": " + message;
 		if (logLevel.shouldLog(consoleLogLevel)) {
