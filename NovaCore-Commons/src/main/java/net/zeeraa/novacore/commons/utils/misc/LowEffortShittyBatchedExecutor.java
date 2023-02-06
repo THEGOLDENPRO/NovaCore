@@ -17,18 +17,17 @@ public class LowEffortShittyBatchedExecutor<T> {
 	}
 
 	public void consumeBatch(Consumer<T> consumer) {
-		double toGetD =  (double)source.size() / (double)division;
-		if(toGetD > 1) {
-			toGetD = Math.round(toGetD);
+		int toGet = source.size() / division;
+		if(source.size() == 0) {
+			return;
 		}
-		int toGet = (int) toGetD;
 		for(int i = 0; i < toGet; i++) {
 			consumer.accept(source.get(index));
 			index++;
 			if(index >= source.size()) {
 				index = 0;
 				return;
-			}	
+			}
 		}
 	}
 }
