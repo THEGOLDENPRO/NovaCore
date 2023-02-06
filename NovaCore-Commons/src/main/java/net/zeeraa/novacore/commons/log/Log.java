@@ -3,12 +3,8 @@ package net.zeeraa.novacore.commons.log;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-
 import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.commons.NovaCommons;
-import net.zeeraa.novacore.commons.ServerType;
-import net.zeeraa.novacore.commons.async.AsyncManager;
 
 /**
  * This is the logger built into both NovaCore Spigot and Novacore Bungeecord
