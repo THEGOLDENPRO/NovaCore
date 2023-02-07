@@ -1099,7 +1099,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			if (!CustomSpectatorManager.isSpectator(player)) {
 				player.setAllowFlight(true);
 				player.setFlying(true);
-				player.spigot().setCollidesWithEntities(true);
+				player.spigot().setCollidesWithEntities(false);
 				VersionIndependentUtils.get().setSilent(player, true);
 				player.setHealth(20);
 				player.setFoodLevel(20);
@@ -1117,7 +1117,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 				player.setFlying(false);
 				player.setAllowFlight(false);
 				player.removePotionEffect(PotionEffectType.INVISIBILITY);
-				player.spigot().setCollidesWithEntities(false);
+				player.spigot().setCollidesWithEntities(true);
 				VersionIndependentUtils.get().setSilent(player, false);
 				CustomSpectatorManager.getSpectators().remove(player);
 				for (Player list : players) {
