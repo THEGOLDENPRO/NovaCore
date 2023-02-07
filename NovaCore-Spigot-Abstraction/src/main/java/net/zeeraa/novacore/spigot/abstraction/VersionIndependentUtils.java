@@ -24,12 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -840,4 +835,6 @@ public abstract class VersionIndependentUtils {
 	public abstract void setCustomSpectator(Player player, boolean value, Collection<? extends Player> players);
 
 	public abstract EntityBoundingBox getEntityBoundingBox(Entity entity);
+
+	public abstract void setSource(TNTPrimed tnt, LivingEntity source);
 }
