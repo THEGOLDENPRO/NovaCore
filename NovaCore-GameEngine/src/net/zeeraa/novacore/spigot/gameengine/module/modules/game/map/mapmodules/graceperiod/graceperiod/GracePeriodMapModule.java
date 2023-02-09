@@ -14,12 +14,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
+import net.zeeraa.novacore.spigot.gameengine.NovaCoreGameEngine;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.mapmodule.MapModule;
@@ -108,10 +110,8 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 		endTimer.addFinishCallback(() -> {
 			isActive = false;
 			Bukkit.getServer().getPluginManager().callEvent(new GracePeriodFinishEvent());
-			Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-				VersionIndependentUtils.get().sendTitle(player, "", LanguageManager.getString(player, "novacore.game.modules.graceperiod.over_title"), 10, 40, 10);
-				player.sendMessage(LanguageManager.getString(player, "novacore.game.modules.graceperiod.over"));
-			});
+			LanguageManager.broadcast("novacore.game.modules.graceperiod.over");
+			Bukkit.getServer().getOnlinePlayers().forEach(player -> VersionIndependentUtils.get().sendTitle(player, "", LanguageManager.getString(player, "novacore.game.modules.graceperiod.over_title"), 0, 60, 20));
 		});
 	}
 
@@ -159,8 +159,7 @@ public class GracePeriodMapModule extends MapModule implements Listener {
 	public void onGameBegin(GameBeginEvent e) {
 		Log.info("GracePeriodMapModule", "Received GameBeginEvent");
 		isActive = true;
-		// TODO: language file
-		Bukkit.getServer().getOnlinePlayers().forEach(player -> player.sendMessage(LanguageManager.getString(player, "novacore.game.modules.graceperiod.ending_in", seconds)));
+		LanguageManager.broadcast("novacore.game.modules.graceperiod.ending_in", seconds);
 		endTimer.start();
 	}
 
