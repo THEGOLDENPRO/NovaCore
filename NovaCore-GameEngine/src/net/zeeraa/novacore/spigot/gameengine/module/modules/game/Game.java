@@ -20,6 +20,7 @@ import org.bukkit.plugin.Plugin;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.tasks.Task;
 import net.zeeraa.novacore.spigot.NovaCore;
+import net.zeeraa.novacore.spigot.gameengine.NovaCoreGameEngine;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.elimination.PlayerEliminationReason;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.elimination.PlayerQuitEliminationAction;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameBeginEvent;
@@ -797,6 +798,10 @@ public abstract class Game {
 	 */
 	protected void checkWinner() {
 		if (autoWinnerCheckCompleted) {
+			return;
+		}
+		
+		if(NovaCoreGameEngine.getInstance().isDebugDisableAutoEndGame()) {
 			return;
 		}
 

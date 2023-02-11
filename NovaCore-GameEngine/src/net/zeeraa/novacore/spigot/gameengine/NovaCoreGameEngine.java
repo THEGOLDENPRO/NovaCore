@@ -3,6 +3,8 @@ package net.zeeraa.novacore.spigot.gameengine;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,11 +53,21 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		return instance;
 	}
 
+	private boolean debugDisableAutoEndGame;
 	private File requestedGameDataDirectory;
+
+	public boolean isDebugDisableAutoEndGame() {
+		return debugDisableAutoEndGame;
+	}
 
 	@Override
 	public void onEnable() {
 		requestedGameDataDirectory = null;
+
+		saveDefaultConfig();
+
+		ConfigurationSection debugSettings = getConfig().getConfigurationSection("Debug");
+		debugDisableAutoEndGame = debugSettings.getBoolean("DisableAutoEndGame");
 
 		this.getDataFolder().mkdir();
 
@@ -75,7 +87,7 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		ModuleManager.loadModule(this, GameManager.class);
 		ModuleManager.loadModule(this, GameLobby.class);
 		ModuleManager.loadModule(this, MedicalSupplyDropManager.class);
-		
+
 		Log.info("NovaCoreGameEngine", "Loading map modules...");
 		MapModuleManager.addMapModule("novacore.chestloot", ChestLoot.class);
 		MapModuleManager.addMapModule("novacore.lootdrop", LootDropMapModule.class);
@@ -127,6 +139,15 @@ public class NovaCoreGameEngine extends NovaPlugin {
 		}
 
 		Log.success("NovaCoreGameEngine", "Game engine enabled");
+
+		if (debugDisableAutoEndGame) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Log.warn("GameEngine", "DisableAutoEndGame set to true in config.yml. If this server is not a dev server disable this option immediately");
+				}
+			}.runTaskLater(this, 1L);
+		}
 	}
 
 	public File getRequestedGameDataDirectory() {
