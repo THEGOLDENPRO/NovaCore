@@ -4,9 +4,11 @@ import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +25,8 @@ public class CustomSpectatorManager {
 		permittedEvents.add(PlayerMoveEvent.class);
 		permittedEvents.add(PlayerInteractEvent.class);
 		permittedEvents.add(PlayerItemHeldEvent.class);
+		permittedEvents.add(PlayerTeleportEvent.class);
+		permittedEvents.add(PlayerCommandPreprocessEvent.class);
 	}
 
 	public static void addPermittedEvent(Class<? extends Event> event) {
