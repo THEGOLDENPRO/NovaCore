@@ -34,6 +34,7 @@ import net.zeeraa.novacore.commons.ServerType;
 import net.zeeraa.novacore.commons.api.novauniverse.NovaUniverseAPI;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.log.LogLevel;
+import net.zeeraa.novacore.commons.utils.DelayedRunner;
 import net.zeeraa.novacore.commons.utils.Hastebin;
 import net.zeeraa.novacore.commons.utils.JSONFileType;
 import net.zeeraa.novacore.commons.utils.JSONFileUtils;
@@ -56,6 +57,7 @@ import net.zeeraa.novacore.spigot.command.fallback.ReflectionBasedCommandRegistr
 import net.zeeraa.novacore.spigot.customcrafting.CustomCraftingManager;
 import net.zeeraa.novacore.spigot.debug.DebugCommandRegistrator;
 import net.zeeraa.novacore.spigot.debug.builtin.BuiltinDebugTriggers;
+import net.zeeraa.novacore.spigot.delayedrunner.DelayedRunnerImplementationSpigot;
 import net.zeeraa.novacore.spigot.language.LanguageReader;
 import net.zeeraa.novacore.spigot.logger.SpigotAbstractionLogger;
 import net.zeeraa.novacore.spigot.loottable.LootTableManager;
@@ -294,6 +296,8 @@ public class NovaCore extends JavaPlugin implements Listener {
 			Log.error("NovaCore", "Cant run selftest in no nms mode");
 			return false;
 		}
+		
+		DelayedRunner.setImplementation(new DelayedRunnerImplementationSpigot());
 
 		try {
 			boolean ok = true;
