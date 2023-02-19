@@ -180,6 +180,12 @@ public abstract class Game {
 			Log.warn("Game", "Tried to call Game#sendBeginEvent() twice");
 			return;
 		}
+		
+		if(hasEnded()) {
+			Log.warn("Game", "Tried to call Game#sendBeginEvent() after the game ended");
+			return;
+		}
+		
 		beginEventCalled = true;
 		GameBeginEvent event = new GameBeginEvent(this);
 		Bukkit.getServer().getPluginManager().callEvent(event);
