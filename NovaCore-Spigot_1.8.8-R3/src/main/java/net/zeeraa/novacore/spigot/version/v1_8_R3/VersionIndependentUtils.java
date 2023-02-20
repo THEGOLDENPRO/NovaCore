@@ -1174,20 +1174,30 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public void registerCustomEntity(Object entity, String name) {
-		if (entity instanceof net.minecraft.server.v1_8_R3.Entity) {
-			int entityId = ((net.minecraft.server.v1_8_R3.Entity) entity).getId();
-			((Map<String,Class<?>>) ReflectUtils.getPrivateField("c", EntityTypes.class, null)).put(name, entity.getClass());
-			((Map<Class<?>,String>) ReflectUtils.getPrivateField("d", EntityTypes.class, null)).put(entity.getClass(), name);
-			((Map<Class<?>,Integer>) ReflectUtils.getPrivateField("f", EntityTypes.class, null)).put(entity.getClass(), entityId);
+	public void registerCustomEntity(Class<?> entity, String name) {
+		if (net.minecraft.server.v1_8_R3.Entity.class.isAssignableFrom(entity)) {
+			int entityId = -1;
+			for (Map.Entry<Class<?>, Integer> entry : ((Map<Class<?>,Integer>) ReflectUtils.getPrivateField("f", EntityTypes.class, null)).entrySet()) {
+				if (entry.getKey().isAssignableFrom(entity)) {
+					entityId = entry.getValue();
+					break;
+				}
+			}
+			if (entityId == -1) {
+				Log.error("VersionIndependentUtils", "Could not find sub-class for " + entity.getSimpleName() + " and get Entity ID.");
+				return;
+			}
+			((Map<String,Class<?>>) ReflectUtils.getPrivateField("c", EntityTypes.class, null)).put(name, entity);
+			((Map<Class<?>,String>) ReflectUtils.getPrivateField("d", EntityTypes.class, null)).put(entity, name);
+			((Map<Class<?>,Integer>) ReflectUtils.getPrivateField("f", EntityTypes.class, null)).put(entity, entityId);
 		} else {
-			Log.error("VersionIndependentUtils", "Object isnt instance of Entity.");
+			Log.error("VersionIndependentUtils", "Class isnt instance of Entity.");
 		}
 	}
 
 	@Override
 	public void spawnCustomEntity(Object entity, Location location) {
-		if (entity instanceof net.minecraft.server.v1_8_R3.Entity) {
+		if (net.minecraft.server.v1_8_R3.Entity.class.isAssignableFrom(entity.getClass())) {
 			net.minecraft.server.v1_8_R3.Entity nmsEntity = (net.minecraft.server.v1_8_R3.Entity) entity;
 			nmsEntity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 			((CraftWorld)location.getWorld()).getHandle().addEntity(nmsEntity);
@@ -1195,4 +1205,5 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			Log.error("VersionIndependentUtils", "Object isnt instance of Entity.");
 		}
 	}
+
 }

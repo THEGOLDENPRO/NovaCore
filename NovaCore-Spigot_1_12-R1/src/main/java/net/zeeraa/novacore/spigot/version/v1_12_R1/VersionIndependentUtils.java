@@ -31,6 +31,7 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_12_R1.PlayerConnection;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.ListUtils;
+import net.zeeraa.novacore.commons.utils.ReflectUtils;
 import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 import net.zeeraa.novacore.spigot.abstraction.MaterialNameList;
@@ -1183,23 +1184,20 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		return new ItemStack(Material.BANNER, 1, color.getWoolData());
 	}
 	@Override
-	public void registerCustomEntity(Object entity, String name) {
-		if (entity instanceof net.minecraft.server.v1_12_R1.Entity) {
-			int entityId = ((net.minecraft.server.v1_12_R1.Entity) entity).getId();
-
-			MinecraftKey key = new MinecraftKey(name);
-
-			EntityTypes.d.add(key);
-			EntityTypes.b.a(entityId, key, ((net.minecraft.server.v1_12_R1.Entity) entity).getClass());
-
-
+	public void registerCustomEntity(Class<?> entity, String name) {
+		if (net.minecraft.server.v1_12_R1.Entity.class.isAssignableFrom(entity)) {
+			int entityId = EntityTypes.b.a((Class<? extends net.minecraft.server.v1_12_R1.Entity>) entity);
+			((Map<String,Class<?>>) ReflectUtils.getPrivateField("c", EntityTypes.class, null)).put(name, entity);
+			((Map<Class<?>,String>) ReflectUtils.getPrivateField("d", EntityTypes.class, null)).put(entity, name);
+			((Map<Class<?>,Integer>) ReflectUtils.getPrivateField("f", EntityTypes.class, null)).put(entity, entityId);
+			System.out.println("Registered " + entity.getClass().getSimpleName() + " With entity id " + entityId);
 		} else {
-			Log.error("VersionIndependentUtils", "Object isnt instance of Entity.");
+			Log.error("VersionIndependentUtils", "Class isnt instance of Entity.");
 		}
 	}
 	@Override
 	public void spawnCustomEntity(Object entity, Location location) {
-		if (entity instanceof net.minecraft.server.v1_12_R1.Entity) {
+		if (net.minecraft.server.v1_12_R1.Entity.class.isAssignableFrom(entity.getClass())) {
 			net.minecraft.server.v1_12_R1.Entity nmsEntity = (net.minecraft.server.v1_12_R1.Entity) entity;
 			nmsEntity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 			((CraftWorld)location.getWorld()).getHandle().addEntity(nmsEntity);

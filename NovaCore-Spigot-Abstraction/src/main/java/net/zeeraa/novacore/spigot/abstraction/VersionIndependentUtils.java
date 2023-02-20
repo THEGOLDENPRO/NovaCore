@@ -840,7 +840,7 @@ public abstract class VersionIndependentUtils {
 	
 	public abstract ItemStack getColoredBannerItemStack(DyeColor color);
 
-	public abstract void registerCustomEntity(Object entity, String name);
+	public abstract void registerCustomEntity(Class<?> entity, String name);
 
 	public abstract void spawnCustomEntity(Object entity, Location location);
 }
