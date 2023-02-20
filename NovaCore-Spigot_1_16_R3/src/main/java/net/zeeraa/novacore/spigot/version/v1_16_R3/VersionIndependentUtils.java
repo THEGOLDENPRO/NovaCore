@@ -1337,12 +1337,12 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	}
 
 	@Override
-	public void registerCustomEntity(Object entity, String name) {
+	public void registerCustomEntity(Class<?> entity, String name) {
 		// there is no need to register custom entities on 1.14+
 	}
 	@Override
 	public void spawnCustomEntity(Object entity, Location location) {
-		if (entity instanceof net.minecraft.server.v1_16_R3.Entity) {
+		if (net.minecraft.server.v1_16_R3.Entity.class.isAssignableFrom(entity.getClass())) {
 			net.minecraft.server.v1_16_R3.Entity nmsEntity = (net.minecraft.server.v1_16_R3.Entity) entity;
 			nmsEntity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 			((CraftWorld)location.getWorld()).getHandle().addEntity(nmsEntity);
