@@ -13,6 +13,7 @@ import net.minecraft.server.v1_8_R3.EntityFallingBlock;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EntityTNTPrimed;
+import net.minecraft.server.v1_8_R3.EntityTypes;
 import net.minecraft.server.v1_8_R3.IBlockData;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent.ChatSerializer;
@@ -30,6 +31,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle.EnumTitleAction;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.commons.utils.ReflectUtils;
 import net.zeeraa.novacore.spigot.abstraction.ChunkLoader;
 import net.zeeraa.novacore.spigot.abstraction.ItemBuilderRecordList;
 import net.zeeraa.novacore.spigot.abstraction.MaterialNameList;
@@ -1169,5 +1171,28 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		meta.setBaseColor(color);
 		item.setItemMeta(meta);
 		return item;
+	}
+
+	@Override
+	public void registerCustomEntity(Object entity, String name) {
+		if (entity instanceof net.minecraft.server.v1_8_R3.Entity) {
+			int entityId = ((net.minecraft.server.v1_8_R3.Entity) entity).getId();
+			((Map<String,Class<?>>) ReflectUtils.getPrivateField("c", EntityTypes.class, null)).put(name, entity.getClass());
+			((Map<Class<?>,String>) ReflectUtils.getPrivateField("d", EntityTypes.class, null)).put(entity.getClass(), name);
+			((Map<Class<?>,Integer>) ReflectUtils.getPrivateField("f", EntityTypes.class, null)).put(entity.getClass(), entityId);
+		} else {
+			Log.error("VersionIndependentUtils", "Object isnt instance of Entity.");
+		}
+	}
+
+	@Override
+	public void spawnCustomEntity(Object entity, Location location) {
+		if (entity instanceof net.minecraft.server.v1_8_R3.Entity) {
+			net.minecraft.server.v1_8_R3.Entity nmsEntity = (net.minecraft.server.v1_8_R3.Entity) entity;
+			nmsEntity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+			((CraftWorld)location.getWorld()).getHandle().addEntity(nmsEntity);
+		} else {
+			Log.error("VersionIndependentUtils", "Object isnt instance of Entity.");
+		}
 	}
 }

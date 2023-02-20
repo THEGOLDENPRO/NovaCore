@@ -839,4 +839,8 @@ public abstract class VersionIndependentUtils {
 	public abstract void setSource(TNTPrimed tnt, LivingEntity source);
 	
 	public abstract ItemStack getColoredBannerItemStack(DyeColor color);
+
+	public abstract void registerCustomEntity(Object entity, String name);
+
+	public abstract void spawnCustomEntity(Object entity, Location location);
 }

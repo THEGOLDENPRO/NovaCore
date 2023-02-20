@@ -3,7 +3,6 @@ package net.zeeraa.novacore.spigot.version.v1_12_R1;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-
 import net.minecraft.server.v1_12_R1.AxisAlignedBB;
 import net.minecraft.server.v1_12_R1.BlockPosition;
 import net.minecraft.server.v1_12_R1.ChatMessageType;
@@ -12,9 +11,12 @@ import net.minecraft.server.v1_12_R1.EntityFallingBlock;
 import net.minecraft.server.v1_12_R1.EntityLiving;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import net.minecraft.server.v1_12_R1.EntityTNTPrimed;
+import net.minecraft.server.v1_12_R1.EntityTypes;
 import net.minecraft.server.v1_12_R1.IBlockAccess;
 import net.minecraft.server.v1_12_R1.IBlockData;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_12_R1.MinecraftKey;
 import net.minecraft.server.v1_12_R1.MinecraftServer;
 import net.minecraft.server.v1_12_R1.NBTBase;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
@@ -42,11 +44,9 @@ import net.zeeraa.novacore.spigot.abstraction.enums.PlayerDamageReason;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependenceLayerError;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentMaterial;
 import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
 import net.zeeraa.novacore.spigot.abstraction.log.AbstractionLogger;
 import net.zeeraa.novacore.spigot.abstraction.manager.CustomSpectatorManager;
 import net.zeeraa.novacore.spigot.abstraction.packet.PacketManager;
-
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -93,8 +93,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.lang.reflect.Field;
 import java.awt.Color;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1181,5 +1181,30 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public ItemStack getColoredBannerItemStack(DyeColor color) {
 		return new ItemStack(Material.BANNER, 1, color.getWoolData());
+	}
+	@Override
+	public void registerCustomEntity(Object entity, String name) {
+		if (entity instanceof net.minecraft.server.v1_12_R1.Entity) {
+			int entityId = ((net.minecraft.server.v1_12_R1.Entity) entity).getId();
+
+			MinecraftKey key = new MinecraftKey(name);
+
+			EntityTypes.d.add(key);
+			EntityTypes.b.a(entityId, key, ((net.minecraft.server.v1_12_R1.Entity) entity).getClass());
+
+
+		} else {
+			Log.error("VersionIndependentUtils", "Object isnt instance of Entity.");
+		}
+	}
+	@Override
+	public void spawnCustomEntity(Object entity, Location location) {
+		if (entity instanceof net.minecraft.server.v1_12_R1.Entity) {
+			net.minecraft.server.v1_12_R1.Entity nmsEntity = (net.minecraft.server.v1_12_R1.Entity) entity;
+			nmsEntity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+			((CraftWorld)location.getWorld()).getHandle().addEntity(nmsEntity);
+		} else {
+			Log.error("VersionIndependentUtils", "Object isnt instance of Entity.");
+		}
 	}
 }
