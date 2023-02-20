@@ -3,7 +3,7 @@ A plugin with a lot of useful features to make plugins with less code and better
 
 Downloads can be found here https://jenkins.novauniverse.net/job/NovaCore/
 
-If you run 1.17 or later you also need the 1.17 support plugin that can wither be compiled from [here](https://github.com/NovaUniverse/NovaCore1.17plus) or downloaded from [here](https://jenkins.novauniverse.net/job/NovaCore1.17plus/lastSuccessfulBuild/)
+If you run 1.17 or later you also need the 1.17 support plugin that can either be compiled from [here](https://github.com/NovaUniverse/NovaCore1.17plus) or downloaded from [here](https://jenkins.novauniverse.net/job/NovaCore1.17plus/lastSuccessfulBuild/)
 
 <br>
 
