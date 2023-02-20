@@ -19,6 +19,7 @@ import net.minecraft.server.v1_16_R3.Packet;
 import net.minecraft.server.v1_16_R3.PacketPlayOutEntityStatus;
 import net.minecraft.server.v1_16_R3.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
+import net.novauniverse.spigot.version.shared.v1_16plus.SharedBannerItemStackCreator;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.utils.ListUtils;
 import net.zeeraa.novacore.commons.utils.LoopableIterator;
@@ -647,7 +648,7 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 
 	@Override
 	public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-		if(title.length() == 0) {
+		if (title.length() == 0) {
 			title = " ";
 		}
 		player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
@@ -1328,6 +1329,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 			Log.error("VersionIndependentUtils", "Could not set TNT's source. Entity UUID: " + tnt.getUniqueId() + " Entity ID: " + tnt.getEntityId());
 			e.printStackTrace();
 		}
+	}
 
+	@Override
+	public ItemStack getColoredBannerItemStack(DyeColor color) {
+		return SharedBannerItemStackCreator.getColoredBannerItemStack(color);
 	}
 }

@@ -837,4 +837,6 @@ public abstract class VersionIndependentUtils {
 	public abstract EntityBoundingBox getEntityBoundingBox(Entity entity);
 
 	public abstract void setSource(TNTPrimed tnt, LivingEntity source);
+	
+	public abstract ItemStack getColoredBannerItemStack(DyeColor color);
 }

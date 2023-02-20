@@ -1176,4 +1176,10 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 		}
 
 	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public ItemStack getColoredBannerItemStack(DyeColor color) {
+		return new ItemStack(Material.BANNER, 1, color.getWoolData());
+	}
 }
